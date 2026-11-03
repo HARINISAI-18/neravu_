@@ -1,0 +1,107 @@
+# Neravu — Python/FastAPI backend + React/Vite frontend
+# Keep source code, migrations, lockfiles, and safe example configuration tracked.
+
+# Secrets and local environment configuration
+.env
+.env.*
+!.env.example
+!.env.*.example
+*.pem
+*.key
+*.p12
+*.pfx
+secrets/
+credentials/
+
+# Python virtual environments and caches
+venv/
+.venv/
+env/
+ENV/
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.pyright/
+.hypothesis/
+.tox/
+.nox/
+.coverage
+.coverage.*
+htmlcov/
+coverage.xml
+*.egg-info/
+.eggs/
+build/
+dist/
+*.whl
+.ipynb_checkpoints/
+
+# JavaScript / React / Vite
+node_modules/
+frontend/dist/
+frontend/build/
+.next/
+.nuxt/
+.vite/
+*.tsbuildinfo
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Local databases, logs, temporary files
+*.sqlite
+*.sqlite3
+*.db
+*.log
+logs/
+tmp/
+temp/
+.cache/
+*.tmp
+*.bak
+*.swp
+*~
+
+# IDE and operating system
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.example.json
+.idea/
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Generated AI/ML caches and model weights
+models/cache/
+model_cache/
+checkpoints/
+*.ckpt
+*.safetensors
+*.pt
+*.pth
+*.onnx
+wandb/
+mlruns/
+runs/
+
+# Local patient data, unreviewed uploads, exports and artifacts
+# Do not store identifiable patient data in the repository.
+patient_data/
+private_data/
+private_uploads/
+uploads/
+exports/
+local_artifacts/
+
+# Supabase CLI local runtime (retain supabase/migrations and config)
+supabase/.branches/
+supabase/.profiles/
+supabase/.temp/
+
+# Deployment-specific local files
+.vercel/
+.netlify/
