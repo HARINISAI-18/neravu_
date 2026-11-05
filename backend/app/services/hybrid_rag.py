@@ -1,19 +1,14 @@
-
 import os
+
+os.environ["HF_HUB_OFFLINE"] = "1"
+os.environ["HF_HUB_DISABLE_SYMLINKS_WARNING"] = "1"
+
 from functools import lru_cache
-from pathlib import Path
 
-from dotenv import load_dotenv
-from sqlalchemy import create_engine, text
-from sqlalchemy.engine import make_url
-from sentence_transformers import (
-    SentenceTransformer,
-    CrossEncoder,
-)
+from sqlalchemy import text
+from sentence_transformers import SentenceTransformer
 
-load_dotenv(
-    Path(__file__).resolve().parents[3] / ".env"
-)
+from app.db.config import get_database_engine
 
 EMBEDDING_MODEL = "intfloat/multilingual-e5-small"
 RERANKER_MODEL = "BAAI/bge-reranker-v2-m3"
@@ -21,27 +16,21 @@ RERANKER_MODEL = "BAAI/bge-reranker-v2-m3"
 
 @lru_cache(maxsize=1)
 def get_embedding_model():
-    return SentenceTransformer(EMBEDDING_MODEL)
+    try:
+        return SentenceTransformer(EMBEDDING_MODEL, local_files_only=True)
+    except Exception:
+        return SentenceTransformer(EMBEDDING_MODEL)
 
 
 @lru_cache(maxsize=1)
 def get_reranker():
+    from sentence_transformers import CrossEncoder
     return CrossEncoder(RERANKER_MODEL)
 
 
 @lru_cache(maxsize=1)
 def get_engine():
-    url = os.getenv("SUPABASE_DATABASE_URL")
-
-    if not url:
-        raise RuntimeError("SUPABASE_DATABASE_URL missing")
-
-    host = (make_url(url).host or "").lower()
-
-    if not host.endswith(".supabase.com"):
-        raise RuntimeError("Expected Supabase database host")
-
-    return create_engine(url, pool_pre_ping=True)
+    return get_database_engine()
 
 
 def hybrid_retrieve(
@@ -72,7 +61,7 @@ def hybrid_retrieve(
         rows = connection.execute(
             text("""
                 SELECT *
-                FROM public.hybrid_search_knowledge(
+                FROM public.search_published_knowledge(
                     :question,
                     CAST(:embedding AS vector(384)),
                     :candidate_count,
@@ -92,19 +81,30 @@ def hybrid_retrieve(
 
     candidates = [dict(row) for row in rows]
 
-    pairs = [
-        (question, item["chunk_text"])
-        for item in candidates
-    ]
+    rerank_enabled = os.getenv("ENABLE_RERANKER", "false").lower() in {"1", "true"}
+    if rerank_enabled:
+        try:
+            pairs = [
+                (question, item["chunk_text"])
+                for item in candidates
+            ]
+            scores = get_reranker().predict(
+                pairs,
+                batch_size=4,
+                show_progress_bar=False,
+            )
+            for item, score in zip(candidates, scores):
+                item["rerank_score"] = float(score)
+            candidates.sort(
+                key=lambda item: item["rerank_score"],
+                reverse=True,
+            )
+            return candidates[:top_k]
+        except Exception:
+            pass
 
-    scores = get_reranker().predict(
-        pairs,
-        batch_size=4,
-        show_progress_bar=False,
-    )
-
-    for item, score in zip(candidates, scores):
-        item["rerank_score"] = float(score)
+    for item in candidates:
+        item["rerank_score"] = float(item.get("rrf_score", 0.0))
 
     candidates.sort(
         key=lambda item: item["rerank_score"],

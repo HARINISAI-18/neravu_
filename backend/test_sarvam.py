@@ -1,6 +1,5 @@
-
-from app.services.llm_service import get_client
 import os
+from app.services.llm_service import get_client
 
 response = get_client().chat.completions.create(
     model=os.getenv("SARVAM_MODEL", "sarvam-105b"),
@@ -13,7 +12,8 @@ response = get_client().chat.completions.create(
             ),
         }
     ],
-    max_tokens=100,
+    max_tokens=1000,
 )
 
-print(response.choices[0].message.content)
+content = response.choices[0].message.content or ""
+print("SARVAM RESPONSE:", content)

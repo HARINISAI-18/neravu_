@@ -1,0 +1,31 @@
+# Neravu backend - consolidated direct dependencies (2026-11-03)
+# Install: python -m pip install -r requirements.txt
+# Version ranges are compatibility targets, not a freeze of the original venv.
+
+# API and validation
+fastapi>=0.115,<1
+uvicorn[standard]>=0.30,<1
+pydantic>=2.8,<3
+python-multipart>=0.0.9,<1
+
+# Configuration and database
+python-dotenv>=1.0,<2
+SQLAlchemy>=2.0,<3
+psycopg[binary]>=3.2,<4
+psycopg2-binary>=2.9,<3
+alembic>=1.13,<2
+pgvector>=0.3,<1
+PyJWT[crypto]>=2.10,<3
+
+# Embeddings, hybrid retrieval and reranking
+sentence-transformers>=3.0,<6
+transformers>=4.44,<5
+torch>=2.3,<3
+numpy>=1.26,<3
+
+# Sarvam Token Factory (OpenAI-compatible API)
+openai>=1.50,<3
+
+# Tests and developer utilities
+pytest>=8,<10
+httpx>=0.27,<1

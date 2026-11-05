@@ -1,0 +1,2107 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Neravu API",
+    "version": "0.1.0"
+  },
+  "paths": {
+    "/api/schemes": {
+      "get": {
+        "tags": [
+          "Scheme Management"
+        ],
+        "summary": "List Schemes",
+        "operationId": "list_schemes_api_schemes_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/schemes/{scheme_id}": {
+      "get": {
+        "tags": [
+          "Scheme Management"
+        ],
+        "summary": "Get Scheme",
+        "operationId": "get_scheme_api_schemes__scheme_id__get",
+        "parameters": [
+          {
+            "name": "scheme_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Scheme Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/admin/schemes": {
+      "get": {
+        "tags": [
+          "Admin Scheme Management"
+        ],
+        "summary": "List Admin Schemes",
+        "operationId": "list_admin_schemes_api_admin_schemes_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 200,
+              "minimum": 1,
+              "default": 50,
+              "title": "Limit"
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "default": 0,
+              "title": "Offset"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Admin Scheme Management"
+        ],
+        "summary": "Create Admin Scheme",
+        "operationId": "create_admin_scheme_api_admin_schemes_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SchemeCreate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/admin/schemes/{scheme_id}/history": {
+      "get": {
+        "tags": [
+          "Admin Scheme Management"
+        ],
+        "summary": "Get Admin Scheme History",
+        "operationId": "get_admin_scheme_history_api_admin_schemes__scheme_id__history_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "scheme_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Scheme Id"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 500,
+              "minimum": 1,
+              "default": 100,
+              "title": "Limit"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/admin/schemes/{scheme_id}": {
+      "get": {
+        "tags": [
+          "Admin Scheme Management"
+        ],
+        "summary": "Get Admin Scheme",
+        "operationId": "get_admin_scheme_api_admin_schemes__scheme_id__get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "scheme_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Scheme Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Admin Scheme Management"
+        ],
+        "summary": "Update Admin Scheme",
+        "operationId": "update_admin_scheme_api_admin_schemes__scheme_id__patch",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "scheme_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Scheme Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SchemeUpdate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Admin Scheme Management"
+        ],
+        "summary": "Delete Admin Scheme",
+        "operationId": "delete_admin_scheme_api_admin_schemes__scheme_id__delete",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "scheme_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Scheme Id"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/admin/schemes/{scheme_id}/sources": {
+      "get": {
+        "tags": [
+          "Admin Scheme Management"
+        ],
+        "summary": "List Admin Scheme Sources",
+        "operationId": "list_admin_scheme_sources_api_admin_schemes__scheme_id__sources_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "scheme_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Scheme Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Admin Scheme Management"
+        ],
+        "summary": "Create Admin Scheme Source",
+        "operationId": "create_admin_scheme_source_api_admin_schemes__scheme_id__sources_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "scheme_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Scheme Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SourceCreate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/admin/schemes/{scheme_id}/sources/{source_id}": {
+      "patch": {
+        "tags": [
+          "Admin Scheme Management"
+        ],
+        "summary": "Update Admin Scheme Source",
+        "operationId": "update_admin_scheme_source_api_admin_schemes__scheme_id__sources__source_id__patch",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "scheme_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Scheme Id"
+            }
+          },
+          {
+            "name": "source_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Source Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SourceUpdate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Admin Scheme Management"
+        ],
+        "summary": "Delete Admin Scheme Source",
+        "operationId": "delete_admin_scheme_source_api_admin_schemes__scheme_id__sources__source_id__delete",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "scheme_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Scheme Id"
+            }
+          },
+          {
+            "name": "source_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Source Id"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/admin/schemes/{scheme_id}/claims": {
+      "get": {
+        "tags": [
+          "Admin Scheme Management"
+        ],
+        "summary": "List Admin Evidence Claims",
+        "operationId": "list_admin_evidence_claims_api_admin_schemes__scheme_id__claims_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "scheme_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Scheme Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Admin Scheme Management"
+        ],
+        "summary": "Create Admin Evidence Claim",
+        "operationId": "create_admin_evidence_claim_api_admin_schemes__scheme_id__claims_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "scheme_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Scheme Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EvidenceClaimCreate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/admin/schemes/{scheme_id}/claims/{claim_id}": {
+      "patch": {
+        "tags": [
+          "Admin Scheme Management"
+        ],
+        "summary": "Update Admin Evidence Claim",
+        "operationId": "update_admin_evidence_claim_api_admin_schemes__scheme_id__claims__claim_id__patch",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "scheme_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Scheme Id"
+            }
+          },
+          {
+            "name": "claim_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Claim Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EvidenceClaimUpdate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/admin/schemes/{scheme_id}/sources/{source_id}/review": {
+      "post": {
+        "tags": [
+          "Admin Scheme Management"
+        ],
+        "summary": "Review Admin Scheme Source",
+        "operationId": "review_admin_scheme_source_api_admin_schemes__scheme_id__sources__source_id__review_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "scheme_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Scheme Id"
+            }
+          },
+          {
+            "name": "source_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Source Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EvidenceDecision"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/admin/schemes/{scheme_id}/claims/{claim_id}/review": {
+      "post": {
+        "tags": [
+          "Admin Scheme Management"
+        ],
+        "summary": "Review Admin Evidence Claim",
+        "operationId": "review_admin_evidence_claim_api_admin_schemes__scheme_id__claims__claim_id__review_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "scheme_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Scheme Id"
+            }
+          },
+          {
+            "name": "claim_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Claim Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EvidenceDecision"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/admin/schemes/{scheme_id}/eligibility-rules": {
+      "post": {
+        "tags": [
+          "Admin Scheme Management"
+        ],
+        "summary": "Create Admin Eligibility Rule",
+        "operationId": "create_admin_eligibility_rule_api_admin_schemes__scheme_id__eligibility_rules_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "scheme_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Scheme Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EligibilityRuleCreate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/admin/schemes/{scheme_id}/document-requirements": {
+      "post": {
+        "tags": [
+          "Admin Scheme Management"
+        ],
+        "summary": "Create Admin Document Requirement",
+        "operationId": "create_admin_document_requirement_api_admin_schemes__scheme_id__document_requirements_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "scheme_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Scheme Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DocumentRequirementCreate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/admin/schemes/{scheme_id}/publish": {
+      "post": {
+        "tags": [
+          "Admin Scheme Management"
+        ],
+        "summary": "Publish Admin Scheme",
+        "operationId": "publish_admin_scheme_api_admin_schemes__scheme_id__publish_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "scheme_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Scheme Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/admin/schemes/{scheme_id}/sync": {
+      "get": {
+        "tags": [
+          "Admin Scheme Management"
+        ],
+        "summary": "Get Admin Scheme Sync Status",
+        "operationId": "get_admin_scheme_sync_status_api_admin_schemes__scheme_id__sync_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "scheme_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Scheme Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/admin/schemes/{scheme_id}/sync/retry": {
+      "post": {
+        "tags": [
+          "Admin Scheme Management"
+        ],
+        "summary": "Retry Admin Scheme Sync",
+        "operationId": "retry_admin_scheme_sync_api_admin_schemes__scheme_id__sync_retry_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "scheme_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Scheme Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/schemes/{scheme_id}/eligibility/evaluate": {
+      "post": {
+        "tags": [
+          "Eligibility and Documents"
+        ],
+        "summary": "Evaluate Scheme Eligibility",
+        "operationId": "evaluate_scheme_eligibility_api_schemes__scheme_id__eligibility_evaluate_post",
+        "parameters": [
+          {
+            "name": "scheme_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Scheme Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EligibilityRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/schemes/{scheme_id}/documents/check": {
+      "post": {
+        "tags": [
+          "Eligibility and Documents"
+        ],
+        "summary": "Check Scheme Documents",
+        "operationId": "check_scheme_documents_api_schemes__scheme_id__documents_check_post",
+        "parameters": [
+          {
+            "name": "scheme_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Scheme Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DocumentRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/schemes/{scheme_id}/journey": {
+      "get": {
+        "tags": [
+          "Eligibility and Documents"
+        ],
+        "summary": "Get Scheme Journey",
+        "operationId": "get_scheme_journey_api_schemes__scheme_id__journey_get",
+        "parameters": [
+          {
+            "name": "scheme_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Scheme Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/health": {
+      "get": {
+        "summary": "Health",
+        "operationId": "health_health_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/chat": {
+      "post": {
+        "summary": "Chat",
+        "operationId": "chat_api_chat_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChatRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ChatRequest": {
+        "properties": {
+          "question": {
+            "type": "string",
+            "maxLength": 1000,
+            "minLength": 1,
+            "title": "Question"
+          },
+          "language": {
+            "type": "string",
+            "enum": [
+              "en",
+              "te",
+              "hi"
+            ],
+            "title": "Language",
+            "default": "en"
+          },
+          "scheme_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Scheme Id"
+          },
+          "patient_facts": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Patient Facts"
+          },
+          "document_names": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Document Names"
+          }
+        },
+        "type": "object",
+        "required": [
+          "question"
+        ],
+        "title": "ChatRequest"
+      },
+      "DocumentRequest": {
+        "properties": {
+          "patient_facts": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Patient Facts"
+          },
+          "documents": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "maxItems": 100,
+            "title": "Documents"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "title": "DocumentRequest"
+      },
+      "DocumentRequirementCreate": {
+        "properties": {
+          "document_name": {
+            "type": "string",
+            "maxLength": 300,
+            "minLength": 1,
+            "title": "Document Name"
+          },
+          "source_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Source Id"
+          },
+          "required_when": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Required When"
+          },
+          "accepted_alternatives": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "maxItems": 20,
+            "title": "Accepted Alternatives"
+          },
+          "source_reference": {
+            "type": "string",
+            "maxLength": 500,
+            "minLength": 1,
+            "title": "Source Reference"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "document_name",
+          "source_id",
+          "source_reference"
+        ],
+        "title": "DocumentRequirementCreate"
+      },
+      "EligibilityRequest": {
+        "properties": {
+          "patient_facts": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Patient Facts"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "title": "EligibilityRequest"
+      },
+      "EligibilityRuleCreate": {
+        "properties": {
+          "rule_type": {
+            "type": "string",
+            "maxLength": 100,
+            "minLength": 1,
+            "title": "Rule Type"
+          },
+          "source_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Source Id"
+          },
+          "rule_definition": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Rule Definition"
+          },
+          "explanation": {
+            "type": "string",
+            "maxLength": 5000,
+            "minLength": 1,
+            "title": "Explanation"
+          },
+          "source_reference": {
+            "type": "string",
+            "maxLength": 500,
+            "minLength": 1,
+            "title": "Source Reference"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "rule_type",
+          "source_id",
+          "rule_definition",
+          "explanation",
+          "source_reference"
+        ],
+        "title": "EligibilityRuleCreate"
+      },
+      "EvidenceClaimCreate": {
+        "properties": {
+          "source_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Source Id"
+          },
+          "field_path": {
+            "type": "string",
+            "maxLength": 300,
+            "minLength": 1,
+            "title": "Field Path"
+          },
+          "claim_text": {
+            "type": "string",
+            "maxLength": 5000,
+            "minLength": 1,
+            "title": "Claim Text"
+          },
+          "structured_value": {
+            "title": "Structured Value"
+          },
+          "source_locator": {
+            "type": "string",
+            "maxLength": 500,
+            "minLength": 1,
+            "title": "Source Locator"
+          },
+          "is_critical": {
+            "type": "boolean",
+            "title": "Is Critical",
+            "default": true
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "source_id",
+          "field_path",
+          "claim_text",
+          "source_locator"
+        ],
+        "title": "EvidenceClaimCreate"
+      },
+      "EvidenceClaimUpdate": {
+        "properties": {
+          "source_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source Id"
+          },
+          "field_path": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 300,
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Field Path"
+          },
+          "claim_text": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 5000,
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Claim Text"
+          },
+          "structured_value": {
+            "title": "Structured Value"
+          },
+          "source_locator": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 500,
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source Locator"
+          },
+          "is_critical": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Is Critical"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "title": "EvidenceClaimUpdate"
+      },
+      "EvidenceDecision": {
+        "properties": {
+          "decision": {
+            "type": "string",
+            "enum": [
+              "approved",
+              "rejected"
+            ],
+            "title": "Decision"
+          },
+          "reason": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 5000
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Reason"
+          },
+          "review_expires_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Review Expires At"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "decision"
+        ],
+        "title": "EvidenceDecision"
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "OrganizationInput": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "maxLength": 300,
+            "minLength": 1,
+            "title": "Name"
+          },
+          "organization_type": {
+            "type": "string",
+            "maxLength": 100,
+            "minLength": 1,
+            "title": "Organization Type"
+          },
+          "official_website": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 2048
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Official Website"
+          },
+          "contact_email": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 320
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Contact Email"
+          },
+          "contact_phone": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 50
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Contact Phone"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "name",
+          "organization_type"
+        ],
+        "title": "OrganizationInput"
+      },
+      "SchemeCreate": {
+        "properties": {
+          "programme_code": {
+            "type": "string",
+            "maxLength": 100,
+            "minLength": 1,
+            "title": "Programme Code"
+          },
+          "organization_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Organization Id"
+          },
+          "organization": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/OrganizationInput"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "official_name": {
+            "type": "string",
+            "maxLength": 300,
+            "minLength": 1,
+            "title": "Official Name"
+          },
+          "programme_type": {
+            "type": "string",
+            "maxLength": 100,
+            "minLength": 1,
+            "title": "Programme Type"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 10000
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Description"
+          },
+          "coverage": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Coverage"
+          },
+          "details": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Details"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "programme_code",
+          "official_name",
+          "programme_type"
+        ],
+        "title": "SchemeCreate"
+      },
+      "SchemeUpdate": {
+        "properties": {
+          "programme_code": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 100,
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Programme Code"
+          },
+          "organization_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Organization Id"
+          },
+          "official_name": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 300,
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Official Name"
+          },
+          "programme_type": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 100,
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Programme Type"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 10000
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Description"
+          },
+          "coverage": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Coverage"
+          },
+          "details": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Details"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "title": "SchemeUpdate"
+      },
+      "SourceCreate": {
+        "properties": {
+          "source_title": {
+            "type": "string",
+            "maxLength": 500,
+            "minLength": 1,
+            "title": "Source Title"
+          },
+          "source_url": {
+            "type": "string",
+            "maxLength": 2048,
+            "minLength": 1,
+            "title": "Source Url"
+          },
+          "issuing_body": {
+            "type": "string",
+            "maxLength": 300,
+            "minLength": 1,
+            "title": "Issuing Body"
+          },
+          "storage_path": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 2048
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Storage Path"
+          },
+          "page_reference": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 500
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Page Reference"
+          },
+          "effective_date": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Effective Date"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "source_title",
+          "source_url",
+          "issuing_body"
+        ],
+        "title": "SourceCreate"
+      },
+      "SourceUpdate": {
+        "properties": {
+          "source_title": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 500,
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source Title"
+          },
+          "source_url": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 2048,
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source Url"
+          },
+          "issuing_body": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 300,
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Issuing Body"
+          },
+          "storage_path": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 2048
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Storage Path"
+          },
+          "page_reference": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 500
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Page Reference"
+          },
+          "effective_date": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Effective Date"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "title": "SourceUpdate"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          },
+          "input": {
+            "title": "Input"
+          },
+          "ctx": {
+            "type": "object",
+            "title": "Context"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      }
+    },
+    "securitySchemes": {
+      "HTTPBearer": {
+        "type": "http",
+        "scheme": "bearer"
+      }
+    }
+  }
+}
