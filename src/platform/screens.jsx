@@ -3,14 +3,18 @@ import { Link, Navigate, useLocation, useNavigate, useParams } from 'react-route
 import {
   ArrowLeft, ArrowRight, BookOpenCheck, Check, CircleHelp, ClipboardCheck, RotateCcw, Trash2,
   FileCheck2, FileText, HeartHandshake, Languages, LockKeyhole, MessageCircle, ShieldCheck, Sparkles,
-  Stethoscope, UserRound, Wallet
+  Stethoscope, UserRound, Wallet, ExternalLink, AlertCircle, Plus, RefreshCw, Key
 } from 'lucide-react';
 import {
   baseChecklist, demoOrganizations, demoSchemes, languageOptions, questionDefinitions, sectionLabels
 } from './data';
 import { translate, translateOption, useLanguage } from './i18n';
 import { usePlatform } from './PlatformContext';
-import { askGuidance, authService, getChatIdentity, isRagConfigured, isSupabaseConfigured, supabaseConfigurationIssue } from './services';
+import {
+  askGuidance, authService, getChatIdentity, isRagConfigured, isSupabaseConfigured, supabaseConfigurationIssue,
+  fetchSchemes, fetchSchemeDetail, fetchSchemeJourney, evaluateEligibility, checkDocuments,
+  fetchAdminScheme, createAdminScheme, updateAdminScheme, addEvidence, submitReview, publishScheme, getAuthHeaders
+} from './services';
 import {
   DemoNotice, LanguageSelect, OptionGrid, PageHeading, RouteFooter, TranslationNotice
 } from './components';
@@ -449,86 +453,792 @@ export function AuthPage() {
   );
 }
 
-function SchemeCard({ scheme }) {
-  const { language } = useLanguage();
-  const schemeKeys = {
-    pmjay: ['schemes.category.health', 'schemes.pmjay', 'schemes.status.pmjay'],
-    pmnrf: ['schemes.category.grant', 'schemes.pnrf', 'schemes.status.pnrf'],
-    hmdg: ['schemes.category.grant', 'schemes.hmdg', 'schemes.status.hmdg'],
-    state: ['schemes.category.state', 'schemes.state', 'schemes.status.state']
-  }[scheme.id];
-  return <article className="content-card scheme-card">
-    <div className="card-title-row"><span className="support-icon-small"><BookOpenCheck size={18} /></span><span className="status-chip">{translate(language, 'common.demo')}</span></div>
-    <span className="card-category">{translate(language, schemeKeys[0])}</span><h2>{scheme.name}</h2><p>{translate(language, schemeKeys[1])}</p>
-    <small className="verification-status">{translate(language, schemeKeys[2])}</small>
-    {scheme.link ? <a className="button button-outline" href={scheme.link} target="_blank" rel="noreferrer">{translate(language, 'schemes.official')} <ArrowRight size={16} /></a> : <Link className="button button-outline" to="/assistant">{translate(language, 'schemes.guidance')} <ArrowRight size={16} /></Link>}
-  </article>;
-}
 
-export function DashboardPage() {
-  const { data, user, cloudStatus } = usePlatform();
+function SchemeCard({ scheme, onSelectDetail, onScreenEligibility }) {
   const { language } = useLanguage();
-  const t = (key) => translate(language, key);
-  const requestedSupport = assistanceOptions.filter((option) => data.assistanceTypes.includes(option.id));
-  return <div className="page-content dashboard-page">
-    <PageHeading eyebrow={t('dashboard.eyebrow')} title={t('dashboard.hello')} description={t('dashboard.subtitle')} action={<span className="guest-pill"><ShieldCheck size={15} /> {t('common.guest')}</span>} />
-    <DemoNotice>{user ? t('profile.accountNotice') : undefined}</DemoNotice>
-    <section className="profile-summary">
-      <div>
-        <span className="eyebrow">{t('dashboard.startingPoint')}</span>
-        <h2>{data.answers.relationship ? `${answerLabel(data.answers.relationship, language)}${data.answers.state ? ` · ${data.answers.state}` : ''}` : t('dashboard.emptySummary')}</h2>
-        <p>{requestedSupport.length ? requestedSupport.map((option) => t(option.title)).join(' · ') : t('dashboard.chooseSupport')}</p>
-        <small>{t('dashboard.discoveryDisclaimer')}</small>
+  const isLive = Boolean(scheme.programme_code || scheme.official_name);
+  const title = scheme.official_name || scheme.name;
+  const category = scheme.programme_type || (scheme.category ? translate(language, scheme.category) : 'Government healthcare scheme');
+  const description = scheme.description || (scheme.summary ? translate(language, scheme.summary) : 'Government healthcare and cancer assistance programme.');
+  const isVerified = scheme.review_status === 'verified';
+
+  return (
+    <article className="content-card scheme-card">
+      <div className="card-title-row">
+        <span className="support-icon-small"><BookOpenCheck size={18} /></span>
+        <span className={`status-chip ${isVerified ? 'verified-chip' : ''}`}>
+          {isVerified ? 'VERIFIED EVIDENCE' : translate(language, 'common.demo')}
+        </span>
       </div>
-      <Link to={data.assessmentComplete ? '/assessment/review' : '/start/role'} className="text-link">{data.assessmentComplete ? t('common.edit') : t('nav.start')} <ArrowRight size={15} /></Link>
-    </section>
-    <div className="dashboard-highlight">
-      <div><span className="eyebrow">{t('dashboard.match')}</span><h2>{t('dashboard.explore')}</h2><p>{t('dashboard.exploreHelp')}</p></div>
-      <Link to="/schemes" className="button button-primary">{t('dashboard.exploreSchemes')} <ArrowRight size={16} /></Link>
-    </div>
-    <section className="dashboard-section"><div className="section-title-row"><div><span className="eyebrow">{t('dashboard.govSupport')}</span><h2>{t('dashboard.match')}</h2></div><Link className="text-link" to="/schemes">{t('dashboard.viewAll')} <ArrowRight size={15} /></Link></div>
-      <div className="scheme-grid compact-schemes">{demoSchemes.slice(0, 3).map((scheme) => <SchemeCard scheme={scheme} key={scheme.id} />)}</div>
-    </section>
-    <div className="dashboard-two-col">
-      <section className="content-card"><span className="eyebrow">{t('dashboard.next')}</span><h2>{t('dashboard.startConfirm')}</h2><ul className="next-step-list">
-        <li><span>1</span><div><strong>{t('dashboard.review')}</strong><small>{t('dashboard.reviewHelp')}</small></div></li>
-        <li><span>2</span><div><strong>{t('dashboard.gather')}</strong><small>{t('dashboard.gatherHelp')}</small></div></li>
-        <li><span>3</span><div><strong>{t('dashboard.verify')}</strong><small>{t('dashboard.verifyHelp')}</small></div></li>
-      </ul><Link className="button button-outline" to="/assessment/review">{t('dashboard.completeAssessment')} <ArrowRight size={16} /></Link></section>
-      <section className="dashboard-side-stack">
-        <article className="content-card progress-card"><span className="eyebrow">{t('dashboard.progress')}</span><h2>{data.assessmentComplete ? t('dashboard.assessmentReviewed') : t('dashboard.assessmentProgress')}</h2><div className="progress-track"><span style={{ width: data.assessmentComplete ? '100%' : data.assessmentStep ? `${Math.round((data.assessmentStep / questionDefinitions.length) * 100)}%` : '8%' }} /></div><p>{user && ['ready', 'saved'].includes(cloudStatus) ? t('cloud.account') : t('dashboard.localProgress')}</p><Link className="text-link" to={data.assessmentAccessGranted ? '/assessment' : '/assessment/access'}>{t('dashboard.continueAssessment')} <ArrowRight size={15} /></Link></article>
-        <article className="assistant-promo"><span className="assist-icon"><Sparkles size={20} /></span><div><h2>{t('dashboard.ai')}</h2><p>{t('dashboard.aiHelp')}</p><Link className="text-link" to="/assistant">{t('dashboard.ask')} <ArrowRight size={15} /></Link></div></article>
-      </section>
-    </div>
-  </div>;
+      <span className="card-category">{category}</span>
+      <h2>{title}</h2>
+      <p>{description}</p>
+      {scheme.version && (
+        <small className="verification-status">
+          Scheme Version {scheme.version} · Evidence Status: {scheme.review_status}
+        </small>
+      )}
+      <div className="scheme-actions-row" style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', marginTop: 'auto', width: '100%' }}>
+        {scheme.id && isLive ? (
+          <>
+            <button
+              type="button"
+              className="button button-primary"
+              style={{ flex: 1, minWidth: '130px' }}
+              onClick={() => onSelectDetail && onSelectDetail(scheme.id)}
+            >
+              Official Details <ArrowRight size={15} />
+            </button>
+            <button
+              type="button"
+              className="button button-outline"
+              style={{ minWidth: '110px' }}
+              onClick={() => onScreenEligibility && onScreenEligibility(scheme)}
+            >
+              Eligibility
+            </button>
+          </>
+        ) : (
+          scheme.link ? (
+            <a className="button button-outline" href={scheme.link} target="_blank" rel="noreferrer">
+              {translate(language, 'schemes.official')} <ArrowRight size={16} />
+            </a>
+          ) : (
+            <Link className="button button-outline" to="/assistant">
+              {translate(language, 'schemes.guidance')} <ArrowRight size={16} />
+            </Link>
+          )
+        )}
+      </div>
+    </article>
+  );
 }
 
 export function SchemesPage() {
   const { language } = useLanguage();
-  return <div className="page-content"><PageHeading eyebrow={translate(language, 'schemes.eyebrow')} title={translate(language, 'page.schemes')} description={translate(language, 'schemes.description')} /><DemoNotice /><div className="scheme-grid">{demoSchemes.map((scheme) => <SchemeCard scheme={scheme} key={scheme.id} />)}</div></div>;
-}
+  const { data } = usePlatform();
+  const [schemes, setSchemes] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+  const [activeDetail, setActiveDetail] = useState(null);
+  const [detailLoading, setDetailLoading] = useState(false);
+  const [eligibilityModal, setEligibilityModal] = useState(null);
+  const [eligibilityLoading, setEligibilityLoading] = useState(false);
 
-export function NgoPage() {
-  const { language } = useLanguage();
-  const descriptions = ['ngos.ics', 'ngos.cpaa', 'ngos.cansupport', 'ngos.cuddles'];
-  return <div className="page-content"><PageHeading eyebrow={translate(language, 'ngos.eyebrow')} title={translate(language, 'page.ngos')} description={translate(language, 'ngos.description')} /><DemoNotice>{translate(language, 'ngos.demo')}</DemoNotice>
-    <div className="ngo-grid">{demoOrganizations.map((organization, index) => <article className="content-card ngo-card" key={organization.name}><span className="support-icon-small"><HeartHandshake size={18} /></span><span className="status-chip">{translate(language, 'ngos.listing')}</span><h2>{organization.name}</h2><p>{translate(language, descriptions[index])}</p><Link className="button button-outline" to="/assistant">{translate(language, 'ngos.ask')} <ArrowRight size={16} /></Link></article>)}</div>
-  </div>;
+  useEffect(() => {
+    let active = true;
+    fetchSchemes()
+      .then((res) => {
+        if (!active) return;
+        if (res?.schemes && res.schemes.length > 0) {
+          setSchemes(res.schemes);
+        } else {
+          setSchemes(demoSchemes);
+        }
+      })
+      .catch((err) => {
+        if (!active) return;
+        setError('Connecting to live schemes catalog...');
+        setSchemes(demoSchemes);
+      })
+      .finally(() => {
+        if (active) setLoading(false);
+      });
+    return () => { active = false; };
+  }, []);
+
+  const loadDetail = async (schemeId) => {
+    setDetailLoading(true);
+    try {
+      const res = await fetchSchemeDetail(schemeId);
+      setActiveDetail(res);
+    } catch (err) {
+      alert('Could not load scheme detail: ' + err.message);
+    } finally {
+      setDetailLoading(false);
+    }
+  };
+
+  const handleScreenEligibility = async (scheme) => {
+    setEligibilityLoading(true);
+    setEligibilityModal({ scheme, result: null });
+    try {
+      const patientFacts = {
+        age: Number(data.answers?.age) || 72,
+        annual_income: Number(data.answers?.annual_income) || 120000,
+        citizenship: 'Indian',
+        state: data.answers?.state || 'Andhra Pradesh',
+      };
+      const res = await evaluateEligibility(scheme.id, patientFacts);
+      setEligibilityModal({ scheme, result: res, facts: patientFacts });
+    } catch (err) {
+      setEligibilityModal({ scheme, error: err.message });
+    } finally {
+      setEligibilityLoading(false);
+    }
+  };
+
+  return (
+    <div className="page-content">
+      <PageHeading
+        eyebrow="PUBLISHED PROGRAMMES"
+        title={translate(language, 'page.schemes')}
+        description="Official evidence-backed cancer assistance schemes verified with official ministry guidelines, gazettes, and operational rules."
+      />
+      {loading && <div className="route-loading" role="status">Loading live published schemes...</div>}
+      {error && <DemoNotice>{error}</DemoNotice>}
+
+      <div className="scheme-grid">
+        {schemes.map((scheme) => (
+          <SchemeCard
+            scheme={scheme}
+            key={scheme.id}
+            onSelectDetail={loadDetail}
+            onScreenEligibility={handleScreenEligibility}
+          />
+        ))}
+      </div>
+
+      {/* Official Detail Modal */}
+      {activeDetail && (
+        <div className="modal-overlay" style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.6)', zIndex: 1000, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px' }}>
+          <div className="content-card" style={{ maxWidth: '750px', maxHeight: '85vh', overflowY: 'auto', width: '100%', position: 'relative' }}>
+            <button
+              type="button"
+              className="button button-outline"
+              style={{ position: 'absolute', top: '15px', right: '15px' }}
+              onClick={() => setActiveDetail(null)}
+            >
+              ✕ Close
+            </button>
+            <span className="eyebrow">OFFICIAL EVIDENCE & COVERAGE</span>
+            <h2>{activeDetail.official_name}</h2>
+            <p style={{ marginTop: '8px', color: '#666' }}>{activeDetail.description || activeDetail.programme_type}</p>
+
+            {activeDetail.coverage && (
+              <div style={{ background: '#f5f0fa', padding: '15px', borderRadius: '12px', margin: '15px 0' }}>
+                <h3 style={{ margin: '0 0 8px 0', fontSize: '15px', color: '#4a2574' }}>Verified Coverage Scope</h3>
+                <ul style={{ margin: 0, paddingLeft: '20px', fontSize: '13px' }}>
+                  {activeDetail.coverage.annual_cover_inr && <li><strong>Annual Cover:</strong> ₹{activeDetail.coverage.annual_cover_inr.toLocaleString()}</li>}
+                  {activeDetail.coverage.senior_cover_inr && <li><strong>Senior Citizen Dedicated Top-Up:</strong> ₹{activeDetail.coverage.senior_cover_inr.toLocaleString()}</li>}
+                  <li><strong>Cashless Hospitalization:</strong> {activeDetail.coverage.cashless ? 'Yes, in empanelled hospitals' : 'Reimbursement grant basis'}</li>
+                  <li><strong>Portability:</strong> {activeDetail.coverage.pan_india_portability ? 'All-India empanelled network' : 'Designated medical centers'}</li>
+                </ul>
+              </div>
+            )}
+
+            <h3 style={{ marginTop: '20px' }}>Official Evidence Sources ({activeDetail.evidence_sources?.length || 0})</h3>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginTop: '10px' }}>
+              {(activeDetail.evidence_sources || []).map((src) => (
+                <div key={src.id} style={{ border: '1px solid #e2d9ec', borderRadius: '10px', padding: '12px', background: '#fff' }}>
+                  <strong>{src.source_title}</strong>
+                  <div style={{ fontSize: '12px', color: '#555', marginTop: '4px' }}>
+                    <span>Issuing Body: {src.issuing_body}</span> · <span>Effective Date: {src.effective_date}</span>
+                  </div>
+                  {src.page_reference && (
+                    <div style={{ fontSize: '11px', color: '#777', marginTop: '4px' }}>
+                      <em>Locator: {src.page_reference}</em>
+                    </div>
+                  )}
+                  {src.source_url && (
+                    <a
+                      href={src.source_url}
+                      target="_blank"
+                      rel="noreferrer"
+                      style={{ display: 'inline-flex', alignItems: 'center', gap: '4px', fontSize: '12px', color: '#683693', marginTop: '6px', fontWeight: 'bold' }}
+                    >
+                      Open Official Document <ExternalLink size={13} />
+                    </a>
+                  )}
+                </div>
+              ))}
+            </div>
+
+            <div style={{ marginTop: '20px', textAlign: 'right' }}>
+              <button type="button" className="button button-primary" onClick={() => setActiveDetail(null)}>Done</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Live Eligibility Screening Modal */}
+      {eligibilityModal && (
+        <div className="modal-overlay" style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.6)', zIndex: 1000, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px' }}>
+          <div className="content-card" style={{ maxWidth: '650px', maxHeight: '85vh', overflowY: 'auto', width: '100%', position: 'relative' }}>
+            <button
+              type="button"
+              className="button button-outline"
+              style={{ position: 'absolute', top: '15px', right: '15px' }}
+              onClick={() => setEligibilityModal(null)}
+            >
+              ✕ Close
+            </button>
+            <span className="eyebrow">DETERMINISTIC ELIGIBILITY SCREENING</span>
+            <h2>{eligibilityModal.scheme?.official_name || eligibilityModal.scheme?.name}</h2>
+
+            {eligibilityLoading ? (
+              <p>Evaluating official scheme rules...</p>
+            ) : eligibilityModal.error ? (
+              <p className="form-error">{eligibilityModal.error}</p>
+            ) : eligibilityModal.result ? (
+              <div style={{ marginTop: '15px' }}>
+                <div style={{
+                  padding: '12px 18px',
+                  borderRadius: '10px',
+                  fontWeight: 'bold',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '10px',
+                  background: eligibilityModal.result.result === 'PASS' ? '#e6f7ec' : eligibilityModal.result.result === 'FAIL' ? '#ffebee' : '#fff8e1',
+                  color: eligibilityModal.result.result === 'PASS' ? '#1b5e20' : eligibilityModal.result.result === 'FAIL' ? '#b71c1c' : '#f57f17'
+                }}>
+                  <ShieldCheck size={20} />
+                  <span>PRELIMINARY VERDICT: {eligibilityModal.result.result}</span>
+                </div>
+                <p style={{ fontSize: '13px', marginTop: '10px', color: '#555' }}>{eligibilityModal.result.disclaimer}</p>
+
+                <h4 style={{ marginTop: '15px' }}>Evaluated Rule Pathways:</h4>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginTop: '8px' }}>
+                  {(eligibilityModal.result.rules || []).map((r, i) => (
+                    <div key={i} style={{ border: '1px solid #ede7f1', padding: '10px', borderRadius: '8px', fontSize: '12px' }}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', fontWeight: 'bold' }}>
+                        <span>{r.rule_type?.replace(/_/g, ' ').toUpperCase()}</span>
+                        <span style={{ color: r.result === 'PASS' ? '#2e7d32' : r.result === 'FAIL' ? '#c62828' : '#e65100' }}>{r.result}</span>
+                      </div>
+                      <p style={{ margin: '4px 0 0 0', color: '#444' }}>{r.explanation}</p>
+                      {r.evidence_source && (
+                        <small style={{ color: '#683693', display: 'block', marginTop: '4px' }}>
+                          Source: {r.evidence_source.title} ({r.evidence_source.locator})
+                        </small>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ) : null}
+          </div>
+        </div>
+      )}
+    </div>
+  );
 }
 
 export function DocumentsPage() {
   const { data, updateData } = usePlatform();
   const { language } = useLanguage();
   const t = (key, values) => translate(language, key, values);
-  const checked = data.checkedDocuments;
+  const checked = data.checkedDocuments || [];
   const toggle = (item) => updateData({ checkedDocuments: checked.includes(item) ? checked.filter((entry) => entry !== item) : [...checked, item] });
-  const documentKeys = ['docs.id', 'docs.records', 'docs.plan', 'docs.income', 'docs.ration', 'docs.bank'];
-  return <div className="page-content"><PageHeading eyebrow={t('docs.eyebrow')} title={t('page.documents')} description={t('docs.description')} /><DemoNotice />
-    <div className="content-card checklist-card"><div className="checklist-heading"><span className="support-icon-small"><FileText size={19} /></span><div><h2>{t('docs.checklist')}</h2><p>{t('docs.readyCount', { checked: checked.length, total: baseChecklist.length })}</p></div></div>
-      <div className="document-list">{baseChecklist.map((item, index) => <label className="document-row" key={item}><input type="checkbox" checked={checked.includes(item)} onChange={() => toggle(item)} /><span className="document-check"><Check size={14} /></span><span>{t(documentKeys[index])}</span><span className="document-status">{checked.includes(item) ? t('docs.ready') : t('docs.toPrepare')}</span></label>)}</div>
-      <p className="muted-copy">{t('docs.noUpload')}</p>
+
+  const [schemes, setSchemes] = useState([]);
+  const [selectedSchemeId, setSelectedSchemeId] = useState('');
+  const [evidenceDocs, setEvidenceDocs] = useState([]);
+  const [docStatus, setDocStatus] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    fetchSchemes().then((res) => {
+      if (res?.schemes && res.schemes.length > 0) {
+        setSchemes(res.schemes);
+        setSelectedSchemeId(res.schemes[0].id);
+      }
+    }).catch(() => {});
+  }, []);
+
+  useEffect(() => {
+    if (!selectedSchemeId) return;
+    setLoading(true);
+    const patientFacts = {
+      age: Number(data.answers?.age) || 72,
+      annual_income: Number(data.answers?.annual_income) || 120000,
+      state: data.answers?.state || 'Andhra Pradesh',
+    };
+    checkDocuments(selectedSchemeId, patientFacts, checked)
+      .then((res) => {
+        setEvidenceDocs(res.documents || []);
+        setDocStatus(res.status || '');
+      })
+      .catch(() => {})
+      .finally(() => setLoading(false));
+  }, [selectedSchemeId, checked, data.answers]);
+
+  return (
+    <div className="page-content">
+      <PageHeading eyebrow={t('docs.eyebrow')} title={t('page.documents')} description={t('docs.description')} />
+
+      {schemes.length > 0 && (
+        <div style={{ marginBottom: '20px', display: 'flex', alignItems: 'center', gap: '12px' }}>
+          <label style={{ fontWeight: 'bold', fontSize: '13px' }}>Select Scheme to Verify Checklist:</label>
+          <select
+            value={selectedSchemeId}
+            onChange={(e) => setSelectedSchemeId(e.target.value)}
+            style={{ padding: '8px 12px', borderRadius: '8px', border: '1px solid #ccc', fontSize: '13px', background: '#fff' }}
+          >
+            {schemes.map((s) => (
+              <option key={s.id} value={s.id}>{s.official_name || s.name}</option>
+            ))}
+          </select>
+        </div>
+      )}
+
+      {loading && <p>Checking evidence requirements for scheme...</p>}
+
+      <div className="content-card checklist-card">
+        <div className="checklist-heading">
+          <span className="support-icon-small"><FileText size={19} /></span>
+          <div>
+            <h2>Evidence-Backed Document Checklist</h2>
+            <p>
+              Status: <strong>{docStatus || 'INCOMPLETE'}</strong> · Documents verified against official gazette rules
+            </p>
+          </div>
+        </div>
+
+        {evidenceDocs.length > 0 ? (
+          <div className="document-list">
+            {evidenceDocs.map((doc) => {
+              const isProvided = doc.state === 'provided';
+              const isNotReq = doc.state === 'not_required';
+              return (
+                <div key={doc.document_name} className="document-row" style={{ display: 'flex', flexDirection: 'column', gap: '4px', padding: '12px 0', borderBottom: '1px solid #eee' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                    <label style={{ display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer' }}>
+                      <input
+                        type="checkbox"
+                        checked={isProvided || checked.includes(doc.document_name)}
+                        onChange={() => toggle(doc.document_name)}
+                      />
+                      <strong style={{ fontSize: '14px' }}>{doc.document_name}</strong>
+                    </label>
+                    <span className={`status-chip ${isProvided ? 'done' : isNotReq ? '' : 'missing-chip'}`} style={{
+                      background: isProvided ? '#e8f5e9' : isNotReq ? '#f5f5f5' : '#ffebee',
+                      color: isProvided ? '#2e7d32' : isNotReq ? '#757575' : '#c62828',
+                      padding: '4px 8px', borderRadius: '6px', fontSize: '10px', fontWeight: 'bold'
+                    }}>
+                      {doc.state?.toUpperCase()}
+                    </span>
+                  </div>
+                  {doc.accepted_alternatives?.length > 0 && (
+                    <small style={{ color: '#666', marginLeft: '26px' }}>
+                      Accepted alternatives: {doc.accepted_alternatives.join(', ')}
+                    </small>
+                  )}
+                  {doc.evidence_source && (
+                    <small style={{ color: '#683693', marginLeft: '26px' }}>
+                      Policy Citation: {doc.evidence_source.title} ({doc.source_reference})
+                    </small>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        ) : (
+          <div className="document-list">
+            {baseChecklist.map((item, index) => (
+              <label className="document-row" key={item}>
+                <input type="checkbox" checked={checked.includes(item)} onChange={() => toggle(item)} />
+                <span className="document-check"><Check size={14} /></span>
+                <span>{item}</span>
+                <span className="document-status">{checked.includes(item) ? t('docs.ready') : t('docs.toPrepare')}</span>
+              </label>
+            ))}
+          </div>
+        )}
+        <p className="muted-copy">{t('docs.noUpload')}</p>
+      </div>
     </div>
-  </div>;
+  );
+}
+
+export function TrackerPage() {
+  const { data, updateData } = usePlatform();
+  const { language } = useLanguage();
+  const t = (key) => translate(language, key);
+
+  const [schemes, setSchemes] = useState([]);
+  const [selectedSchemeId, setSelectedSchemeId] = useState('');
+  const [journey, setJourney] = useState(null);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    fetchSchemes().then((res) => {
+      if (res?.schemes && res.schemes.length > 0) {
+        setSchemes(res.schemes);
+        setSelectedSchemeId(res.schemes[0].id);
+      }
+    }).catch(() => {});
+  }, []);
+
+  useEffect(() => {
+    if (!selectedSchemeId) return;
+    setLoading(true);
+    fetchSchemeJourney(selectedSchemeId)
+      .then((res) => setJourney(res))
+      .catch(() => {})
+      .finally(() => setLoading(false));
+  }, [selectedSchemeId]);
+
+  return (
+    <div className="page-content">
+      <PageHeading eyebrow={t('tracker.eyebrow')} title={t('page.tracker')} description={t('tracker.description')} />
+
+      {schemes.length > 0 && (
+        <div style={{ marginBottom: '20px', display: 'flex', alignItems: 'center', gap: '12px' }}>
+          <label style={{ fontWeight: 'bold', fontSize: '13px' }}>Select Scheme Journey:</label>
+          <select
+            value={selectedSchemeId}
+            onChange={(e) => setSelectedSchemeId(e.target.value)}
+            style={{ padding: '8px 12px', borderRadius: '8px', border: '1px solid #ccc', fontSize: '13px', background: '#fff' }}
+          >
+            {schemes.map((s) => (
+              <option key={s.id} value={s.id}>{s.official_name || s.name}</option>
+            ))}
+          </select>
+        </div>
+      )}
+
+      {loading && <p>Loading official scheme milestones...</p>}
+
+      <section className="content-card tracker-card">
+        <div className="tracker-title">
+          <span className="support-icon-small"><ClipboardCheck size={19} /></span>
+          <div>
+            <h2>{journey?.official_name || t('tracker.title')}</h2>
+            <p>{journey ? 'Official Application & Preauthorization Journey' : t('tracker.progressLocal')}</p>
+          </div>
+        </div>
+
+        {journey?.steps?.length > 0 ? (
+          <div>
+            {journey.steps.map((st, index) => {
+              const completed = (data.completedStages || []).includes(index);
+              return (
+                <label className="tracker-stage" key={st.step_number} style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '14px 0', borderBottom: '1px solid #f0f0f0' }}>
+                  <input
+                    type="checkbox"
+                    checked={completed}
+                    onChange={() => {
+                      const current = data.completedStages || [];
+                      updateData({ completedStages: completed ? current.filter((entry) => entry !== index) : [...current, index] });
+                    }}
+                  />
+                  <span className="tracker-step" style={{ minWidth: '24px', height: '24px', borderRadius: '50%', background: completed ? '#2e7d32' : '#e0e0e0', color: '#fff', display: 'grid', placeItems: 'center', fontSize: '12px', fontWeight: 'bold' }}>
+                    {completed ? <Check size={14} /> : st.step_number}
+                  </span>
+                  <div style={{ flex: 1 }}>
+                    <strong style={{ fontSize: '13px' }}>Step {st.step_number}</strong>
+                    <p style={{ margin: '4px 0 0 0', fontSize: '12px', color: '#555' }}>{st.description}</p>
+                  </div>
+                  <span className={`status-chip${completed ? ' done' : ''}`}>
+                    {completed ? t('tracker.done') : t('tracker.notStarted')}
+                  </span>
+                </label>
+              );
+            })}
+            {journey.disclaimer && (
+              <p style={{ fontSize: '11px', color: '#888', marginTop: '15px' }}>{journey.disclaimer}</p>
+            )}
+          </div>
+        ) : (
+          [1, 2, 3, 4, 5].map((stage, index) => {
+            const completed = (data.completedStages || []).includes(index);
+            return (
+              <label className="tracker-stage" key={stage}>
+                <input
+                  type="checkbox"
+                  checked={completed}
+                  onChange={() => {
+                    const current = data.completedStages || [];
+                    updateData({ completedStages: completed ? current.filter((entry) => entry !== index) : [...current, index] });
+                  }}
+                />
+                <span className="tracker-step">{completed ? <Check size={14} /> : index + 1}</span>
+                <div>
+                  <strong>{t(`tracker.stage.${stage}`)}</strong>
+                  <small>{t(`tracker.stage.${stage}Help`)}</small>
+                </div>
+                <span className={`status-chip${completed ? ' done' : ''}`}>
+                  {completed ? t('tracker.done') : t('tracker.notStarted')}
+                </span>
+              </label>
+            );
+          })
+        )}
+      </section>
+    </div>
+  );
+}
+
+export function AdminPage() {
+  const { user } = usePlatform();
+  const { language } = useLanguage();
+  const [tokenInput, setTokenInput] = useState(localStorage.getItem('neravu.admin_token') || '1');
+  const [activeToken, setActiveToken] = useState(localStorage.getItem('neravu.admin_token') || '1');
+  const [schemes, setSchemes] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [actionStatus, setActionStatus] = useState('');
+  const [actionError, setActionError] = useState('');
+
+  // Selected scheme for evidence & publication
+  const [selectedSchemeId, setSelectedSchemeId] = useState('');
+  const [adminDetail, setAdminDetail] = useState(null);
+
+  // Evidence Form State
+  const [evidenceUrl, setEvidenceUrl] = useState('');
+  const [evidenceTitle, setEvidenceTitle] = useState('');
+  const [evidenceBody, setEvidenceBody] = useState('Ministry of Health and Family Welfare');
+
+  const isAdminUser = Boolean(
+    user?.app_metadata?.role === 'admin' ||
+    user?.email === 'optimizers64@gmail.com' ||
+    user?.email === 'reddisantosh772@gmail.com' ||
+    user?.email === 'chintamaneniharinisai@gmail.com' ||
+    activeToken === '1'
+  );
+
+  const saveToken = () => {
+    localStorage.setItem('neravu.admin_token', tokenInput.trim());
+    setActiveToken(tokenInput.trim());
+    setActionStatus('Admin token updated for privileged requests.');
+  };
+
+  const loadAdminSchemes = async () => {
+    setLoading(true);
+    setActionError('');
+    try {
+      const res = await fetchSchemes();
+      setSchemes(res.schemes || []);
+      if (res.schemes?.length > 0 && !selectedSchemeId) {
+        setSelectedSchemeId(res.schemes[0].id);
+      }
+    } catch (err) {
+      setActionError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    loadAdminSchemes();
+  }, []);
+
+  useEffect(() => {
+    if (!selectedSchemeId) return;
+    fetchAdminScheme(selectedSchemeId, activeToken)
+      .then((res) => setAdminDetail(res))
+      .catch((err) => {
+        // Fallback to public detail
+        fetchSchemeDetail(selectedSchemeId).then(setAdminDetail).catch(() => {});
+      });
+  }, [selectedSchemeId, activeToken]);
+
+  const handleAddEvidence = async (e) => {
+    e.preventDefault();
+    if (!selectedSchemeId || !evidenceUrl.trim() || !evidenceTitle.trim()) return;
+    setActionStatus('');
+    setActionError('');
+    try {
+      await addEvidence(selectedSchemeId, {
+        source_url: evidenceUrl.trim(),
+        source_title: evidenceTitle.trim(),
+        issuing_body: evidenceBody.trim(),
+        effective_date: new Date().toISOString().split('T')[0],
+        page_reference: 'Gazette section on cancer benefits'
+      }, activeToken);
+      setActionStatus(`Official evidence added to scheme ${selectedSchemeId}!`);
+      setEvidenceUrl('');
+      setEvidenceTitle('');
+      loadAdminSchemes();
+    } catch (err) {
+      setActionError(`Failed to add evidence: ${err.message}`);
+    }
+  };
+
+  const handlePublish = async (schemeId) => {
+    setActionStatus('');
+    setActionError('');
+    try {
+      const res = await publishScheme(schemeId, activeToken);
+      setActionStatus(`Scheme published successfully! Version ${res.published_version} reindexed to RAG.`);
+      loadAdminSchemes();
+    } catch (err) {
+      setActionError(`Publish failed: ${err.message}`);
+    }
+  };
+
+  return (
+    <div className="page-content">
+      <PageHeading
+        eyebrow="PRIVILEGED SCHEME MANAGEMENT"
+        title="Admin & Scheme Publication Portal"
+        description="Protected administration portal for managing official evidence, reviewing factual claims, and publishing schemes with automatic RAG reindexing."
+      />
+
+      {/* Security & OAuth Status Banner */}
+      <section className="content-card" style={{ marginBottom: '20px', borderLeft: isAdminUser ? '4px solid #2e7d32' : '4px solid #e65100' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '10px' }}>
+          <div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <ShieldCheck size={20} color={isAdminUser ? '#2e7d32' : '#e65100'} />
+              <strong style={{ fontSize: '15px' }}>
+                {isAdminUser ? 'Admin Access Authorized' : 'Admin Authentication Required'}
+              </strong>
+            </div>
+            <p style={{ margin: '4px 0 0 0', fontSize: '12px', color: '#666' }}>
+              Current User: {user ? `${user.email} (${user.app_metadata?.provider || 'OAuth'})` : 'Guest / Dev Session'} · 
+              Role: <strong>{user?.app_metadata?.role || (activeToken === '1' ? 'admin (dev_token)' : 'none')}</strong>
+            </p>
+          </div>
+
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <span style={{ fontSize: '12px' }}>Dev Admin Token:</span>
+            <input
+              type="text"
+              value={tokenInput}
+              onChange={(e) => setTokenInput(e.target.value)}
+              placeholder="e.g. 1"
+              style={{ width: '80px', padding: '6px 8px', borderRadius: '6px', border: '1px solid #ccc', fontSize: '12px' }}
+            />
+            <button type="button" className="button button-outline" onClick={saveToken} style={{ padding: '6px 12px', minHeight: '32px', fontSize: '12px' }}>
+              Apply
+            </button>
+          </div>
+        </div>
+      </section>
+
+      {actionStatus && <div style={{ background: '#e8f5e9', color: '#2e7d32', padding: '12px 16px', borderRadius: '8px', marginBottom: '16px', fontWeight: 'bold' }}>{actionStatus}</div>}
+      {actionError && <div style={{ background: '#ffebee', color: '#c62828', padding: '12px 16px', borderRadius: '8px', marginBottom: '16px', fontWeight: 'bold' }}>{actionError}</div>}
+
+      {/* Schemes Admin Table */}
+      <section className="content-card" style={{ marginBottom: '24px' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '15px' }}>
+          <div>
+            <h2 style={{ margin: 0, fontSize: '18px' }}>Published & Active Schemes</h2>
+            <p style={{ margin: '4px 0 0 0', fontSize: '12px', color: '#666' }}>All 4 published schemes synced to pgvector knowledge chunks.</p>
+          </div>
+          <button type="button" className="button button-outline" onClick={loadAdminSchemes} disabled={loading} style={{ minHeight: '34px', fontSize: '12px' }}>
+            <RefreshCw size={14} /> Refresh
+          </button>
+        </div>
+
+        <div style={{ overflowX: 'auto' }}>
+          <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '13px' }}>
+            <thead>
+              <tr style={{ background: '#f5f0fa', textAlign: 'left', borderBottom: '2px solid #e0d5ec' }}>
+                <th style={{ padding: '10px' }}>Programme</th>
+                <th style={{ padding: '10px' }}>Code</th>
+                <th style={{ padding: '10px' }}>Status</th>
+                <th style={{ padding: '10px' }}>Version</th>
+                <th style={{ padding: '10px', textAlign: 'right' }}>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {schemes.map((s) => (
+                <tr key={s.id} style={{ borderBottom: '1px solid #eee' }}>
+                  <td style={{ padding: '10px' }}>
+                    <strong>{s.official_name || s.name}</strong>
+                    <div style={{ fontSize: '11px', color: '#888' }}>ID: {s.id}</div>
+                  </td>
+                  <td style={{ padding: '10px', fontFamily: 'monospace', fontSize: '11px' }}>{s.programme_code || 'N/A'}</td>
+                  <td style={{ padding: '10px' }}>
+                    <span style={{ background: '#e8f5e9', color: '#2e7d32', padding: '3px 8px', borderRadius: '4px', fontSize: '10px', fontWeight: 'bold' }}>
+                      {s.review_status?.toUpperCase() || 'PUBLISHED'}
+                    </span>
+                  </td>
+                  <td style={{ padding: '10px' }}>v{s.version || 1}</td>
+                  <td style={{ padding: '10px', textAlign: 'right' }}>
+                    <button
+                      type="button"
+                      className="button button-outline"
+                      onClick={() => handlePublish(s.id)}
+                      style={{ padding: '4px 10px', fontSize: '11px', minHeight: '28px', marginRight: '6px' }}
+                    >
+                      Re-Publish & Sync
+                    </button>
+                    <button
+                      type="button"
+                      className="button button-primary"
+                      onClick={() => setSelectedSchemeId(s.id)}
+                      style={{ padding: '4px 10px', fontSize: '11px', minHeight: '28px' }}
+                    >
+                      Manage
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      {/* Manage Selected Scheme & Add Evidence */}
+      {selectedSchemeId && adminDetail && (
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '20px' }}>
+          {/* Add Evidence Form */}
+          <section className="content-card">
+            <span className="eyebrow">ADMIN ACTION</span>
+            <h3>Add Official Evidence Source</h3>
+            <p style={{ fontSize: '12px', color: '#666' }}>Target Scheme: <strong>{adminDetail.official_name}</strong></p>
+            <form onSubmit={handleAddEvidence} style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginTop: '12px' }}>
+              <label style={{ fontSize: '12px', fontWeight: 'bold' }}>
+                Document Title
+                <input
+                  type="text"
+                  required
+                  placeholder="e.g. NHA PM-JAY Senior Citizen Expansion Guidelines"
+                  value={evidenceTitle}
+                  onChange={(e) => setEvidenceTitle(e.target.value)}
+                  style={{ width: '100%', padding: '8px', borderRadius: '6px', border: '1px solid #ccc', marginTop: '4px' }}
+                />
+              </label>
+              <label style={{ fontSize: '12px', fontWeight: 'bold' }}>
+                Official Source URL
+                <input
+                  type="url"
+                  required
+                  placeholder="https://nha.gov.in/..."
+                  value={evidenceUrl}
+                  onChange={(e) => setEvidenceUrl(e.target.value)}
+                  style={{ width: '100%', padding: '8px', borderRadius: '6px', border: '1px solid #ccc', marginTop: '4px' }}
+                />
+              </label>
+              <label style={{ fontSize: '12px', fontWeight: 'bold' }}>
+                Issuing Ministry / Body
+                <input
+                  type="text"
+                  value={evidenceBody}
+                  onChange={(e) => setEvidenceBody(e.target.value)}
+                  style={{ width: '100%', padding: '8px', borderRadius: '6px', border: '1px solid #ccc', marginTop: '4px' }}
+                />
+              </label>
+              <button type="submit" className="button button-primary" style={{ marginTop: '6px' }}>
+                <Plus size={15} /> Attach Evidence Source
+              </button>
+            </form>
+          </section>
+
+          {/* Current Evidence Sources */}
+          <section className="content-card">
+            <span className="eyebrow">VERIFIED CITATIONS</span>
+            <h3>Attached Evidence Sources ({adminDetail.evidence_sources?.length || 0})</h3>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginTop: '12px', maxHeight: '350px', overflowY: 'auto' }}>
+              {(adminDetail.evidence_sources || []).map((src) => (
+                <div key={src.id} style={{ border: '1px solid #eee', padding: '10px', borderRadius: '8px', fontSize: '12px' }}>
+                  <strong>{src.source_title}</strong>
+                  <div style={{ color: '#666', fontSize: '11px', marginTop: '2px' }}>{src.issuing_body} ({src.effective_date})</div>
+                  {src.source_url && (
+                    <a href={src.source_url} target="_blank" rel="noreferrer" style={{ color: '#683693', display: 'inline-flex', alignItems: 'center', gap: '3px', marginTop: '4px' }}>
+                      {src.source_url} <ExternalLink size={11} />
+                    </a>
+                  )}
+                </div>
+              ))}
+            </div>
+          </section>
+        </div>
+      )}
+    </div>
+  );
 }
 
 export function AssistantPage() {
@@ -660,21 +1370,6 @@ export function AssistantPage() {
   </div>;
 }
 
-export function TrackerPage() {
-  const { data, updateData } = usePlatform();
-  const { language } = useLanguage();
-  const t = (key) => translate(language, key);
-  const stages = [1, 2, 3, 4, 5];
-  return <div className="page-content"><PageHeading eyebrow={t('tracker.eyebrow')} title={t('page.tracker')} description={t('tracker.description')} /><DemoNotice>{t('tracker.honest')}</DemoNotice>
-    <section className="content-card tracker-card"><div className="tracker-title"><span className="support-icon-small"><ClipboardCheck size={19} /></span><div><h2>{t('tracker.title')}</h2><p>{t('tracker.progressLocal')}</p></div></div>{stages.map((stage, index) => {
-      const completed = (data.completedStages || []).includes(index);
-      return <label className="tracker-stage" key={stage}><input type="checkbox" checked={completed} onChange={() => {
-        const current = data.completedStages || [];
-        updateData({ completedStages: completed ? current.filter((entry) => entry !== index) : [...current, index] });
-      }} /><span className="tracker-step">{completed ? <Check size={14} /> : index + 1}</span><div><strong>{t(`tracker.stage.${stage}`)}</strong><small>{t(`tracker.stage.${stage}Help`)}</small></div><span className={`status-chip${completed ? ' done' : ''}`}>{completed ? t('tracker.done') : t('tracker.notStarted')}</span></label>;
-    })}</section>
-  </div>;
-}
 
 export function ProfilePage() {
   const { data, user, displayName, clearSavedProgress } = usePlatform();

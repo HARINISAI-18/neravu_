@@ -17,7 +17,8 @@ const navigation = [
   { to: '/assistant', key: 'nav.assistant', icon: MessageCircle },
   { to: '/tracker', key: 'nav.tracker', icon: ClipboardCheck },
   { to: '/profile', key: 'nav.profile', icon: UserRound },
-  { to: '/settings', key: 'nav.settings', icon: Settings }
+  { to: '/settings', key: 'nav.settings', icon: Settings },
+  { to: '/admin', key: 'nav.admin', icon: ShieldCheck }
 ];
 
 export function Brand({ compact = false }) {

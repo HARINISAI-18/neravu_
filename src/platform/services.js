@@ -256,3 +256,147 @@ export async function askGuidance({ question, language, conversationId = null, s
 }
 
 export const isRagConfigured = true;
+
+export async function getAuthHeaders(tokenOverride = null) {
+  if (tokenOverride) {
+    return { Authorization: `Bearer ${tokenOverride}` };
+  }
+  const session = await authService.getSession();
+  if (session?.access_token) {
+    return { Authorization: `Bearer ${session.access_token}` };
+  }
+  const localDevToken = localStorage.getItem('neravu.admin_token');
+  if (localDevToken) {
+    return { Authorization: `Bearer ${localDevToken}` };
+  }
+  return {};
+}
+
+export async function fetchHealth() {
+  const res = await fetch(`${apiBaseUrl}/api/health`);
+  return res.json();
+}
+
+export async function fetchSchemes() {
+  const res = await fetch(`${apiBaseUrl}/api/schemes`);
+  if (!res.ok) throw new Error(`Failed to fetch schemes: ${res.statusText}`);
+  return res.json();
+}
+
+export async function fetchSchemeDetail(schemeId) {
+  const res = await fetch(`${apiBaseUrl}/api/schemes/${schemeId}`);
+  if (!res.ok) throw new Error(`Failed to fetch scheme detail: ${res.statusText}`);
+  return res.json();
+}
+
+export async function fetchSchemeJourney(schemeId) {
+  const res = await fetch(`${apiBaseUrl}/api/schemes/${schemeId}/journey`);
+  if (!res.ok) throw new Error(`Failed to fetch scheme journey: ${res.statusText}`);
+  return res.json();
+}
+
+export async function evaluateEligibility(schemeId, patientFacts) {
+  const res = await fetch(`${apiBaseUrl}/api/schemes/${schemeId}/eligibility`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ patient_facts: patientFacts }),
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.detail || `Failed to evaluate eligibility: ${res.statusText}`);
+  }
+  return res.json();
+}
+
+export async function checkDocuments(schemeId, patientFacts = {}, documents = []) {
+  const res = await fetch(`${apiBaseUrl}/api/schemes/${schemeId}/documents`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ patient_facts: patientFacts, documents }),
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.detail || `Failed to check documents: ${res.statusText}`);
+  }
+  return res.json();
+}
+
+// Privileged Admin Endpoints
+export async function fetchAdminScheme(schemeId, token = null) {
+  const headers = await getAuthHeaders(token);
+  const res = await fetch(`${apiBaseUrl}/api/admin/schemes/${schemeId}`, { headers });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.detail || `Admin fetch failed: ${res.statusText}`);
+  }
+  return res.json();
+}
+
+export async function createAdminScheme(payload, token = null) {
+  const authH = await getAuthHeaders(token);
+  const res = await fetch(`${apiBaseUrl}/api/admin/schemes`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...authH },
+    body: JSON.stringify(payload),
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.detail || `Create scheme failed: ${res.statusText}`);
+  }
+  return res.json();
+}
+
+export async function updateAdminScheme(schemeId, payload, token = null) {
+  const authH = await getAuthHeaders(token);
+  const res = await fetch(`${apiBaseUrl}/api/admin/schemes/${schemeId}`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json', ...authH },
+    body: JSON.stringify(payload),
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.detail || `Update scheme failed: ${res.statusText}`);
+  }
+  return res.json();
+}
+
+export async function addEvidence(schemeId, payload, token = null) {
+  const authH = await getAuthHeaders(token);
+  const res = await fetch(`${apiBaseUrl}/api/admin/schemes/${schemeId}/evidence`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...authH },
+    body: JSON.stringify(payload),
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.detail || `Add evidence failed: ${res.statusText}`);
+  }
+  return res.json();
+}
+
+export async function submitReview(schemeId, payload, token = null) {
+  const authH = await getAuthHeaders(token);
+  const res = await fetch(`${apiBaseUrl}/api/admin/schemes/${schemeId}/reviews`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...authH },
+    body: JSON.stringify(payload),
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.detail || `Submit review failed: ${res.statusText}`);
+  }
+  return res.json();
+}
+
+export async function publishScheme(schemeId, token = null) {
+  const authH = await getAuthHeaders(token);
+  const res = await fetch(`${apiBaseUrl}/api/admin/schemes/${schemeId}/publish`, {
+    method: 'POST',
+    headers: { ...authH },
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.detail || `Publish scheme failed: ${res.statusText}`);
+  }
+  return res.json();
+}

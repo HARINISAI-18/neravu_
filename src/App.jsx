@@ -17,6 +17,7 @@ const DocumentsPage = lazy(() => import('./platform/screens').then((module) => (
 const AssistantPage = lazy(() => import('./platform/screens').then((module) => ({ default: module.AssistantPage })));
 const TrackerPage = lazy(() => import('./platform/screens').then((module) => ({ default: module.TrackerPage })));
 const ProfilePage = lazy(() => import('./platform/screens').then((module) => ({ default: module.ProfilePage })));
+const AdminPage = lazy(() => import('./platform/screens').then((module) => ({ default: module.AdminPage })));
 const SettingsPage = lazy(() => import('./platform/screens').then((module) => ({ default: module.SettingsPage })));
 
 const features = [
@@ -60,6 +61,7 @@ export default function App(){
       <Route path="/tracker" element={<TrackerPage/>}/>
       <Route path="/profile" element={<ProfilePage/>}/>
       <Route path="/settings" element={<SettingsPage/>}/>
+       <Route path="/admin" element={<AdminPage/>}/>
     </Route>
     <Route path="*" element={<Navigate to="/" replace/>}/>
   </Routes></Suspense></PlatformProvider>
