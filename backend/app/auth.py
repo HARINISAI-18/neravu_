@@ -110,22 +110,14 @@ def require_admin(
             headers={"WWW-Authenticate": "Bearer"},
         ) from error
 
-    # 3. Role authorization check: app_metadata.role == 'admin' OR verified email in ADMIN_EMAILS
+    # 3. Role authorization check: strictly app_metadata.role == 'admin' configured via Supabase Dashboard
     app_metadata = claims.get("app_metadata") or {}
     user_email = claims.get("email") or ""
-    admin_emails_env = os.getenv(
-        "ADMIN_EMAILS",
-        "optimizers64@gmail.com,reddisantosh772@gmail.com,chintamaneniharinisai@gmail.com",
-    )
-    admin_emails = {e.strip().lower() for e in admin_emails_env.split(",") if e.strip()}
 
-    is_admin_role = isinstance(app_metadata, dict) and app_metadata.get("role") == "admin"
-    is_admin_email = bool(user_email and user_email.lower() in admin_emails)
-
-    if not (is_admin_role or is_admin_email):
+    if not (isinstance(app_metadata, dict) and app_metadata.get("role") == "admin"):
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
-            detail="Admin role required",
+            detail="Admin role required. Administrator access must be granted in the Supabase Dashboard under user App Metadata: {\"role\": \"admin\"}.",
         )
 
     user_id = claims.get("sub")

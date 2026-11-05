@@ -8,8 +8,9 @@ import { languageOptions } from './data';
 import { getTranslationCoverage, translate, translateOption, useLanguage } from './i18n';
 import { usePlatform } from './PlatformContext';
 import { authService, isSupabaseConfigured } from './services';
+import { ChatAssistantWidget } from './ChatDrawer';
 
-const navigation = [
+const baseNavigation = [
   { to: '/dashboard', key: 'nav.dashboard', icon: Home, end: true },
   { to: '/schemes', key: 'nav.schemes', icon: BookOpenCheck },
   { to: '/ngos', key: 'nav.ngos', icon: HeartHandshake },
@@ -17,8 +18,7 @@ const navigation = [
   { to: '/assistant', key: 'nav.assistant', icon: MessageCircle },
   { to: '/tracker', key: 'nav.tracker', icon: ClipboardCheck },
   { to: '/profile', key: 'nav.profile', icon: UserRound },
-  { to: '/settings', key: 'nav.settings', icon: Settings },
-  { to: '/admin', key: 'nav.admin', icon: ShieldCheck }
+  { to: '/settings', key: 'nav.settings', icon: Settings }
 ];
 
 export function Brand({ compact = false }) {
@@ -122,7 +122,10 @@ export function PlatformLayout() {
         <aside className="platform-sidebar" aria-label={t('nav.main')}>
           <div className="sidebar-label">{t('nav.space')}</div>
           <nav className="side-nav">
-            {navigation.map(({ to, key, icon: Icon, end }) => (
+            {(user?.app_metadata?.role === 'admin'
+              ? [...baseNavigation, { to: '/admin', key: 'nav.admin', icon: ShieldCheck }]
+              : baseNavigation
+            ).map(({ to, key, icon: Icon, end }) => (
               <NavLink key={to} to={to} end={end} className={({ isActive }) => `side-link${isActive ? ' active' : ''}`}>
                 <Icon size={18} aria-hidden="true" /><span>{t(key)}</span>
               </NavLink>
@@ -137,6 +140,7 @@ export function PlatformLayout() {
           <Outlet />
         </main>
       </div>
+      <ChatAssistantWidget />
     </div>
   );
 }

@@ -9,6 +9,7 @@ import {
   baseChecklist, demoOrganizations, demoSchemes, languageOptions, questionDefinitions, sectionLabels
 } from './data';
 import { translate, translateOption, useLanguage } from './i18n';
+import { openChatAssistant } from './ChatDrawer';
 import { usePlatform } from './PlatformContext';
 import {
   askGuidance, authService, getChatIdentity, isRagConfigured, isSupabaseConfigured, supabaseConfigurationIssue,
@@ -641,9 +642,14 @@ export function DashboardPage() {
             <div>
               <h2>{t('dashboard.ai')}</h2>
               <p>{t('dashboard.aiHelp')}</p>
-              <Link className="text-link" to="/assistant">
+              <button
+                type="button"
+                className="text-link"
+                onClick={() => openChatAssistant()}
+                style={{ background: 'none', border: 'none', padding: 0, font: 'inherit', cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: '4px' }}
+              >
                 {t('dashboard.ask')} <ArrowRight size={15} />
-              </Link>
+              </button>
             </div>
           </article>
         </section>
@@ -1138,8 +1144,6 @@ export function TrackerPage() {
 export function AdminPage() {
   const { user } = usePlatform();
   const { language } = useLanguage();
-  const [tokenInput, setTokenInput] = useState(localStorage.getItem('neravu.admin_token') || '1');
-  const [activeToken, setActiveToken] = useState(localStorage.getItem('neravu.admin_token') || '1');
   const [schemes, setSchemes] = useState([]);
   const [loading, setLoading] = useState(false);
   const [actionStatus, setActionStatus] = useState('');
@@ -1154,21 +1158,18 @@ export function AdminPage() {
   const [evidenceTitle, setEvidenceTitle] = useState('');
   const [evidenceBody, setEvidenceBody] = useState('Ministry of Health and Family Welfare');
 
-  const isAdminUser = Boolean(
-    user?.app_metadata?.role === 'admin' ||
-    user?.email === 'optimizers64@gmail.com' ||
-    user?.email === 'reddisantosh772@gmail.com' ||
-    user?.email === 'chintamaneniharinisai@gmail.com' ||
-    activeToken === '1'
-  );
+  // Strictly check Supabase role == 'admin' from verified JWT
+  const isAdminUser = Boolean(user && user.app_metadata?.role === 'admin');
 
-  const saveToken = () => {
-    localStorage.setItem('neravu.admin_token', tokenInput.trim());
-    setActiveToken(tokenInput.trim());
-    setActionStatus('Admin token updated for privileged requests.');
-  };
+  // Clean up any legacy dev tokens from localStorage
+  useEffect(() => {
+    try {
+      localStorage.removeItem('neravu.admin_token');
+    } catch {}
+  }, []);
 
   const loadAdminSchemes = async () => {
+    if (!isAdminUser) return;
     setLoading(true);
     setActionError('');
     try {
@@ -1185,18 +1186,19 @@ export function AdminPage() {
   };
 
   useEffect(() => {
-    loadAdminSchemes();
-  }, []);
+    if (isAdminUser) {
+      loadAdminSchemes();
+    }
+  }, [isAdminUser]);
 
   useEffect(() => {
-    if (!selectedSchemeId) return;
-    fetchAdminScheme(selectedSchemeId, activeToken)
+    if (!selectedSchemeId || !isAdminUser) return;
+    fetchAdminScheme(selectedSchemeId)
       .then((res) => setAdminDetail(res))
       .catch((err) => {
-        // Fallback to public detail
         fetchSchemeDetail(selectedSchemeId).then(setAdminDetail).catch(() => {});
       });
-  }, [selectedSchemeId, activeToken]);
+  }, [selectedSchemeId, isAdminUser]);
 
   const handleAddEvidence = async (e) => {
     e.preventDefault();
@@ -1210,7 +1212,7 @@ export function AdminPage() {
         issuing_body: evidenceBody.trim(),
         effective_date: new Date().toISOString().split('T')[0],
         page_reference: 'Gazette section on cancer benefits'
-      }, activeToken);
+      });
       setActionStatus(`Official evidence added to scheme ${selectedSchemeId}!`);
       setEvidenceUrl('');
       setEvidenceTitle('');
@@ -1224,13 +1226,68 @@ export function AdminPage() {
     setActionStatus('');
     setActionError('');
     try {
-      const res = await publishScheme(schemeId, activeToken);
+      const res = await publishScheme(schemeId);
       setActionStatus(`Scheme published successfully! Version ${res.published_version} reindexed to RAG.`);
       loadAdminSchemes();
     } catch (err) {
       setActionError(`Publish failed: ${err.message}`);
     }
   };
+
+  // If user is not authenticated or not an admin, strictly lock down the page
+  if (!isAdminUser) {
+    return (
+      <div className="page-content">
+        <PageHeading
+          eyebrow="ACCESS RESTRICTED"
+          title="Admin Authentication Required"
+          description="This section is restricted to authorized administrative users only."
+        />
+        <div className="content-card" style={{ maxWidth: '640px', margin: '40px auto', textAlign: 'center', padding: '40px 24px', boxShadow: '0 8px 30px rgba(0,0,0,0.06)' }}>
+          <div style={{ width: '64px', height: '64px', borderRadius: '50%', background: '#ffebee', color: '#c62828', display: 'grid', placeItems: 'center', margin: '0 auto 20px' }}>
+            <LockKeyhole size={32} />
+          </div>
+          <h2 style={{ fontSize: '22px', margin: '0 0 12px 0', color: '#1a1a1a' }}>403 — Administrator Access Required</h2>
+          <p style={{ color: '#555', fontSize: '14px', lineHeight: '1.6', margin: '0 0 24px 0' }}>
+            {user ? (
+              <>
+                You are currently signed in as <strong>{user.email}</strong> (Role: <code style={{ color: '#c62828' }}>{user.app_metadata?.role || 'none'}</code>). Your account does not possess administrator privileges.
+              </>
+            ) : (
+              'You are not currently signed in. Please sign in with an authorized administrator account.'
+            )}
+          </p>
+
+          <div style={{ background: '#f5f0fa', border: '1px solid #e5d7f2', padding: '16px 20px', borderRadius: '12px', fontSize: '12px', color: '#444', textAlign: 'left', marginBottom: '28px' }}>
+            <strong style={{ color: '#4a2574', display: 'block', marginBottom: '8px', fontSize: '13px' }}>
+              How new administrators are created:
+            </strong>
+            <p style={{ margin: '0 0 8px 0', lineHeight: '1.5' }}>
+              New admins can be assigned <strong>via the Supabase Dashboard only</strong>:
+            </p>
+            <ol style={{ margin: 0, paddingLeft: '20px', lineHeight: '1.6' }}>
+              <li>Log in to your <strong>Supabase Dashboard</strong>.</li>
+              <li>Go to <strong>Authentication &gt; Users</strong>.</li>
+              <li>Select or create the user account (e.g. <code>{user ? user.email : 'admin@domain.com'}</code>).</li>
+              <li>Under <strong>User Metadata / App Metadata</strong>, add: <code style={{ background: '#fff', padding: '2px 6px', borderRadius: '4px', border: '1px solid #ddd' }}>{`{"role": "admin"}`}</code>.</li>
+              <li>Save and have the user sign in again to receive their verified administrator token.</li>
+            </ol>
+          </div>
+
+          <div style={{ display: 'flex', gap: '12px', justifyContent: 'center' }}>
+            <Link to="/dashboard" className="button button-primary">
+              Return to Dashboard <ArrowRight size={16} />
+            </Link>
+            {!user && (
+              <Link to="/login?next=%2Fadmin" className="button button-outline">
+                Sign In <ArrowRight size={16} />
+              </Link>
+            )}
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="page-content">
@@ -1240,34 +1297,19 @@ export function AdminPage() {
         description="Protected administration portal for managing official evidence, reviewing factual claims, and publishing schemes with automatic RAG reindexing."
       />
 
-      {/* Security & OAuth Status Banner */}
-      <section className="content-card" style={{ marginBottom: '20px', borderLeft: isAdminUser ? '4px solid #2e7d32' : '4px solid #e65100' }}>
+      {/* Security Status Banner for Authorized Admin */}
+      <section className="content-card" style={{ marginBottom: '20px', borderLeft: '4px solid #2e7d32' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '10px' }}>
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <ShieldCheck size={20} color={isAdminUser ? '#2e7d32' : '#e65100'} />
-              <strong style={{ fontSize: '15px' }}>
-                {isAdminUser ? 'Admin Access Authorized' : 'Admin Authentication Required'}
+              <ShieldCheck size={20} color="#2e7d32" />
+              <strong style={{ fontSize: '15px', color: '#1b5e20' }}>
+                Admin Privileges Verified via Supabase
               </strong>
             </div>
             <p style={{ margin: '4px 0 0 0', fontSize: '12px', color: '#666' }}>
-              Current User: {user ? `${user.email} (${user.app_metadata?.provider || 'OAuth'})` : 'Guest / Dev Session'} · 
-              Role: <strong>{user?.app_metadata?.role || (activeToken === '1' ? 'admin (dev_token)' : 'none')}</strong>
+              Authenticated User: <strong>{user?.email}</strong> · Supabase App Metadata: <code style={{ color: '#2e7d32' }}>role="admin"</code>
             </p>
-          </div>
-
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <span style={{ fontSize: '12px' }}>Dev Admin Token:</span>
-            <input
-              type="text"
-              value={tokenInput}
-              onChange={(e) => setTokenInput(e.target.value)}
-              placeholder="e.g. 1"
-              style={{ width: '80px', padding: '6px 8px', borderRadius: '6px', border: '1px solid #ccc', fontSize: '12px' }}
-            />
-            <button type="button" className="button button-outline" onClick={saveToken} style={{ padding: '6px 12px', minHeight: '32px', fontSize: '12px' }}>
-              Apply
-            </button>
           </div>
         </div>
       </section>
@@ -1406,6 +1448,7 @@ export function AdminPage() {
     </div>
   );
 }
+
 
 export function AssistantPage() {
   const { data, updateData, user } = usePlatform();

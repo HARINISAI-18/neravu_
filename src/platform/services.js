@@ -257,17 +257,10 @@ export async function askGuidance({ question, language, conversationId = null, s
 
 export const isRagConfigured = true;
 
-export async function getAuthHeaders(tokenOverride = null) {
-  if (tokenOverride) {
-    return { Authorization: `Bearer ${tokenOverride}` };
-  }
+export async function getAuthHeaders() {
   const session = await authService.getSession();
   if (session?.access_token) {
     return { Authorization: `Bearer ${session.access_token}` };
-  }
-  const localDevToken = localStorage.getItem('neravu.admin_token');
-  if (localDevToken) {
-    return { Authorization: `Bearer ${localDevToken}` };
   }
   return {};
 }
