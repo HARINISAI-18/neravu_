@@ -315,6 +315,16 @@ export async function checkDocuments(schemeId, patientFacts = {}, documents = []
 }
 
 // Privileged Admin Endpoints
+export async function fetchAdminSchemes(limit = 100, offset = 0, token = null) {
+  const headers = await getAuthHeaders(token);
+  const res = await fetch(`${apiBaseUrl}/api/admin/schemes?limit=${limit}&offset=${offset}`, { headers });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.detail || `Admin fetch schemes failed: ${res.statusText}`);
+  }
+  return res.json();
+}
+
 export async function fetchAdminScheme(schemeId, token = null) {
   const headers = await getAuthHeaders(token);
   const res = await fetch(`${apiBaseUrl}/api/admin/schemes/${schemeId}`, { headers });
@@ -342,7 +352,7 @@ export async function createAdminScheme(payload, token = null) {
 export async function updateAdminScheme(schemeId, payload, token = null) {
   const authH = await getAuthHeaders(token);
   const res = await fetch(`${apiBaseUrl}/api/admin/schemes/${schemeId}`, {
-    method: 'PUT',
+    method: 'PATCH',
     headers: { 'Content-Type': 'application/json', ...authH },
     body: JSON.stringify(payload),
   });
@@ -353,9 +363,32 @@ export async function updateAdminScheme(schemeId, payload, token = null) {
   return res.json();
 }
 
+export async function deleteAdminScheme(schemeId, token = null) {
+  const authH = await getAuthHeaders(token);
+  const res = await fetch(`${apiBaseUrl}/api/admin/schemes/${schemeId}`, {
+    method: 'DELETE',
+    headers: { ...authH },
+  });
+  if (!res.ok && res.status !== 204) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.detail || `Delete scheme failed: ${res.statusText}`);
+  }
+  return true;
+}
+
+export async function fetchAdminSources(schemeId, token = null) {
+  const headers = await getAuthHeaders(token);
+  const res = await fetch(`${apiBaseUrl}/api/admin/schemes/${schemeId}/sources`, { headers });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.detail || `Fetch sources failed: ${res.statusText}`);
+  }
+  return res.json();
+}
+
 export async function addEvidence(schemeId, payload, token = null) {
   const authH = await getAuthHeaders(token);
-  const res = await fetch(`${apiBaseUrl}/api/admin/schemes/${schemeId}/evidence`, {
+  const res = await fetch(`${apiBaseUrl}/api/admin/schemes/${schemeId}/sources`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', ...authH },
     body: JSON.stringify(payload),
@@ -367,18 +400,86 @@ export async function addEvidence(schemeId, payload, token = null) {
   return res.json();
 }
 
-export async function submitReview(schemeId, payload, token = null) {
+export async function reviewAdminSource(schemeId, sourceId, decision = 'approved', reason = null, reviewExpiresAt = '2028-12-31', token = null) {
   const authH = await getAuthHeaders(token);
-  const res = await fetch(`${apiBaseUrl}/api/admin/schemes/${schemeId}/reviews`, {
+  const res = await fetch(`${apiBaseUrl}/api/admin/schemes/${schemeId}/sources/${sourceId}/review`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...authH },
+    body: JSON.stringify({
+      decision,
+      reason,
+      review_expires_at: decision === 'approved' ? reviewExpiresAt : null
+    }),
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.detail || `Review source failed: ${res.statusText}`);
+  }
+  return res.json();
+}
+
+export async function deleteAdminSource(schemeId, sourceId, token = null) {
+  const authH = await getAuthHeaders(token);
+  const res = await fetch(`${apiBaseUrl}/api/admin/schemes/${schemeId}/sources/${sourceId}`, {
+    method: 'DELETE',
+    headers: { ...authH },
+  });
+  if (!res.ok && res.status !== 204) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.detail || `Delete source failed: ${res.statusText}`);
+  }
+  return true;
+}
+
+export async function fetchAdminClaims(schemeId, token = null) {
+  const headers = await getAuthHeaders(token);
+  const res = await fetch(`${apiBaseUrl}/api/admin/schemes/${schemeId}/claims`, { headers });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.detail || `Fetch claims failed: ${res.statusText}`);
+  }
+  return res.json();
+}
+
+export async function createAdminClaim(schemeId, payload, token = null) {
+  const authH = await getAuthHeaders(token);
+  const res = await fetch(`${apiBaseUrl}/api/admin/schemes/${schemeId}/claims`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', ...authH },
     body: JSON.stringify(payload),
   });
   if (!res.ok) {
     const err = await res.json().catch(() => ({}));
-    throw new Error(err.detail || `Submit review failed: ${res.statusText}`);
+    throw new Error(err.detail || `Create claim failed: ${res.statusText}`);
   }
   return res.json();
+}
+
+export async function reviewAdminClaim(schemeId, claimId, decision = 'approved', reason = null, token = null) {
+  const authH = await getAuthHeaders(token);
+  const res = await fetch(`${apiBaseUrl}/api/admin/schemes/${schemeId}/claims/${claimId}/review`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...authH },
+    body: JSON.stringify({ decision, reason }),
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.detail || `Review claim failed: ${res.statusText}`);
+  }
+  return res.json();
+}
+
+export async function deleteAdminClaim(schemeId, claimId, token = null) {
+  const authH = await getAuthHeaders(token);
+  const res = await fetch(`${apiBaseUrl}/api/admin/schemes/${schemeId}/claims/${claimId}`, {
+    method: 'DELETE',
+    headers: { ...authH },
+  });
+  if (!res.ok && res.status !== 204) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.detail || `Delete claim failed: ${res.statusText}`);
+  }
+  return true;
 }
 
 export async function publishScheme(schemeId, token = null) {
@@ -391,5 +492,72 @@ export async function publishScheme(schemeId, token = null) {
     const err = await res.json().catch(() => ({}));
     throw new Error(err.detail || `Publish scheme failed: ${res.statusText}`);
   }
+  return res.json();
+}
+
+export async function fetchAdminSyncStatus(schemeId, token = null) {
+  const headers = await getAuthHeaders(token);
+  const res = await fetch(`${apiBaseUrl}/api/admin/schemes/${schemeId}/sync`, { headers });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.detail || `Fetch sync status failed: ${res.statusText}`);
+  }
+  return res.json();
+}
+
+export async function retryAdminSync(schemeId, token = null) {
+  const authH = await getAuthHeaders(token);
+  const res = await fetch(`${apiBaseUrl}/api/admin/schemes/${schemeId}/sync/retry`, {
+    method: 'POST',
+    headers: { ...authH },
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.detail || `Retry sync failed: ${res.statusText}`);
+  }
+  return res.json();
+}
+
+export async function fetchAdminSchemeHistory(schemeId, limit = 50, token = null) {
+  const headers = await getAuthHeaders(token);
+  const res = await fetch(`${apiBaseUrl}/api/admin/schemes/${schemeId}/history?limit=${limit}`, { headers });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.detail || `Fetch scheme history failed: ${res.statusText}`);
+  }
+  return res.json();
+}
+
+
+export async function fetchDirectoryNgos(params = {}) {
+  const query = new URLSearchParams();
+  if (params.state) query.append('state', params.state);
+  if (params.supportType) query.append('support_type', params.supportType);
+  if (params.directAid) query.append('direct_aid', params.directAid);
+  if (params.search) query.append('search', params.search);
+  const res = await fetch(`${apiBaseUrl}/api/directory/ngos?${query.toString()}`);
+  if (!res.ok) throw new Error(`Failed to fetch NGOs: ${res.statusText}`);
+  return res.json();
+}
+
+export async function fetchDirectorySchemes(params = {}) {
+  const query = new URLSearchParams();
+  if (params.level) query.append('level', params.level);
+  if (params.state) query.append('state', params.state);
+  if (params.search) query.append('search', params.search);
+  const res = await fetch(`${apiBaseUrl}/api/directory/schemes?${query.toString()}`);
+  if (!res.ok) throw new Error(`Failed to fetch directory schemes: ${res.statusText}`);
+  return res.json();
+}
+
+export async function fetchDirectoryStates() {
+  const res = await fetch(`${apiBaseUrl}/api/directory/states`);
+  if (!res.ok) throw new Error(`Failed to fetch states: ${res.statusText}`);
+  return res.json();
+}
+
+export async function fetchDirectoryTaxonomies() {
+  const res = await fetch(`${apiBaseUrl}/api/directory/taxonomies`);
+  if (!res.ok) throw new Error(`Failed to fetch taxonomies: ${res.statusText}`);
   return res.json();
 }

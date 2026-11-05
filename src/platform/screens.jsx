@@ -3,7 +3,7 @@ import { Link, Navigate, useLocation, useNavigate, useParams } from 'react-route
 import {
   ArrowLeft, ArrowRight, BookOpenCheck, Check, CircleHelp, ClipboardCheck, RotateCcw, Trash2,
   FileCheck2, FileText, HeartHandshake, Languages, LockKeyhole, MessageCircle, ShieldCheck, Sparkles,
-  Stethoscope, UserRound, Wallet, ExternalLink, AlertCircle, Plus, RefreshCw, Key
+  Stethoscope, UserRound, Wallet, ExternalLink, AlertCircle, Plus, RefreshCw, Key, Edit, CheckCircle
 } from 'lucide-react';
 import {
   baseChecklist, demoOrganizations, demoSchemes, languageOptions, questionDefinitions, sectionLabels
@@ -12,9 +12,13 @@ import { translate, translateOption, useLanguage } from './i18n';
 import { openChatAssistant } from './ChatDrawer';
 import { usePlatform } from './PlatformContext';
 import {
+  fetchDirectoryNgos, fetchDirectoryStates, fetchDirectoryTaxonomies,
   askGuidance, authService, getChatIdentity, isRagConfigured, isSupabaseConfigured, supabaseConfigurationIssue,
   fetchSchemes, fetchSchemeDetail, fetchSchemeJourney, evaluateEligibility, checkDocuments,
-  fetchAdminScheme, createAdminScheme, updateAdminScheme, addEvidence, submitReview, publishScheme, getAuthHeaders
+  fetchAdminSchemes, fetchAdminScheme, createAdminScheme, updateAdminScheme, deleteAdminScheme,
+  fetchAdminSources, addEvidence, reviewAdminSource, deleteAdminSource,
+  fetchAdminClaims, createAdminClaim, reviewAdminClaim, deleteAdminClaim,
+  publishScheme, fetchAdminSyncStatus, retryAdminSync, getAuthHeaders
 } from './services';
 import {
   DemoNotice, LanguageSelect, OptionGrid, PageHeading, RouteFooter, TranslationNotice
@@ -295,7 +299,13 @@ export function AuthPage() {
 
   const finishSignIn = async (authenticatedUser) => {
     updateData({ assessmentAccessGranted: nextPath === '/assessment' });
-    await acceptProgressConsent(authenticatedUser);
+    try {
+      if (progressConsent) {
+        await acceptProgressConsent(authenticatedUser);
+      }
+    } catch (e) {
+      console.warn('Progress consent sync deferred:', e);
+    }
     navigate(nextPath);
   };
 
@@ -660,27 +670,179 @@ export function DashboardPage() {
 
 export function NgoPage() {
   const { language } = useLanguage();
-  const descriptions = ['ngos.ics', 'ngos.cpaa', 'ngos.cansupport', 'ngos.cuddles'];
+  const [ngos, setNgos] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+  const [search, setSearch] = useState('');
+  const [selectedState, setSelectedState] = useState('');
+  const [directAidFilter, setDirectAidFilter] = useState('');
+
+  const loadNgos = async () => {
+    setLoading(true);
+    setError('');
+    try {
+      const res = await fetchDirectoryNgos({
+        search: search.trim() || undefined,
+        state: selectedState || undefined,
+        directAid: directAidFilter || undefined,
+      });
+      setNgos(res.ngos || []);
+    } catch (err) {
+      setError(err.message || 'Failed to load NGO directory');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    loadNgos();
+  }, [search, selectedState, directAidFilter]);
+
+  const stateOptions = [
+    'All India', 'Maharashtra', 'Delhi', 'West Bengal', 'Uttarakhand',
+    'Andhra Pradesh', 'Telangana', 'Tamil Nadu', 'Karnataka', 'Kerala',
+    'Punjab', 'Haryana', 'Rajasthan', 'Gujarat', 'Assam'
+  ];
+
   return (
     <div className="page-content">
       <PageHeading
-        eyebrow={translate(language, 'ngos.eyebrow')}
-        title={translate(language, 'page.ngos')}
-        description={translate(language, 'ngos.description')}
+        eyebrow="NATIONAL DIRECTORY"
+        title="Cancer Support NGOs & Charitable Trusts"
+        description="Comprehensive directory of verified NGOs, foundations, and hospices providing direct financial aid, free medicines, nutrition, and patient navigation across India."
       />
-      <DemoNotice>{translate(language, 'ngos.demo')}</DemoNotice>
+
+      {/* Filter Toolbar */}
+      <section className="content-card" style={{ marginBottom: '20px', padding: '16px' }}>
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '12px', alignItems: 'center' }}>
+          <div style={{ flex: '1 1 240px' }}>
+            <input
+              type="text"
+              placeholder="Search by NGO name, city, or support type..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              style={{ width: '100%', padding: '8px 12px', borderRadius: '8px', border: '1px solid #ccc', fontSize: '13px' }}
+            />
+          </div>
+
+          <div style={{ flex: '0 1 180px' }}>
+            <select
+              value={selectedState}
+              onChange={(e) => setSelectedState(e.target.value)}
+              style={{ width: '100%', padding: '8px 12px', borderRadius: '8px', border: '1px solid #ccc', fontSize: '13px' }}
+            >
+              <option value="">All States / UTs</option>
+              {stateOptions.map((st) => (
+                <option key={st} value={st}>{st}</option>
+              ))}
+            </select>
+          </div>
+
+          <div style={{ flex: '0 1 180px' }}>
+            <select
+              value={directAidFilter}
+              onChange={(e) => setDirectAidFilter(e.target.value)}
+              style={{ width: '100%', padding: '8px 12px', borderRadius: '8px', border: '1px solid #ccc', fontSize: '13px' }}
+            >
+              <option value="">All Aid Types</option>
+              <option value="Yes">Direct Financial Aid Only</option>
+              <option value="No">Non-Cash / Service Only</option>
+            </select>
+          </div>
+
+          <button
+            type="button"
+            className="button button-outline"
+            onClick={() => { setSearch(''); setSelectedState(''); setDirectAidFilter(''); }}
+            style={{ minHeight: '36px', fontSize: '12px' }}
+          >
+            Reset
+          </button>
+        </div>
+      </section>
+
+      {loading && <div style={{ textAlign: 'center', padding: '40px', color: '#683693' }}>Loading verified NGO directory from Supabase...</div>}
+      {error && <div style={{ background: '#ffebee', color: '#c62828', padding: '12px 16px', borderRadius: '8px', marginBottom: '20px' }}>{error}</div>}
+
+      {!loading && ngos.length === 0 && (
+        <div className="content-card" style={{ textAlign: 'center', padding: '40px' }}>
+          <h3>No matching organisations found</h3>
+          <p style={{ color: '#666', fontSize: '13px' }}>Try clearing your search query or selecting a different state.</p>
+        </div>
+      )}
+
+      {/* NGO Cards Grid */}
       <div className="ngo-grid">
-        {demoOrganizations.map((organization, index) => (
-          <article className="content-card ngo-card" key={organization.name}>
-            <span className="support-icon-small"><HeartHandshake size={18} /></span>
-            <span className="status-chip">{translate(language, 'ngos.listing')}</span>
-            <h2>{organization.name}</h2>
-            <p>{translate(language, descriptions[index])}</p>
-            <Link className="button button-outline" to="/assistant">
-              {translate(language, 'ngos.ask')} <ArrowRight size={16} />
-            </Link>
-          </article>
-        ))}
+        {ngos.map((ngo) => {
+          const hasDirectAid = ngo.direct_financial_aid?.toLowerCase().startsWith('yes');
+          return (
+            <article className="content-card ngo-card" key={ngo.id} style={{ display: 'flex', flexDirection: 'column' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '8px' }}>
+                <span className="support-icon-small"><HeartHandshake size={18} /></span>
+                <span
+                  style={{
+                    background: hasDirectAid ? '#e8f5e9' : '#f5f0fa',
+                    color: hasDirectAid ? '#2e7d32' : '#683693',
+                    padding: '3px 8px',
+                    borderRadius: '4px',
+                    fontSize: '10px',
+                    fontWeight: 'bold',
+                  }}
+                >
+                  {hasDirectAid ? 'DIRECT FINANCIAL AID' : ngo.organization_type?.toUpperCase() || 'SUPPORT NGO'}
+                </span>
+              </div>
+
+              <h2 style={{ fontSize: '16px', margin: '4px 0 6px 0', color: '#1a1a1a' }}>{ngo.organization_name}</h2>
+              <div style={{ fontSize: '11px', color: '#666', marginBottom: '8px' }}>
+                <strong>Coverage:</strong> {ngo.state_coverage} {ngo.city_district ? `· ${ngo.city_district}` : ''}
+              </div>
+
+              <p style={{ fontSize: '12px', lineHeight: '1.5', color: '#444', flex: 1, margin: '0 0 12px 0' }}>
+                {ngo.what_support_offered || ngo.support_type}
+              </p>
+
+              {ngo.aid_amount_limit && (
+                <div style={{ background: '#fdf8e2', border: '1px solid #fae8a4', borderRadius: '6px', padding: '6px 10px', fontSize: '11px', color: '#7a5b00', marginBottom: '10px' }}>
+                  <strong>Aid Limit:</strong> {ngo.aid_amount_limit}
+                </div>
+              )}
+
+              {ngo.contact_phone && (
+                <div style={{ fontSize: '11px', color: '#555', marginBottom: '4px' }}>
+                  <strong>Phone:</strong> {ngo.contact_phone}
+                </div>
+              )}
+
+              {ngo.contact_email && (
+                <div style={{ fontSize: '11px', color: '#555', marginBottom: '8px' }}>
+                  <strong>Email:</strong> {ngo.contact_email}
+                </div>
+              )}
+
+              <div style={{ display: 'flex', gap: '8px', marginTop: 'auto', paddingTop: '8px', flexWrap: 'wrap' }}>
+                {ngo.website_url && (
+                  <a
+                    href={ngo.website_url}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="button button-outline"
+                    style={{ fontSize: '11px', minHeight: '30px', padding: '4px 10px', display: 'inline-flex', alignItems: 'center', gap: '4px' }}
+                  >
+                    Official Portal <ExternalLink size={12} />
+                  </a>
+                )}
+                <Link
+                  className="button button-primary"
+                  to="/assistant"
+                  style={{ fontSize: '11px', minHeight: '30px', padding: '4px 10px' }}
+                >
+                  Ask Assistant <ArrowRight size={14} />
+                </Link>
+              </div>
+            </article>
+          );
+        })}
       </div>
     </div>
   );
@@ -1149,14 +1311,42 @@ export function AdminPage() {
   const [actionStatus, setActionStatus] = useState('');
   const [actionError, setActionError] = useState('');
 
-  // Selected scheme for evidence & publication
+  // Selected scheme for evidence, claims & publication
   const [selectedSchemeId, setSelectedSchemeId] = useState('');
   const [adminDetail, setAdminDetail] = useState(null);
+  const [sources, setSources] = useState([]);
+  const [claims, setClaims] = useState([]);
+  const [syncStatus, setSyncStatus] = useState(null);
+
+  // Modal / Form states
+  const [showCreateModal, setShowCreateModal] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
+
+  // Create Scheme Form State
+  const [createCode, setCreateCode] = useState('');
+  const [createName, setCreateName] = useState('');
+  const [createType, setCreateType] = useState('Central Government Scheme');
+  const [createOrgName, setCreateOrgName] = useState('Ministry of Health and Family Welfare');
+  const [createOrgType, setCreateOrgType] = useState('Ministry');
+  const [createDesc, setCreateDesc] = useState('');
+
+  // Edit Scheme Form State
+  const [editName, setEditName] = useState('');
+  const [editType, setEditType] = useState('');
+  const [editDesc, setEditDesc] = useState('');
 
   // Evidence Form State
   const [evidenceUrl, setEvidenceUrl] = useState('');
   const [evidenceTitle, setEvidenceTitle] = useState('');
   const [evidenceBody, setEvidenceBody] = useState('Ministry of Health and Family Welfare');
+  const [evidencePage, setEvidencePage] = useState('Official Gazette / Portal Section 1');
+
+  // Claim Form State
+  const [claimSourceId, setClaimSourceId] = useState('');
+  const [claimFieldPath, setClaimFieldPath] = useState('coverage.cancer_treatment');
+  const [claimText, setClaimText] = useState('');
+  const [claimLocator, setClaimLocator] = useState('Clause 1.0');
+  const [claimIsCritical, setClaimIsCritical] = useState(true);
 
   // Strictly check Supabase role == 'admin' from verified JWT
   const isAdminUser = Boolean(user && user.app_metadata?.role === 'admin');
@@ -1173,15 +1363,43 @@ export function AdminPage() {
     setLoading(true);
     setActionError('');
     try {
-      const res = await fetchSchemes();
-      setSchemes(res.schemes || []);
-      if (res.schemes?.length > 0 && !selectedSchemeId) {
-        setSelectedSchemeId(res.schemes[0].id);
+      const res = await fetchAdminSchemes(100, 0);
+      const list = res.schemes || [];
+      setSchemes(list);
+      if (list.length > 0) {
+        setSelectedSchemeId((prev) => (prev && list.some((s) => s.id === prev) ? prev : list[0].id));
       }
     } catch (err) {
       setActionError(err.message);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const loadSelectedSchemeData = async (schemeId) => {
+    if (!schemeId || !isAdminUser) return;
+    try {
+      const [detailRes, sourcesRes, claimsRes, syncRes] = await Promise.all([
+        fetchAdminScheme(schemeId).catch(() => null),
+        fetchAdminSources(schemeId).catch(() => ({ sources: [] })),
+        fetchAdminClaims(schemeId).catch(() => ({ claims: [] })),
+        fetchAdminSyncStatus(schemeId).catch(() => null),
+      ]);
+      if (detailRes) {
+        setAdminDetail(detailRes);
+        setEditName(detailRes.official_name || '');
+        setEditType(detailRes.programme_type || '');
+        setEditDesc(detailRes.description || '');
+      }
+      const fetchedSources = sourcesRes?.sources || [];
+      setSources(fetchedSources);
+      if (fetchedSources.length > 0 && !claimSourceId) {
+        setClaimSourceId(fetchedSources[0].id);
+      }
+      setClaims(claimsRes?.claims || []);
+      setSyncStatus(syncRes);
+    } catch (err) {
+      console.error('Failed to load scheme details:', err);
     }
   };
 
@@ -1192,14 +1410,84 @@ export function AdminPage() {
   }, [isAdminUser]);
 
   useEffect(() => {
-    if (!selectedSchemeId || !isAdminUser) return;
-    fetchAdminScheme(selectedSchemeId)
-      .then((res) => setAdminDetail(res))
-      .catch((err) => {
-        fetchSchemeDetail(selectedSchemeId).then(setAdminDetail).catch(() => {});
-      });
+    if (selectedSchemeId && isAdminUser) {
+      loadSelectedSchemeData(selectedSchemeId);
+    }
   }, [selectedSchemeId, isAdminUser]);
 
+  // CREATE SCHEME
+  const handleCreateScheme = async (e) => {
+    e.preventDefault();
+    if (!createCode.trim() || !createName.trim() || !createOrgName.trim()) return;
+    setActionStatus('');
+    setActionError('');
+    try {
+      const newScheme = await createAdminScheme({
+        programme_code: createCode.trim().toUpperCase(),
+        official_name: createName.trim(),
+        programme_type: createType.trim() || 'Health Scheme',
+        description: createDesc.trim() || 'Government health scheme assistance',
+        organization: {
+          name: createOrgName.trim(),
+          organization_type: createOrgType.trim() || 'Government Agency',
+          official_website: 'https://india.gov.in',
+        },
+        coverage: { summary: createDesc.trim() || 'Full healthcare benefit' },
+        details: { verified: false },
+      });
+      setActionStatus(`Scheme "${newScheme.official_name}" created successfully (Draft)!`);
+      setShowCreateModal(false);
+      setCreateCode('');
+      setCreateName('');
+      setCreateDesc('');
+      await loadAdminSchemes();
+      setSelectedSchemeId(newScheme.id);
+    } catch (err) {
+      setActionError(`Create scheme failed: ${err.message}`);
+    }
+  };
+
+  // UPDATE SCHEME
+  const handleUpdateScheme = async (e) => {
+    e.preventDefault();
+    if (!selectedSchemeId || !editName.trim()) return;
+    setActionStatus('');
+    setActionError('');
+    try {
+      const updated = await updateAdminScheme(selectedSchemeId, {
+        official_name: editName.trim(),
+        programme_type: editType.trim(),
+        description: editDesc.trim(),
+      });
+      setActionStatus(`Scheme "${updated.official_name}" updated successfully!`);
+      setShowEditModal(false);
+      await loadAdminSchemes();
+      await loadSelectedSchemeData(selectedSchemeId);
+    } catch (err) {
+      setActionError(`Update scheme failed: ${err.message}`);
+    }
+  };
+
+  // DELETE SCHEME
+  const handleDeleteScheme = async (schemeId, schemeName) => {
+    if (!window.confirm(`Are you sure you want to delete "${schemeName || 'this scheme'}"? This action will remove all attached sources, claims, and publication records.`)) return;
+    setActionStatus('');
+    setActionError('');
+    try {
+      await deleteAdminScheme(schemeId);
+      setActionStatus('Scheme deleted successfully.');
+      if (selectedSchemeId === schemeId) {
+        setSelectedSchemeId('');
+        setAdminDetail(null);
+      }
+      setSchemes((prev) => prev.filter((s) => s.id !== schemeId));
+      await loadAdminSchemes();
+    } catch (err) {
+      setActionError(`Delete scheme failed: ${err.message}`);
+    }
+  };
+
+  // ADD EVIDENCE SOURCE
   const handleAddEvidence = async (e) => {
     e.preventDefault();
     if (!selectedSchemeId || !evidenceUrl.trim() || !evidenceTitle.trim()) return;
@@ -1209,28 +1497,120 @@ export function AdminPage() {
       await addEvidence(selectedSchemeId, {
         source_url: evidenceUrl.trim(),
         source_title: evidenceTitle.trim(),
-        issuing_body: evidenceBody.trim(),
+        issuing_body: evidenceBody.trim() || 'Ministry of Health and Family Welfare',
+        page_reference: evidencePage.trim() || 'Official Gazette / Portal Section 1',
         effective_date: new Date().toISOString().split('T')[0],
-        page_reference: 'Gazette section on cancer benefits'
       });
-      setActionStatus(`Official evidence added to scheme ${selectedSchemeId}!`);
+      setActionStatus('Official evidence source attached successfully!');
       setEvidenceUrl('');
       setEvidenceTitle('');
-      loadAdminSchemes();
+      await loadSelectedSchemeData(selectedSchemeId);
     } catch (err) {
       setActionError(`Failed to add evidence: ${err.message}`);
     }
   };
 
+  // APPROVE SOURCE
+  const handleApproveSource = async (sourceId) => {
+    setActionStatus('');
+    setActionError('');
+    try {
+      await reviewAdminSource(selectedSchemeId, sourceId, 'approved', 'Verified official documentation', '2028-12-31');
+      setActionStatus('Evidence source approved successfully with 2-year validity!');
+      await loadSelectedSchemeData(selectedSchemeId);
+    } catch (err) {
+      setActionError(`Approve source failed: ${err.message}`);
+    }
+  };
+
+  // DELETE SOURCE
+  const handleDeleteSource = async (sourceId) => {
+    if (!window.confirm('Delete this evidence source?')) return;
+    setActionStatus('');
+    setActionError('');
+    try {
+      await deleteAdminSource(selectedSchemeId, sourceId);
+      setActionStatus('Evidence source deleted.');
+      await loadSelectedSchemeData(selectedSchemeId);
+    } catch (err) {
+      setActionError(`Delete source failed: ${err.message}`);
+    }
+  };
+
+  // ADD CLAIM
+  const handleAddClaim = async (e) => {
+    e.preventDefault();
+    if (!selectedSchemeId || !claimSourceId || !claimText.trim()) return;
+    setActionStatus('');
+    setActionError('');
+    try {
+      await createAdminClaim(selectedSchemeId, {
+        source_id: claimSourceId,
+        field_path: claimFieldPath.trim() || 'coverage.cancer_treatment',
+        claim_text: claimText.trim(),
+        source_locator: claimLocator.trim() || 'Clause 1.0',
+        is_critical: claimIsCritical,
+        structured_value: { statement: claimText.trim() },
+      });
+      setActionStatus('Evidence claim added successfully!');
+      setClaimText('');
+      await loadSelectedSchemeData(selectedSchemeId);
+    } catch (err) {
+      setActionError(`Failed to add claim: ${err.message}`);
+    }
+  };
+
+  // APPROVE CLAIM
+  const handleApproveClaim = async (claimId) => {
+    setActionStatus('');
+    setActionError('');
+    try {
+      await reviewAdminClaim(selectedSchemeId, claimId, 'approved', 'Claim verified against source');
+      setActionStatus('Evidence claim approved successfully!');
+      await loadSelectedSchemeData(selectedSchemeId);
+    } catch (err) {
+      setActionError(`Approve claim failed: ${err.message}`);
+    }
+  };
+
+  // DELETE CLAIM
+  const handleDeleteClaim = async (claimId) => {
+    if (!window.confirm('Delete this evidence claim?')) return;
+    setActionStatus('');
+    setActionError('');
+    try {
+      await deleteAdminClaim(selectedSchemeId, claimId);
+      setActionStatus('Claim deleted.');
+      await loadSelectedSchemeData(selectedSchemeId);
+    } catch (err) {
+      setActionError(`Delete claim failed: ${err.message}`);
+    }
+  };
+
+  // PUBLISH & SYNC
   const handlePublish = async (schemeId) => {
     setActionStatus('');
     setActionError('');
     try {
       const res = await publishScheme(schemeId);
-      setActionStatus(`Scheme published successfully! Version ${res.published_version} reindexed to RAG.`);
-      loadAdminSchemes();
+      setActionStatus(res.message || `Scheme published successfully! Version ${res.published_version} reindexed to RAG.`);
+      await loadAdminSchemes();
+      await loadSelectedSchemeData(schemeId);
     } catch (err) {
       setActionError(`Publish failed: ${err.message}`);
+    }
+  };
+
+  // RETRY SYNC
+  const handleRetrySync = async (schemeId) => {
+    setActionStatus('');
+    setActionError('');
+    try {
+      await retryAdminSync(schemeId);
+      setActionStatus('Sync retry queued.');
+      await loadSelectedSchemeData(schemeId);
+    } catch (err) {
+      setActionError(`Retry sync failed: ${err.message}`);
     }
   };
 
@@ -1293,8 +1673,8 @@ export function AdminPage() {
     <div className="page-content">
       <PageHeading
         eyebrow="PRIVILEGED SCHEME MANAGEMENT"
-        title="Admin & Scheme Publication Portal"
-        description="Protected administration portal for managing official evidence, reviewing factual claims, and publishing schemes with automatic RAG reindexing."
+        title="Admin Scheme Management & RAG Portal"
+        description="Comprehensive CRUD administration portal for creating, editing, verifying evidence sources, approving factual claims, and publishing schemes with automatic RAG synchronization."
       />
 
       {/* Security Status Banner for Authorized Admin */}
@@ -1304,29 +1684,174 @@ export function AdminPage() {
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
               <ShieldCheck size={20} color="#2e7d32" />
               <strong style={{ fontSize: '15px', color: '#1b5e20' }}>
-                Admin Privileges Verified via Supabase
+                Admin Privileges Active & Verified via Supabase
               </strong>
             </div>
             <p style={{ margin: '4px 0 0 0', fontSize: '12px', color: '#666' }}>
               Authenticated User: <strong>{user?.email}</strong> · Supabase App Metadata: <code style={{ color: '#2e7d32' }}>role="admin"</code>
             </p>
           </div>
+          <div style={{ display: 'flex', gap: '10px' }}>
+            <button
+              type="button"
+              className="button button-primary"
+              onClick={() => setShowCreateModal((prev) => !prev)}
+              style={{ minHeight: '34px', fontSize: '12px' }}
+            >
+              <Plus size={14} /> {showCreateModal ? 'Cancel Create' : 'Create New Scheme'}
+            </button>
+            <button
+              type="button"
+              className="button button-outline"
+              onClick={loadAdminSchemes}
+              disabled={loading}
+              style={{ minHeight: '34px', fontSize: '12px' }}
+            >
+              <RefreshCw size={14} /> Refresh
+            </button>
+          </div>
         </div>
       </section>
 
-      {actionStatus && <div style={{ background: '#e8f5e9', color: '#2e7d32', padding: '12px 16px', borderRadius: '8px', marginBottom: '16px', fontWeight: 'bold' }}>{actionStatus}</div>}
-      {actionError && <div style={{ background: '#ffebee', color: '#c62828', padding: '12px 16px', borderRadius: '8px', marginBottom: '16px', fontWeight: 'bold' }}>{actionError}</div>}
+      {actionStatus && (
+        <div style={{ background: '#e8f5e9', color: '#2e7d32', padding: '12px 16px', borderRadius: '8px', marginBottom: '16px', fontWeight: 'bold' }}>
+          {actionStatus}
+        </div>
+      )}
+      {actionError && (
+        <div style={{ background: '#ffebee', color: '#c62828', padding: '12px 16px', borderRadius: '8px', marginBottom: '16px', fontWeight: 'bold' }}>
+          {actionError}
+        </div>
+      )}
 
-      {/* Schemes Admin Table */}
+      {/* CREATE NEW SCHEME FORM MODAL */}
+      {showCreateModal && (
+        <section className="content-card" style={{ marginBottom: '24px', border: '2px solid #683693' }}>
+          <span className="eyebrow">CREATE NEW SCHEME</span>
+          <h3 style={{ margin: '6px 0 16px 0' }}>Add Government Scheme or Assistance Programme</h3>
+          <form onSubmit={handleCreateScheme}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '16px' }}>
+              <label style={{ fontSize: '12px', fontWeight: 'bold' }}>
+                Programme Code *
+                <input
+                  type="text"
+                  required
+                  placeholder="e.g. CMCHS-TN-01"
+                  value={createCode}
+                  onChange={(e) => setCreateCode(e.target.value)}
+                  style={{ width: '100%', padding: '8px', borderRadius: '6px', border: '1px solid #ccc', marginTop: '4px' }}
+                />
+              </label>
+              <label style={{ fontSize: '12px', fontWeight: 'bold' }}>
+                Official Name *
+                <input
+                  type="text"
+                  required
+                  placeholder="e.g. Chief Minister Comprehensive Health Scheme"
+                  value={createName}
+                  onChange={(e) => setCreateName(e.target.value)}
+                  style={{ width: '100%', padding: '8px', borderRadius: '6px', border: '1px solid #ccc', marginTop: '4px' }}
+                />
+              </label>
+              <label style={{ fontSize: '12px', fontWeight: 'bold' }}>
+                Programme Type
+                <input
+                  type="text"
+                  value={createType}
+                  onChange={(e) => setCreateType(e.target.value)}
+                  style={{ width: '100%', padding: '8px', borderRadius: '6px', border: '1px solid #ccc', marginTop: '4px' }}
+                />
+              </label>
+              <label style={{ fontSize: '12px', fontWeight: 'bold' }}>
+                Organization Name *
+                <input
+                  type="text"
+                  required
+                  value={createOrgName}
+                  onChange={(e) => setCreateOrgName(e.target.value)}
+                  style={{ width: '100%', padding: '8px', borderRadius: '6px', border: '1px solid #ccc', marginTop: '4px' }}
+                />
+              </label>
+            </div>
+            <label style={{ fontSize: '12px', fontWeight: 'bold', display: 'block', marginTop: '14px' }}>
+              Description
+              <textarea
+                rows={3}
+                placeholder="Comprehensive coverage details, financial benefits, and eligible treatments..."
+                value={createDesc}
+                onChange={(e) => setCreateDesc(e.target.value)}
+                style={{ width: '100%', padding: '8px', borderRadius: '6px', border: '1px solid #ccc', marginTop: '4px' }}
+              />
+            </label>
+            <div style={{ display: 'flex', gap: '10px', marginTop: '16px' }}>
+              <button type="submit" className="button button-primary">
+                <Plus size={14} /> Create Scheme (Draft)
+              </button>
+              <button type="button" className="button button-outline" onClick={() => setShowCreateModal(false)}>
+                Cancel
+              </button>
+            </div>
+          </form>
+        </section>
+      )}
+
+      {/* EDIT SCHEME MODAL */}
+      {showEditModal && adminDetail && (
+        <section className="content-card" style={{ marginBottom: '24px', border: '2px solid #2e7d32' }}>
+          <span className="eyebrow">EDIT SCHEME DETAILS</span>
+          <h3 style={{ margin: '6px 0 16px 0' }}>Edit: {adminDetail.official_name}</h3>
+          <form onSubmit={handleUpdateScheme}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '16px' }}>
+              <label style={{ fontSize: '12px', fontWeight: 'bold' }}>
+                Official Name
+                <input
+                  type="text"
+                  required
+                  value={editName}
+                  onChange={(e) => setEditName(e.target.value)}
+                  style={{ width: '100%', padding: '8px', borderRadius: '6px', border: '1px solid #ccc', marginTop: '4px' }}
+                />
+              </label>
+              <label style={{ fontSize: '12px', fontWeight: 'bold' }}>
+                Programme Type
+                <input
+                  type="text"
+                  value={editType}
+                  onChange={(e) => setEditType(e.target.value)}
+                  style={{ width: '100%', padding: '8px', borderRadius: '6px', border: '1px solid #ccc', marginTop: '4px' }}
+                />
+              </label>
+            </div>
+            <label style={{ fontSize: '12px', fontWeight: 'bold', display: 'block', marginTop: '14px' }}>
+              Description
+              <textarea
+                rows={3}
+                value={editDesc}
+                onChange={(e) => setEditDesc(e.target.value)}
+                style={{ width: '100%', padding: '8px', borderRadius: '6px', border: '1px solid #ccc', marginTop: '4px' }}
+              />
+            </label>
+            <div style={{ display: 'flex', gap: '10px', marginTop: '16px' }}>
+              <button type="submit" className="button button-primary">
+                Save Scheme Changes
+              </button>
+              <button type="button" className="button button-outline" onClick={() => setShowEditModal(false)}>
+                Cancel
+              </button>
+            </div>
+          </form>
+        </section>
+      )}
+
+      {/* ALL SCHEMES TABLE (READ) */}
       <section className="content-card" style={{ marginBottom: '24px' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '15px' }}>
           <div>
-            <h2 style={{ margin: 0, fontSize: '18px' }}>Published & Active Schemes</h2>
-            <p style={{ margin: '4px 0 0 0', fontSize: '12px', color: '#666' }}>All 4 published schemes synced to pgvector knowledge chunks.</p>
+            <h2 style={{ margin: 0, fontSize: '18px' }}>Scheme Directory ({schemes.length})</h2>
+            <p style={{ margin: '4px 0 0 0', fontSize: '12px', color: '#666' }}>
+              Complete repository of draft, under review, and verified schemes.
+            </p>
           </div>
-          <button type="button" className="button button-outline" onClick={loadAdminSchemes} disabled={loading} style={{ minHeight: '34px', fontSize: '12px' }}>
-            <RefreshCw size={14} /> Refresh
-          </button>
         </div>
 
         <div style={{ overflowX: 'auto' }}>
@@ -1341,73 +1866,156 @@ export function AdminPage() {
               </tr>
             </thead>
             <tbody>
-              {schemes.map((s) => (
-                <tr key={s.id} style={{ borderBottom: '1px solid #eee' }}>
-                  <td style={{ padding: '10px' }}>
-                    <strong>{s.official_name || s.name}</strong>
-                    <div style={{ fontSize: '11px', color: '#888' }}>ID: {s.id}</div>
-                  </td>
-                  <td style={{ padding: '10px', fontFamily: 'monospace', fontSize: '11px' }}>{s.programme_code || 'N/A'}</td>
-                  <td style={{ padding: '10px' }}>
-                    <span style={{ background: '#e8f5e9', color: '#2e7d32', padding: '3px 8px', borderRadius: '4px', fontSize: '10px', fontWeight: 'bold' }}>
-                      {s.review_status?.toUpperCase() || 'PUBLISHED'}
-                    </span>
-                  </td>
-                  <td style={{ padding: '10px' }}>v{s.version || 1}</td>
-                  <td style={{ padding: '10px', textAlign: 'right' }}>
-                    <button
-                      type="button"
-                      className="button button-outline"
-                      onClick={() => handlePublish(s.id)}
-                      style={{ padding: '4px 10px', fontSize: '11px', minHeight: '28px', marginRight: '6px' }}
-                    >
-                      Re-Publish & Sync
-                    </button>
-                    <button
-                      type="button"
-                      className="button button-primary"
-                      onClick={() => setSelectedSchemeId(s.id)}
-                      style={{ padding: '4px 10px', fontSize: '11px', minHeight: '28px' }}
-                    >
-                      Manage
-                    </button>
-                  </td>
-                </tr>
-              ))}
+              {schemes.map((s) => {
+                const isSelected = s.id === selectedSchemeId;
+                const isVerified = s.review_status === 'verified';
+                const isUnderReview = s.review_status === 'under_review';
+                return (
+                  <tr
+                    key={s.id}
+                    style={{
+                      borderBottom: '1px solid #eee',
+                      background: isSelected ? '#fbf8fe' : 'transparent',
+                    }}
+                  >
+                    <td style={{ padding: '10px' }}>
+                      <strong style={{ color: isSelected ? '#683693' : '#1a1a1a' }}>
+                        {s.official_name || s.name}
+                      </strong>
+                      <div style={{ fontSize: '11px', color: '#888' }}>ID: {s.id}</div>
+                    </td>
+                    <td style={{ padding: '10px', fontFamily: 'monospace', fontSize: '11px' }}>
+                      {s.programme_code || 'N/A'}
+                    </td>
+                    <td style={{ padding: '10px' }}>
+                      <span
+                        style={{
+                          background: isVerified ? '#e8f5e9' : isUnderReview ? '#e3f2fd' : '#fff3e0',
+                          color: isVerified ? '#2e7d32' : isUnderReview ? '#1565c0' : '#e65100',
+                          padding: '3px 8px',
+                          borderRadius: '4px',
+                          fontSize: '10px',
+                          fontWeight: 'bold',
+                        }}
+                      >
+                        {s.review_status?.toUpperCase() || 'DRAFT'}
+                      </span>
+                    </td>
+                    <td style={{ padding: '10px' }}>v{s.version || 1}</td>
+                    <td style={{ padding: '10px', textAlign: 'right', whiteSpace: 'nowrap' }}>
+                      <button
+                        type="button"
+                        className="button button-outline"
+                        onClick={() => handlePublish(s.id)}
+                        style={{ padding: '4px 8px', fontSize: '11px', minHeight: '28px', marginRight: '5px' }}
+                        title="Re-index to pgvector RAG"
+                      >
+                        Re-Publish & Sync
+                      </button>
+                      <button
+                        type="button"
+                        className="button button-primary"
+                        onClick={() => setSelectedSchemeId(s.id)}
+                        style={{ padding: '4px 8px', fontSize: '11px', minHeight: '28px', marginRight: '5px' }}
+                      >
+                        Manage
+                      </button>
+                      <button
+                        type="button"
+                        className="button button-outline"
+                        onClick={() => {
+                          setSelectedSchemeId(s.id);
+                          setShowEditModal(true);
+                        }}
+                        style={{ padding: '4px 8px', fontSize: '11px', minHeight: '28px', marginRight: '5px' }}
+                        title="Edit details"
+                      >
+                        <Edit size={12} />
+                      </button>
+                      <button
+                        type="button"
+                        className="button button-outline"
+                        onClick={() => handleDeleteScheme(s.id, s.official_name)}
+                        style={{ padding: '4px 8px', fontSize: '11px', minHeight: '28px', color: '#c62828' }}
+                        title="Delete scheme"
+                      >
+                        <Trash2 size={12} />
+                      </button>
+                    </td>
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
         </div>
       </section>
 
-      {/* Manage Selected Scheme & Add Evidence */}
+      {/* SELECTED SCHEME WORKSPACE */}
       {selectedSchemeId && adminDetail && (
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '20px' }}>
-          {/* Add Evidence Form */}
+          {/* Overview & Publication Card */}
           <section className="content-card">
-            <span className="eyebrow">ADMIN ACTION</span>
-            <h3>Add Official Evidence Source</h3>
-            <p style={{ fontSize: '12px', color: '#666' }}>Target Scheme: <strong>{adminDetail.official_name}</strong></p>
-            <form onSubmit={handleAddEvidence} style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginTop: '12px' }}>
+            <span className="eyebrow">SCHEME WORKSPACE</span>
+            <h3 style={{ margin: '4px 0 8px 0' }}>{adminDetail.official_name}</h3>
+            <p style={{ fontSize: '12px', color: '#666', marginBottom: '12px' }}>
+              {adminDetail.description || 'No description provided.'}
+            </p>
+
+            <div style={{ background: '#fafafa', border: '1px solid #eee', borderRadius: '8px', padding: '12px', fontSize: '12px', display: 'flex', flexDirection: 'column', gap: '6px' }}>
+              <div><strong>Code:</strong> <code>{adminDetail.programme_code}</code></div>
+              <div><strong>Status:</strong> <span style={{ fontWeight: 'bold', color: adminDetail.review_status === 'verified' ? '#2e7d32' : '#e65100' }}>{adminDetail.review_status?.toUpperCase()}</span></div>
+              <div><strong>Version:</strong> v{adminDetail.version}</div>
+              <div><strong>Current Published:</strong> v{syncStatus?.current_published_version || adminDetail.version}</div>
+              <div><strong>Sync Jobs:</strong> {syncStatus?.jobs?.length || 0} recorded</div>
+            </div>
+
+            <div style={{ display: 'flex', gap: '8px', marginTop: '16px' }}>
+              <button
+                type="button"
+                className="button button-primary"
+                onClick={() => handlePublish(selectedSchemeId)}
+                style={{ flex: 1 }}
+              >
+                Re-Publish & Sync to RAG
+              </button>
+              {syncStatus?.jobs?.some((j) => j.status === 'failed') && (
+                <button
+                  type="button"
+                  className="button button-outline"
+                  onClick={() => handleRetrySync(selectedSchemeId)}
+                  style={{ color: '#c62828' }}
+                >
+                  Retry Sync
+                </button>
+              )}
+            </div>
+          </section>
+
+          {/* Add & Manage Evidence Sources */}
+          <section className="content-card">
+            <span className="eyebrow">EVIDENCE MANAGEMENT</span>
+            <h3 style={{ margin: '4px 0 8px 0' }}>Attach Official Evidence Source</h3>
+            <form onSubmit={handleAddEvidence} style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginTop: '8px' }}>
               <label style={{ fontSize: '12px', fontWeight: 'bold' }}>
-                Document Title
+                Document Title *
                 <input
                   type="text"
                   required
-                  placeholder="e.g. NHA PM-JAY Senior Citizen Expansion Guidelines"
+                  placeholder="e.g. Official Gazette Cancer Treatment Guidelines"
                   value={evidenceTitle}
                   onChange={(e) => setEvidenceTitle(e.target.value)}
-                  style={{ width: '100%', padding: '8px', borderRadius: '6px', border: '1px solid #ccc', marginTop: '4px' }}
+                  style={{ width: '100%', padding: '6px 8px', borderRadius: '6px', border: '1px solid #ccc', marginTop: '2px' }}
                 />
               </label>
               <label style={{ fontSize: '12px', fontWeight: 'bold' }}>
-                Official Source URL
+                Official Source HTTPS URL *
                 <input
                   type="url"
                   required
-                  placeholder="https://nha.gov.in/..."
+                  placeholder="https://mohfw.gov.in/guidelines"
                   value={evidenceUrl}
                   onChange={(e) => setEvidenceUrl(e.target.value)}
-                  style={{ width: '100%', padding: '8px', borderRadius: '6px', border: '1px solid #ccc', marginTop: '4px' }}
+                  style={{ width: '100%', padding: '6px 8px', borderRadius: '6px', border: '1px solid #ccc', marginTop: '2px' }}
                 />
               </label>
               <label style={{ fontSize: '12px', fontWeight: 'bold' }}>
@@ -1416,31 +2024,166 @@ export function AdminPage() {
                   type="text"
                   value={evidenceBody}
                   onChange={(e) => setEvidenceBody(e.target.value)}
-                  style={{ width: '100%', padding: '8px', borderRadius: '6px', border: '1px solid #ccc', marginTop: '4px' }}
+                  style={{ width: '100%', padding: '6px 8px', borderRadius: '6px', border: '1px solid #ccc', marginTop: '2px' }}
                 />
               </label>
-              <button type="submit" className="button button-primary" style={{ marginTop: '6px' }}>
-                <Plus size={15} /> Attach Evidence Source
+              <label style={{ fontSize: '12px', fontWeight: 'bold' }}>
+                Page / Clause Reference
+                <input
+                  type="text"
+                  value={evidencePage}
+                  onChange={(e) => setEvidencePage(e.target.value)}
+                  style={{ width: '100%', padding: '6px 8px', borderRadius: '6px', border: '1px solid #ccc', marginTop: '2px' }}
+                />
+              </label>
+              <button type="submit" className="button button-primary" style={{ marginTop: '4px' }}>
+                <Plus size={14} /> Attach Evidence Source
               </button>
             </form>
+
+            <h4 style={{ margin: '18px 0 8px 0', fontSize: '13px' }}>Attached Sources ({sources.length})</h4>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', maxHeight: '240px', overflowY: 'auto' }}>
+              {sources.map((src) => {
+                const isApproved = src.evidence_status === 'approved';
+                return (
+                  <div key={src.id} style={{ border: '1px solid #eee', padding: '8px 10px', borderRadius: '6px', fontSize: '12px' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <strong>{src.source_title}</strong>
+                      <span style={{ fontSize: '10px', fontWeight: 'bold', color: isApproved ? '#2e7d32' : '#e65100', background: isApproved ? '#e8f5e9' : '#fff3e0', padding: '2px 6px', borderRadius: '4px' }}>
+                        {src.evidence_status?.toUpperCase() || 'UNVERIFIED'}
+                      </span>
+                    </div>
+                    <div style={{ color: '#666', fontSize: '11px', marginTop: '2px' }}>{src.issuing_body} ({src.effective_date})</div>
+                    {src.source_url && (
+                      <a href={src.source_url} target="_blank" rel="noreferrer" style={{ color: '#683693', display: 'inline-flex', alignItems: 'center', gap: '3px', marginTop: '2px' }}>
+                        {src.source_url} <ExternalLink size={10} />
+                      </a>
+                    )}
+                    <div style={{ display: 'flex', gap: '6px', marginTop: '6px' }}>
+                      {!isApproved && (
+                        <button
+                          type="button"
+                          className="button button-outline"
+                          onClick={() => handleApproveSource(src.id)}
+                          style={{ padding: '2px 8px', fontSize: '10px', minHeight: '24px', color: '#2e7d32' }}
+                        >
+                          <CheckCircle size={10} /> Approve Source
+                        </button>
+                      )}
+                      <button
+                        type="button"
+                        className="button button-outline"
+                        onClick={() => handleDeleteSource(src.id)}
+                        style={{ padding: '2px 8px', fontSize: '10px', minHeight: '24px', color: '#c62828' }}
+                      >
+                        <Trash2 size={10} /> Delete
+                      </button>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
           </section>
 
-          {/* Current Evidence Sources */}
+          {/* Add & Manage Evidence Claims */}
           <section className="content-card">
-            <span className="eyebrow">VERIFIED CITATIONS</span>
-            <h3>Attached Evidence Sources ({adminDetail.evidence_sources?.length || 0})</h3>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginTop: '12px', maxHeight: '350px', overflowY: 'auto' }}>
-              {(adminDetail.evidence_sources || []).map((src) => (
-                <div key={src.id} style={{ border: '1px solid #eee', padding: '10px', borderRadius: '8px', fontSize: '12px' }}>
-                  <strong>{src.source_title}</strong>
-                  <div style={{ color: '#666', fontSize: '11px', marginTop: '2px' }}>{src.issuing_body} ({src.effective_date})</div>
-                  {src.source_url && (
-                    <a href={src.source_url} target="_blank" rel="noreferrer" style={{ color: '#683693', display: 'inline-flex', alignItems: 'center', gap: '3px', marginTop: '4px' }}>
-                      {src.source_url} <ExternalLink size={11} />
-                    </a>
-                  )}
-                </div>
-              ))}
+            <span className="eyebrow">FACTUAL CLAIMS</span>
+            <h3 style={{ margin: '4px 0 8px 0' }}>Evidence Claims & Citations</h3>
+            <form onSubmit={handleAddClaim} style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginTop: '8px' }}>
+              <label style={{ fontSize: '12px', fontWeight: 'bold' }}>
+                Select Linked Source *
+                <select
+                  value={claimSourceId}
+                  onChange={(e) => setClaimSourceId(e.target.value)}
+                  style={{ width: '100%', padding: '6px 8px', borderRadius: '6px', border: '1px solid #ccc', marginTop: '2px' }}
+                >
+                  <option value="">-- Choose Attached Source --</option>
+                  {sources.map((s) => (
+                    <option key={s.id} value={s.id}>{s.source_title}</option>
+                  ))}
+                </select>
+              </label>
+              <label style={{ fontSize: '12px', fontWeight: 'bold' }}>
+                Field Path
+                <input
+                  type="text"
+                  value={claimFieldPath}
+                  onChange={(e) => setClaimFieldPath(e.target.value)}
+                  style={{ width: '100%', padding: '6px 8px', borderRadius: '6px', border: '1px solid #ccc', marginTop: '2px' }}
+                />
+              </label>
+              <label style={{ fontSize: '12px', fontWeight: 'bold' }}>
+                Claim Text *
+                <input
+                  type="text"
+                  required
+                  placeholder="e.g. Cashless treatment up to 5 lakh INR per year"
+                  value={claimText}
+                  onChange={(e) => setClaimText(e.target.value)}
+                  style={{ width: '100%', padding: '6px 8px', borderRadius: '6px', border: '1px solid #ccc', marginTop: '2px' }}
+                />
+              </label>
+              <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+                <label style={{ fontSize: '12px', fontWeight: 'bold', flex: 1 }}>
+                  Source Locator
+                  <input
+                    type="text"
+                    value={claimLocator}
+                    onChange={(e) => setClaimLocator(e.target.value)}
+                    style={{ width: '100%', padding: '6px 8px', borderRadius: '6px', border: '1px solid #ccc', marginTop: '2px' }}
+                  />
+                </label>
+                <label style={{ fontSize: '12px', fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: '6px', marginTop: '16px' }}>
+                  <input
+                    type="checkbox"
+                    checked={claimIsCritical}
+                    onChange={(e) => setClaimIsCritical(e.target.checked)}
+                  />
+                  Critical Claim
+                </label>
+              </div>
+              <button type="submit" className="button button-primary" style={{ marginTop: '4px' }}>
+                <Plus size={14} /> Add Claim
+              </button>
+            </form>
+
+            <h4 style={{ margin: '18px 0 8px 0', fontSize: '13px' }}>Claims for Scheme ({claims.length})</h4>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', maxHeight: '240px', overflowY: 'auto' }}>
+              {claims.map((clm) => {
+                const isApproved = clm.review_status === 'approved';
+                return (
+                  <div key={clm.id} style={{ border: '1px solid #eee', padding: '8px 10px', borderRadius: '6px', fontSize: '12px' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <span style={{ fontFamily: 'monospace', fontSize: '10px', color: '#555' }}>{clm.field_path}</span>
+                      <span style={{ fontSize: '10px', fontWeight: 'bold', color: isApproved ? '#2e7d32' : '#e65100', background: isApproved ? '#e8f5e9' : '#fff3e0', padding: '2px 6px', borderRadius: '4px' }}>
+                        {clm.review_status?.toUpperCase() || 'PENDING'}
+                      </span>
+                    </div>
+                    <div style={{ fontWeight: '500', marginTop: '4px' }}>{clm.claim_text}</div>
+                    <div style={{ color: '#888', fontSize: '10px', marginTop: '2px' }}>Locator: {clm.source_locator} {clm.is_critical ? '· Critical' : ''}</div>
+                    <div style={{ display: 'flex', gap: '6px', marginTop: '6px' }}>
+                      {!isApproved && (
+                        <button
+                          type="button"
+                          className="button button-outline"
+                          onClick={() => handleApproveClaim(clm.id)}
+                          style={{ padding: '2px 8px', fontSize: '10px', minHeight: '24px', color: '#2e7d32' }}
+                        >
+                          <CheckCircle size={10} /> Approve Claim
+                        </button>
+                      )}
+                      <button
+                        type="button"
+                        className="button button-outline"
+                        onClick={() => handleDeleteClaim(clm.id)}
+                        style={{ padding: '2px 8px', fontSize: '10px', minHeight: '24px', color: '#c62828' }}
+                      >
+                        <Trash2 size={10} /> Delete
+                      </button>
+                    </div>
+                  </div>
+                );
+              })}
             </div>
           </section>
         </div>
@@ -1448,7 +2191,6 @@ export function AdminPage() {
     </div>
   );
 }
-
 
 export function AssistantPage() {
   const { data, updateData, user } = usePlatform();
@@ -1512,7 +2254,7 @@ export function AssistantPage() {
     updateData({ chatHistory: pending });
     const controller = new AbortController();
     requestControllerRef.current = controller;
-    const timeoutId = window.setTimeout(() => controller.abort(), 30000);
+    const timeoutId = window.setTimeout(() => controller.abort(), 90000);
     try {
       const result = await askGuidance({
         question: normalized,
@@ -1538,10 +2280,16 @@ export function AssistantPage() {
       updateData({ chatHistory: completedHistory });
       setRetryMessage('');
     } catch (caught) {
-      if (!controller.signal.aborted) {
-        setError(!isRagConfigured ? t('assistant.noBackend') : caught instanceof Error ? caught.message : t('assistant.failed'));
-        setRetryMessage(normalized);
-      }
+      const failureNotice = controller.signal.aborted
+        ? 'The request took longer than expected to verify with official scheme sources. Please try asking again.'
+        : (!isRagConfigured ? t('assistant.noBackend') : caught instanceof Error ? caught.message : t('assistant.failed'));
+      setError(failureNotice);
+      setRetryMessage(normalized);
+      const failedHistory = historyRef.current.map((message) => message.id === assistantId
+        ? { ...message, content: failureNotice }
+        : message);
+      historyRef.current = failedHistory;
+      updateData({ chatHistory: failedHistory });
     } finally {
       window.clearTimeout(timeoutId);
       if (requestControllerRef.current === controller) requestControllerRef.current = null;

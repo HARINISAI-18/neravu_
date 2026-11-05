@@ -24,13 +24,24 @@ load_dotenv(Path(__file__).resolve().parents[1] / ".env")
 
 logger = logging.getLogger(__name__)
 
-# Lifespan: Scheme Publication Background Sync Worker
+# Lifespan: Scheme Publication Background Sync Worker & Model Pre-warming
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     from app.workers.sync_worker import run_sync_worker
 
     worker = asyncio.create_task(run_sync_worker(), name="scheme-publication-sync")
     app.state.scheme_sync_worker = worker
+
+    async def warm_models():
+        try:
+            loop = asyncio.get_running_loop()
+            from app.services.hybrid_rag import get_embedding_model
+            await loop.run_in_executor(None, get_embedding_model)
+            logger.info("Hybrid RAG embedding model pre-warmed successfully.")
+        except Exception as e:
+            logger.warning(f"Could not pre-warm embedding model: {e}")
+
+    asyncio.create_task(warm_models())
     try:
         yield
     finally:
@@ -60,10 +71,12 @@ app.add_middleware(
 from app.routes.admin_schemes import router as admin_schemes_router
 from app.routes.engines import router as engines_router
 from app.routes.schemes import router as schemes_router
+from app.routes.directory import router as directory_router
 
 app.include_router(schemes_router)
 app.include_router(admin_schemes_router)
 app.include_router(engines_router)
+app.include_router(directory_router)
 
 # Rate Limiting & Guest Tokens
 RATE_LIMIT_REQUESTS = int(os.getenv("CHAT_RATE_LIMIT_REQUESTS", "60"))
@@ -133,8 +146,8 @@ def _verify_guest_token(token: str | None) -> str:
 
 
 def _authenticated_user_id(access_token: str) -> str:
-    supabase_url = os.getenv("SUPABASE_URL", "").rstrip("/")
-    anon_key = os.getenv("SUPABASE_ANON_KEY", "")
+    supabase_url = (os.getenv("VITE_SUPABASE_URL") or os.getenv("SUPABASE_URL", "")).rstrip("/")
+    anon_key = os.getenv("VITE_SUPABASE_ANON_KEY") or os.getenv("SUPABASE_ANON_KEY", "")
     if not supabase_url or not anon_key:
         return "dev-authenticated-user"
     try:
@@ -206,10 +219,13 @@ def chat(
     lang = payload.language if payload.language in {"en", "te", "hi"} else "en"
 
     def execute_query() -> dict:
-        from app.services.question_intent import classify_intent, safe_medical_response
+        from app.services.question_intent import classify_intent, safe_medical_response, greeting_response
         from app.services.rag_chat import chat_with_neravu
 
         intent = classify_intent(query)
+        if intent == "greeting":
+            return {**greeting_response(lang), "intent": intent}
+
         safe_response = safe_medical_response(intent, lang)
         if intent == "urgent_medical" and safe_response is not None:
             return {**safe_response, "intent": intent}
@@ -295,6 +311,8 @@ def chat(
     # Handle streaming SSE request
     def sse_generator():
         try:
+            # Immediate keep-alive ping to establish HTTP SSE connection without buffering
+            yield ": ping\n\n"
             raw_res = execute_query()
             formatted = format_result(raw_res)
             full_text = formatted["answer"]
@@ -304,7 +322,7 @@ def chat(
             for i, word in enumerate(words):
                 chunk = word + (" " if i < len(words) - 1 else "")
                 yield f"event: delta\ndata: {json.dumps({'text': chunk}, ensure_ascii=False)}\n\n"
-                time.sleep(0.015)
+                time.sleep(0.01)
 
             # Stream final done event
             yield f"event: done\ndata: {json.dumps(formatted, ensure_ascii=False)}\n\n"

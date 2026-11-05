@@ -28,10 +28,8 @@ def _jwks_client(jwks_url: str) -> PyJWKClient:
 def _get_trusted_issuers() -> dict[str, str]:
     """Map normalized project base URL to issuer URL."""
     candidates = [
-        os.getenv("SUPABASE_URL"),
         os.getenv("VITE_SUPABASE_URL"),
-        "https://tfayeekxlmxiuuyscrff.supabase.co",
-        "https://dhjfrwpwedisxdxejktd.supabase.co",
+        os.getenv("SUPABASE_URL"),
     ]
     issuers = {}
     for c in candidates:

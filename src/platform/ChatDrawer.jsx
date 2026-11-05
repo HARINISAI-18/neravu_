@@ -99,7 +99,7 @@ export function ChatAssistantWidget() {
 
     const controller = new AbortController();
     requestControllerRef.current = controller;
-    const timeoutId = window.setTimeout(() => controller.abort(), 35000);
+    const timeoutId = window.setTimeout(() => controller.abort(), 90000);
 
     try {
       const result = await askGuidance({
@@ -129,9 +129,15 @@ export function ChatAssistantWidget() {
       historyRef.current = completedHistory;
       updateData({ chatHistory: completedHistory });
     } catch (caught) {
-      if (!controller.signal.aborted) {
-        setError(caught instanceof Error ? caught.message : 'Chat service temporarily unavailable.');
-      }
+      const failureNotice = controller.signal.aborted
+        ? 'The request took longer than expected to verify with official scheme sources. Please try asking again.'
+        : (caught instanceof Error ? caught.message : 'Chat service temporarily unavailable.');
+      setError(failureNotice);
+      const failedHistory = historyRef.current.map((msg) =>
+        msg.id === assistantId ? { ...msg, content: failureNotice } : msg
+      );
+      historyRef.current = failedHistory;
+      updateData({ chatHistory: failedHistory });
     } finally {
       window.clearTimeout(timeoutId);
       if (requestControllerRef.current === controller) requestControllerRef.current = null;
@@ -194,7 +200,6 @@ export function ChatAssistantWidget() {
             </div>
             <div>
               <h3>Neravu Assistant</h3>
-              <small>Hybrid RAG · Sarvam 105B</small>
             </div>
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
@@ -249,7 +254,20 @@ export function ChatAssistantWidget() {
                   <div className="message-label">
                     {msg.role === 'user' ? 'You' : 'Neravu Assistant'}
                   </div>
-                  <p>{msg.content || (busy && msg.role === 'assistant' ? 'Searching official schemes...' : '')}</p>
+                  {msg.content ? (
+                    <div className="chat-body-text" style={{ whiteSpace: 'pre-wrap' }}>
+                      {msg.content}
+                    </div>
+                  ) : (
+                    <div className="chat-searching-indicator">
+                      <span className="dot dot-1" />
+                      <span className="dot dot-2" />
+                      <span className="dot dot-3" />
+                      <span style={{ marginLeft: 8, fontSize: '12px', color: '#6b7280' }}>
+                        Verifying with official scheme evidence...
+                      </span>
+                    </div>
+                  )}
 
                   {/* Evidence Sources */}
                   {msg.role === 'assistant' && msg.sources?.length > 0 && (
@@ -270,11 +288,7 @@ export function ChatAssistantWidget() {
                   )}
                 </article>
               ))}
-              {busy && (
-                <div className="chat-message assistant" role="status" style={{ fontStyle: 'italic', color: '#777' }}>
-                  Consulting official knowledge base...
-                </div>
-              )}
+
               <div ref={chatEndRef} />
             </div>
           )}

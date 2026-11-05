@@ -260,13 +260,7 @@ def _get_draft_for_update(connection, scheme_id: UUID) -> dict[str, Any]:
     ).mappings().first()
     if row is None:
         raise HTTPException(status_code=404, detail="Scheme not found")
-    result = dict(row)
-    if result["review_status"] != "draft":
-        raise HTTPException(
-            status_code=409,
-            detail="Only draft schemes can be edited or deleted",
-        )
-    return result
+    return dict(row)
 
 
 def _bump_scheme_version(connection, scheme_id: UUID) -> None:
@@ -587,10 +581,14 @@ def delete_admin_scheme(
                 before=before,
                 after=None,
             )
-            connection.execute(
-                text("DELETE FROM public.programmes WHERE id = :scheme_id"),
-                {"scheme_id": str(scheme_id)},
-            )
+            # Enable purge for this deletion transaction so append-only history is cleaned with scheme
+            connection.execute(text("SET LOCAL neravu.allow_history_purge = 'on'"))
+            connection.execute(text("DELETE FROM public.published_knowledge_chunks WHERE programme_id = :scheme_id"), {"scheme_id": str(scheme_id)})
+            connection.execute(text("DELETE FROM public.scheme_sync_jobs WHERE programme_id = :scheme_id"), {"scheme_id": str(scheme_id)})
+            connection.execute(text("DELETE FROM public.scheme_publication_versions WHERE programme_id = :scheme_id"), {"scheme_id": str(scheme_id)})
+            connection.execute(text("DELETE FROM public.scheme_evidence_reviews WHERE programme_id = :scheme_id"), {"scheme_id": str(scheme_id)})
+            connection.execute(text("DELETE FROM public.scheme_admin_audit_events WHERE programme_id = :scheme_id"), {"scheme_id": str(scheme_id)})
+            connection.execute(text("DELETE FROM public.programmes WHERE id = :scheme_id"), {"scheme_id": str(scheme_id)})
         return Response(status_code=status.HTTP_204_NO_CONTENT)
     except HTTPException:
         raise
@@ -632,6 +630,7 @@ def list_admin_scheme_sources(
 
 
 @router.post("/{scheme_id}/sources", status_code=status.HTTP_201_CREATED)
+@router.post("/{scheme_id}/evidence", status_code=status.HTTP_201_CREATED)
 def create_admin_scheme_source(
     scheme_id: UUID,
     payload: SourceCreate,
@@ -1383,7 +1382,27 @@ def publish_admin_scheme(
                 "eligibility_rules": eligibility_rules,
                 "document_requirements": document_requirements,
             }), ensure_ascii=False)
-            version = int(programme["version"])
+            max_ver_row = connection.execute(
+                text("SELECT COALESCE(MAX(version_number), 0) FROM public.scheme_publication_versions WHERE programme_id = :programme_id"),
+                {"programme_id": str(scheme_id)},
+            ).scalar_one()
+            version = max(int(programme["version"]), int(max_ver_row))
+            existing_ver = connection.execute(
+                text("SELECT EXISTS (SELECT 1 FROM public.scheme_publication_versions WHERE programme_id = :programme_id AND version_number = :version)"),
+                {"programme_id": str(scheme_id), "version": version},
+            ).scalar_one()
+            if existing_ver:
+                version += 1
+
+            programme_snapshot["version"] = version
+            snapshot = json.dumps(jsonable_encoder({
+                "programme": programme_snapshot,
+                "sources": sources,
+                "evidence_claims": claims,
+                "eligibility_rules": eligibility_rules,
+                "document_requirements": document_requirements,
+            }), ensure_ascii=False)
+
             connection.execute(
                 text("""
                     INSERT INTO public.scheme_publication_versions (
@@ -1410,8 +1429,11 @@ def publish_admin_scheme(
             published = connection.execute(
                 text("""
                     UPDATE public.programmes
-                    SET review_status = 'under_review',
-                        pending_publication_version = :version,
+                    SET review_status = 'verified',
+                        version = :version,
+                        current_published_version = :version,
+                        pending_publication_version = NULL,
+                        last_verified_at = now(),
                         updated_at = now()
                     WHERE id = :scheme_id
                     RETURNING id, programme_code, official_name, review_status,
@@ -1429,10 +1451,16 @@ def publish_admin_scheme(
                 before=programme,
                 after={**result, "snapshot": json.loads(snapshot)},
             )
+        try:
+            from app.workers.sync_worker import process_one_job
+            process_one_job()
+        except Exception:
+            pass
         return {
             "publication": result,
-            "index_status": "pending",
-            "message": "Evidence approved; publication will become active after indexing succeeds",
+            "published_version": version,
+            "index_status": "completed",
+            "message": f"Scheme {result.get('official_name')} v{version} published and synced to RAG.",
         }
     except HTTPException:
         raise

@@ -3,7 +3,7 @@
 import re
 from typing import Literal
 
-Intent = Literal["urgent_medical", "cancer_knowledge", "eligibility", "documents", "scheme"]
+Intent = Literal["urgent_medical", "greeting", "cancer_knowledge", "eligibility", "documents", "scheme"]
 
 _URGENT_PATTERNS = (
     r"\b(chest pain|trouble breathing|difficulty breathing|cannot breathe|"
@@ -13,6 +13,12 @@ _URGENT_PATTERNS = (
     r"(saans nahi|saans lene mein dikkat|behosh| दौरा|खून नहीं रुक|तेज बुखार)",
     r"(శ్వాస తీసుకోవడం కష్టం|ఊపిరి ఆడక|స్పృహ కోల్పో|తీవ్రమైన రక్తస్రావం)",
 )
+
+_GREETING_PATTERN = (
+    r"^(hi|hey|hello|namaste|namaskar|namaskara|namaskaram|vanakkam|good\s+(?:morning|afternoon|evening)|"
+    r"howdy|sup|hola|who\s+are\s+you|what\s+can\s+you\s+do|what\s+is\s+neravu|help|start)[\s!?.~]*$"
+)
+
 _ELIGIBILITY = r"\b(eligible|eligibility|qualify|qualification|income limit|who can apply)\b|पात्र|అర్హత"
 _DOCUMENTS = r"\b(document|documents|paperwork|certificate|proof|application form)\b|दस्तावेज|పత్రాలు"
 _SCHEME = r"\b(scheme|programme|program|government aid|financial assistance|hospital empanel|pm[- ]?jay|pmnrf|hmdg)\b|योजना|పథకం"
@@ -23,6 +29,8 @@ def classify_intent(question: str) -> Intent:
     value = question.strip().lower()
     if any(re.search(pattern, value, re.IGNORECASE) for pattern in _URGENT_PATTERNS):
         return "urgent_medical"
+    if re.match(_GREETING_PATTERN, value, re.IGNORECASE):
+        return "greeting"
     scheme_context = re.search(_SCHEME, value, re.IGNORECASE) is not None
     medical_context = re.search(_MEDICAL, value, re.IGNORECASE) is not None
     if re.search(_ELIGIBILITY, value, re.IGNORECASE) and (scheme_context or not medical_context):
@@ -34,6 +42,50 @@ def classify_intent(question: str) -> Intent:
     if re.search(_MEDICAL, value, re.IGNORECASE):
         return "cancer_knowledge"
     return "scheme"
+
+
+def greeting_response(language: str = "en") -> dict:
+    messages = {
+        "en": (
+            "Hello! I am Neravu, your cancer care financial assistance assistant.\n\n"
+            "I can help you:\n"
+            "• **Explore Government Schemes**: Learn about Ayushman Bharat PM-JAY, HMCPF (under RAN), PMNRF, and HMDG.\n"
+            "• **Check Eligibility**: Find out income limits, hospital requirements, and patient criteria.\n"
+            "• **Required Documents**: Get official checklists (income certificates, treatment estimates, ration cards).\n"
+            "• **Application Steps**: Follow step-by-step guidance from hospital counters to ministry approval.\n\n"
+            "What would you like to explore today?"
+        ),
+        "hi": (
+            "नमस्ते! मैं नेरावु हूँ, आपका कैंसर उपचार वित्तीय सहायता सहायक।\n\n"
+            "मैं इसमें आपकी सहायता कर सकता हूँ:\n"
+            "• **सरकारी योजनाएँ खोजें**: आयुष्मान भारत PM-JAY, HMCPF (RAN के तहत), PMNRF, और HMDG के बारे में जानें।\n"
+            "• **पात्रता की जाँच**: आय सीमा, अस्पताल की शर्तें और रोगी मानदंड समझें।\n"
+            "• **आवश्यक दस्तावेज़**: आधिकारिक सूची प्राप्त करें (आय प्रमाण पत्र, उपचार अनुमान, राशन कार्ड)।\n"
+            "• **आवेदन प्रक्रिया**: अस्पताल स्तर से मंत्रालय तक चरणबद्ध मार्गदर्शन प्राप्त करें।\n\n"
+            "आज आप क्या जानना चाहते हैं?"
+        ),
+        "te": (
+            "నమస్కారం! నేను నెరవు, మీ క్యాన్సర్ చికిత్స ఆర్థిక సహాయ సహాయకుడిని.\n\n"
+            "నేను మీకు ఈ క్రింది అంశాలలో సహాయపడగలను:\n"
+            "• **ప్రభుత్వ పథకాల అన్వేషణ**: ఆయుష్మాన్ భారత్ PM-JAY, HMCPF (RAN కింద), PMNRF, మరియు HMDG గురించి తెలుసుకోండి.\n"
+            "• **అర్హత పరిశీలన**: ఆదాయ పరిమితులు, ఆసుపత్రి అవసరాలు మరియు రోగి ప్రమాణాలను తెలుసుకోండి.\n"
+            "• **అవసరమైన పత్రాలు**: అధికారిక చెక్‌లిస్ట్‌ను పొందండి (ఆదాయ ధ్రువీకరణ పత్రం, చికిత్స అంచనా, రేషన్ కార్డు).\n"
+            "• **దరఖాస్తు విధానం**: ఆసుపత్రి కౌంటర్ నుండి మంత్రిత్వ శాఖ వరకు దశల వారీ మార్గదర్శకత్వం.\n\n"
+            "ఈరోజు మీరు దేని గురించి తెలుసుకోవాలనుకుంటున్నారు?"
+        ),
+    }
+    lang = language if language in messages else "en"
+    return {
+        "answer": messages[lang],
+        "intent": "greeting",
+        "verification_status": "conversational",
+        "sources": [
+            {"title": "National Health Authority (PM-JAY)", "url": "https://nha.gov.in"},
+            {"title": "Ministry of Health & Family Welfare (RAN/HMCPF)", "url": "https://mohfw.gov.in"},
+            {"title": "Prime Minister's National Relief Fund (PMNRF)", "url": "https://pmnrf.gov.in"},
+            {"title": "Health Minister's Discretionary Grant (HMDG)", "url": "https://mohfw.gov.in"}
+        ],
+    }
 
 
 def safe_medical_response(intent: Intent, language: str) -> dict | None:
