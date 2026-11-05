@@ -132,14 +132,14 @@ def _verify_guest_token(token: str | None) -> str:
         return f"guest:{uuid.uuid4()}"
 
 
-async def _authenticated_user_id(access_token: str) -> str:
+def _authenticated_user_id(access_token: str) -> str:
     supabase_url = os.getenv("SUPABASE_URL", "").rstrip("/")
     anon_key = os.getenv("SUPABASE_ANON_KEY", "")
     if not supabase_url or not anon_key:
         return "dev-authenticated-user"
     try:
-        async with httpx.AsyncClient(timeout=httpx.Timeout(10.0)) as client:
-            response = await client.get(
+        with httpx.Client(timeout=10.0) as client:
+            response = client.get(
                 f"{supabase_url}/auth/v1/user",
                 headers={"apikey": anon_key, "Authorization": f"Bearer {access_token}"},
             )
@@ -151,15 +151,17 @@ async def _authenticated_user_id(access_token: str) -> str:
         return "user"
 
 
-async def _resolve_identity(authorization: str | None, guest_session: str | None) -> str:
+def _resolve_identity(authorization: str | None, guest_session: str | None) -> str:
     if authorization:
         scheme, _, token = authorization.partition(" ")
         if scheme.lower() == "bearer" and token:
-            return await _authenticated_user_id(token)
+            return _authenticated_user_id(token)
     return _verify_guest_token(guest_session)
 
 
-def _enforce_rate_limit(user_id: str, request: Request) -> None:
+def _enforce_rate_limit(user_id: str, request: Request | None) -> None:
+    if request is None:
+        return
     client_ip = request.client.host if request.client else "unknown"
     key = f"{user_id}:{client_ip}"
     now = time.monotonic()
@@ -174,22 +176,22 @@ def _enforce_rate_limit(user_id: str, request: Request) -> None:
 # Health Check Endpoints
 @app.get("/health")
 @app.get("/api/health")
-async def health() -> dict[str, str]:
+def health() -> dict[str, str]:
     return {"status": "ok", "service": "neravu-backend"}
 
 
 # Guest Session Creation
 @app.post("/api/guest-session")
-async def create_guest_session() -> dict[str, str]:
+def create_guest_session() -> dict[str, str]:
     token, guest_id = _make_guest_token()
     return {"session_token": token, "user_id": f"guest:{guest_id}"}
 
 
 # Core Unified Chat Endpoint
-@app.post("/api/chat")
-async def chat(
+@app.post("/api/chat", response_model=None)
+def chat(
     payload: ChatRequest,
-    request: Request,
+    request: Request = None,
     authorization: Annotated[str | None, Header()] = None,
     guest_session: Annotated[str | None, Header(alias="X-Guest-Session")] = None,
 ):
@@ -197,13 +199,13 @@ async def chat(
     if not query:
         raise HTTPException(status_code=422, detail="Enter a question before sending.")
 
-    user_id = await _resolve_identity(authorization, guest_session)
+    user_id = _resolve_identity(authorization, guest_session)
     _enforce_rate_limit(user_id, request)
 
     # Normalize response language
     lang = payload.language if payload.language in {"en", "te", "hi"} else "en"
 
-    async def execute_query() -> dict:
+    def execute_query() -> dict:
         from app.services.question_intent import classify_intent, safe_medical_response
         from app.services.rag_chat import chat_with_neravu
 
@@ -254,7 +256,6 @@ async def chat(
         res = chat_with_neravu(question=query, language=lang)
         return {**res, "intent": intent}
 
-    # Format result helper
     def format_result(res: dict) -> dict:
         raw_sources = res.get("sources") or []
         normalized_sources = []
@@ -268,6 +269,7 @@ async def chat(
                 normalized_sources.append({"title": s, "url": ""})
 
         return {
+            **res,
             "answer": res.get("answer", ""),
             "conversation_id": payload.conversation_id or str(uuid.uuid4()),
             "message_id": str(uuid.uuid4()),
@@ -280,7 +282,7 @@ async def chat(
     # Handle non-streaming request
     if not payload.stream:
         try:
-            raw_res = await asyncio.to_thread(execute_query) if not asyncio.iscoroutinefunction(execute_query) else await execute_query()
+            raw_res = execute_query()
             return format_result(raw_res)
         except ValueError as err:
             raise HTTPException(status_code=400, detail=str(err))
@@ -291,9 +293,9 @@ async def chat(
             raise HTTPException(status_code=503, detail="Chat service temporarily unavailable")
 
     # Handle streaming SSE request
-    async def sse_generator():
+    def sse_generator():
         try:
-            raw_res = await execute_query()
+            raw_res = execute_query()
             formatted = format_result(raw_res)
             full_text = formatted["answer"]
 
@@ -302,7 +304,7 @@ async def chat(
             for i, word in enumerate(words):
                 chunk = word + (" " if i < len(words) - 1 else "")
                 yield f"event: delta\ndata: {json.dumps({'text': chunk}, ensure_ascii=False)}\n\n"
-                await asyncio.sleep(0.015)
+                time.sleep(0.015)
 
             # Stream final done event
             yield f"event: done\ndata: {json.dumps(formatted, ensure_ascii=False)}\n\n"
