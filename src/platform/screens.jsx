@@ -514,6 +514,172 @@ function SchemeCard({ scheme, onSelectDetail, onScreenEligibility }) {
   );
 }
 
+export function DashboardPage() {
+  const { data, user, cloudStatus } = usePlatform();
+  const { language } = useLanguage();
+  const t = (key) => translate(language, key);
+  const [liveSchemes, setLiveSchemes] = useState([]);
+
+  useEffect(() => {
+    let active = true;
+    fetchSchemes()
+      .then((res) => {
+        if (active && res?.schemes?.length) {
+          setLiveSchemes(res.schemes);
+        }
+      })
+      .catch(() => {});
+    return () => { active = false; };
+  }, []);
+
+  const requestedSupport = assistanceOptions.filter((option) => (data.assistanceTypes || []).includes(option.id));
+  const displaySchemes = liveSchemes.length > 0 ? liveSchemes.slice(0, 3) : demoSchemes.slice(0, 3);
+
+  return (
+    <div className="page-content dashboard-page">
+      <PageHeading
+        eyebrow={t('dashboard.eyebrow')}
+        title={t('dashboard.hello')}
+        description={t('dashboard.subtitle')}
+        action={<span className="guest-pill"><ShieldCheck size={15} /> {t('common.guest')}</span>}
+      />
+      <DemoNotice>{user ? t('profile.accountNotice') : undefined}</DemoNotice>
+      <section className="profile-summary">
+        <div>
+          <span className="eyebrow">{t('dashboard.startingPoint')}</span>
+          <h2>
+            {data.answers?.relationship
+              ? `${answerLabel(data.answers.relationship, language)}${data.answers.state ? ` · ${data.answers.state}` : ''}`
+              : t('dashboard.emptySummary')}
+          </h2>
+          <p>{requestedSupport.length ? requestedSupport.map((option) => t(option.title)).join(' · ') : t('dashboard.chooseSupport')}</p>
+          <small>{t('dashboard.discoveryDisclaimer')}</small>
+        </div>
+        <Link to={data.assessmentComplete ? '/assessment/review' : '/start/role'} className="text-link">
+          {data.assessmentComplete ? t('common.edit') : t('nav.start')} <ArrowRight size={15} />
+        </Link>
+      </section>
+      <div className="dashboard-highlight">
+        <div>
+          <span className="eyebrow">{t('dashboard.match')}</span>
+          <h2>{t('dashboard.explore')}</h2>
+          <p>{t('dashboard.exploreHelp')}</p>
+        </div>
+        <Link to="/schemes" className="button button-primary">
+          {t('dashboard.exploreSchemes')} <ArrowRight size={16} />
+        </Link>
+      </div>
+      <section className="dashboard-section">
+        <div className="section-title-row">
+          <div>
+            <span className="eyebrow">{t('dashboard.govSupport')}</span>
+            <h2>{t('dashboard.match')}</h2>
+          </div>
+          <Link className="text-link" to="/schemes">
+            {t('dashboard.viewAll')} <ArrowRight size={15} />
+          </Link>
+        </div>
+        <div className="scheme-grid compact-schemes">
+          {displaySchemes.map((scheme) => (
+            <SchemeCard scheme={scheme} key={scheme.id} />
+          ))}
+        </div>
+      </section>
+      <div className="dashboard-two-col">
+        <section className="content-card">
+          <span className="eyebrow">{t('dashboard.next')}</span>
+          <h2>{t('dashboard.startConfirm')}</h2>
+          <ul className="next-step-list">
+            <li>
+              <span>1</span>
+              <div>
+                <strong>{t('dashboard.review')}</strong>
+                <small>{t('dashboard.reviewHelp')}</small>
+              </div>
+            </li>
+            <li>
+              <span>2</span>
+              <div>
+                <strong>{t('dashboard.gather')}</strong>
+                <small>{t('dashboard.gatherHelp')}</small>
+              </div>
+            </li>
+            <li>
+              <span>3</span>
+              <div>
+                <strong>{t('dashboard.verify')}</strong>
+                <small>{t('dashboard.verifyHelp')}</small>
+              </div>
+            </li>
+          </ul>
+          <Link className="button button-outline" to="/assessment/review">
+            {t('dashboard.completeAssessment')} <ArrowRight size={16} />
+          </Link>
+        </section>
+        <section className="dashboard-side-stack">
+          <article className="content-card progress-card">
+            <span className="eyebrow">{t('dashboard.progress')}</span>
+            <h2>{data.assessmentComplete ? t('dashboard.assessmentReviewed') : t('dashboard.assessmentProgress')}</h2>
+            <div className="progress-track">
+              <span
+                style={{
+                  width: data.assessmentComplete
+                    ? '100%'
+                    : data.assessmentStep
+                    ? `${Math.round((data.assessmentStep / questionDefinitions.length) * 100)}%`
+                    : '8%',
+                }}
+              />
+            </div>
+            <p>{user && ['ready', 'saved'].includes(cloudStatus) ? t('cloud.account') : t('dashboard.localProgress')}</p>
+            <Link className="text-link" to={data.assessmentAccessGranted ? '/assessment' : '/assessment/access'}>
+              {t('dashboard.continueAssessment')} <ArrowRight size={15} />
+            </Link>
+          </article>
+          <article className="assistant-promo">
+            <span className="assist-icon"><Sparkles size={20} /></span>
+            <div>
+              <h2>{t('dashboard.ai')}</h2>
+              <p>{t('dashboard.aiHelp')}</p>
+              <Link className="text-link" to="/assistant">
+                {t('dashboard.ask')} <ArrowRight size={15} />
+              </Link>
+            </div>
+          </article>
+        </section>
+      </div>
+    </div>
+  );
+}
+
+export function NgoPage() {
+  const { language } = useLanguage();
+  const descriptions = ['ngos.ics', 'ngos.cpaa', 'ngos.cansupport', 'ngos.cuddles'];
+  return (
+    <div className="page-content">
+      <PageHeading
+        eyebrow={translate(language, 'ngos.eyebrow')}
+        title={translate(language, 'page.ngos')}
+        description={translate(language, 'ngos.description')}
+      />
+      <DemoNotice>{translate(language, 'ngos.demo')}</DemoNotice>
+      <div className="ngo-grid">
+        {demoOrganizations.map((organization, index) => (
+          <article className="content-card ngo-card" key={organization.name}>
+            <span className="support-icon-small"><HeartHandshake size={18} /></span>
+            <span className="status-chip">{translate(language, 'ngos.listing')}</span>
+            <h2>{organization.name}</h2>
+            <p>{translate(language, descriptions[index])}</p>
+            <Link className="button button-outline" to="/assistant">
+              {translate(language, 'ngos.ask')} <ArrowRight size={16} />
+            </Link>
+          </article>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 export function SchemesPage() {
   const { language } = useLanguage();
   const { data } = usePlatform();
