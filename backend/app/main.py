@@ -277,8 +277,20 @@ def chat(
         normalized_sources = []
         for s in raw_sources:
             if isinstance(s, dict):
+                title = (
+                    s.get("source_reference")
+                    or s.get("title")
+                    or s.get("claim_text")
+                    or "Evidence"
+                )
+                locator = s.get("source_locator")
+                if isinstance(locator, str) and locator.startswith("Page "):
+                    title = f"{title} - {locator}"
+                source_status = s.get("source_status")
+                if source_status and "unverified" in str(source_status).lower():
+                    title = f"{title} (Unverified source)"
                 normalized_sources.append({
-                    "title": s.get("source_url") or s.get("title") or s.get("claim_text", "Official Evidence"),
+                    "title": title,
                     "url": s.get("source_url") or s.get("url", ""),
                 })
             elif isinstance(s, str):

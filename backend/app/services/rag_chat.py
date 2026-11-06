@@ -4,11 +4,14 @@ from app.services.llm_service import generate_answer, validate_cited_answer
 
 
 def chat_with_neravu(question: str, language: str = "en"):
+    from app.services.hybrid_rag import is_recommendation_request
+
+    is_recommendation = is_recommendation_request(question)
     # Retrieve and rerank relevant knowledge chunks
     chunks = hybrid_retrieve(
         question=question,
-        candidate_count=15,
-        top_k=5,
+        candidate_count=30,
+        top_k=15 if is_recommendation else 5,
     )
 
     if not chunks:
@@ -37,6 +40,7 @@ def chat_with_neravu(question: str, language: str = "en"):
                     "source_reference": chunk.get("source_reference"),
                     "source_url": chunk.get("source_url"),
                     "source_locator": chunk.get("source_locator"),
+                    "source_status": chunk.get("source_status"),
                 }
                 for chunk in chunks
             ],
@@ -44,6 +48,11 @@ def chat_with_neravu(question: str, language: str = "en"):
             "disclaimer": "This service cannot determine official eligibility.",
         }
 
+    has_unverified_evidence = any(
+        "unverified" in str(chunk.get("source_status", "")).lower()
+        or "unverified" in str(chunk.get("chunk_text", "")[:250]).lower()
+        for chunk in chunks
+    )
     return {
         "answer": answer,
         "language": language,
@@ -55,13 +64,23 @@ def chat_with_neravu(question: str, language: str = "en"):
                 "source_url": chunk.get("source_url"),
                 "source_locator": chunk.get("source_locator"),
                 "field_path": chunk.get("field_path"),
+                "source_status": chunk.get("source_status"),
                 "excerpt": chunk.get("chunk_text", "")[:500],
             }
             for index, chunk in enumerate(chunks, start=1)
         ],
-        "verification_status": "published_evidence",
+        "verification_status": (
+            "mixed_evidence_includes_unverified"
+            if has_unverified_evidence
+            else "published_evidence"
+        ),
         "disclaimer": (
-            "This answer is grounded in currently published, reviewed programme evidence. "
-            "Confirm eligibility and current rules with the official issuing authority."
+            "Some cited information comes from unverified directory, legacy, or user-provided "
+            "documents. Confirm it with the linked official source before acting."
+            if has_unverified_evidence
+            else (
+                "This answer is grounded in currently published, reviewed programme evidence. "
+                "Confirm eligibility and current rules with the official issuing authority."
+            )
         ),
     }

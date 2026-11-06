@@ -1,0 +1,2695 @@
+{
+  "formatVersion": 1,
+  "sourceWorkbooks": [
+    "cancer_insurances_with_12_stepwise_procedures.xlsx",
+    "Neravu_India_Cancer_Support_Directory.xlsx"
+  ],
+  "sourceSnapshot": "2026-11",
+  "counts": {
+    "applicationJourneys": 94,
+    "journeyProgrammes": 12,
+    "governmentDirectoryEntries": 10,
+    "researchProgrammes": 13,
+    "schemes": 19
+  },
+  "sourceSheetCounts": {
+    "schemeJourneys": {
+      "Journey Summary": 12,
+      "Application Journey": 94,
+      "Patient Document Checklist": 16,
+      "Sheet2": 13,
+      "Sheet1": 12,
+      "Source Verification": 27,
+      "Research Audit": 14
+    },
+    "supportDirectory": {
+      "Read Me": 12,
+      "NGO Directory": 16,
+      "Government Schemes": 10,
+      "State Tracker": 28,
+      "Source Register": 16,
+      "Dropdown Values": 13
+    }
+  },
+  "ngoDirectory": [
+    {
+      "Organisation Name": "Cancer Patients Aid Association (CPAA)",
+      "Organisation Type": "NGO",
+      "State / UT Coverage": "Maharashtra; Delhi; Pune; broader referrals subject to programme",
+      "City / District": "Mumbai; Delhi; Pune",
+      "Support Type": "Direct financial aid; medical aid; screening; rehabilitation; counselling",
+      "What Support Is Offered": "Total Management of Cancer programme; financial and medical assistance, early detection, rehabilitation and counselling for underprivileged patients.",
+      "Direct Financial Aid?": "Yes – programme-based",
+      "Aid Amount / Limit": "Case-by-case; confirm current amount and eligibility",
+      "Eligibility / Patient Group": "Underprivileged cancer patients; programme-specific assessment",
+      "Hospital / Geographic Restrictions": "Confirm current city chapter and programme availability",
+      "Contact Phone": "022 2492 4000 (Mumbai); 011 2627 0470 / 2627 2298 (Delhi); 73787 59707 (Pune)",
+      "Contact Email": "cpaamumbai@cancer.org.in; cpaadelhi@cancer.org.in; cpaapune@cancer.org.in",
+      "Address": "Registered Office: Sumer Kendra, Worli, Mumbai 400018; Delhi: Chittaranjan Park, New Delhi 110019",
+      "Official Website / Apply Link": "https://cancer.org.in/",
+      "Application / Referral Route": "Contact relevant branch and request patient-assistance assessment; ask for current documents and hospital restrictions.",
+      "Verification Status": "Official source checked; current aid availability to confirm",
+      "Last Checked": "2026-11-05T00:00:00",
+      "Source / Evidence Notes": "Official CPAA site lists branch contact details; national support directory describes financial/medical aid."
+    },
+    {
+      "Organisation Name": "Indian Cancer Society (ICS) – Cancer Cure",
+      "Organisation Type": "NGO / charitable programme",
+      "State / UT Coverage": "Multiple states through empanelled hospitals",
+      "City / District": "Multiple cities",
+      "Support Type": "Treatment-cost support; patient assistance",
+      "What Support Is Offered": "Cancer Cure programme provides financial support for initial cancer treatment for eligible patients at empanelled hospitals.",
+      "Direct Financial Aid?": "Yes – eligibility-based",
+      "Aid Amount / Limit": "Prior research record: family income up to ₹4 lakh/year; up to ₹5 lakh; BMT up to ₹8 lakh. Reconfirm current programme limits.",
+      "Eligibility / Patient Group": "Income and hospital criteria apply; general-ward / initial-treatment conditions were described in prior programme notes; confirm latest rules.",
+      "Hospital / Geographic Restrictions": "Only participating/empanelled hospitals; confirm current list",
+      "Contact Phone": "Not recovered in current source",
+      "Contact Email": "Not recovered in current source",
+      "Address": "Not recovered in current source",
+      "Official Website / Apply Link": "https://www.indiancancersociety.org/what-do-we-do/cancer-cure",
+      "Application / Referral Route": "Use Cancer Cure programme page; contact ICS to confirm application intake, documents and current empanelled hospital list.",
+      "Verification Status": "Official programme page checked; amount/criteria require reconfirmation",
+      "Last Checked": "2026-11-05T00:00:00",
+      "Source / Evidence Notes": "Official Cancer Cure page; amount and income limit are from prior research notes and must be revalidated."
+    },
+    {
+      "Organisation Name": "Cuddles Foundation",
+      "Organisation Type": "NGO",
+      "State / UT Coverage": "Multiple states; hospital partner network",
+      "City / District": "Multiple partner hospitals including AP, Assam, Chhattisgarh, Karnataka, Kerala, MP, Rajasthan, Tamil Nadu, Telangana, UP, WB and others",
+      "Support Type": "Nutrition support; nutrition counselling; food supplements",
+      "What Support Is Offered": "Personalised nutritional aid for underprivileged children undergoing cancer treatment; support is delivered through partner hospitals.",
+      "Direct Financial Aid?": "No direct cash grant confirmed",
+      "Aid Amount / Limit": "In-kind nutrition support; no cash amount published",
+      "Eligibility / Patient Group": "Children with cancer; hospital-based referral",
+      "Hospital / Geographic Restrictions": "Partner hospitals only; check current hospital list",
+      "Contact Phone": "022 3513 8288",
+      "Contact Email": "info@cuddlesfoundation.org",
+      "Address": "Unit 5, 2nd Floor, Brady Gladys Plaza, 1/447 Senapati Bapat Marg, Lower Parel, Mumbai 400013",
+      "Official Website / Apply Link": "https://www.cuddlesfoundation.org/contact-us/",
+      "Application / Referral Route": "Ask treating hospital social worker/nutrition team or contact Cuddles; confirm partner hospital and referral procedure.",
+      "Verification Status": "Official source checked",
+      "Last Checked": "2026-11-05T00:00:00",
+      "Source / Evidence Notes": "Official contact page and hospital network page. Does not describe a general cash grant."
+    },
+    {
+      "Organisation Name": "CanKids...KidsCan",
+      "Organisation Type": "NGO / Section 8 non-profit",
+      "State / UT Coverage": "National; state projects across many states",
+      "City / District": "Multiple cities; regional offices and hospital support units",
+      "Support Type": "Childhood cancer patient navigation; treatment access; accommodation; family support; psychosocial support",
+      "What Support Is Offered": "YANA / holistic support; navigator connects child and family to support; care centres and home-away-from-home accommodation.",
+      "Direct Financial Aid?": "Not a general unrestricted cash grant; case-based financial protection/support may be facilitated",
+      "Aid Amount / Limit": "Case-specific; no single national amount published",
+      "Eligibility / Patient Group": "Children with cancer and their families",
+      "Hospital / Geographic Restrictions": "Centres, projects and hospital support units; confirm service availability in patient's city",
+      "Contact Phone": "9953591578",
+      "Contact Email": "info@cankidsindia.org",
+      "Address": "Regional/state offices; see official website for current locations",
+      "Official Website / Apply Link": "https://cankidsindia.org/the-help-we-give/",
+      "Application / Referral Route": "Contact CanKids and request a patient navigator; provide diagnosis, treating hospital and location.",
+      "Verification Status": "Official source checked",
+      "Last Checked": "2026-11-05T00:00:00",
+      "Source / Evidence Notes": "Official help page provides patient navigator contact. Support finder lists state schemes and local routes."
+    },
+    {
+      "Organisation Name": "St. Jude India ChildCare Centres",
+      "Organisation Type": "Section 8 non-profit",
+      "State / UT Coverage": "Multiple cities: Mumbai, Delhi, Chennai, Kolkata, Jaipur, Hyderabad, Vellore, Varanasi, Guwahati and others",
+      "City / District": "Multiple centres",
+      "Support Type": "Free accommodation; food; transport; holistic family support",
+      "What Support Is Offered": "Safe accommodation and support for underprivileged families travelling for a child's cancer treatment; not direct treatment-cost funding.",
+      "Direct Financial Aid?": "No",
+      "Aid Amount / Limit": "Free in-kind services; no cash amount",
+      "Eligibility / Patient Group": "Children receiving cancer treatment and accompanying families",
+      "Hospital / Geographic Restrictions": "Only where centre exists and eligibility is met; confirm vacancy",
+      "Contact Phone": "022 45452600; centre-specific contacts on website",
+      "Contact Email": "contact@stjudechild.org",
+      "Address": "Head office / Cotton Green Campus, Mumbai; centre addresses listed online",
+      "Official Website / Apply Link": "https://stjudechild.org/centers/",
+      "Application / Referral Route": "Contact nearest centre and ask for admission/referral, required medical and income documents, and vacancy.",
+      "Verification Status": "Official centre directory checked",
+      "Last Checked": "2026-11-05T00:00:00",
+      "Source / Evidence Notes": "Official centres page provides centre locations and contact details."
+    },
+    {
+      "Organisation Name": "CanSupport",
+      "Organisation Type": "NGO / registered society",
+      "State / UT Coverage": "Delhi; Haryana; Punjab; Uttar Pradesh; Jharkhand; Himachal Pradesh; Maharashtra (Pune)",
+      "City / District": "Delhi NCR; Amritsar; Bathinda; Jamshedpur; Shimla; Pune districts",
+      "Support Type": "Free home-based palliative care; pain management; counselling; day care; hospital resource facilitation",
+      "What Support Is Offered": "Free palliative care, nursing, counselling, bereavement support and help accessing government schemes/resources.",
+      "Direct Financial Aid?": "No direct cash grant confirmed",
+      "Aid Amount / Limit": "Free services; resource facilitation amounts vary",
+      "Eligibility / Patient Group": "Cancer patients needing palliative/supportive care; geographic service-area restrictions",
+      "Hospital / Geographic Restrictions": "Service availability limited to listed districts/teams",
+      "Contact Phone": "011 4101 0539; 98990 11212; Amritsar 9501887956; Bathinda 9315905178; helpline 1800 202 7777",
+      "Contact Email": "info@cansupport.org",
+      "Address": "60/2D, Ground & First Floor, Indian Oil Bhawan Compound, Yusuf Sarai, New Delhi 110016",
+      "Official Website / Apply Link": "https://cansupport.org/contact-us/",
+      "Application / Referral Route": "Call local team / national palliative helpline and request home-care or hospital outreach referral.",
+      "Verification Status": "Official source checked",
+      "Last Checked": "2026-11-05T00:00:00",
+      "Source / Evidence Notes": "Official site describes current reach across seven states and 2025–26 service figures."
+    },
+    {
+      "Organisation Name": "Pallium India",
+      "Organisation Type": "NGO / charitable trust",
+      "State / UT Coverage": "National; based in Kerala",
+      "City / District": "Thiruvananthapuram; partner network",
+      "Support Type": "Palliative care; pain relief; training; advocacy",
+      "What Support Is Offered": "Free palliative care and pain relief services; professional training and policy advocacy.",
+      "Direct Financial Aid?": "No general treatment cash grant confirmed",
+      "Aid Amount / Limit": "Service-based; confirm local service availability",
+      "Eligibility / Patient Group": "Patients requiring palliative care and pain relief",
+      "Hospital / Geographic Restrictions": "Local service reach / referral arrangements may vary",
+      "Contact Phone": "Not recovered in current source",
+      "Contact Email": "Not recovered in current source",
+      "Address": "Thiruvananthapuram, Kerala",
+      "Official Website / Apply Link": "https://palliumindia.org/",
+      "Application / Referral Route": "Contact organisation for local service/referral details.",
+      "Verification Status": "Secondary directory plus official website lead; contact to confirm",
+      "Last Checked": "2026-11-05T00:00:00",
+      "Source / Evidence Notes": "National support directory describes services; official homepage link included for follow-up."
+    },
+    {
+      "Organisation Name": "Dhanvantari Cancer Foundation",
+      "Organisation Type": "NGO",
+      "State / UT Coverage": "Andhra Pradesh and Telangana",
+      "City / District": "Hyderabad; AP and Telangana service reach",
+      "Support Type": "Direct financial aid; government-scheme navigation; medicine support; counselling; palliative care; hospital referral",
+      "What Support Is Offered": "Website advertises NGO patient fund, CSR grants, free oncology medicines and help accessing PM-JAY/Aarogyasri/NTR Vaidya Seva.",
+      "Direct Financial Aid?": "Yes – advertised, subject to funds and assessment",
+      "Aid Amount / Limit": "Website advertises ₹10,000–₹75,000 patient fund and ₹25,000–₹2,00,000 CSR grants; verify availability before referral.",
+      "Eligibility / Patient Group": "Cancer patients in AP/Telangana; website says support regardless of income, but case assessment applies",
+      "Hospital / Geographic Restrictions": "Partner hospitals and fund availability; confirm exact district coverage",
+      "Contact Phone": "+91 82470 94634",
+      "Contact Email": "Not recovered",
+      "Address": "Headquartered in Hyderabad; full postal address not captured",
+      "Official Website / Apply Link": "https://www.dhanvantaricancerfoundation.org/financial-aid",
+      "Application / Referral Route": "Patient registration / apply for financial aid through official site; call/WhatsApp helpline.",
+      "Verification Status": "Official website checked; programme amounts are self-published and require direct confirmation",
+      "Last Checked": "2026-11-05T00:00:00",
+      "Source / Evidence Notes": "Organisation's own website; independently verify registration, disbursement and live fund status before production use."
+    },
+    {
+      "Organisation Name": "Bengal Cancer Foundation",
+      "Organisation Type": "NGO / charitable foundation",
+      "State / UT Coverage": "West Bengal",
+      "City / District": "Bardhaman (Nababhat)",
+      "Support Type": "Financial assistance; logistical support; counselling; rehabilitation; prostheses/wigs; supportive care",
+      "What Support Is Offered": "Patient-support programmes include financial/logistical help for underprivileged patients.",
+      "Direct Financial Aid?": "Yes – advertised; current funds to confirm",
+      "Aid Amount / Limit": "No fixed amount published",
+      "Eligibility / Patient Group": "Underprivileged cancer patients; case assessment",
+      "Hospital / Geographic Restrictions": "Confirm service area and current application intake",
+      "Contact Phone": "Not recovered",
+      "Contact Email": "Not recovered",
+      "Address": "Nababhat, Bardhaman, West Bengal",
+      "Official Website / Apply Link": "Not recovered – confirm official website from organisation",
+      "Application / Referral Route": "Contact organisation directly; request current patient-aid form, documents and funding status.",
+      "Verification Status": "Prior state research summary; direct confirmation required",
+      "Last Checked": "2026-11-05T00:00:00",
+      "Source / Evidence Notes": "Previously researched local lead; no current official URL/contact recovered in this workbook build."
+    },
+    {
+      "Organisation Name": "Kalpana Datta Foundation for Cancer Care (KDFCC)",
+      "Organisation Type": "NGO / foundation",
+      "State / UT Coverage": "West Bengal",
+      "City / District": "South 24 Parganas",
+      "Support Type": "Monetary assistance; cancer awareness; screening; family support",
+      "What Support Is Offered": "Website previously described monetary assistance to families affected by cancer, plus awareness/screening.",
+      "Direct Financial Aid?": "Yes – advertised; current funds to confirm",
+      "Aid Amount / Limit": "No fixed amount published",
+      "Eligibility / Patient Group": "Cancer-affected families; eligibility not published in recovered notes",
+      "Hospital / Geographic Restrictions": "Confirm district reach and current programme",
+      "Contact Phone": "Not recovered",
+      "Contact Email": "Not recovered",
+      "Address": "Dakshin Gobindapur, South 24 Parganas, West Bengal",
+      "Official Website / Apply Link": "Not recovered – confirm official website from organisation",
+      "Application / Referral Route": "Contact foundation and confirm current application process and documents.",
+      "Verification Status": "Prior state research summary; direct confirmation required",
+      "Last Checked": "2026-11-05T00:00:00",
+      "Source / Evidence Notes": "Prior research noted website; exact URL and contacts not recovered."
+    },
+    {
+      "Organisation Name": "Garia Welfare Society",
+      "Organisation Type": "NGO / community organisation",
+      "State / UT Coverage": "West Bengal",
+      "City / District": "Kolkata / rural West Bengal",
+      "Support Type": "Screening; treatment facilitation; referral",
+      "What Support Is Offered": "Cancer detection and treatment facilitation; prior research described a pro-bono treatment linkage with CNCI.",
+      "Direct Financial Aid?": "No direct cash grant confirmed",
+      "Aid Amount / Limit": "Not published",
+      "Eligibility / Patient Group": "Patients referred through programme; confirm current eligibility",
+      "Hospital / Geographic Restrictions": "CNCI-linked route; confirm current arrangement",
+      "Contact Phone": "Not recovered",
+      "Contact Email": "Not recovered",
+      "Address": "Kolkata / West Bengal",
+      "Official Website / Apply Link": "Not recovered – verify official channel",
+      "Application / Referral Route": "Contact organisation and CNCI social-work department to verify referral pathway.",
+      "Verification Status": "Prior state research summary; direct confirmation required",
+      "Last Checked": "2026-11-05T00:00:00",
+      "Source / Evidence Notes": "Do not promise pro-bono treatment until CNCI confirms current arrangement."
+    },
+    {
+      "Organisation Name": "Hitaishini",
+      "Organisation Type": "Volunteer breast-cancer support network",
+      "State / UT Coverage": "West Bengal",
+      "City / District": "Kolkata",
+      "Support Type": "Peer support; counselling; rehabilitation; lymphedema support",
+      "What Support Is Offered": "Breast-cancer patient and survivor support; psychosocial and rehabilitation assistance.",
+      "Direct Financial Aid?": "No direct cash grant confirmed",
+      "Aid Amount / Limit": "Not applicable / not published",
+      "Eligibility / Patient Group": "Breast-cancer patients and survivors; confirm programme details",
+      "Hospital / Geographic Restrictions": "Kolkata-based network; confirm current sessions/referrals",
+      "Contact Phone": "Not recovered",
+      "Contact Email": "Not recovered",
+      "Address": "Associated with Saroj Gupta Cancer Centre, Kolkata",
+      "Official Website / Apply Link": "Not recovered – confirm through associated cancer centre",
+      "Application / Referral Route": "Contact associated cancer centre and ask for current Hitaishini referral/contact.",
+      "Verification Status": "Prior state research summary; direct confirmation required",
+      "Last Checked": "2026-11-05T00:00:00",
+      "Source / Evidence Notes": "Classify as patient-support network, not financial-aid provider."
+    },
+    {
+      "Organisation Name": "Kamlesh Cancer Foundation",
+      "Organisation Type": "NGO / foundation",
+      "State / UT Coverage": "Uttarakhand",
+      "City / District": "Dehradun",
+      "Support Type": "Financial and medical assistance; awareness; patient support",
+      "What Support Is Offered": "Patient-support programmes advertise financial and medical assistance.",
+      "Direct Financial Aid?": "Yes – advertised; current funds to confirm",
+      "Aid Amount / Limit": "No fixed amount published",
+      "Eligibility / Patient Group": "Patient assessment; criteria not captured",
+      "Hospital / Geographic Restrictions": "Confirm geographic reach and current funding",
+      "Contact Phone": "+91 70782 98687",
+      "Contact Email": "kamleshcancerfoundation@gmail.com",
+      "Address": "Dehradun, Uttarakhand",
+      "Official Website / Apply Link": "Not recovered – confirm current official website",
+      "Application / Referral Route": "Call/email and request current patient-assistance process and document list.",
+      "Verification Status": "Prior state research summary; direct confirmation required",
+      "Last Checked": "2026-11-05T00:00:00",
+      "Source / Evidence Notes": "Prior research lead; current funding and exact application URL need reconfirmation."
+    },
+    {
+      "Organisation Name": "Shradha Cancer Care Trust – Ganga Prem Hospice",
+      "Organisation Type": "Charitable trust / hospice",
+      "State / UT Coverage": "Uttarakhand",
+      "City / District": "Raiwala, Rishikesh; home care in Rishikesh, Haridwar and Dehradun",
+      "Support Type": "Free hospice; palliative care; home-based care; caregiver support",
+      "What Support Is Offered": "Free inpatient hospice and home-based palliative support for advanced/terminal cancer patients.",
+      "Direct Financial Aid?": "No cash grant; free care service",
+      "Aid Amount / Limit": "Free service; bed availability and intake to confirm",
+      "Eligibility / Patient Group": "Patients needing palliative/hospice care; clinical intake assessment",
+      "Hospital / Geographic Restrictions": "Hospice and home-care service areas",
+      "Contact Phone": "+91 88822 05278",
+      "Contact Email": "Not recovered",
+      "Address": "Village Gohri Mafi, Tehri Farms, Raiwala, Rishikesh, Uttarakhand 249205",
+      "Official Website / Apply Link": "Not recovered – confirm official site",
+      "Application / Referral Route": "Call hospice and request clinical assessment/admission or home-care referral.",
+      "Verification Status": "Prior state research summary; direct confirmation required",
+      "Last Checked": "2026-11-05T00:00:00",
+      "Source / Evidence Notes": "Prior research described free inpatient hospice and home palliative care; verify current bed availability."
+    },
+    {
+      "Organisation Name": "Can Protect Foundation",
+      "Organisation Type": "NGO / foundation",
+      "State / UT Coverage": "Uttarakhand",
+      "City / District": "Dehradun; remote hill outreach",
+      "Support Type": "Breast/cervical screening; prevention; outreach",
+      "What Support Is Offered": "Screening and prevention programmes; no direct treatment grant confirmed.",
+      "Direct Financial Aid?": "No direct cash grant confirmed",
+      "Aid Amount / Limit": "Not applicable / not published",
+      "Eligibility / Patient Group": "Women reached through screening/outreach",
+      "Hospital / Geographic Restrictions": "Outreach locations vary",
+      "Contact Phone": "+91 94120 54492",
+      "Contact Email": "Not recovered",
+      "Address": "101/D-19 Rajpur Road, Chander Lok Colony, Dehradun 248001",
+      "Official Website / Apply Link": "Not recovered – confirm official channel",
+      "Application / Referral Route": "Contact for screening and referral details.",
+      "Verification Status": "Prior state research summary; direct confirmation required",
+      "Last Checked": "2026-11-05T00:00:00",
+      "Source / Evidence Notes": "Not a confirmed treatment-finance provider."
+    },
+    {
+      "Organisation Name": "Him Samvad Association",
+      "Organisation Type": "NGO / association",
+      "State / UT Coverage": "Uttarakhand",
+      "City / District": "Dehradun",
+      "Support Type": "Awareness; screening; psychosocial support; referrals",
+      "What Support Is Offered": "Oral, cervical and breast cancer awareness/screening and referral support.",
+      "Direct Financial Aid?": "No direct cash grant confirmed",
+      "Aid Amount / Limit": "Not applicable / not published",
+      "Eligibility / Patient Group": "Community members/patients reached by programmes",
+      "Hospital / Geographic Restrictions": "Confirm service area",
+      "Contact Phone": "+91 76339 12694",
+      "Contact Email": "Not recovered",
+      "Address": "1D House, Street 35, Haridwar Road, Shastri Nagar, Dehradun 248001",
+      "Official Website / Apply Link": "Not recovered – confirm official channel",
+      "Application / Referral Route": "Contact for screening/referral programme information.",
+      "Verification Status": "Prior state research summary; direct confirmation required",
+      "Last Checked": "2026-11-05T00:00:00",
+      "Source / Evidence Notes": "Not a confirmed treatment-finance provider."
+    }
+  ],
+  "stateTracker": [
+    {
+      "State": "Andhra Pradesh",
+      "Local NGO Records in This Workbook": "Included",
+      "Known National NGO Coverage / Leads": "Dhanvantari Cancer Foundation; CanKids; Cuddles partner hospitals; St. Jude (Visakhapatnam/Hyderabad)",
+      "State Government Scheme Lead": "Dr NTR Vaidya Seva / state health scheme; verify current package and eligibility",
+      "Research Completeness": "Partial – verify",
+      "Next Action / Verification Notes": "Import the full earlier state research table, validate current activity, contact details, official URL and funding status."
+    },
+    {
+      "State": "Arunachal Pradesh",
+      "Local NGO Records in This Workbook": "Not fully reconstructed",
+      "Known National NGO Coverage / Leads": "CanKids North-East / regional project; verify local NGO and government support",
+      "State Government Scheme Lead": "CMRF / State illness assistance lead; check state-specific rules",
+      "Research Completeness": "Needs record import / verification",
+      "Next Action / Verification Notes": "Import the full earlier state research table, validate current activity, contact details, official URL and funding status."
+    },
+    {
+      "State": "Assam",
+      "Local NGO Records in This Workbook": "Not fully reconstructed",
+      "Known National NGO Coverage / Leads": "CanKids North-East project; St. Jude Guwahati; Cuddles partner hospitals",
+      "State Government Scheme Lead": "Assam Arogya Nidhi; verify current rules",
+      "Research Completeness": "Needs record import / verification",
+      "Next Action / Verification Notes": "Import the full earlier state research table, validate current activity, contact details, official URL and funding status."
+    },
+    {
+      "State": "Bihar",
+      "Local NGO Records in This Workbook": "Not fully reconstructed",
+      "Known National NGO Coverage / Leads": "CanKids Bihar project; St. Jude Muzaffarpur; Cuddles partner hospitals",
+      "State Government Scheme Lead": "CMRF / State illness assistance lead; check state-specific rules",
+      "Research Completeness": "Needs record import / verification",
+      "Next Action / Verification Notes": "Import the full earlier state research table, validate current activity, contact details, official URL and funding status."
+    },
+    {
+      "State": "Chhattisgarh",
+      "Local NGO Records in This Workbook": "Not fully reconstructed",
+      "Known National NGO Coverage / Leads": "CanKids MP/Chhattisgarh project; Cuddles partner hospitals",
+      "State Government Scheme Lead": "CMRF / State illness assistance lead; check state-specific rules",
+      "Research Completeness": "Needs record import / verification",
+      "Next Action / Verification Notes": "Import the full earlier state research table, validate current activity, contact details, official URL and funding status."
+    },
+    {
+      "State": "Goa",
+      "Local NGO Records in This Workbook": "Not fully reconstructed",
+      "Known National NGO Coverage / Leads": "CanKids Goa project",
+      "State Government Scheme Lead": "CMRF / State illness assistance lead; check state-specific rules",
+      "Research Completeness": "Needs record import / verification",
+      "Next Action / Verification Notes": "Import the full earlier state research table, validate current activity, contact details, official URL and funding status."
+    },
+    {
+      "State": "Gujarat",
+      "Local NGO Records in This Workbook": "Not fully reconstructed",
+      "Known National NGO Coverage / Leads": "CanKids Gujarat project; Cuddles partner hospitals",
+      "State Government Scheme Lead": "MA / MA Vatsalya; verify current rules",
+      "Research Completeness": "Needs record import / verification",
+      "Next Action / Verification Notes": "Import the full earlier state research table, validate current activity, contact details, official URL and funding status."
+    },
+    {
+      "State": "Haryana",
+      "Local NGO Records in This Workbook": "Not fully reconstructed",
+      "Known National NGO Coverage / Leads": "CanSupport service area (district-limited); CanKids regional/state project; St. Jude where centre exists",
+      "State Government Scheme Lead": "CMRF / State illness assistance lead; check state-specific rules",
+      "Research Completeness": "Needs record import / verification",
+      "Next Action / Verification Notes": "Import the full earlier state research table, validate current activity, contact details, official URL and funding status."
+    },
+    {
+      "State": "Himachal Pradesh",
+      "Local NGO Records in This Workbook": "Not fully reconstructed",
+      "Known National NGO Coverage / Leads": "CanSupport service area (district-limited); CanKids regional/state project; St. Jude where centre exists",
+      "State Government Scheme Lead": "CMRF / State illness assistance lead; check state-specific rules",
+      "Research Completeness": "Needs record import / verification",
+      "Next Action / Verification Notes": "Import the full earlier state research table, validate current activity, contact details, official URL and funding status."
+    },
+    {
+      "State": "Jharkhand",
+      "Local NGO Records in This Workbook": "Not fully reconstructed",
+      "Known National NGO Coverage / Leads": "CanSupport service area (district-limited); CanKids regional/state project; St. Jude where centre exists",
+      "State Government Scheme Lead": "CMRF / State illness assistance lead; check state-specific rules",
+      "Research Completeness": "Needs record import / verification",
+      "Next Action / Verification Notes": "Import the full earlier state research table, validate current activity, contact details, official URL and funding status."
+    },
+    {
+      "State": "Karnataka",
+      "Local NGO Records in This Workbook": "Not fully reconstructed",
+      "Known National NGO Coverage / Leads": "CanKids Karnataka project; Cuddles partner hospitals; Karunashraya / Bangalore Hospice Trust",
+      "State Government Scheme Lead": "CMRF / State illness assistance lead; check state-specific rules",
+      "Research Completeness": "Needs record import / verification",
+      "Next Action / Verification Notes": "Import the full earlier state research table, validate current activity, contact details, official URL and funding status."
+    },
+    {
+      "State": "Kerala",
+      "Local NGO Records in This Workbook": "Not fully reconstructed",
+      "Known National NGO Coverage / Leads": "Pallium India; CanKids Kerala project; Cuddles partner hospitals",
+      "State Government Scheme Lead": "KASP / Karunya Benevolent Fund; verify current package and eligibility",
+      "Research Completeness": "Needs record import / verification",
+      "Next Action / Verification Notes": "Import the full earlier state research table, validate current activity, contact details, official URL and funding status."
+    },
+    {
+      "State": "Madhya Pradesh",
+      "Local NGO Records in This Workbook": "Not fully reconstructed",
+      "Known National NGO Coverage / Leads": "CanKids MP project; Cuddles partner hospitals",
+      "State Government Scheme Lead": "CMRF / State illness assistance lead; check state-specific rules",
+      "Research Completeness": "Needs record import / verification",
+      "Next Action / Verification Notes": "Import the full earlier state research table, validate current activity, contact details, official URL and funding status."
+    },
+    {
+      "State": "Maharashtra",
+      "Local NGO Records in This Workbook": "Not fully reconstructed",
+      "Known National NGO Coverage / Leads": "CPAA; Indian Cancer Society; Cuddles; St. Jude; CanKids; JASCAP / TMC-linked NGOs",
+      "State Government Scheme Lead": "Mahatma Jyotiba Phule Jan Arogya Yojana; verify current rules",
+      "Research Completeness": "Needs record import / verification",
+      "Next Action / Verification Notes": "Import the full earlier state research table, validate current activity, contact details, official URL and funding status."
+    },
+    {
+      "State": "Manipur",
+      "Local NGO Records in This Workbook": "Not fully reconstructed",
+      "Known National NGO Coverage / Leads": "CanKids North-East / regional project; verify local NGO and government support",
+      "State Government Scheme Lead": "CMRF / State illness assistance lead; check state-specific rules",
+      "Research Completeness": "Needs record import / verification",
+      "Next Action / Verification Notes": "Import the full earlier state research table, validate current activity, contact details, official URL and funding status."
+    },
+    {
+      "State": "Meghalaya",
+      "Local NGO Records in This Workbook": "Not fully reconstructed",
+      "Known National NGO Coverage / Leads": "CanKids North-East / regional project; verify local NGO and government support",
+      "State Government Scheme Lead": "Meghalaya Health Insurance Scheme; verify current rules",
+      "Research Completeness": "Needs record import / verification",
+      "Next Action / Verification Notes": "Import the full earlier state research table, validate current activity, contact details, official URL and funding status."
+    },
+    {
+      "State": "Mizoram",
+      "Local NGO Records in This Workbook": "Not fully reconstructed",
+      "Known National NGO Coverage / Leads": "CanKids North-East / regional project; verify local NGO and government support",
+      "State Government Scheme Lead": "Mizoram Universal HealthCare Scheme; verify current rules",
+      "Research Completeness": "Needs record import / verification",
+      "Next Action / Verification Notes": "Import the full earlier state research table, validate current activity, contact details, official URL and funding status."
+    },
+    {
+      "State": "Nagaland",
+      "Local NGO Records in This Workbook": "Not fully reconstructed",
+      "Known National NGO Coverage / Leads": "CanKids North-East / regional project; verify local NGO and government support",
+      "State Government Scheme Lead": "CMRF / State illness assistance lead; check state-specific rules",
+      "Research Completeness": "Needs record import / verification",
+      "Next Action / Verification Notes": "Import the full earlier state research table, validate current activity, contact details, official URL and funding status."
+    },
+    {
+      "State": "Odisha",
+      "Local NGO Records in This Workbook": "Not fully reconstructed",
+      "Known National NGO Coverage / Leads": "CanKids Odisha project; Cuddles partner hospitals; Bagchi Karunashraya / hospice lead",
+      "State Government Scheme Lead": "Gopabandhu Jana Arogya Yojana; verify current rules",
+      "Research Completeness": "Needs record import / verification",
+      "Next Action / Verification Notes": "Import the full earlier state research table, validate current activity, contact details, official URL and funding status."
+    },
+    {
+      "State": "Punjab",
+      "Local NGO Records in This Workbook": "Not fully reconstructed",
+      "Known National NGO Coverage / Leads": "CanSupport service area (district-limited); CanKids regional/state project; St. Jude where centre exists",
+      "State Government Scheme Lead": "Mukh Mantri Punjab Cancer Rahat Kosh; verify current status and eligibility",
+      "Research Completeness": "Needs record import / verification",
+      "Next Action / Verification Notes": "Import the full earlier state research table, validate current activity, contact details, official URL and funding status."
+    },
+    {
+      "State": "Rajasthan",
+      "Local NGO Records in This Workbook": "Not fully reconstructed",
+      "Known National NGO Coverage / Leads": "CanKids Rajasthan project; St. Jude Jaipur; Cuddles partner hospital",
+      "State Government Scheme Lead": "CMRF / State illness assistance lead; check state-specific rules",
+      "Research Completeness": "Needs record import / verification",
+      "Next Action / Verification Notes": "Import the full earlier state research table, validate current activity, contact details, official URL and funding status."
+    },
+    {
+      "State": "Sikkim",
+      "Local NGO Records in This Workbook": "Not fully reconstructed",
+      "Known National NGO Coverage / Leads": "CanKids North-East / regional project; verify local NGO and government support",
+      "State Government Scheme Lead": "CMRF / State illness assistance lead; check state-specific rules",
+      "Research Completeness": "Needs record import / verification",
+      "Next Action / Verification Notes": "Import the full earlier state research table, validate current activity, contact details, official URL and funding status."
+    },
+    {
+      "State": "Tamil Nadu",
+      "Local NGO Records in This Workbook": "Not fully reconstructed",
+      "Known National NGO Coverage / Leads": "CanKids Tamil Nadu project; St. Jude Chennai/Vellore; Cuddles partner hospitals",
+      "State Government Scheme Lead": "CMRF / State illness assistance lead; check state-specific rules",
+      "Research Completeness": "Needs record import / verification",
+      "Next Action / Verification Notes": "Import the full earlier state research table, validate current activity, contact details, official URL and funding status."
+    },
+    {
+      "State": "Telangana",
+      "Local NGO Records in This Workbook": "Included",
+      "Known National NGO Coverage / Leads": "Dhanvantari Cancer Foundation; CanKids; Cuddles partner hospitals; St. Jude (Visakhapatnam/Hyderabad)",
+      "State Government Scheme Lead": "Rajiv Aarogyasri; verify current package and eligibility",
+      "Research Completeness": "Partial – verify",
+      "Next Action / Verification Notes": "Import the full earlier state research table, validate current activity, contact details, official URL and funding status."
+    },
+    {
+      "State": "Tripura",
+      "Local NGO Records in This Workbook": "Not fully reconstructed",
+      "Known National NGO Coverage / Leads": "CanKids North-East / regional project; verify local NGO and government support",
+      "State Government Scheme Lead": "CMRF / State illness assistance lead; check state-specific rules",
+      "Research Completeness": "Needs record import / verification",
+      "Next Action / Verification Notes": "Import the full earlier state research table, validate current activity, contact details, official URL and funding status."
+    },
+    {
+      "State": "Uttar Pradesh",
+      "Local NGO Records in This Workbook": "Not fully reconstructed",
+      "Known National NGO Coverage / Leads": "CanSupport service area (district-limited); CanKids regional/state project; St. Jude where centre exists",
+      "State Government Scheme Lead": "CMRF / State illness assistance lead; check state-specific rules",
+      "Research Completeness": "Needs record import / verification",
+      "Next Action / Verification Notes": "Import the full earlier state research table, validate current activity, contact details, official URL and funding status."
+    },
+    {
+      "State": "Uttarakhand",
+      "Local NGO Records in This Workbook": "Included",
+      "Known National NGO Coverage / Leads": "Kamlesh Cancer Foundation; Ganga Prem Hospice; Can Protect Foundation; Him Samvad Association; CanKids state project",
+      "State Government Scheme Lead": "Uttarakhand CMRF; Atal Ayushman Uttarakhand",
+      "Research Completeness": "Partial – verify",
+      "Next Action / Verification Notes": "Import the full earlier state research table, validate current activity, contact details, official URL and funding status."
+    },
+    {
+      "State": "West Bengal",
+      "Local NGO Records in This Workbook": "Included",
+      "Known National NGO Coverage / Leads": "Bengal Cancer Foundation; KDFCC; Garia Welfare Society; Hitaishini; CanKids state project; St. Jude Kolkata",
+      "State Government Scheme Lead": "CMRF Health Assistance; Swasthya Sathi; Governor's Welfare Fund; Treatment for Major Ailments",
+      "Research Completeness": "Partial – verify",
+      "Next Action / Verification Notes": "Import the full earlier state research table, validate current activity, contact details, official URL and funding status."
+    }
+  ],
+  "patientDocumentChecklist": [
+    {
+      "Document / Information": "Patient identity proof (Aadhaar / accepted government ID)",
+      "Why It May Be Needed": "Identity and beneficiary verification",
+      "Who Issues / Provides It": "UIDAI / relevant government authority",
+      "Applicable Programmes (check official list)": "PM-JAY; PMNRF; HMDG; HMCPF; DAK; YouWeCan; ICS Cancer Cure; CPAA; others as specified",
+      "Patient Has It?": "☐"
+    },
+    {
+      "Document / Information": "Birth certificate / age proof (paediatric cases)",
+      "Why It May Be Needed": "Age and guardian verification",
+      "Who Issues / Provides It": "Municipal authority / hospital records",
+      "Applicable Programmes (check official list)": "YouWeCan; CanKids; ICS Cancer Cure (paediatric); others as specified",
+      "Patient Has It?": "☐"
+    },
+    {
+      "Document / Information": "Residence / domicile proof",
+      "Why It May Be Needed": "State residence eligibility",
+      "Who Issues / Provides It": "SDM / Revenue authority / voter ID / ration card etc.",
+      "Applicable Programmes (check official list)": "Delhi Arogya Kosh; state schemes; others if required",
+      "Patient Has It?": "☐"
+    },
+    {
+      "Document / Information": "Family income certificate / income proof",
+      "Why It May Be Needed": "Financial eligibility assessment",
+      "Who Issues / Provides It": "SDM / Tehsildar / competent authority / income-tax records",
+      "Applicable Programmes (check official list)": "PMNRF; HMDG; HMCPF; DAK; YouWeCan; ICS Cancer Cure; Tata Trusts; CPAA",
+      "Patient Has It?": "☐"
+    },
+    {
+      "Document / Information": "BPL / ration card / NFSA proof",
+      "Why It May Be Needed": "Poverty-category eligibility",
+      "Who Issues / Provides It": "Food & Civil Supplies / competent authority",
+      "Applicable Programmes (check official list)": "HMCPF; HMDG if required; other state schemes",
+      "Patient Has It?": "☐"
+    },
+    {
+      "Document / Information": "Cancer diagnosis / histopathology / biopsy report",
+      "Why It May Be Needed": "Confirm diagnosis and cancer type",
+      "Who Issues / Provides It": "Treating hospital / pathology laboratory",
+      "Applicable Programmes (check official list)": "All clinical support programmes",
+      "Patient Has It?": "☐"
+    },
+    {
+      "Document / Information": "Staging / imaging / discharge summary",
+      "Why It May Be Needed": "Clinical assessment and treatment history",
+      "Who Issues / Provides It": "Treating hospital",
+      "Applicable Programmes (check official list)": "All clinical support programmes as requested",
+      "Patient Has It?": "☐"
+    },
+    {
+      "Document / Information": "Treating oncologist prescription / treatment plan",
+      "Why It May Be Needed": "Establish proposed care and urgency",
+      "Who Issues / Provides It": "Treating oncologist",
+      "Applicable Programmes (check official list)": "PM-JAY; PMNRF; HMDG; HMCPF; DAK; YouWeCan; ICS Cancer Cure; Tata Trusts",
+      "Patient Has It?": "☐"
+    },
+    {
+      "Document / Information": "Detailed treatment cost estimate",
+      "Why It May Be Needed": "Calculate financial need / package estimate",
+      "Who Issues / Provides It": "Hospital accounts / treating doctor; hospital authority certification where required",
+      "Applicable Programmes (check official list)": "PMNRF; HMDG; HMCPF; DAK; YouWeCan; ICS Cancer Cure; Tata Trusts; CPAA",
+      "Patient Has It?": "☐"
+    },
+    {
+      "Document / Information": "Hospital registration / ward-category proof",
+      "Why It May Be Needed": "Confirm provider and general-ward condition",
+      "Who Issues / Provides It": "Hospital admission office",
+      "Applicable Programmes (check official list)": "ICS Cancer Cure; DAK; other programmes as specified",
+      "Patient Has It?": "☐"
+    },
+    {
+      "Document / Information": "Hospital empanelment / linked-centre confirmation",
+      "Why It May Be Needed": "Confirm provider eligibility",
+      "Who Issues / Provides It": "Programme / hospital directory or hospital social worker",
+      "Applicable Programmes (check official list)": "PM-JAY; ICS Cancer Cure; HMCPF; Tata Trusts",
+      "Patient Has It?": "☐"
+    },
+    {
+      "Document / Information": "Patient photograph",
+      "Why It May Be Needed": "Application identification",
+      "Who Issues / Provides It": "Patient / studio",
+      "Applicable Programmes (check official list)": "Delhi Arogya Kosh; CPAA; other forms as specified",
+      "Patient Has It?": "☐"
+    },
+    {
+      "Document / Information": "Bank passbook / cancelled cheque",
+      "Why It May Be Needed": "Payment or donation-gateway transfer, if applicable",
+      "Who Issues / Provides It": "Bank",
+      "Applicable Programmes (check official list)": "CPAA; some NGO programmes only if requested",
+      "Patient Has It?": "☐"
+    },
+    {
+      "Document / Information": "Parent/guardian ID and consent",
+      "Why It May Be Needed": "Minor application and record-sharing permission",
+      "Who Issues / Provides It": "Parent/guardian",
+      "Applicable Programmes (check official list)": "YouWeCan; CanKids; paediatric cases",
+      "Patient Has It?": "☐"
+    },
+    {
+      "Document / Information": "Other scheme / insurance details",
+      "Why It May Be Needed": "Coordinate benefits and assess exclusions",
+      "Who Issues / Provides It": "Insurer / employer / government scheme portal",
+      "Applicable Programmes (check official list)": "PM-JAY; YouWeCan; HMDG; HMCPF; CPAA; others as specified",
+      "Patient Has It?": "☐"
+    },
+    {
+      "Document / Information": "Signed application / consent / declarations",
+      "Why It May Be Needed": "Formal application and data-sharing permission",
+      "Who Issues / Provides It": "Patient / guardian / programme form",
+      "Applicable Programmes (check official list)": "All application-based programmes",
+      "Patient Has It?": "☐"
+    }
+  ],
+  "patientDocumentChecklistByLanguage": {
+    "mr": [
+      {
+        "Document / Information": "रुग्णाच्या ओळखीचा पुरावा (आधार / स्वीकृत शासकीय ओळखपत्र)",
+        "Why It May Be Needed": "ओळख आणि लाभार्थी पडताळणी",
+        "Who Issues / Provides It": "UIDAI / संबंधित सरकारी प्राधिकरण",
+        "Applicable Programmes (check official list)": "पीएम-जेएवाय; पीएमएनआरएफ; एचएमडीजी; एचएमसीपीएफ; डीएके; यूवीकॅन; आयसीएस कॅन्सर क्युअर; सीपीएए; निर्दिष्ट केल्यानुसार इतर",
+        "Patient Has It?": "☐"
+      },
+      {
+        "Document / Information": "जन्म प्रमाणपत्र / वयाचा पुरावा (लहान मुलांच्या बाबतीत)",
+        "Why It May Be Needed": "वय आणि पालकांची पडताळणी",
+        "Who Issues / Provides It": "महानगरपालिका प्राधिकरण / रुग्णालयाच्या नोंदी",
+        "Applicable Programmes (check official list)": "YouWeCan; CanKids; ICS Cancer Cure (बालरोग); निर्दिष्ट केल्यानुसार इतर",
+        "Patient Has It?": "☐"
+      },
+      {
+        "Document / Information": "रहिवासी / अधिवासाचा पुरावा",
+        "Why It May Be Needed": "राज्य रहिवासी पात्रता",
+        "Who Issues / Provides It": "एसडीएम / महसूल प्राधिकरण / मतदार ओळखपत्र / शिधावाटप कार्ड इत्यादी.",
+        "Applicable Programmes (check official list)": "दिल्ली आरोग्य कोष; राज्य योजना; आवश्यक असल्यास इतर",
+        "Patient Has It?": "☐"
+      },
+      {
+        "Document / Information": "कौटुंबिक उत्पन्नाचा दाखला / उत्पन्नाचा पुरावा",
+        "Why It May Be Needed": "आर्थिक पात्रतेचे मूल्यांकन",
+        "Who Issues / Provides It": "एसडीएम / तहसीलदार / सक्षम प्राधिकारी / आयकर नोंदी",
+        "Applicable Programmes (check official list)": "पीएमएनआरएफ; एचएमडीजी; एचएमसीपीएफ; डीएके; यूवीकॅन; आयसीएस कॅन्सर क्युअर; टाटा ट्रस्ट्स; सीपीएए",
+        "Patient Has It?": "☐"
+      },
+      {
+        "Document / Information": "बीपीएल / रेशन कार्ड / एनएफएसए पुरावा",
+        "Why It May Be Needed": "दारिद्र्य-श्रेणी पात्रता",
+        "Who Issues / Provides It": "अन्न व नागरी पुरवठा / सक्षम प्राधिकरण",
+        "Applicable Programmes (check official list)": "एचएमसीपीएफ; आवश्यक असल्यास एचएमडीजी; इतर राज्य योजना",
+        "Patient Has It?": "☐"
+      },
+      {
+        "Document / Information": "कर्करोगाचे निदान / ऊतकविकृतीशास्त्र / बायोप्सी अहवाल",
+        "Why It May Be Needed": "निदान आणि कर्करोगाचा प्रकार निश्चित करा",
+        "Who Issues / Provides It": "उपचार करणारे रुग्णालय / पॅथॉलॉजी प्रयोगशाळा",
+        "Applicable Programmes (check official list)": "सर्व क्लिनिकल सपोर्ट प्रोग्राम्स",
+        "Patient Has It?": "☐"
+      },
+      {
+        "Document / Information": "स्टेजिंग / इमेजिंग / डिस्चार्ज सारांश",
+        "Why It May Be Needed": "वैद्यकीय मूल्यांकन आणि उपचारांचा इतिहास",
+        "Who Issues / Provides It": "उपचार रुग्णालय",
+        "Applicable Programmes (check official list)": "विनंतीनुसार सर्व क्लिनिकल सपोर्ट प्रोग्राम्स",
+        "Patient Has It?": "☐"
+      },
+      {
+        "Document / Information": "उपचार करणाऱ्या कर्करोगतज्ञांचे औषध / उपचार योजना",
+        "Why It May Be Needed": "प्रस्तावित काळजी आणि तातडीची गरज निश्चित करा.",
+        "Who Issues / Provides It": "उपचार करणारे ऑन्कोलॉजिस्ट",
+        "Applicable Programmes (check official list)": "पीएम-जेएवाय; पीएमएनआरएफ; एचएमडीजी; एचएमसीपीएफ; डीएके; यूवीकॅन; आयसीएस कॅन्सर क्युअर; टाटा ट्रस्ट्स",
+        "Patient Has It?": "☐"
+      },
+      {
+        "Document / Information": "उपचाराच्या खर्चाचा सविस्तर अंदाज",
+        "Why It May Be Needed": "आर्थिक गरजेची गणना करा / पॅकेजचा अंदाज",
+        "Who Issues / Provides It": "रुग्णालयाचा हिशोब / उपचार करणारे डॉक्टर; आवश्यक असल्यास रुग्णालय प्राधिकरणाचे प्रमाणीकरण",
+        "Applicable Programmes (check official list)": "पीएमएनआरएफ; एचएमडीजी; एचएमसीपीएफ; डीएके; यूवीकॅन; आयसीएस कॅन्सर क्युअर; टाटा ट्रस्ट्स; सीपीएए",
+        "Patient Has It?": "☐"
+      },
+      {
+        "Document / Information": "रुग्णालय नोंदणी / वॉर्ड-श्रेणीचा पुरावा",
+        "Why It May Be Needed": "प्रदाता आणि सामान्य वॉर्डची स्थिती निश्चित करा",
+        "Who Issues / Provides It": "रुग्णालय प्रवेश कार्यालय",
+        "Applicable Programmes (check official list)": "आयसीएस कॅन्सर क्युअर; डीएके; निर्दिष्ट केल्यानुसार इतर कार्यक्रम",
+        "Patient Has It?": "☐"
+      },
+      {
+        "Document / Information": "रुग्णालयाची सूचीमध्ये नोंदणी / संलग्न-केंद्राची पुष्टी",
+        "Why It May Be Needed": "प्रदात्याची पात्रता निश्चित करा",
+        "Who Issues / Provides It": "कार्यक्रम / रुग्णालयाची निर्देशिका किंवा रुग्णालयातील सामाजिक कार्यकर्ता",
+        "Applicable Programmes (check official list)": "पीएम-जेएवाय; आयसीएस कॅन्सर क्युअर; एचएमसीपीएफ; टाटा ट्रस्ट्स",
+        "Patient Has It?": "☐"
+      },
+      {
+        "Document / Information": "रुग्णाचे छायाचित्र",
+        "Why It May Be Needed": "अर्जाची ओळख",
+        "Who Issues / Provides It": "रुग्ण / स्टुडिओ",
+        "Applicable Programmes (check official list)": "दिल्ली आरोग्य कोष; CPAA; विनिर्दिष्ट केल्यानुसार इतर स्वरूपे",
+        "Patient Has It?": "☐"
+      },
+      {
+        "Document / Information": "बँक पासबुक / रद्द केलेला चेक",
+        "Why It May Be Needed": "लागू असल्यास, पेमेंट किंवा डोनेशन-गेटवे ट्रान्सफर.",
+        "Who Issues / Provides It": "बँक",
+        "Applicable Programmes (check official list)": "CPAA; काही स्वयंसेवी संस्थांचे कार्यक्रम फक्त विनंती केल्यासच",
+        "Patient Has It?": "☐"
+      },
+      {
+        "Document / Information": "पालक/पालकांचे ओळखपत्र आणि संमती",
+        "Why It May Be Needed": "अल्पवयीन अर्ज आणि रेकॉर्ड-शेअरिंग परवानगी",
+        "Who Issues / Provides It": "पालक/पालक",
+        "Applicable Programmes (check official list)": "YouWeCan; CanKids; बालरोग प्रकरणे",
+        "Patient Has It?": "☐"
+      },
+      {
+        "Document / Information": "इतर योजना / विम्याचा तपशील",
+        "Why It May Be Needed": "लाभांमध्ये समन्वय साधा आणि वगळलेल्या बाबींचे मूल्यांकन करा",
+        "Who Issues / Provides It": "विमा कंपनी / नियोक्ता / सरकारी योजना पोर्टल",
+        "Applicable Programmes (check official list)": "पीएम-जेएवाय; यूवीकॅन; एचएमडीजी; एचएमसीपीएफ; सीपीएए; निर्दिष्ट केल्यानुसार इतर",
+        "Patient Has It?": "☐"
+      },
+      {
+        "Document / Information": "स्वाक्षरी केलेला अर्ज / संमती / घोषणापत्रे",
+        "Why It May Be Needed": "औपचारिक अर्ज आणि डेटा-शेअरिंग परवानगी",
+        "Who Issues / Provides It": "रुग्ण / पालक / कार्यक्रम अर्ज",
+        "Applicable Programmes (check official list)": "सर्व अर्ज-आधारित कार्यक्रम",
+        "Patient Has It?": "☐"
+      }
+    ],
+    "bn": [
+      {
+        "Document / Information": "রোগীর পরিচয়পত্র (আধার / স্বীকৃত সরকারি পরিচয়পত্র)",
+        "Why It May Be Needed": "পরিচয় এবং সুবিধাভোগী যাচাইকরণ",
+        "Who Issues / Provides It": "UIDAI / সংশ্লিষ্ট সরকারি কর্তৃপক্ষ",
+        "Applicable Programmes (check official list)": "পিএম-জেএওয়াই; পিএমএনআরএফ; এইচএমডিজি; এইচএমসিপিএফ; ডিএকে; ইউউইক্যান; আইসিএস ক্যান্সার কিওর; সিপিএএ; এবং অন্যান্য যেমন নির্দিষ্ট করা হয়েছে",
+        "Patient Has It?": "☐"
+      },
+      {
+        "Document / Information": "জন্ম সনদ / বয়সের প্রমাণপত্র (শিশুদের ক্ষেত্রে)",
+        "Why It May Be Needed": "বয়স এবং অভিভাবক যাচাইকরণ",
+        "Who Issues / Provides It": "পৌর কর্তৃপক্ষ / হাসপাতালের রেকর্ড",
+        "Applicable Programmes (check official list)": "ইউউইক্যান; ক্যানকিডস; আইসিএস ক্যান্সার কিওর (শিশুদের জন্য); এবং নির্দিষ্ট অন্যান্য।",
+        "Patient Has It?": "☐"
+      },
+      {
+        "Document / Information": "বাসস্থান / আবাসস্থলের প্রমাণ",
+        "Why It May Be Needed": "রাজ্যের বাসিন্দা হওয়ার যোগ্যতা",
+        "Who Issues / Provides It": "এসডিএম / রাজস্ব কর্তৃপক্ষ / ভোটার আইডি / রেশন কার্ড ইত্যাদি।",
+        "Applicable Programmes (check official list)": "দিল্লি আরোগ্য কোষ; রাজ্য প্রকল্পসমূহ; প্রয়োজন হলে অন্যান্য।",
+        "Patient Has It?": "☐"
+      },
+      {
+        "Document / Information": "পারিবারিক আয়ের শংসাপত্র / আয়ের প্রমাণ",
+        "Why It May Be Needed": "আর্থিক যোগ্যতার মূল্যায়ন",
+        "Who Issues / Provides It": "এসডিএম / তহসিলদার / উপযুক্ত কর্তৃপক্ষ / আয়কর রেকর্ড",
+        "Applicable Programmes (check official list)": "পিএমএনআরএফ; এইচএমডিজি; এইচএমসিপিএফ; ডিএকে; ইউউইক্যান; আইসিএস ক্যান্সার কিওর; টাটা ট্রাস্টস; সিপিএএ",
+        "Patient Has It?": "☐"
+      },
+      {
+        "Document / Information": "বিপিএল / রেশন কার্ড / এনএফএসএ প্রমাণপত্র",
+        "Why It May Be Needed": "দারিদ্র্য-শ্রেণী যোগ্যতা",
+        "Who Issues / Provides It": "খাদ্য ও বেসামরিক সরবরাহ / উপযুক্ত কর্তৃপক্ষ",
+        "Applicable Programmes (check official list)": "এইচএমসিপিএফ; প্রয়োজন হলে এইচএমডিজি; অন্যান্য রাষ্ট্রীয় প্রকল্প",
+        "Patient Has It?": "☐"
+      },
+      {
+        "Document / Information": "ক্যান্সার নির্ণয় / হিস্টোপ্যাথলজি / বায়োপসি রিপোর্ট",
+        "Why It May Be Needed": "রোগ নির্ণয় এবং ক্যান্সারের ধরণ নিশ্চিত করুন",
+        "Who Issues / Provides It": "চিকিৎসাকারী হাসপাতাল / প্যাথলজি ল্যাবরেটরি",
+        "Applicable Programmes (check official list)": "সমস্ত ক্লিনিকাল সহায়তা প্রোগ্রাম",
+        "Patient Has It?": "☐"
+      },
+      {
+        "Document / Information": "স্টেজিং / ইমেজিং / ডিসচার্জ সারাংশ",
+        "Why It May Be Needed": "ক্লিনিকাল মূল্যায়ন এবং চিকিৎসার ইতিহাস",
+        "Who Issues / Provides It": "চিকিৎসাকারী হাসপাতাল",
+        "Applicable Programmes (check official list)": "অনুরোধ অনুযায়ী সকল ক্লিনিক্যাল সহায়তা কর্মসূচি",
+        "Patient Has It?": "☐"
+      },
+      {
+        "Document / Information": "ক্যান্সার বিশেষজ্ঞের ব্যবস্থাপত্র / চিকিৎসা পরিকল্পনা",
+        "Why It May Be Needed": "প্রস্তাবিত চিকিৎসা ও তার জরুরি অবস্থা প্রতিষ্ঠা করুন",
+        "Who Issues / Provides It": "চিকিৎসাকারী ক্যান্সার বিশেষজ্ঞ",
+        "Applicable Programmes (check official list)": "পিএম-জেএওয়াই; পিএমএনআরএফ; এইচএমডিজি; এইচএমসিপিএফ; ডিএকে; ইউউইক্যান; আইসিএস ক্যান্সার কিওর; টাটা ট্রাস্টস",
+        "Patient Has It?": "☐"
+      },
+      {
+        "Document / Information": "চিকিৎসার খরচের বিস্তারিত অনুমান",
+        "Why It May Be Needed": "আর্থিক প্রয়োজন / প্যাকেজের আনুমানিক হিসাব গণনা করুন",
+        "Who Issues / Provides It": "হাসপাতালের হিসাব / চিকিৎসাকারী ডাক্তার; প্রয়োজন অনুযায়ী হাসপাতাল কর্তৃপক্ষের প্রত্যয়নপত্র",
+        "Applicable Programmes (check official list)": "পিএমএনআরএফ; এইচএমডিজি; এইচএমসিপিএফ; ডিএকে; ইউউইক্যান; আইসিএস ক্যান্সার কিওর; টাটা ট্রাস্টস; সিপিএএ",
+        "Patient Has It?": "☐"
+      },
+      {
+        "Document / Information": "হাসপাতাল নিবন্ধন / ওয়ার্ড-শ্রেণী প্রমাণ",
+        "Why It May Be Needed": "প্রদানকারী এবং সাধারণ ওয়ার্ডের অবস্থা নিশ্চিত করুন",
+        "Who Issues / Provides It": "হাসপাতাল ভর্তি অফিস",
+        "Applicable Programmes (check official list)": "আইসিএস ক্যান্সার নিরাময়; ডিএকে; এবং নির্দিষ্ট অন্যান্য কর্মসূচিসমূহ",
+        "Patient Has It?": "☐"
+      },
+      {
+        "Document / Information": "হাসপাতাল তালিকাভুক্তি / সংযুক্ত-কেন্দ্র নিশ্চিতকরণ",
+        "Why It May Be Needed": "প্রদানকারীর যোগ্যতা নিশ্চিত করুন",
+        "Who Issues / Provides It": "প্রোগ্রাম / হাসপাতালের ডিরেক্টরি বা হাসপাতালের সমাজকর্মী",
+        "Applicable Programmes (check official list)": "পিএম-জেএওয়াই; আইসিএস ক্যান্সার নিরাময়; এইচএমসিপিএফ; টাটা ট্রাস্টস",
+        "Patient Has It?": "☐"
+      },
+      {
+        "Document / Information": "রোগীর ছবি",
+        "Why It May Be Needed": "অ্যাপ্লিকেশন শনাক্তকরণ",
+        "Who Issues / Provides It": "রোগী / স্টুডিও",
+        "Applicable Programmes (check official list)": "দিল্লি আরোগ্য কোষ; সিপিএএ; নির্দিষ্ট অন্যান্য ফর্ম",
+        "Patient Has It?": "☐"
+      },
+      {
+        "Document / Information": "ব্যাংক পাসবুক / বাতিল চেক",
+        "Why It May Be Needed": "প্রযোজ্য ক্ষেত্রে অর্থপ্রদান বা অনুদান-গেটওয়ে স্থানান্তর।",
+        "Who Issues / Provides It": "ব্যাংক",
+        "Applicable Programmes (check official list)": "সিপিএএ; অনুরোধ করা হলে কিছু এনজিও কর্মসূচি।",
+        "Patient Has It?": "☐"
+      },
+      {
+        "Document / Information": "অভিভাবক/অভিভাবিকার পরিচয়পত্র এবং সম্মতি",
+        "Why It May Be Needed": "অপ্রাপ্তবয়স্কদের আবেদন এবং রেকর্ড শেয়ার করার অনুমতি",
+        "Who Issues / Provides It": "অভিভাবক/অভিভাবিকা",
+        "Applicable Programmes (check official list)": "YouWeCan; CanKids; শিশুরোগ সংক্রান্ত কেস",
+        "Patient Has It?": "☐"
+      },
+      {
+        "Document / Information": "অন্যান্য স্কিম / বীমার বিবরণ",
+        "Why It May Be Needed": "সুবিধাসমূহের সমন্বয় সাধন করুন এবং বর্জন মূল্যায়ন করুন",
+        "Who Issues / Provides It": "বীমাকারী / নিয়োগকর্তা / সরকারি প্রকল্প পোর্টাল",
+        "Applicable Programmes (check official list)": "পিএম-জেএওয়াই; ইউউইক্যান; এইচএমডিজি; এইচএমসিপিএফ; সিপিএএ; এবং নির্দিষ্ট অন্যান্য।",
+        "Patient Has It?": "☐"
+      },
+      {
+        "Document / Information": "স্বাক্ষরিত আবেদনপত্র / সম্মতি / ঘোষণাপত্র",
+        "Why It May Be Needed": "আনুষ্ঠানিক আবেদন এবং তথ্য-শেয়ার করার অনুমতি",
+        "Who Issues / Provides It": "রোগী / অভিভাবক / প্রোগ্রাম ফর্ম",
+        "Applicable Programmes (check official list)": "সমস্ত আবেদন-ভিত্তিক প্রোগ্রাম",
+        "Patient Has It?": "☐"
+      }
+    ],
+    "kn": [
+      {
+        "Document / Information": "ರೋಗಿಯ ಗುರುತಿನ ಪುರಾವೆ (ಆಧಾರ್ / ಸ್ವೀಕೃತ ಸರ್ಕಾರಿ ಐಡಿ)",
+        "Why It May Be Needed": "ಗುರುತು ಮತ್ತು ಫಲಾನುಭವಿ ಪರಿಶೀಲನೆ",
+        "Who Issues / Provides It": "ಯುಐಡಿಎಐ / ಸಂಬಂಧಿತ ಸರ್ಕಾರಿ ಪ್ರಾಧಿಕಾರ",
+        "Applicable Programmes (check official list)": "PM-JAY; PMNRF; HMDG; HMCPF; DAK; YouWeCan; ICS ಕ್ಯಾನ್ಸರ್ ಚಿಕಿತ್ಸೆ; CPAA; ನಿರ್ದಿಷ್ಟಪಡಿಸಿದಂತೆ ಇತರರು",
+        "Patient Has It?": "☐ (ಆಂಟೋ)"
+      },
+      {
+        "Document / Information": "ಜನನ ಪ್ರಮಾಣಪತ್ರ / ವಯಸ್ಸಿನ ಪುರಾವೆ (ಮಕ್ಕಳ ಪ್ರಕರಣಗಳು)",
+        "Why It May Be Needed": "ವಯಸ್ಸು ಮತ್ತು ಪೋಷಕರ ಪರಿಶೀಲನೆ",
+        "Who Issues / Provides It": "ಪುರಸಭೆ ಪ್ರಾಧಿಕಾರ / ಆಸ್ಪತ್ರೆ ದಾಖಲೆಗಳು",
+        "Applicable Programmes (check official list)": "YouWeCan; CanKids; ICS ಕ್ಯಾನ್ಸರ್ ಚಿಕಿತ್ಸೆ (ಮಕ್ಕಳ ಚಿಕಿತ್ಸೆ); ನಿರ್ದಿಷ್ಟಪಡಿಸಿದ ಇತರ ಚಿಕಿತ್ಸೆಗಳು",
+        "Patient Has It?": "☐ (ಆಂಟೋ)"
+      },
+      {
+        "Document / Information": "ನಿವಾಸ / ನಿವಾಸ ಪುರಾವೆ",
+        "Why It May Be Needed": "ರಾಜ್ಯ ನಿವಾಸ ಅರ್ಹತೆ",
+        "Who Issues / Provides It": "SDM / ಕಂದಾಯ ಪ್ರಾಧಿಕಾರ / ಮತದಾರರ ಗುರುತಿನ ಚೀಟಿ / ಪಡಿತರ ಚೀಟಿ ಇತ್ಯಾದಿ.",
+        "Applicable Programmes (check official list)": "ದೆಹಲಿ ಆರೋಗ್ಯ ಕೋಶ್; ರಾಜ್ಯ ಯೋಜನೆಗಳು; ಅಗತ್ಯವಿದ್ದರೆ ಇತರರು",
+        "Patient Has It?": "☐ (ಆಂಟೋ)"
+      },
+      {
+        "Document / Information": "ಕುಟುಂಬ ಆದಾಯ ಪ್ರಮಾಣಪತ್ರ / ಆದಾಯ ಪುರಾವೆ",
+        "Why It May Be Needed": "ಆರ್ಥಿಕ ಅರ್ಹತಾ ಮೌಲ್ಯಮಾಪನ",
+        "Who Issues / Provides It": "ಎಸ್‌ಡಿಎಂ / ತಹಶೀಲ್ದಾರ್ / ಸಕ್ಷಮ ಪ್ರಾಧಿಕಾರ / ಆದಾಯ ತೆರಿಗೆ ದಾಖಲೆಗಳು",
+        "Applicable Programmes (check official list)": "PMNRF; HMDG; HMCPF; DAK; YouWeCan; ICS ಕ್ಯಾನ್ಸರ್ ಚಿಕಿತ್ಸೆ; ಟಾಟಾ ಟ್ರಸ್ಟ್‌ಗಳು; CPAA",
+        "Patient Has It?": "☐ (ಆಂಟೋ)"
+      },
+      {
+        "Document / Information": "ಬಿಪಿಎಲ್ / ಪಡಿತರ ಚೀಟಿ / ಎನ್‌ಎಫ್‌ಎಸ್‌ಎ ಪುರಾವೆ",
+        "Why It May Be Needed": "ಬಡತನ-ವರ್ಗದ ಅರ್ಹತೆ",
+        "Who Issues / Provides It": "ಆಹಾರ ಮತ್ತು ನಾಗರಿಕ ಸರಬರಾಜು / ಸಕ್ಷಮ ಪ್ರಾಧಿಕಾರ",
+        "Applicable Programmes (check official list)": "HMCPF; ಅಗತ್ಯವಿದ್ದರೆ HMDG; ಇತರ ರಾಜ್ಯ ಯೋಜನೆಗಳು",
+        "Patient Has It?": "☐ (ಆಂಟೋ)"
+      },
+      {
+        "Document / Information": "ಕ್ಯಾನ್ಸರ್ ರೋಗನಿರ್ಣಯ / ಹಿಸ್ಟೋಪಾಥಾಲಜಿ / ಬಯಾಪ್ಸಿ ವರದಿ",
+        "Why It May Be Needed": "ರೋಗನಿರ್ಣಯ ಮತ್ತು ಕ್ಯಾನ್ಸರ್ ಪ್ರಕಾರವನ್ನು ದೃಢೀಕರಿಸಿ",
+        "Who Issues / Provides It": "ಚಿಕಿತ್ಸೆ ನೀಡುವ ಆಸ್ಪತ್ರೆ / ರೋಗಶಾಸ್ತ್ರ ಪ್ರಯೋಗಾಲಯ",
+        "Applicable Programmes (check official list)": "ಎಲ್ಲಾ ಕ್ಲಿನಿಕಲ್ ಬೆಂಬಲ ಕಾರ್ಯಕ್ರಮಗಳು",
+        "Patient Has It?": "☐ (ಆಂಟೋ)"
+      },
+      {
+        "Document / Information": "ಹಂತ / ಚಿತ್ರಣ / ಡಿಸ್ಚಾರ್ಜ್ ಸಾರಾಂಶ",
+        "Why It May Be Needed": "ಕ್ಲಿನಿಕಲ್ ಮೌಲ್ಯಮಾಪನ ಮತ್ತು ಚಿಕಿತ್ಸೆಯ ಇತಿಹಾಸ",
+        "Who Issues / Provides It": "ಚಿಕಿತ್ಸೆ ನೀಡುತ್ತಿರುವ ಆಸ್ಪತ್ರೆ",
+        "Applicable Programmes (check official list)": "ವಿನಂತಿಸಿದಂತೆ ಎಲ್ಲಾ ಕ್ಲಿನಿಕಲ್ ಬೆಂಬಲ ಕಾರ್ಯಕ್ರಮಗಳು",
+        "Patient Has It?": "☐ (ಆಂಟೋ)"
+      },
+      {
+        "Document / Information": "ಆಂಕೊಲಾಜಿಸ್ಟ್ ಪ್ರಿಸ್ಕ್ರಿಪ್ಷನ್ / ಚಿಕಿತ್ಸಾ ಯೋಜನೆಗೆ ಚಿಕಿತ್ಸೆ ನೀಡುವುದು",
+        "Why It May Be Needed": "ಪ್ರಸ್ತಾವಿತ ಆರೈಕೆ ಮತ್ತು ತುರ್ತುಸ್ಥಿತಿಯನ್ನು ಸ್ಥಾಪಿಸಿ",
+        "Who Issues / Provides It": "ಆಂಕೊಲಾಜಿಸ್ಟ್‌ಗೆ ಚಿಕಿತ್ಸೆ ನೀಡಲಾಗುತ್ತಿದೆ",
+        "Applicable Programmes (check official list)": "PM-JAY; PMNRF; HMDG; HMCPF; DAK; YouWeCan; ICS ಕ್ಯಾನ್ಸರ್ ಚಿಕಿತ್ಸೆ; ಟಾಟಾ ಟ್ರಸ್ಟ್‌ಗಳು",
+        "Patient Has It?": "☐ (ಆಂಟೋ)"
+      },
+      {
+        "Document / Information": "ವಿವರವಾದ ಚಿಕಿತ್ಸಾ ವೆಚ್ಚದ ಅಂದಾಜು",
+        "Why It May Be Needed": "ಹಣಕಾಸಿನ ಅಗತ್ಯ / ಪ್ಯಾಕೇಜ್ ಅಂದಾಜನ್ನು ಲೆಕ್ಕಹಾಕಿ",
+        "Who Issues / Provides It": "ಆಸ್ಪತ್ರೆ ಖಾತೆಗಳು / ಚಿಕಿತ್ಸೆ ನೀಡುವ ವೈದ್ಯರು; ಅಗತ್ಯವಿರುವಲ್ಲಿ ಆಸ್ಪತ್ರೆ ಪ್ರಾಧಿಕಾರದ ಪ್ರಮಾಣೀಕರಣ",
+        "Applicable Programmes (check official list)": "PMNRF; HMDG; HMCPF; DAK; YouWeCan; ICS ಕ್ಯಾನ್ಸರ್ ಚಿಕಿತ್ಸೆ; ಟಾಟಾ ಟ್ರಸ್ಟ್‌ಗಳು; CPAA",
+        "Patient Has It?": "☐ (ಆಂಟೋ)"
+      },
+      {
+        "Document / Information": "ಆಸ್ಪತ್ರೆ ನೋಂದಣಿ / ವಾರ್ಡ್-ವರ್ಗ ಪುರಾವೆ",
+        "Why It May Be Needed": "ಪೂರೈಕೆದಾರರ ಮತ್ತು ಸಾಮಾನ್ಯ ವಾರ್ಡ್‌ನ ಸ್ಥಿತಿಯನ್ನು ದೃಢೀಕರಿಸಿ",
+        "Who Issues / Provides It": "ಆಸ್ಪತ್ರೆ ದಾಖಲಾತಿ ಕಚೇರಿ",
+        "Applicable Programmes (check official list)": "ಐಸಿಎಸ್ ಕ್ಯಾನ್ಸರ್ ಚಿಕಿತ್ಸೆ; ಡಿಎಕೆ; ನಿರ್ದಿಷ್ಟಪಡಿಸಿದ ಇತರ ಕಾರ್ಯಕ್ರಮಗಳು",
+        "Patient Has It?": "☐ (ಆಂಟೋ)"
+      },
+      {
+        "Document / Information": "ಆಸ್ಪತ್ರೆ ನೋಂದಣಿ / ಲಿಂಕ್ಡ್-ಸೆಂಟರ್ ದೃಢೀಕರಣ",
+        "Why It May Be Needed": "ಪೂರೈಕೆದಾರರ ಅರ್ಹತೆಯನ್ನು ದೃಢೀಕರಿಸಿ",
+        "Who Issues / Provides It": "ಕಾರ್ಯಕ್ರಮ / ಆಸ್ಪತ್ರೆ ಡೈರೆಕ್ಟರಿ ಅಥವಾ ಆಸ್ಪತ್ರೆ ಸಮಾಜ ಸೇವಕ",
+        "Applicable Programmes (check official list)": "ಪಿಎಂ-ಜೆಎವೈ; ಐಸಿಎಸ್ ಕ್ಯಾನ್ಸರ್ ಚಿಕಿತ್ಸೆ; ಎಚ್‌ಎಂಸಿಪಿಎಫ್; ಟಾಟಾ ಟ್ರಸ್ಟ್ಸ್",
+        "Patient Has It?": "☐ (ಆಂಟೋ)"
+      },
+      {
+        "Document / Information": "ರೋಗಿಯ ಛಾಯಾಚಿತ್ರ",
+        "Why It May Be Needed": "ಅರ್ಜಿ ಗುರುತಿಸುವಿಕೆ",
+        "Who Issues / Provides It": "ರೋಗಿ / ಸ್ಟುಡಿಯೋ",
+        "Applicable Programmes (check official list)": "ದೆಹಲಿ ಆರೋಗ್ಯ ಕೋಶ್; ಸಿಪಿಎಎ; ನಿರ್ದಿಷ್ಟಪಡಿಸಿದ ಇತರ ರೂಪಗಳು",
+        "Patient Has It?": "☐ (ಆಂಟೋ)"
+      },
+      {
+        "Document / Information": "ಬ್ಯಾಂಕ್ ಪಾಸ್‌ಬುಕ್ / ರದ್ದಾದ ಚೆಕ್",
+        "Why It May Be Needed": "ಅನ್ವಯವಾಗಿದ್ದರೆ, ಪಾವತಿ ಅಥವಾ ದೇಣಿಗೆ-ಗೇಟ್‌ವೇ ವರ್ಗಾವಣೆ",
+        "Who Issues / Provides It": "ಬ್ಯಾಂಕ್",
+        "Applicable Programmes (check official list)": "ಸಿಪಿಎಎ; ಕೆಲವು ಎನ್‌ಜಿಒ ಕಾರ್ಯಕ್ರಮಗಳು ವಿನಂತಿಸಿದರೆ ಮಾತ್ರ.",
+        "Patient Has It?": "☐ (ಆಂಟೋ)"
+      },
+      {
+        "Document / Information": "ಪೋಷಕರು/ಪೋಷಕರ ಐಡಿ ಮತ್ತು ಒಪ್ಪಿಗೆ",
+        "Why It May Be Needed": "ಸಣ್ಣ ಅರ್ಜಿ ಮತ್ತು ದಾಖಲೆ ಹಂಚಿಕೆ ಅನುಮತಿ",
+        "Who Issues / Provides It": "ಪೋಷಕರು/ಪೋಷಕರು",
+        "Applicable Programmes (check official list)": "YouWeCan; ಮಕ್ಕಳ ಮೇಲೆ ದೌರ್ಜನ್ಯ; ಮಕ್ಕಳ ಪ್ರಕರಣಗಳು",
+        "Patient Has It?": "☐ (ಆಂಟೋ)"
+      },
+      {
+        "Document / Information": "ಇತರ ಯೋಜನೆ / ವಿಮಾ ವಿವರಗಳು",
+        "Why It May Be Needed": "ಪ್ರಯೋಜನಗಳನ್ನು ಸಂಯೋಜಿಸಿ ಮತ್ತು ಹೊರಗಿಡುವಿಕೆಗಳನ್ನು ನಿರ್ಣಯಿಸಿ",
+        "Who Issues / Provides It": "ವಿಮಾದಾರರು / ಉದ್ಯೋಗದಾತರು / ಸರ್ಕಾರಿ ಯೋಜನೆಯ ಪೋರ್ಟಲ್",
+        "Applicable Programmes (check official list)": "PM-JAY; YouWeCan; HMDG; HMCPF; CPAA; ನಿರ್ದಿಷ್ಟಪಡಿಸಿದಂತೆ ಇತರರು",
+        "Patient Has It?": "☐ (ಆಂಟೋ)"
+      },
+      {
+        "Document / Information": "ಸಹಿ ಮಾಡಿದ ಅರ್ಜಿ / ಒಪ್ಪಿಗೆ / ಘೋಷಣೆಗಳು",
+        "Why It May Be Needed": "ಔಪಚಾರಿಕ ಅರ್ಜಿ ಮತ್ತು ಡೇಟಾ ಹಂಚಿಕೆ ಅನುಮತಿ",
+        "Who Issues / Provides It": "ರೋಗಿ / ಪೋಷಕರು / ಕಾರ್ಯಕ್ರಮದ ನಮೂನೆ",
+        "Applicable Programmes (check official list)": "ಎಲ್ಲಾ ಅಪ್ಲಿಕೇಶನ್ ಆಧಾರಿತ ಕಾರ್ಯಕ್ರಮಗಳು",
+        "Patient Has It?": "☐ (ಆಂಟೋ)"
+      }
+    ],
+    "hi": [
+      {
+        "Document / Information": "मरीज़ का पहचान प्रमाण (आधार / स्वीकृत सरकारी ID)",
+        "Why It May Be Needed": "पहचान और लाभार्थी सत्यापन",
+        "Who Issues / Provides It": "यूआईडीएआई / संबंधित सरकारी प्राधिकरण",
+        "Applicable Programmes (check official list)": "PM-JAY; PMNRF; HMDG; HMCPF; DAK; YouWeCan; ICS कैंसर क्योर; CPAA; अन्य जैसा बताया गया है",
+        "Patient Has It?": "☐"
+      },
+      {
+        "Document / Information": "जन्म प्रमाण पत्र / आयु प्रमाण (बच्चों के मामले)",
+        "Why It May Be Needed": "आयु और अभिभावक सत्यापन",
+        "Who Issues / Provides It": "नगरपालिका प्राधिकरण / अस्पताल के रिकॉर्ड",
+        "Applicable Programmes (check official list)": "YouWeCan; CanKids; ICS कैंसर क्योर (बच्चों का); बताए गए अनुसार अन्य",
+        "Patient Has It?": "☐"
+      },
+      {
+        "Document / Information": "निवास / अधिवास प्रमाण",
+        "Why It May Be Needed": "राज्य निवास पात्रता",
+        "Who Issues / Provides It": "SDM / रेवेन्यू अथॉरिटी / वोटर ID / राशन कार्ड वगैरह।",
+        "Applicable Programmes (check official list)": "दिल्ली आरोग्य कोष; राज्य की योजनाएं; ज़रूरत पड़ने पर दूसरी योजनाएं",
+        "Patient Has It?": "☐"
+      },
+      {
+        "Document / Information": "पारिवारिक आय प्रमाण पत्र / आय प्रमाण",
+        "Why It May Be Needed": "वित्तीय पात्रता मूल्यांकन",
+        "Who Issues / Provides It": "एसडीएम / तहसीलदार / सक्षम अधिकारी / आयकर रिकॉर्ड",
+        "Applicable Programmes (check official list)": "PMNRF; HMDG; HMCPF; DAK; YouWeCan; ICS कैंसर क्योर; टाटा ट्रस्ट्स; CPAA",
+        "Patient Has It?": "☐"
+      },
+      {
+        "Document / Information": "बीपीएल / राशन कार्ड / एनएफएसए प्रमाण",
+        "Why It May Be Needed": "गरीबी-श्रेणी की पात्रता",
+        "Who Issues / Provides It": "खाद्य एवं नागरिक आपूर्ति / सक्षम प्राधिकारी",
+        "Applicable Programmes (check official list)": "HMCPF; HMDG अगर ज़रूरी हो; दूसरी राज्य योजनाएं",
+        "Patient Has It?": "☐"
+      },
+      {
+        "Document / Information": "कैंसर डायग्नोसिस / हिस्टोपैथोलॉजी / बायोप्सी रिपोर्ट",
+        "Why It May Be Needed": "डायग्नोसिस और कैंसर टाइप कन्फर्म करें",
+        "Who Issues / Provides It": "उपचार करने वाला अस्पताल / पैथोलॉजी प्रयोगशाला",
+        "Applicable Programmes (check official list)": "सभी नैदानिक सहायता कार्यक्रम",
+        "Patient Has It?": "☐"
+      },
+      {
+        "Document / Information": "स्टेजिंग / इमेजिंग / डिस्चार्ज सारांश",
+        "Why It May Be Needed": "नैदानिक मूल्यांकन और उपचार इतिहास",
+        "Who Issues / Provides It": "उपचार करने वाला अस्पताल",
+        "Applicable Programmes (check official list)": "अनुरोध के अनुसार सभी क्लिनिकल सपोर्ट प्रोग्राम",
+        "Patient Has It?": "☐"
+      },
+      {
+        "Document / Information": "इलाज करने वाले ऑन्कोलॉजिस्ट का प्रिस्क्रिप्शन / ट्रीटमेंट प्लान",
+        "Why It May Be Needed": "प्रस्तावित देखभाल और तात्कालिकता स्थापित करें",
+        "Who Issues / Provides It": "उपचार करने वाले ऑन्कोलॉजिस्ट",
+        "Applicable Programmes (check official list)": "PM-JAY; PMNRF; HMDG; HMCPF; DAK; YouWeCan; ICS कैंसर क्योर; टाटा ट्रस्ट्स",
+        "Patient Has It?": "☐"
+      },
+      {
+        "Document / Information": "विस्तृत उपचार लागत अनुमान",
+        "Why It May Be Needed": "फाइनेंशियल ज़रूरत / पैकेज का अनुमान कैलकुलेट करें",
+        "Who Issues / Provides It": "हॉस्पिटल अकाउंट्स / इलाज करने वाला डॉक्टर; ज़रूरत पड़ने पर हॉस्पिटल अथॉरिटी सर्टिफ़िकेट",
+        "Applicable Programmes (check official list)": "PMNRF; HMDG; HMCPF; DAK; YouWeCan; ICS कैंसर क्योर; टाटा ट्रस्ट्स; CPAA",
+        "Patient Has It?": "☐"
+      },
+      {
+        "Document / Information": "अस्पताल पंजीकरण / वार्ड-श्रेणी प्रमाण",
+        "Why It May Be Needed": "प्रोवाइडर और जनरल वार्ड की स्थिति कन्फर्म करें",
+        "Who Issues / Provides It": "अस्पताल प्रवेश कार्यालय",
+        "Applicable Programmes (check official list)": "ICS कैंसर क्योर; DAK; बताए गए दूसरे प्रोग्राम",
+        "Patient Has It?": "☐"
+      },
+      {
+        "Document / Information": "हॉस्पिटल एम्पैनलमेंट / लिंक्ड-सेंटर कन्फर्मेशन",
+        "Why It May Be Needed": "प्रदाता पात्रता की पुष्टि करें",
+        "Who Issues / Provides It": "प्रोग्राम / हॉस्पिटल डायरेक्टरी या हॉस्पिटल सोशल वर्कर",
+        "Applicable Programmes (check official list)": "PM-JAY; ICS कैंसर क्योर; HMCPF; टाटा ट्रस्ट्स",
+        "Patient Has It?": "☐"
+      },
+      {
+        "Document / Information": "रोगी की तस्वीर",
+        "Why It May Be Needed": "आवेदन पहचान",
+        "Who Issues / Provides It": "रोगी / स्टूडियो",
+        "Applicable Programmes (check official list)": "दिल्ली आरोग्य कोष; CPAA; बताए गए दूसरे फॉर्म",
+        "Patient Has It?": "☐"
+      },
+      {
+        "Document / Information": "बैंक पासबुक / कैंसल चेक",
+        "Why It May Be Needed": "पेमेंट या डोनेशन-गेटवे ट्रांसफर, अगर लागू हो",
+        "Who Issues / Provides It": "किनारा",
+        "Applicable Programmes (check official list)": "CPAA; कुछ NGO प्रोग्राम सिर्फ़ रिक्वेस्ट करने पर",
+        "Patient Has It?": "☐"
+      },
+      {
+        "Document / Information": "माता-पिता/अभिभावक आईडी और सहमति",
+        "Why It May Be Needed": "नाबालिग आवेदन और रिकॉर्ड-शेयरिंग अनुमति",
+        "Who Issues / Provides It": "मातापिता अभिभावक",
+        "Applicable Programmes (check official list)": "YouWeCan; CanKids; बच्चों के मामले",
+        "Patient Has It?": "☐"
+      },
+      {
+        "Document / Information": "अन्य योजना / बीमा विवरण",
+        "Why It May Be Needed": "लाभों का समन्वय करें और बहिष्करणों का आकलन करें",
+        "Who Issues / Provides It": "बीमाकर्ता / नियोक्ता / सरकारी योजना पोर्टल",
+        "Applicable Programmes (check official list)": "PM-JAY; YouWeCan; HMDG; HMCPF; CPAA; अन्य जैसा बताया गया है",
+        "Patient Has It?": "☐"
+      },
+      {
+        "Document / Information": "साइन किया हुआ एप्लीकेशन / सहमति / घोषणाएँ",
+        "Why It May Be Needed": "औपचारिक आवेदन और डेटा-साझाकरण अनुमति",
+        "Who Issues / Provides It": "मरीज़ / अभिभावक / प्रोग्राम फ़ॉर्म",
+        "Applicable Programmes (check official list)": "सभी आवेदन-आधारित कार्यक्रम",
+        "Patient Has It?": "☐"
+      }
+    ],
+    "te": [
+      {
+        "Document / Information": "రోగి గుర్తింపు రుజువు (ఆధార్ / ఆమోదించబడిన ప్రభుత్వ గుర్తింపు కార్డు)",
+        "Why It May Be Needed": "గుర్తింపు మరియు లబ్ధిదారుని ధృవీకరణ",
+        "Who Issues / Provides It": "UIDAI / సంబంధిత ప్రభుత్వ అధికారి",
+        "Applicable Programmes (check official list)": "PM-JAY; PMNRF; HMDG; HMCPF; DAK; YouWeCan; ICS క్యాన్సర్ క్యూర్; CPAA; పేర్కొన్న విధంగా ఇతరులు",
+        "Patient Has It?": "☐"
+      },
+      {
+        "Document / Information": "జనన ధృవీకరణ పత్రం / వయస్సు రుజువు (పిల్లల కేసులు)",
+        "Why It May Be Needed": "వయస్సు మరియు సంరక్షకుని ధృవీకరణ",
+        "Who Issues / Provides It": "మున్సిపల్ అథారిటీ / ఆసుపత్రి రికార్డులు",
+        "Applicable Programmes (check official list)": "YouWeCan; CanKids; ICS క్యాన్సర్ నివారణ (పిల్లల కోసం); పేర్కొన్న విధంగా ఇతరులు",
+        "Patient Has It?": "☐"
+      },
+      {
+        "Document / Information": "నివాస / నివాస ధృవీకరణ పత్రం",
+        "Why It May Be Needed": "రాష్ట్ర నివాస అర్హత",
+        "Who Issues / Provides It": "SDM / రెవెన్యూ అధికారి / ఓటరు ID / రేషన్ కార్డు మొదలైనవి.",
+        "Applicable Programmes (check official list)": "ఢిల్లీ ఆరోగ్య కోష్; రాష్ట్ర పథకాలు; అవసరమైతే ఇతరాలు",
+        "Patient Has It?": "☐"
+      },
+      {
+        "Document / Information": "కుటుంబ ఆదాయ ధృవీకరణ పత్రం / ఆదాయ రుజువు",
+        "Why It May Be Needed": "ఆర్థిక అర్హత మదింపు",
+        "Who Issues / Provides It": "SDM / తహసీల్దార్ / సమర్థ అధికారి / ఆదాయపు పన్ను రికార్డులు",
+        "Applicable Programmes (check official list)": "PMNRF; HMDG; HMCPF; DAK; YouWeCan; ICS క్యాన్సర్ క్యూర్; టాటా ట్రస్ట్స్; CPAA",
+        "Patient Has It?": "☐"
+      },
+      {
+        "Document / Information": "బిపిఎల్ / రేషన్ కార్డు / ఎన్ఎఫ్ఎస్ఏ రుజువు",
+        "Why It May Be Needed": "పేదరిక వర్గం అర్హత",
+        "Who Issues / Provides It": "ఆహార & పౌర సరఫరాలు / సమర్థ అధికారం",
+        "Applicable Programmes (check official list)": "HMCPF; అవసరమైతే HMDG; ఇతర రాష్ట్ర పథకాలు",
+        "Patient Has It?": "☐"
+      },
+      {
+        "Document / Information": "క్యాన్సర్ నిర్ధారణ / హిస్టోపాథాలజీ / బయాప్సీ నివేదిక",
+        "Why It May Be Needed": "వ్యాధి నిర్ధారణ మరియు క్యాన్సర్ రకాన్ని నిర్ధారించండి",
+        "Who Issues / Provides It": "చికిత్స చేసే ఆసుపత్రి / పాథాలజీ ప్రయోగశాల",
+        "Applicable Programmes (check official list)": "అన్ని క్లినికల్ సపోర్ట్ ప్రోగ్రామ్‌లు",
+        "Patient Has It?": "☐"
+      },
+      {
+        "Document / Information": "స్టేజింగ్ / ఇమేజింగ్ / డిశ్చార్జ్ సారాంశం",
+        "Why It May Be Needed": "క్లినికల్ అంచనా మరియు చికిత్స చరిత్ర",
+        "Who Issues / Provides It": "చికిత్స పొందుతున్న ఆసుపత్రి",
+        "Applicable Programmes (check official list)": "అభ్యర్థించిన విధంగా అన్ని క్లినికల్ సపోర్ట్ కార్యక్రమాలు",
+        "Patient Has It?": "☐"
+      },
+      {
+        "Document / Information": "ఆంకాలజిస్ట్ సూచించిన చికిత్స / చికిత్సా ప్రణాళిక",
+        "Why It May Be Needed": "ప్రతిపాదిత సంరక్షణ మరియు ఆవశ్యకతను నిర్ధారించండి",
+        "Who Issues / Provides It": "చికిత్స చేసే ఆంకాలజిస్ట్",
+        "Applicable Programmes (check official list)": "PM-JAY; PMNRF; HMDG; HMCPF; DAK; YouWeCan; ICS క్యాన్సర్ క్యూర్; టాటా ట్రస్ట్స్",
+        "Patient Has It?": "☐"
+      },
+      {
+        "Document / Information": "వివరణాత్మక చికిత్స ఖర్చు అంచనా",
+        "Why It May Be Needed": "ఆర్థిక అవసరం / ప్యాకేజీ అంచనాను లెక్కించండి",
+        "Who Issues / Provides It": "ఆసుపత్రి ఖాతాలు / చికిత్స చేసే వైద్యుడు; అవసరమైన చోట ఆసుపత్రి అధికార ధృవీకరణ పత్రం",
+        "Applicable Programmes (check official list)": "PMNRF; HMDG; HMCPF; DAK; YouWeCan; ICS క్యాన్సర్ క్యూర్; టాటా ట్రస్ట్స్; CPAA",
+        "Patient Has It?": "☐"
+      },
+      {
+        "Document / Information": "ఆసుపత్రి నమోదు / వార్డు-వర్గం రుజువు",
+        "Why It May Be Needed": "ప్రొవైడర్ మరియు జనరల్-వార్డ్ పరిస్థితిని నిర్ధారించండి",
+        "Who Issues / Provides It": "ఆసుపత్రి ప్రవేశ కార్యాలయం",
+        "Applicable Programmes (check official list)": "ఐసిఎస్ క్యాన్సర్ క్యూర్; డిఎకె; పేర్కొన్న ఇతర కార్యక్రమాలు",
+        "Patient Has It?": "☐"
+      },
+      {
+        "Document / Information": "ఆసుపత్రి ఎంప్యానెల్‌మెంట్ / అనుసంధానిత-కేంద్ర నిర్ధారణ",
+        "Why It May Be Needed": "ప్రొవైడర్ అర్హతను నిర్ధారించండి",
+        "Who Issues / Provides It": "కార్యక్రమం / ఆసుపత్రి డైరెక్టరీ లేదా ఆసుపత్రి సామాజిక కార్యకర్త",
+        "Applicable Programmes (check official list)": "పిఎం-జెఎవై; ఐసిఎస్ క్యాన్సర్ క్యూర్; హెచ్‌ఎం‌సిపిఎఫ్; టాటా ట్రస్ట్స్",
+        "Patient Has It?": "☐"
+      },
+      {
+        "Document / Information": "రోగి ఫోటో",
+        "Why It May Be Needed": "అప్లికేషన్ గుర్తింపు",
+        "Who Issues / Provides It": "రోగి / స్టూడియో",
+        "Applicable Programmes (check official list)": "ఢిల్లీ ఆరోగ్య కోష్; సిపిఎఎ; పేర్కొన్న ఇతర రూపాలు",
+        "Patient Has It?": "☐"
+      },
+      {
+        "Document / Information": "బ్యాంకు పాస్‌బుక్ / రద్దు చేయబడిన చెక్కు",
+        "Why It May Be Needed": "వర్తిస్తే, చెల్లింపు లేదా విరాళ-గేట్‌వే బదిలీ",
+        "Who Issues / Provides It": "బ్యాంకు",
+        "Applicable Programmes (check official list)": "సిపిఎఎ; కొన్ని ఎన్జీఓ కార్యక్రమాలు అభ్యర్థించినట్లయితే మాత్రమే",
+        "Patient Has It?": "☐"
+      },
+      {
+        "Document / Information": "తల్లిదండ్రులు/సంరక్షకుని గుర్తింపు మరియు సమ్మతి",
+        "Why It May Be Needed": "చిన్న దరఖాస్తు మరియు రికార్డు-భాగస్వామ్య అనుమతి",
+        "Who Issues / Provides It": "తల్లిదండ్రులు/సంరక్షకుడు",
+        "Applicable Programmes (check official list)": "YouWeCan; CanKids; పీడియాట్రిక్ కేసులు",
+        "Patient Has It?": "☐"
+      },
+      {
+        "Document / Information": "ఇతర పథకం / భీమా వివరాలు",
+        "Why It May Be Needed": "ప్రయోజనాలను సమన్వయం చేయండి మరియు మినహాయింపులను అంచనా వేయండి",
+        "Who Issues / Provides It": "బీమా సంస్థ / యజమాని / ప్రభుత్వ పథకం పోర్టల్",
+        "Applicable Programmes (check official list)": "PM-JAY; YouWeCan; HMDG; HMCPF; CPAA; పేర్కొన్న విధంగా ఇతరులు",
+        "Patient Has It?": "☐"
+      },
+      {
+        "Document / Information": "సంతకం చేసిన దరఖాస్తు / సమ్మతి / ప్రకటనలు",
+        "Why It May Be Needed": "అధికారిక దరఖాస్తు మరియు డేటా-భాగస్వామ్య అనుమతి",
+        "Who Issues / Provides It": "రోగి / సంరక్షకుడు / కార్యక్రమ ఫారం",
+        "Applicable Programmes (check official list)": "అన్ని అప్లికేషన్ ఆధారిత ప్రోగ్రామ్‌లు",
+        "Patient Has It?": "☐"
+      }
+    ],
+    "ur": [
+      {
+        "Document / Information": "مریض کی شناخت کا ثبوت (آدھار / منظور شدہ سرکاری ID)",
+        "Why It May Be Needed": "شناخت اور فائدہ اٹھانے والے کی تصدیق",
+        "Who Issues / Provides It": "UIDAI/ متعلقہ سرکاری اتھارٹی",
+        "Applicable Programmes (check official list)": "PM-JAY; PMNRF؛ ایچ ایم ڈی جی؛ HMCPF؛ ڈی اے کے YouWeCan; ICS کینسر کا علاج؛ CPAA؛ دیگر جیسا کہ بیان کیا گیا ہے۔",
+        "Patient Has It?": "☐"
+      },
+      {
+        "Document / Information": "پیدائش کا سرٹیفکیٹ / عمر کا ثبوت (بچوں کے معاملات)",
+        "Why It May Be Needed": "عمر اور سرپرست کی تصدیق",
+        "Who Issues / Provides It": "میونسپل اتھارٹی / ہسپتال کا ریکارڈ",
+        "Applicable Programmes (check official list)": "YouWeCan; CanKids; آئی سی ایس کینسر کا علاج (بچوں کا علاج)؛ دیگر جیسا کہ بیان کیا گیا ہے۔",
+        "Patient Has It?": "☐"
+      },
+      {
+        "Document / Information": "رہائش / ڈومیسائل کا ثبوت",
+        "Why It May Be Needed": "ریاستی رہائش کی اہلیت",
+        "Who Issues / Provides It": "ایس ڈی ایم / ریونیو اتھارٹی / ووٹر آئی ڈی / راشن کارڈ وغیرہ۔",
+        "Applicable Programmes (check official list)": "دہلی آروگیہ کوش؛ ریاستی اسکیمیں؛ اگر ضرورت ہو تو دوسرے",
+        "Patient Has It?": "☐"
+      },
+      {
+        "Document / Information": "خاندانی آمدنی کا سرٹیفکیٹ / آمدنی کا ثبوت",
+        "Why It May Be Needed": "مالی اہلیت کا اندازہ",
+        "Who Issues / Provides It": "ایس ڈی ایم / تحصیلدار / مجاز اتھارٹی / انکم ٹیکس ریکارڈ",
+        "Applicable Programmes (check official list)": "PMNRF؛ ایچ ایم ڈی جی؛ HMCPF؛ ڈی اے کے YouWeCan; ICS کینسر کا علاج؛ ٹاٹا ٹرسٹ؛ سی پی اے اے",
+        "Patient Has It?": "☐"
+      },
+      {
+        "Document / Information": "بی پی ایل / راشن کارڈ / این ایف ایس اے کا ثبوت",
+        "Why It May Be Needed": "غربت کے زمرے کی اہلیت",
+        "Who Issues / Provides It": "فوڈ اینڈ سول سپلائیز / مجاز اتھارٹی",
+        "Applicable Programmes (check official list)": "HMCPF؛ اگر ضرورت ہو تو HMDG؛ دیگر ریاستی اسکیمیں",
+        "Patient Has It?": "☐"
+      },
+      {
+        "Document / Information": "کینسر کی تشخیص/ہسٹوپیتھولوجی/بایپسی رپورٹ",
+        "Why It May Be Needed": "تشخیص اور کینسر کی قسم کی تصدیق کریں۔",
+        "Who Issues / Provides It": "ہسپتال / پیتھالوجی لیبارٹری کا علاج",
+        "Applicable Programmes (check official list)": "تمام کلینیکل سپورٹ پروگرام",
+        "Patient Has It?": "☐"
+      },
+      {
+        "Document / Information": "اسٹیجنگ / امیجنگ / ڈسچارج کا خلاصہ",
+        "Why It May Be Needed": "کلینیکل تشخیص اور علاج کی تاریخ",
+        "Who Issues / Provides It": "ہسپتال میں زیر علاج",
+        "Applicable Programmes (check official list)": "درخواست کے مطابق تمام طبی امدادی پروگرام",
+        "Patient Has It?": "☐"
+      },
+      {
+        "Document / Information": "آنکولوجسٹ کا علاج کرنے کا نسخہ / علاج کا منصوبہ",
+        "Why It May Be Needed": "مجوزہ دیکھ بھال اور عجلت قائم کریں۔",
+        "Who Issues / Provides It": "آنکولوجسٹ کا علاج",
+        "Applicable Programmes (check official list)": "PM-JAY; PMNRF؛ ایچ ایم ڈی جی؛ HMCPF؛ ڈی اے کے YouWeCan; ICS کینسر کا علاج؛ ٹاٹا ٹرسٹس",
+        "Patient Has It?": "☐"
+      },
+      {
+        "Document / Information": "علاج کی لاگت کا تفصیلی تخمینہ",
+        "Why It May Be Needed": "مالی ضرورت / پیکیج تخمینہ کا حساب لگائیں۔",
+        "Who Issues / Provides It": "ہسپتال کے اکاؤنٹس / علاج کرنے والے ڈاکٹر؛ ہسپتال اتھارٹی سرٹیفیکیشن جہاں ضرورت ہو",
+        "Applicable Programmes (check official list)": "PMNRF؛ ایچ ایم ڈی جی؛ HMCPF؛ ڈی اے کے YouWeCan; ICS کینسر کا علاج؛ ٹاٹا ٹرسٹ؛ سی پی اے اے",
+        "Patient Has It?": "☐"
+      },
+      {
+        "Document / Information": "ہسپتال کی رجسٹریشن / وارڈ کیٹیگری کا ثبوت",
+        "Why It May Be Needed": "فراہم کنندہ اور جنرل وارڈ کی حالت کی تصدیق کریں۔",
+        "Who Issues / Provides It": "ہسپتال میں داخلہ کا دفتر",
+        "Applicable Programmes (check official list)": "ICS کینسر کا علاج؛ ڈی اے کے دوسرے پروگرام جیسا کہ بیان کیا گیا ہے۔",
+        "Patient Has It?": "☐"
+      },
+      {
+        "Document / Information": "ہسپتال کی فہرست / لنکڈ سینٹر کی تصدیق",
+        "Why It May Be Needed": "فراہم کنندہ کی اہلیت کی تصدیق کریں۔",
+        "Who Issues / Provides It": "پروگرام / ہسپتال کی ڈائرکٹری یا ہسپتال کے سماجی کارکن",
+        "Applicable Programmes (check official list)": "PM-JAY; ICS کینسر کا علاج؛ HMCPF؛ ٹاٹا ٹرسٹس",
+        "Patient Has It?": "☐"
+      },
+      {
+        "Document / Information": "مریض کی تصویر",
+        "Why It May Be Needed": "درخواست کی شناخت",
+        "Who Issues / Provides It": "مریض / اسٹوڈیو",
+        "Applicable Programmes (check official list)": "دہلی آروگیہ کوش؛ CPAA؛ دیگر شکلیں جیسا کہ بیان کیا گیا ہے۔",
+        "Patient Has It?": "☐"
+      },
+      {
+        "Document / Information": "بینک پاس بک / منسوخ شدہ چیک",
+        "Why It May Be Needed": "ادائیگی یا عطیہ گیٹ وے کی منتقلی، اگر قابل اطلاق ہو۔",
+        "Who Issues / Provides It": "بینک",
+        "Applicable Programmes (check official list)": "CPAA؛ کچھ این جی او پروگرام صرف اس صورت میں جب درخواست کی جائے۔",
+        "Patient Has It?": "☐"
+      },
+      {
+        "Document / Information": "والدین/سرپرست کی شناخت اور رضامندی۔",
+        "Why It May Be Needed": "معمولی درخواست اور ریکارڈ شیئرنگ کی اجازت",
+        "Who Issues / Provides It": "والدین/سرپرست",
+        "Applicable Programmes (check official list)": "YouWeCan; CanKids; بچوں کے معاملات",
+        "Patient Has It?": "☐"
+      },
+      {
+        "Document / Information": "دیگر اسکیم / انشورنس کی تفصیلات",
+        "Why It May Be Needed": "فوائد کو مربوط کریں اور اخراج کا اندازہ لگائیں۔",
+        "Who Issues / Provides It": "بیمہ کنندہ / آجر / سرکاری اسکیم پورٹل",
+        "Applicable Programmes (check official list)": "PM-JAY; YouWeCan; ایچ ایم ڈی جی؛ HMCPF؛ CPAA؛ دیگر جیسا کہ بیان کیا گیا ہے۔",
+        "Patient Has It?": "☐"
+      },
+      {
+        "Document / Information": "دستخط شدہ درخواست / رضامندی / اعلانات",
+        "Why It May Be Needed": "باضابطہ درخواست اور ڈیٹا شیئرنگ کی اجازت",
+        "Who Issues / Provides It": "مریض/سرپرست/پروگرام فارم",
+        "Applicable Programmes (check official list)": "تمام ایپلیکیشن پر مبنی پروگرام",
+        "Patient Has It?": "☐"
+      }
+    ],
+    "pa": [
+      {
+        "Document / Information": "ਮਰੀਜ਼ ਦੀ ਪਛਾਣ ਦਾ ਸਬੂਤ (ਆਧਾਰ / ਪ੍ਰਵਾਨਿਤ ਸਰਕਾਰੀ ਆਈਡੀ)",
+        "Why It May Be Needed": "ਪਛਾਣ ਅਤੇ ਲਾਭਪਾਤਰੀ ਤਸਦੀਕ",
+        "Who Issues / Provides It": "ਯੂਆਈਡੀਏਆਈ / ਸਬੰਧਤ ਸਰਕਾਰੀ ਅਥਾਰਟੀ",
+        "Applicable Programmes (check official list)": "PM-JAY; PMNRF; HMDG; HMCPF; DAK; YouWeCan; ICS ਕੈਂਸਰ ਕਿਊਰ; CPAA; ਹੋਰ ਜਿਵੇਂ ਕਿ ਨਿਰਧਾਰਤ ਕੀਤਾ ਗਿਆ ਹੈ",
+        "Patient Has It?": "☐"
+      },
+      {
+        "Document / Information": "ਜਨਮ ਸਰਟੀਫਿਕੇਟ / ਉਮਰ ਦਾ ਸਬੂਤ (ਬੱਚਿਆਂ ਦੇ ਮਾਮਲੇ)",
+        "Why It May Be Needed": "ਉਮਰ ਅਤੇ ਸਰਪ੍ਰਸਤ ਦੀ ਤਸਦੀਕ",
+        "Who Issues / Provides It": "ਨਗਰਪਾਲਿਕਾ ਅਥਾਰਟੀ / ਹਸਪਤਾਲ ਦੇ ਰਿਕਾਰਡ",
+        "Applicable Programmes (check official list)": "YouWeCan; CanKids; ICS ਕੈਂਸਰ ਕਿਊਰ (ਬਾਲ ਚਿਕਿਤਸਕ); ਹੋਰ ਜਿਵੇਂ ਕਿ ਦੱਸਿਆ ਗਿਆ ਹੈ",
+        "Patient Has It?": "☐"
+      },
+      {
+        "Document / Information": "ਰਿਹਾਇਸ਼ / ਨਿਵਾਸ ਦਾ ਸਬੂਤ",
+        "Why It May Be Needed": "ਰਾਜ ਨਿਵਾਸ ਯੋਗਤਾ",
+        "Who Issues / Provides It": "ਐਸਡੀਐਮ / ਮਾਲੀਆ ਅਥਾਰਟੀ / ਵੋਟਰ ਆਈਡੀ / ਰਾਸ਼ਨ ਕਾਰਡ ਆਦਿ।",
+        "Applicable Programmes (check official list)": "ਦਿੱਲੀ ਅਰੋਗਿਆ ਕੋਸ਼; ਰਾਜ ਯੋਜਨਾਵਾਂ; ਜੇ ਲੋੜ ਹੋਵੇ ਤਾਂ ਹੋਰ",
+        "Patient Has It?": "☐"
+      },
+      {
+        "Document / Information": "ਪਰਿਵਾਰਕ ਆਮਦਨ ਸਰਟੀਫਿਕੇਟ / ਆਮਦਨ ਦਾ ਸਬੂਤ",
+        "Why It May Be Needed": "ਵਿੱਤੀ ਯੋਗਤਾ ਮੁਲਾਂਕਣ",
+        "Who Issues / Provides It": "ਐਸਡੀਐਮ / ਤਹਿਸੀਲਦਾਰ / ਸਮਰੱਥ ਅਧਿਕਾਰੀ / ਆਮਦਨ-ਟੈਕਸ ਰਿਕਾਰਡ",
+        "Applicable Programmes (check official list)": "ਪੀਐਮਐਨਆਰਐਫ; ਐਚਐਮਡੀਜੀ; ਐਚਐਮਸੀਪੀਐਫ; ਡੀਏਕੇ; ਯੂਵੀਕੈਨ; ਆਈਸੀਐਸ ਕੈਂਸਰ ਕਿਊਰ; ਟਾਟਾ ਟਰੱਸਟ; ਸੀਪੀਏਏ",
+        "Patient Has It?": "☐"
+      },
+      {
+        "Document / Information": "ਬੀਪੀਐਲ / ਰਾਸ਼ਨ ਕਾਰਡ / ਐਨਐਫਐਸਏ ਸਬੂਤ",
+        "Why It May Be Needed": "ਗਰੀਬੀ-ਸ਼੍ਰੇਣੀ ਯੋਗਤਾ",
+        "Who Issues / Provides It": "ਖੁਰਾਕ ਅਤੇ ਸਿਵਲ ਸਪਲਾਈ / ਸਮਰੱਥ ਅਧਿਕਾਰੀ",
+        "Applicable Programmes (check official list)": "ਐਚਐਮਸੀਪੀਐਫ; ਜੇ ਲੋੜ ਹੋਵੇ ਤਾਂ ਐਚਐਮਡੀਜੀ; ਹੋਰ ਰਾਜ ਯੋਜਨਾਵਾਂ",
+        "Patient Has It?": "☐"
+      },
+      {
+        "Document / Information": "ਕੈਂਸਰ ਦੀ ਜਾਂਚ / ਹਿਸਟੋਪੈਥੋਲੋਜੀ / ਬਾਇਓਪਸੀ ਰਿਪੋਰਟ",
+        "Why It May Be Needed": "ਨਿਦਾਨ ਅਤੇ ਕੈਂਸਰ ਦੀ ਕਿਸਮ ਦੀ ਪੁਸ਼ਟੀ ਕਰੋ",
+        "Who Issues / Provides It": "ਇਲਾਜ ਕਰਨ ਵਾਲਾ ਹਸਪਤਾਲ / ਪੈਥੋਲੋਜੀ ਪ੍ਰਯੋਗਸ਼ਾਲਾ",
+        "Applicable Programmes (check official list)": "ਸਾਰੇ ਕਲੀਨਿਕਲ ਸਹਾਇਤਾ ਪ੍ਰੋਗਰਾਮ",
+        "Patient Has It?": "☐"
+      },
+      {
+        "Document / Information": "ਸਟੇਜਿੰਗ / ਇਮੇਜਿੰਗ / ਡਿਸਚਾਰਜ ਸੰਖੇਪ",
+        "Why It May Be Needed": "ਕਲੀਨਿਕਲ ਮੁਲਾਂਕਣ ਅਤੇ ਇਲਾਜ ਦਾ ਇਤਿਹਾਸ",
+        "Who Issues / Provides It": "ਹਸਪਤਾਲ ਵਿੱਚ ਇਲਾਜ",
+        "Applicable Programmes (check official list)": "ਬੇਨਤੀ ਅਨੁਸਾਰ ਸਾਰੇ ਕਲੀਨਿਕਲ ਸਹਾਇਤਾ ਪ੍ਰੋਗਰਾਮ",
+        "Patient Has It?": "☐"
+      },
+      {
+        "Document / Information": "ਓਨਕੋਲੋਜਿਸਟ ਦਾ ਇਲਾਜ ਕਰਨ ਵਾਲਾ ਨੁਸਖ਼ਾ / ਇਲਾਜ ਯੋਜਨਾ",
+        "Why It May Be Needed": "ਪ੍ਰਸਤਾਵਿਤ ਦੇਖਭਾਲ ਅਤੇ ਜ਼ਰੂਰੀਤਾ ਸਥਾਪਤ ਕਰੋ",
+        "Who Issues / Provides It": "ਇਲਾਜ ਕਰ ਰਹੇ ਓਨਕੋਲੋਜਿਸਟ",
+        "Applicable Programmes (check official list)": "ਪੀਐਮ-ਜੇਏਵਾਈ; ਪੀਐਮਐਨਆਰਐਫ; ਐਚਐਮਡੀਜੀ; ਐਚਐਮਸੀਪੀਐਫ; ਡੀਏਕੇ; ਯੂਵੀਕੈਨ; ਆਈਸੀਐਸ ਕੈਂਸਰ ਕਿਊਰ; ਟਾਟਾ ਟਰੱਸਟਸ",
+        "Patient Has It?": "☐"
+      },
+      {
+        "Document / Information": "ਵਿਸਤ੍ਰਿਤ ਇਲਾਜ ਲਾਗਤ ਅਨੁਮਾਨ",
+        "Why It May Be Needed": "ਵਿੱਤੀ ਲੋੜ / ਪੈਕੇਜ ਅਨੁਮਾਨ ਦੀ ਗਣਨਾ ਕਰੋ",
+        "Who Issues / Provides It": "ਹਸਪਤਾਲ ਦੇ ਖਾਤੇ / ਇਲਾਜ ਕਰਨ ਵਾਲੇ ਡਾਕਟਰ; ਜਿੱਥੇ ਲੋੜ ਹੋਵੇ ਹਸਪਤਾਲ ਅਥਾਰਟੀ ਪ੍ਰਮਾਣੀਕਰਣ",
+        "Applicable Programmes (check official list)": "ਪੀਐਮਐਨਆਰਐਫ; ਐਚਐਮਡੀਜੀ; ਐਚਐਮਸੀਪੀਐਫ; ਡੀਏਕੇ; ਯੂਵੀਕੈਨ; ਆਈਸੀਐਸ ਕੈਂਸਰ ਕਿਊਰ; ਟਾਟਾ ਟਰੱਸਟ; ਸੀਪੀਏਏ",
+        "Patient Has It?": "☐"
+      },
+      {
+        "Document / Information": "ਹਸਪਤਾਲ ਰਜਿਸਟ੍ਰੇਸ਼ਨ / ਵਾਰਡ-ਸ਼੍ਰੇਣੀ ਦਾ ਸਬੂਤ",
+        "Why It May Be Needed": "ਪ੍ਰਦਾਤਾ ਅਤੇ ਜਨਰਲ-ਵਾਰਡ ਦੀ ਸਥਿਤੀ ਦੀ ਪੁਸ਼ਟੀ ਕਰੋ",
+        "Who Issues / Provides It": "ਹਸਪਤਾਲ ਦਾਖਲਾ ਦਫ਼ਤਰ",
+        "Applicable Programmes (check official list)": "ਆਈਸੀਐਸ ਕੈਂਸਰ ਕਿਊਰ; ਡੀਏਕੇ; ਦੱਸੇ ਅਨੁਸਾਰ ਹੋਰ ਪ੍ਰੋਗਰਾਮ",
+        "Patient Has It?": "☐"
+      },
+      {
+        "Document / Information": "ਹਸਪਤਾਲ ਦੀ ਸੂਚੀ / ਲਿੰਕਡ-ਸੈਂਟਰ ਪੁਸ਼ਟੀ",
+        "Why It May Be Needed": "ਪ੍ਰਦਾਤਾ ਯੋਗਤਾ ਦੀ ਪੁਸ਼ਟੀ ਕਰੋ",
+        "Who Issues / Provides It": "ਪ੍ਰੋਗਰਾਮ / ਹਸਪਤਾਲ ਡਾਇਰੈਕਟਰੀ ਜਾਂ ਹਸਪਤਾਲ ਦੇ ਸਮਾਜ ਸੇਵਕ",
+        "Applicable Programmes (check official list)": "ਪੀਐਮ-ਜੇਏਵਾਈ; ਆਈਸੀਐਸ ਕੈਂਸਰ ਕਿਊਰ; ਐਚਐਮਸੀਪੀਐਫ; ਟਾਟਾ ਟਰੱਸਟ",
+        "Patient Has It?": "☐"
+      },
+      {
+        "Document / Information": "ਮਰੀਜ਼ ਦੀ ਫੋਟੋ",
+        "Why It May Be Needed": "ਅਰਜ਼ੀ ਦੀ ਪਛਾਣ",
+        "Who Issues / Provides It": "ਮਰੀਜ਼ / ਸਟੂਡੀਓ",
+        "Applicable Programmes (check official list)": "ਦਿੱਲੀ ਅਰੋਗਿਆ ਕੋਸ਼; ਸੀਪੀਏਏ; ਦੱਸੇ ਅਨੁਸਾਰ ਹੋਰ ਫਾਰਮ",
+        "Patient Has It?": "☐"
+      },
+      {
+        "Document / Information": "ਬੈਂਕ ਪਾਸਬੁੱਕ / ਰੱਦ ਕੀਤਾ ਚੈੱਕ",
+        "Why It May Be Needed": "ਭੁਗਤਾਨ ਜਾਂ ਦਾਨ-ਗੇਟਵੇ ਟ੍ਰਾਂਸਫਰ, ਜੇਕਰ ਲਾਗੂ ਹੋਵੇ",
+        "Who Issues / Provides It": "ਬੈਂਕ",
+        "Applicable Programmes (check official list)": "CPAA; ਕੁਝ NGO ਪ੍ਰੋਗਰਾਮ ਸਿਰਫ਼ ਤਾਂ ਹੀ ਜੇਕਰ ਬੇਨਤੀ ਕੀਤੀ ਜਾਵੇ",
+        "Patient Has It?": "☐"
+      },
+      {
+        "Document / Information": "ਮਾਤਾ-ਪਿਤਾ/ਸਰਪ੍ਰਸਤ ਆਈਡੀ ਅਤੇ ਸਹਿਮਤੀ",
+        "Why It May Be Needed": "ਛੋਟੀ ਅਰਜ਼ੀ ਅਤੇ ਰਿਕਾਰਡ-ਸਾਂਝਾ ਕਰਨ ਦੀ ਇਜਾਜ਼ਤ",
+        "Who Issues / Provides It": "ਮਾਤਾ-ਪਿਤਾ/ਸਰਪ੍ਰਸਤ",
+        "Applicable Programmes (check official list)": "YouWeCan; ਕੈਨਕਿਡਜ਼; ਬੱਚਿਆਂ ਦੇ ਮਾਮਲੇ",
+        "Patient Has It?": "☐"
+      },
+      {
+        "Document / Information": "ਹੋਰ ਸਕੀਮ / ਬੀਮਾ ਵੇਰਵੇ",
+        "Why It May Be Needed": "ਲਾਭਾਂ ਦਾ ਤਾਲਮੇਲ ਬਣਾਓ ਅਤੇ ਬੇਦਖਲੀ ਦਾ ਮੁਲਾਂਕਣ ਕਰੋ",
+        "Who Issues / Provides It": "ਬੀਮਾਕਰਤਾ / ਮਾਲਕ / ਸਰਕਾਰੀ ਯੋਜਨਾ ਪੋਰਟਲ",
+        "Applicable Programmes (check official list)": "PM-JAY; YouWeCan; HMDG; HMCPF; CPAA; ਹੋਰ ਜਿਵੇਂ ਕਿ ਨਿਰਧਾਰਤ ਕੀਤਾ ਗਿਆ ਹੈ",
+        "Patient Has It?": "☐"
+      },
+      {
+        "Document / Information": "ਦਸਤਖਤ ਕੀਤੇ ਅਰਜ਼ੀ / ਸਹਿਮਤੀ / ਘੋਸ਼ਣਾਵਾਂ",
+        "Why It May Be Needed": "ਰਸਮੀ ਅਰਜ਼ੀ ਅਤੇ ਡੇਟਾ-ਸਾਂਝਾ ਕਰਨ ਦੀ ਇਜਾਜ਼ਤ",
+        "Who Issues / Provides It": "ਮਰੀਜ਼ / ਸਰਪ੍ਰਸਤ / ਪ੍ਰੋਗਰਾਮ ਫਾਰਮ",
+        "Applicable Programmes (check official list)": "ਸਾਰੇ ਐਪਲੀਕੇਸ਼ਨ-ਅਧਾਰਤ ਪ੍ਰੋਗਰਾਮ",
+        "Patient Has It?": "☐"
+      }
+    ]
+  },
+  "schemes": [
+    {
+      "id": "pmjay",
+      "name": "Ayushman Bharat Pradhan Mantri Jan Arogya Yojana (PM-JAY)",
+      "aliases": [
+        "Ayushman Bharat Pradhan Mantri Jan Arogya Yojana (PM-JAY)",
+        "Ayushman Bharat Pradhan Mantri Jan Arogya Yojna (PMJAY)",
+        "Ayushman Bharat – PM-JAY",
+        "Ayushman Bharat PM-JAY"
+      ],
+      "programmeType": "Government cashless health assurance (not a cash grant)",
+      "description": "First check beneficiary entitlement. Eligibility is database/state-rule based; people aged 70+ have a separate expanded route. Cancer treatment is package- and pre-authorisation-dependent.",
+      "eligibilitySummary": "First check beneficiary entitlement. Eligibility is database/state-rule based; people aged 70+ have a separate expanded route. Cancer treatment is package- and pre-authorisation-dependent.",
+      "documentsToPrepare": "Aadhaar or other accepted government ID; ration/family ID or state-accepted family proof; Ayushman card if already generated; diagnosis, biopsy/pathology, treatment plan and hospital records.",
+      "stateCoverage": "Participating states/UTs; eligibility-based",
+      "governmentLevel": "Central",
+      "officialLinks": [
+        "https://beneficiary.nha.gov.in/",
+        "https://pmjay.gov.in/",
+        "https://hospitals.pmjay.gov.in/Search/empnlWorkFlow.htm?actionFlag=ViewRegisteredHosptlsNew",
+        "https://supportbeta.nha.gov.in/kb/faq.php?id=57",
+        "https://beneficiary.nha.gov.in",
+        "https://nha.gov.in",
+        "https://pmjay.gov.in",
+        "https://cgrms.pmjay.gov.in",
+        "https://www.rmlh.mohfw.gov.in/index1.aspx?langid=1&lev=2&lid=3619&lsid=2566",
+        "https://nha.gov.in/img/resources/English_FAQs_related_to_the_benefits_for_senior_citizens.pdf",
+        "https://www.myscheme.gov.in/hi/schemes/ab-pmjay",
+        "https://nha.gov.in/img/resources/HBP-2.2-manual.pdf",
+        "https://cdnbbsr.s3waas.gov.in/s3169779d3852b32ce8b1a1724dbf5217d/uploads/2022/05/2022051041.pdf",
+        "https://www.pib.gov.in/PressReleasePage.aspx?PRID=2116209&lang=1&reg=3",
+        "https://www.pib.gov.in/Pressreleaseshare.aspx?PRID=2119281&lang=2&reg=48",
+        "https://beneficiary.nha.gov.in/nha/NHA-data-privacy-policy.html",
+        "https://supportbeta.nha.gov.in/",
+        "https://www.pib.gov.in/PressNoteDetails.aspx?ModuleId=3&NoteId=160081&lang=3&reg=3",
+        "https://www.pib.gov.in/PressReleasePage.aspx?PRID=2110384&lang=2&reg=48",
+        "https://shamanipur.mn.gov.in/Static/FAQ",
+        "https://www.policybazaar.com/health-insurance/govt-scheme/ayushman-bharat-yojana/",
+        "https://www.pib.gov.in/PressReleaseDetail.aspx?PRID=1738169&reg=48&lang=2",
+        "https://nha.gov.in/img/resources/Adhikar-Patra.pdf",
+        "https://nha.gov.in/img/resources/Operation%20Manual%20for%20AB%20PM-JAY.pdf",
+        "https://rmlh.mohfw.gov.in/index1.aspx?langid=2&lev=2&lid=3618&lsid=2565",
+        "https://pmjay.gov.in।",
+        "https://hospitals.pmjay.gov.in/",
+        "https://supportbeta.nha.gov.in/kb/faq.php?id=5",
+        "https://pmjay.gov.in۔",
+        "https://cgrms.pmjay.gov.in؛",
+        "https://nha.gov.in/img/resources/English_FAQs_related_to_the_benefits_for_senior_citizes.pdf",
+        "https://shamanipur.mn.gov.in/Static/FAQ۔"
+      ],
+      "applicationStepCount": 7,
+      "verificationStatus": "Partially verified — scheme basics confirmed; exact current oncology package details need latest HBP master.",
+      "translations": {
+        "mr": {
+          "name": "आयुष्मान भारत प्रधान मंत्री जन आरोग्य योजना (PM-JAY)",
+          "programmeType": "शासकीय कॅशलेस आरोग्य हमी (रोख अनुदान नव्हे)",
+          "description": "सर्वप्रथम लाभार्थ्याची पात्रता तपासा. पात्रता डेटाबेस/राज्याच्या नियमांवर आधारित आहे; ७०+ वर्षे वयाच्या लोकांसाठी एक वेगळा विस्तारित मार्ग आहे. कर्करोगावरील उपचार हे पॅकेज आणि पूर्व-परवानगीवर अवलंबून असतात."
+        },
+        "bn": {
+          "name": "আয়ুষ্মান ভারত প্রধান মন্ত্রী জন আরোগ্য যোজনা (PM-JAY)",
+          "programmeType": "সরকারি নগদবিহীন স্বাস্থ্য বীমা (নগদ অনুদান নয়)",
+          "description": "প্রথমে সুবিধাভোগীর প্রাপ্যতা যাচাই করুন। যোগ্যতা ডেটাবেস/রাজ্য-নিয়মের উপর ভিত্তি করে নির্ধারিত হয়; ৭০+ বছর বয়সীদের জন্য একটি পৃথক বর্ধিত পথ রয়েছে। ক্যান্সার চিকিৎসা প্যাকেজ এবং পূর্বানুমোদনের উপর নির্ভরশীল।"
+        },
+        "kn": {
+          "name": "ಆಯುಷ್ಮಾನ್ ಭಾರತ್ ಪ್ರಧಾನ ಮಂತ್ರಿ ಜನ ಆರೋಗ್ಯ ಯೋಜನೆ (PM-JAY)",
+          "programmeType": "ಸರ್ಕಾರಿ ನಗದುರಹಿತ ಆರೋಗ್ಯ ಭರವಸೆ (ನಗದು ಅನುದಾನವಲ್ಲ)",
+          "description": "ಮೊದಲು ಫಲಾನುಭವಿಯ ಅರ್ಹತೆಯನ್ನು ಪರಿಶೀಲಿಸಿ. ಅರ್ಹತೆಯು ಡೇಟಾಬೇಸ್/ರಾಜ್ಯ-ನಿಯಮ ಆಧಾರಿತವಾಗಿದೆ; 70+ ವರ್ಷ ವಯಸ್ಸಿನವರಿಗೆ ಪ್ರತ್ಯೇಕ ವಿಸ್ತೃತ ಮಾರ್ಗವಿದೆ. ಕ್ಯಾನ್ಸರ್ ಚಿಕಿತ್ಸೆಯು ಪ್ಯಾಕೇಜ್- ಮತ್ತು ಪೂರ್ವ-ಅಧಿಕಾರ-ಅವಲಂಬಿತವಾಗಿದೆ."
+        },
+        "hi": {
+          "name": "आयुष्मान भारत प्रधानमंत्री जन आरोग्य योजना (पीएम-जेएवाई)",
+          "programmeType": "सरकारी कैशलेस हेल्थ एश्योरेंस (कैश ग्रांट नहीं)",
+          "description": "सबसे पहले बेनिफिशियरी का हक चेक करें। एलिजिबिलिटी डेटाबेस/स्टेट-रूल पर आधारित है; 70+ उम्र के लोगों के लिए एक अलग एक्सपैंडेड रास्ता है। कैंसर का इलाज पैकेज और प्री-ऑथराइजेशन पर निर्भर करता है।"
+        },
+        "te": {
+          "name": "ఆయుష్మాన్ భారత్ ప్రధాన్ మంత్రి జన్ ఆరోగ్య యోజన (PM-JAY)",
+          "programmeType": "ప్రభుత్వ నగదు రహిత ఆరోగ్య హామీ (నగదు గ్రాంటు కాదు)",
+          "description": "మొదట లబ్ధిదారుని అర్హతను తనిఖీ చేయండి. అర్హత అనేది డేటాబేస్/రాష్ట్ర నిబంధనలపై ఆధారపడి ఉంటుంది; 70 ఏళ్లు పైబడిన వారికి ప్రత్యేకమైన విస్తృత మార్గం ఉంది. క్యాన్సర్ చికిత్స ప్యాకేజీ మరియు ముందస్తు అనుమతిపై ఆధారపడి ఉంటుంది."
+        },
+        "ur": {
+          "name": "آیوشمان بھارت پردھان منتری جن آروگیہ یوجنا (PM-JAY)",
+          "programmeType": "حکومت کی کیش لیس ہیلتھ انشورنس (نقدی گرانٹ نہیں)",
+          "description": "پہلے فائدہ اٹھانے والے کے استحقاق کی جانچ کریں۔ اہلیت ڈیٹا بیس/ریاست کے اصول پر مبنی ہے؛ 70+ سال کی عمر کے لوگوں کے پاس ایک الگ توسیعی راستہ ہے۔ کینسر کا علاج پیکیج- اور اجازت سے پہلے پر منحصر ہے۔"
+        },
+        "pa": {
+          "name": "ਆਯੁਸ਼ਮਾਨ ਭਾਰਤ ਪ੍ਰਧਾਨ ਮੰਤਰੀ ਜਨ ਅਰੋਗਿਆ ਯੋਜਨਾ (PM-JAY)",
+          "programmeType": "ਸਰਕਾਰੀ ਨਕਦੀ ਰਹਿਤ ਸਿਹਤ ਬੀਮਾ (ਨਕਦ ਗ੍ਰਾਂਟ ਨਹੀਂ)",
+          "description": "ਪਹਿਲਾਂ ਲਾਭਪਾਤਰੀ ਦੇ ਹੱਕ ਦੀ ਜਾਂਚ ਕਰੋ। ਯੋਗਤਾ ਡੇਟਾਬੇਸ/ਰਾਜ-ਨਿਯਮ 'ਤੇ ਅਧਾਰਤ ਹੈ; 70+ ਉਮਰ ਦੇ ਲੋਕਾਂ ਲਈ ਇੱਕ ਵੱਖਰਾ ਵਿਸਤ੍ਰਿਤ ਰਸਤਾ ਹੈ। ਕੈਂਸਰ ਦਾ ਇਲਾਜ ਪੈਕੇਜ- ਅਤੇ ਪੂਰਵ-ਅਧਿਕਾਰ-ਨਿਰਭਰ ਹੈ।"
+        }
+      }
+    },
+    {
+      "id": "pmnrf",
+      "name": "Prime Minister’s National Relief Fund (PMNRF)",
+      "aliases": [
+        "Prime Minister’s National Relief Fund (PMNRF)",
+        "Prime Minister’s National Relief Fund",
+        "Prime Minister's National Relief Fund (PMNRF)"
+      ],
+      "programmeType": "Central discretionary medical assistance (not insurance)",
+      "description": "Indian patients seeking medical treatment/surgery in a Government Hospital or PMNRF-empanelled private hospital. Approval and amount are discretionary; no fixed cancer grant cap established in the reviewed PMO FAQ.",
+      "eligibilitySummary": "Indian patients seeking medical treatment/surgery in a Government Hospital or PMNRF-empanelled private hospital. Approval and amount are discretionary; no fixed cancer grant cap established in the reviewed PMO FAQ.",
+      "documentsToPrepare": "Application addressed to the Prime Minister; hospital medical certificate and current estimate; proof of family income; patient identity/address proof; hospital details and relevant diagnosis/treatment reports. Confirm any additional current form requirements.",
+      "stateCoverage": "All India",
+      "governmentLevel": "Central",
+      "officialLinks": [
+        "https://www.pmindia.gov.in/en/frequently-asked-questions-faq-2/",
+        "https://pmnrf.gov.in/",
+        "https://pmnrf.gov.in/assets/uploads/downloads/PMNRF-Assistance-form-English.pdf",
+        "https://pmnrf.gov.in",
+        "https://www.pmindia.gov.in/en/downloads/",
+        "https://milaap.org/articles/schemes/financial-support-for-life-threatening-diseases-4-national-schemes-to-know",
+        "https://cancerconsultindia.com/blog/how-to-find-financial-help-for-cancer-treatment",
+        "https://pmnrf.gov.in/assets/uploads/downloads/PMNRF-Assistance-form.pdf-Eng"
+      ],
+      "applicationStepCount": 7,
+      "verificationStatus": "Verified — basic application facts only.",
+      "translations": {
+        "mr": {
+          "name": "पंतप्रधानांचा राष्ट्रीय मदत निधी (पीएमएनआरएफ)",
+          "programmeType": "केंद्रीय ऐच्छिक वैद्यकीय सहाय्य (विमा नव्हे)",
+          "description": "शासकीय रुग्णालयात किंवा पीएमएनआरएफ-सूचीबद्ध खाजगी रुग्णालयात वैद्यकीय उपचार/शस्त्रक्रियेसाठी दाखल होणारे भारतीय रुग्ण. मंजुरी आणि रक्कम स्वविवेकाधीन आहेत; पंतप्रधान कार्यालयाच्या (PMO) सुधारित वारंवार विचारल्या जाणाऱ्या प्रश्नांमध्ये (FAQ) कर्करोग अनुदानाची कोणतीही निश्चित मर्यादा स्थापित केलेली नाही."
+        },
+        "bn": {
+          "name": "প্রধানমন্ত্রীর জাতীয় ত্রাণ তহবিল (পিএমএনআরএফ)",
+          "programmeType": "কেন্দ্রীয় বিবেচনামূলক চিকিৎসা সহায়তা (বীমা নয়)",
+          "description": "সরকারি হাসপাতাল বা পিএমএনআরএফ-তালিকাভুক্ত বেসরকারি হাসপাতালে চিকিৎসা/অস্ত্রোপচারের জন্য চিকিৎসা নিতে ইচ্ছুক ভারতীয় রোগীদের জন্য। অনুমোদন এবং অর্থের পরিমাণ বিবেচনামূলক; পর্যালোচিত পিএমও এফএকিউ-তে ক্যান্সার অনুদানের কোনো নির্দিষ্ট সর্বোচ্চ সীমা নির্ধারণ করা হয়নি।"
+        },
+        "kn": {
+          "name": "ಪ್ರಧಾನ ಮಂತ್ರಿ ರಾಷ್ಟ್ರೀಯ ಪರಿಹಾರ ನಿಧಿ (PMNRF)",
+          "programmeType": "ಕೇಂದ್ರ ವಿವೇಚನಾ ವೈದ್ಯಕೀಯ ನೆರವು (ವಿಮೆಯಲ್ಲ)",
+          "description": "ಸರ್ಕಾರಿ ಆಸ್ಪತ್ರೆ ಅಥವಾ PMNRF-ಎಂಪನೇಲ್ ಮಾಡಲಾದ ಖಾಸಗಿ ಆಸ್ಪತ್ರೆಯಲ್ಲಿ ವೈದ್ಯಕೀಯ ಚಿಕಿತ್ಸೆ/ಶಸ್ತ್ರಚಿಕಿತ್ಸೆ ಬಯಸುವ ಭಾರತೀಯ ರೋಗಿಗಳು. ಅನುಮೋದನೆ ಮತ್ತು ಮೊತ್ತವು ವಿವೇಚನೆಗೆ ಬಿಟ್ಟದ್ದು; ಪರಿಶೀಲಿಸಿದ PMO FAQ ನಲ್ಲಿ ಯಾವುದೇ ಸ್ಥಿರ ಕ್ಯಾನ್ಸರ್ ಅನುದಾನ ಮಿತಿಯನ್ನು ಸ್ಥಾಪಿಸಲಾಗಿಲ್ಲ."
+        },
+        "hi": {
+          "name": "प्रधान मंत्री राष्ट्रीय राहत कोष (पीएमएनआरएफ)",
+          "programmeType": "केंद्रीय विवेकाधीन चिकित्सा सहायता (बीमा नहीं)",
+          "description": "भारतीय मरीज़ जो सरकारी हॉस्पिटल या PMNRF-एम्पैनल्ड प्राइवेट हॉस्पिटल में मेडिकल ट्रीटमेंट/सर्जरी करवाना चाहते हैं। अप्रूवल और अमाउंट अपनी मर्ज़ी से तय किया जाएगा; रिव्यू किए गए PMO FAQ में कैंसर ग्रांट की कोई फिक्स्ड लिमिट तय नहीं की गई है।"
+        },
+        "te": {
+          "name": "ప్రధానమంత్రి జాతీయ సహాయ నిధి (PMNRF)",
+          "programmeType": "కేంద్ర విచక్షణ వైద్య సహాయం (భీమా కాదు)",
+          "description": "ప్రభుత్వ ఆసుపత్రిలో లేదా PMNRF-ప్యానెల్‌లో ఉన్న ప్రైవేట్ ఆసుపత్రిలో వైద్య చికిత్స/శస్త్రచికిత్స కోరుకునే భారతీయ రోగులు. ఆమోదం మరియు మొత్తం విచక్షణ మేరకు ఉంటాయి; సమీక్షించిన PMO FAQలో క్యాన్సర్ గ్రాంట్‌కు స్థిరమైన గరిష్ట పరిమితి ఏదీ నిర్ధారించబడలేదు."
+        },
+        "ur": {
+          "name": "وزیراعظم کا قومی ریلیف فنڈ (PMNRF)",
+          "programmeType": "مرکزی صوابدیدی طبی امداد (بیمہ نہیں)",
+          "description": "ہندوستانی مریض جو سرکاری اسپتال یا PMNRF کے پینل والے نجی اسپتال میں طبی علاج/سرجری کے خواہاں ہیں۔ منظوری اور رقم صوابدیدی ہیں۔ نظرثانی شدہ PMO FAQ میں کینسر کی کوئی فکسڈ گرانٹ کیپ قائم نہیں ہے۔"
+        },
+        "pa": {
+          "name": "ਪ੍ਰਧਾਨ ਮੰਤਰੀ ਰਾਸ਼ਟਰੀ ਰਾਹਤ ਫੰਡ (PMNRF)",
+          "programmeType": "ਕੇਂਦਰੀ ਅਖਤਿਆਰੀ ਡਾਕਟਰੀ ਸਹਾਇਤਾ (ਬੀਮਾ ਨਹੀਂ)",
+          "description": "ਸਰਕਾਰੀ ਹਸਪਤਾਲ ਜਾਂ PMNRF-ਪੈਨਲ ਵਾਲੇ ਨਿੱਜੀ ਹਸਪਤਾਲ ਵਿੱਚ ਡਾਕਟਰੀ ਇਲਾਜ/ਸਰਜਰੀ ਦੀ ਮੰਗ ਕਰਨ ਵਾਲੇ ਭਾਰਤੀ ਮਰੀਜ਼। ਪ੍ਰਵਾਨਗੀ ਅਤੇ ਰਕਮ ਵਿਵੇਕਸ਼ੀਲ ਹੈ; ਸਮੀਖਿਆ ਕੀਤੇ PMO FAQ ਵਿੱਚ ਕੋਈ ਨਿਸ਼ਚਿਤ ਕੈਂਸਰ ਗ੍ਰਾਂਟ ਸੀਮਾ ਸਥਾਪਤ ਨਹੀਂ ਕੀਤੀ ਗਈ ਹੈ।"
+        }
+      }
+    },
+    {
+      "id": "hmdg",
+      "name": "Health Minister’s Discretionary Grant (HMDG)",
+      "aliases": [
+        "Health Minister’s Discretionary Grant (HMDG)",
+        "Health Minister's Discretionary Grant (HMDG)"
+      ],
+      "programmeType": "Central discretionary medical grant",
+      "description": "Poor patients requiring eligible treatment in Government hospitals. The official guideline located is historical; the current income threshold, amount schedule and intake process must be confirmed with MoHFW before referral.",
+      "eligibilitySummary": "Poor patients requiring eligible treatment in Government hospitals. The official guideline located is historical; the current income threshold, amount schedule and intake process must be confirmed with MoHFW before referral.",
+      "documentsToPrepare": "Patient application; income/BPL proof as currently required; treating doctor’s certificate; diagnosis and treatment plan; prospective hospital estimate; identity/address proof; hospital certification and Medical Superintendent endorsement as instructed.",
+      "stateCoverage": "All India, subject to scheme rules",
+      "governmentLevel": "Central",
+      "officialLinks": [
+        "https://www.mohfw.gov.in/sites/default/files/Rashtriya%20Arogya%20Nidhi%20%28RAN%29%20and%20Health%20Minister%E2%80%99s%20Discretionary%20Grants%20%28HMDG%29.pdf",
+        "https://www.mohfw.gov.in/",
+        "https://www.mohfw.gov.in/sites/default/files/guidelines%20of%20HMDG.pdf",
+        "https://www.mohfw.gov.in",
+        "https://pgportal.gov.in",
+        "https://www.pib.gov.in/PressReleasePage.aspx?PRID=2290623&lang=1&reg=22",
+        "https://www.pib.gov.in/Pressreleaseshare.aspx?PRID=1843846&lang=2&reg=48",
+        "https://www.mohfw.gov.in/sites/default/files/45236574123658964547HMDG%20%281%29.pdf",
+        "https://cancerindia.org.in/financial-aid-and-resources/",
+        "https://www.myscheme.gov.in/schemes/hmdg",
+        "https://milaap.org/articles/schemes/financial-support-for-life-threatening-diseases-4-national-schemes-to-know#section1",
+        "https://www.mohfw.gov.in/sites/default/files/guidelines%20of%20HMDG.pdf।",
+        "https://www.mohfw.gov.in/sites/default/files/Rashtriya%20Arogya%20Nidhi%20%28RAN%29%20and%20Health%20ಸಚಿವರು%E2%80%99s%20ವಿವೇಚನೆ%20ಅನುದಾನಗಳು%20%28HMDG%29.pdf",
+        "https://www.mohfw.gov.in/sites/default/files/Rashtriya%20Arogya%20Nidhi%20%28RAN%29%20and%20Health%20Minister%E2%80%99s%20Discretionary%20Grants%20%20%20",
+        "https://www.mohfw.gov.in/sites/default/files/Rashtriya%20Arogya%20Nidhi%20%28RAN%29%20and%20Health%20Minister%E2%80%99s%20Discretionary%20Grants%20%20%28",
+        "https://www.mohfw.gov.in/sites/default/files/guidelines%20of%20HMDG.pdf۔"
+      ],
+      "applicationStepCount": 8,
+      "verificationStatus": "Partially verified — official but historical guideline; current rules require confirmation.",
+      "translations": {
+        "mr": {
+          "name": "आरोग्य मंत्र्यांचे स्वविवेकाधीन अनुदान (एचएमडीजी)",
+          "programmeType": "केंद्रीय विवेकाधीन वैद्यकीय अनुदान",
+          "description": "शासकीय रुग्णालयांमध्ये पात्र उपचारांची आवश्यकता असलेले गरीब रुग्ण. उपलब्ध असलेली अधिकृत मार्गदर्शक तत्त्वे ऐतिहासिक आहेत; शिफारस करण्यापूर्वी सध्याची उत्पन्न मर्यादा, रकमेचे वेळापत्रक आणि प्रवेश प्रक्रिया आरोग्य आणि कुटुंब कल्याण मंत्रालयाकडून (MoHFW) निश्चित करणे आवश्यक आहे."
+        },
+        "bn": {
+          "name": "স্বাস্থ্যমন্ত্রীর বিবেচনামূলক অনুদান (HMDG)",
+          "programmeType": "কেন্দ্রীয় বিবেচনামূলক চিকিৎসা অনুদান",
+          "description": "সরকারি হাসপাতালে যোগ্য চিকিৎসার প্রয়োজন এমন দরিদ্র রোগী। প্রাপ্ত সরকারি নির্দেশিকাটি পুরোনো; রেফার করার আগে স্বাস্থ্য ও পরিবার কল্যাণ মন্ত্রণালয়ের (MoHFW) সাথে বর্তমান আয়ের সীমা, টাকার পরিমাণ এবং ভর্তি প্রক্রিয়া অবশ্যই নিশ্চিত করতে হবে।"
+        },
+        "kn": {
+          "name": "ಆರೋಗ್ಯ ಸಚಿವರ ವಿವೇಚನಾ ಅನುದಾನ (HMDG)",
+          "programmeType": "ಕೇಂದ್ರ ವಿವೇಚನಾ ವೈದ್ಯಕೀಯ ಅನುದಾನ",
+          "description": "ಸರ್ಕಾರಿ ಆಸ್ಪತ್ರೆಗಳಲ್ಲಿ ಅರ್ಹ ಚಿಕಿತ್ಸೆ ಅಗತ್ಯವಿರುವ ಬಡ ರೋಗಿಗಳು. ಅಧಿಕೃತ ಮಾರ್ಗಸೂಚಿ ಐತಿಹಾಸಿಕವಾಗಿದೆ; ಪ್ರಸ್ತುತ ಆದಾಯದ ಮಿತಿ, ಮೊತ್ತದ ವೇಳಾಪಟ್ಟಿ ಮತ್ತು ಸೇವನೆಯ ಪ್ರಕ್ರಿಯೆಯನ್ನು ಉಲ್ಲೇಖ ಮಾಡುವ ಮೊದಲು MoHFW ನೊಂದಿಗೆ ದೃಢೀಕರಿಸಬೇಕು."
+        },
+        "hi": {
+          "name": "स्वास्थ्य मंत्री विवेकाधीन अनुदान (HMDG)",
+          "programmeType": "केंद्रीय विवेकाधीन चिकित्सा अनुदान",
+          "description": "गरीब मरीज़ जिन्हें सरकारी अस्पतालों में सही इलाज की ज़रूरत है। जो ऑफिशियल गाइडलाइन दी गई है, वह पुरानी है; रेफरल से पहले MoHFW से मौजूदा इनकम लिमिट, अमाउंट शेड्यूल और इनटेक प्रोसेस कन्फर्म करना होगा।"
+        },
+        "te": {
+          "name": "ఆరోగ్య మంత్రి విచక్షణ గ్రాంట్ (HMDG)",
+          "programmeType": "కేంద్ర విచక్షణ వైద్య గ్రాంట్",
+          "description": "ప్రభుత్వ ఆసుపత్రులలో అర్హత గల చికిత్స అవసరమయ్యే పేద రోగులు. ఇక్కడ ఉన్న అధికారిక మార్గదర్శకం పాతది; రిఫరల్ చేయడానికి ముందు ప్రస్తుత ఆదాయ పరిమితి, మోతాదు పట్టిక మరియు స్వీకరణ ప్రక్రియను ఆరోగ్య మరియు కుటుంబ సంక్షేమ మంత్రిత్వ శాఖ (MoHFW)తో నిర్ధారించుకోవాలి."
+        },
+        "ur": {
+          "name": "وزیر صحت کی صوابدیدی گرانٹ (HMDG)",
+          "programmeType": "مرکزی صوابدیدی طبی گرانٹ",
+          "description": "غریب مریض جن کو سرکاری ہسپتالوں میں علاج کی ضرورت ہے۔ واقع سرکاری رہنما خطوط تاریخی ہے؛ ریفرل سے پہلے موجودہ آمدنی کی حد، رقم کا شیڈول اور انٹیک کے عمل کی تصدیق MoHFW سے ہونی چاہیے۔"
+        },
+        "pa": {
+          "name": "ਸਿਹਤ ਮੰਤਰੀ ਦੀ ਵਿਵੇਕਸ਼ੀਲ ਗ੍ਰਾਂਟ (HMDG)",
+          "programmeType": "ਕੇਂਦਰੀ ਅਖ਼ਤਿਆਰੀ ਮੈਡੀਕਲ ਗ੍ਰਾਂਟ",
+          "description": "ਸਰਕਾਰੀ ਹਸਪਤਾਲਾਂ ਵਿੱਚ ਯੋਗ ਇਲਾਜ ਦੀ ਲੋੜ ਵਾਲੇ ਗਰੀਬ ਮਰੀਜ਼। ਮੌਜੂਦ ਅਧਿਕਾਰਤ ਦਿਸ਼ਾ-ਨਿਰਦੇਸ਼ ਇਤਿਹਾਸਕ ਹੈ; ਰੈਫਰਲ ਤੋਂ ਪਹਿਲਾਂ ਮੌਜੂਦਾ ਆਮਦਨ ਸੀਮਾ, ਰਕਮ ਅਨੁਸੂਚੀ ਅਤੇ ਦਾਖਲੇ ਦੀ ਪ੍ਰਕਿਰਿਆ ਦੀ ਪੁਸ਼ਟੀ MoHFW ਨਾਲ ਕੀਤੀ ਜਾਣੀ ਚਾਹੀਦੀ ਹੈ।"
+        }
+      }
+    },
+    {
+      "id": "hmcpf",
+      "name": "Health Minister’s Cancer Patient Fund (HMCPF) under Rashtriya Arogya Nidhi (RAN)",
+      "aliases": [
+        "Health Minister’s Cancer Patient Fund (HMCPF) under Rashtriya Arogya Nidhi (RAN)",
+        "Health Minister’s Cancer Patient Fund (HMCPF) of Rashtriya Arogya Nidhi (RAN)",
+        "Health Minister's Cancer Patient Fund (HMCPF) – Rashtriya Arogya Nidhi",
+        "Health Minister's Cancer Patient Fund (HMCPF) of Rashtriya Arogya Nidhi (RAN)",
+        "HMCPF / RAN"
+      ],
+      "programmeType": "Central cancer-specific hospital-directed assistance",
+      "description": "BPL cancer patients meeting the current HMCPF guideline and treated through designated Regional Cancer Centres (RCCs). The reviewed guideline specifies 27 RCCs and excludes Central/State Government and PSU employees. Verify the current eligible-centre list and any updated rules.",
+      "eligibilitySummary": "BPL cancer patients meeting the current HMCPF guideline and treated through designated Regional Cancer Centres (RCCs). The reviewed guideline specifies 27 RCCs and excludes Central/State Government and PSU employees. Verify the current eligible-centre list and any updated rules.",
+      "documentsToPrepare": "BPL/ration or accepted poverty proof; Aadhaar/identity; residence; cancer diagnosis/pathology; treatment plan; hospital estimate; prescribed application; treating doctor and Medical Superintendent certifications.",
+      "stateCoverage": "All India, subject to scheme rules",
+      "governmentLevel": "Central",
+      "officialLinks": [
+        "https://www.mohfw.gov.in/sites/default/files/2563214569875214.pdf",
+        "https://www.mohfw.gov.in/sites/default/files/RAN_Guideline_2019.pdf",
+        "https://www.mohfw.gov.in/",
+        "https://www.mohfw.gov.in/sites/default/files/Rashtriya%20Arogya%20Nidhi%20%28RAN%29%20and%20Health%20Minister%E2%80%99s%20Discretionary%20Grants%20%28HMDG%29.pdf",
+        "https://www.mohfw.gov.in/sites/default/files/1801870571433481352%20%281%29.pdf",
+        "https://mohfw.gov.in/",
+        "https://www.pib.gov.in/PressReleasePage.aspx?PRID=2154159&reg=48&lang=2",
+        "https://www.mohfw.gov.in/sites/default/files/Rashtriya%20Arogya%20Nidhi%20%28RAN%29%20and%20Health%20Minister%E2%80%99s%20Discretionary%20Grants%20%20%20%20Grants",
+        "https://www.mohfw.gov.in/sites/default/files/Rashtriya%20Arogya%20Nidhi%20%28RAN%29%20and%20Health%20ಸಚಿವರು%E2%80%99s%20ವಿವೇಚನೆ%20ಅನುದಾನಗಳು%20%28HMDG%29.pdf",
+        "https://www.mohfw.gov.in/sites/default/files/Rashtriya%20Arogya%20Nidhi%20%28RAN%29%20and%20Health%20Minister%E2%80%99s%20Discretionary%20Grants",
+        "https://www.mohfw.gov.in/sites/default/files/Rashtriya%20Arogya%20Nidhi%20%28RAN%29%20and%20Health%20Minister%E2%80%99s%20Discretionary%20Grants%20Discretionary%28HfQANF.28HFQANF",
+        "https://www.mohfw.gov.in/sites/default/files/Rashtriya%20Arogya%20Nidhi%20%28RAN%29%20and%20Health%20Minister%E2%80%99s%20Discretionary%20Grants%20%20%28",
+        "https://www.mohfw.gov.in/sites/default/files/Rashtriya%20Arogya%20Nidhi%20%28RAN%29%20and%20Health%20Minister%E2%80%99s%20Discretionary%20Grants%20%20%20%20Discretionary",
+        "https://www.mohfw.gov.in/sites/default/files/Rashtriya%20Arogya%20Nidhi%20%28RAN%29%20and%20Health%20Minister%E2%80%99s%20Discretionary%20Grants%20%DFN20%20D"
+      ],
+      "applicationStepCount": 8,
+      "verificationStatus": "Verified — core eligibility and grant rules.",
+      "translations": {
+        "mr": {
+          "name": "राष्ट्रीय आरोग्य निधी (RAN) अंतर्गत आरोग्य मंत्री कर्करोग रुग्ण निधी (HMCPF)",
+          "programmeType": "केंद्रीय कर्करोग-विशिष्ट रुग्णालय-निर्देशित सहाय्य",
+          "description": "सध्याच्या HMCPF मार्गदर्शक तत्त्वांची पूर्तता करणारे आणि निर्दिष्ट प्रादेशिक कर्करोग केंद्रांमार्फत (RCCs) उपचार घेतलेले बीपीएल (BPL) कर्करोग रुग्ण. सुधारित मार्गदर्शक तत्त्वांमध्ये २७ आरसीसी निर्दिष्ट केले आहेत आणि त्यातून केंद्र/राज्य सरकार तसेच सार्वजनिक क्षेत्रातील उपक्रमांच्या (PSU) कर्मचाऱ्यांना वगळण्यात आले आहे. सध्याची पात्र-केंद्रांची यादी आणि कोणतेही अद्ययावत नियम तपासा."
+        },
+        "bn": {
+          "name": "রাষ্ট্রীয় আরোগ্য নিধি (RAN) এর অধীনে স্বাস্থ্যমন্ত্রীর ক্যান্সার রোগীর তহবিল (HMCPF)",
+          "programmeType": "কেন্দ্রীয় ক্যান্সার-নির্দিষ্ট হাসপাতাল-নির্দেশিত সহায়তা",
+          "description": "বর্তমান এইচএমসিপিএফ নির্দেশিকা মেনে চলা এবং মনোনীত আঞ্চলিক ক্যান্সার কেন্দ্র (আরসিসি)-এর মাধ্যমে চিকিৎসা গ্রহণকারী বিপিএল ক্যান্সার রোগী। পর্যালোচিত নির্দেশিকায় ২৭টি আরসিসি নির্দিষ্ট করা হয়েছে এবং কেন্দ্রীয়/রাজ্য সরকার ও পিএসইউ কর্মচারীদের বাদ দেওয়া হয়েছে। বর্তমান যোগ্য কেন্দ্রের তালিকা এবং যেকোনো হালনাগাদ নিয়ম যাচাই করুন।"
+        },
+        "kn": {
+          "name": "ರಾಷ್ಟ್ರೀಯ ಆರೋಗ್ಯ ನಿಧಿ (RAN) ಅಡಿಯಲ್ಲಿ ಆರೋಗ್ಯ ಸಚಿವರ ಕ್ಯಾನ್ಸರ್ ರೋಗಿಗಳ ನಿಧಿ (HMCPF)",
+          "programmeType": "ಕೇಂದ್ರೀಯ ಕ್ಯಾನ್ಸರ್-ನಿರ್ದಿಷ್ಟ ಆಸ್ಪತ್ರೆ-ನಿರ್ದೇಶಿತ ನೆರವು",
+          "description": "ಬಿಪಿಎಲ್ ಕ್ಯಾನ್ಸರ್ ರೋಗಿಗಳು ಪ್ರಸ್ತುತ HMCPF ಮಾರ್ಗಸೂಚಿಗಳನ್ನು ಪೂರೈಸುತ್ತಿದ್ದಾರೆ ಮತ್ತು ಗೊತ್ತುಪಡಿಸಿದ ಪ್ರಾದೇಶಿಕ ಕ್ಯಾನ್ಸರ್ ಕೇಂದ್ರಗಳ (RCCs) ಮೂಲಕ ಚಿಕಿತ್ಸೆ ಪಡೆಯುತ್ತಿದ್ದಾರೆ. ಪರಿಶೀಲಿಸಿದ ಮಾರ್ಗಸೂಚಿಯು 27 RCC ಗಳನ್ನು ನಿರ್ದಿಷ್ಟಪಡಿಸುತ್ತದೆ ಮತ್ತು ಕೇಂದ್ರ/ರಾಜ್ಯ ಸರ್ಕಾರ ಮತ್ತು PSU ಉದ್ಯೋಗಿಗಳನ್ನು ಹೊರಗಿಡುತ್ತದೆ. ಪ್ರಸ್ತುತ ಅರ್ಹತಾ ಕೇಂದ್ರಗಳ ಪಟ್ಟಿ ಮತ್ತು ಯಾವುದೇ ನವೀಕರಿಸಿದ ನಿಯಮಗಳನ್ನು ಪರಿಶೀಲಿಸಿ."
+        },
+        "hi": {
+          "name": "राष्ट्रीय आरोग्य निधि (RAN) के तहत स्वास्थ्य मंत्री कैंसर रोगी कोष (HMCPF)",
+          "programmeType": "केंद्रीय कैंसर-विशिष्ट अस्पताल-निर्देशित सहायता",
+          "description": "BPL कैंसर के मरीज़ जो मौजूदा HMCPF गाइडलाइन को पूरा करते हैं और जिनका इलाज तय रीजनल कैंसर सेंटर (RCCs) के ज़रिए किया जाता है। रिव्यू की गई गाइडलाइन में 27 RCC बताए गए हैं और इसमें सेंट्रल/स्टेट गवर्नमेंट और PSU के कर्मचारी शामिल नहीं हैं। मौजूदा एलिजिबल-सेंटर लिस्ट और किसी भी अपडेटेड नियम को वेरिफ़ाई करें।"
+        },
+        "te": {
+          "name": "రాష్ట్రీయ ఆరోగ్య నిధి (RAN) కింద ఆరోగ్య మంత్రి యొక్క క్యాన్సర్ పేషెంట్ ఫండ్ (HMCPF)",
+          "programmeType": "కేంద్ర క్యాన్సర్-నిర్దిష్ట ఆసుపత్రి-నిర్దేశిత సహాయం",
+          "description": "ప్రస్తుత HMCPF మార్గదర్శకాలను పాటిస్తూ, నిర్దేశిత ప్రాంతీయ క్యాన్సర్ కేంద్రాల (RCCలు) ద్వారా చికిత్స పొందుతున్న BPL క్యాన్సర్ రోగులు. సమీక్షించిన మార్గదర్శకం 27 RCCలను నిర్దేశిస్తుంది మరియు కేంద్ర/రాష్ట్ర ప్రభుత్వ మరియు PSU ఉద్యోగులను మినహాయిస్తుంది. ప్రస్తుత అర్హత గల కేంద్రాల జాబితాను మరియు ఏవైనా నవీకరించబడిన నియమాలను సరిచూసుకోండి."
+        },
+        "ur": {
+          "name": "راشٹریہ آروگیہ ندھی (RAN) کے تحت وزیر صحت کا کینسر مریض فنڈ (HMCPF)",
+          "programmeType": "سینٹرل کینسر کے لیے مخصوص ہسپتال کی ہدایت کردہ امداد",
+          "description": "بی پی ایل کینسر کے مریض موجودہ HMCPF رہنما اصول پر پورا اترتے ہیں اور نامزد علاقائی کینسر مراکز (RCCs) کے ذریعے علاج کیا جاتا ہے۔ نظرثانی شدہ رہنما خطوط میں 27 RCCs کی وضاحت کی گئی ہے اور اس میں مرکزی/ریاستی حکومت اور PSU ملازمین شامل نہیں ہیں۔ موجودہ اہل مرکز کی فہرست اور کسی بھی اپ ڈیٹ کردہ قواعد کی تصدیق کریں۔"
+        },
+        "pa": {
+          "name": "ਰਾਸ਼ਟਰੀ ਅਰੋਗਿਆ ਨਿਧੀ (RAN) ਅਧੀਨ ਸਿਹਤ ਮੰਤਰੀ ਕੈਂਸਰ ਰੋਗੀ ਫੰਡ (HMCPF)",
+          "programmeType": "ਕੇਂਦਰੀ ਕੈਂਸਰ-ਵਿਸ਼ੇਸ਼ ਹਸਪਤਾਲ-ਨਿਰਦੇਸ਼ਿਤ ਸਹਾਇਤਾ",
+          "description": "ਬੀਪੀਐਲ ਕੈਂਸਰ ਮਰੀਜ਼ ਮੌਜੂਦਾ ਐਚਐਮਸੀਪੀਐਫ ਦਿਸ਼ਾ-ਨਿਰਦੇਸ਼ ਨੂੰ ਪੂਰਾ ਕਰਦੇ ਹਨ ਅਤੇ ਮਨੋਨੀਤ ਖੇਤਰੀ ਕੈਂਸਰ ਕੇਂਦਰਾਂ (ਆਰਸੀਸੀ) ਰਾਹੀਂ ਇਲਾਜ ਕਰਦੇ ਹਨ। ਸਮੀਖਿਆ ਕੀਤੀ ਗਈ ਦਿਸ਼ਾ-ਨਿਰਦੇਸ਼ 27 ਆਰਸੀਸੀ ਨੂੰ ਨਿਰਧਾਰਤ ਕਰਦੀ ਹੈ ਅਤੇ ਕੇਂਦਰ/ਰਾਜ ਸਰਕਾਰ ਅਤੇ ਪੀਐਸਯੂ ਕਰਮਚਾਰੀਆਂ ਨੂੰ ਬਾਹਰ ਰੱਖਦੀ ਹੈ। ਮੌਜੂਦਾ ਯੋਗ-ਕੇਂਦਰ ਸੂਚੀ ਅਤੇ ਕਿਸੇ ਵੀ ਅੱਪਡੇਟ ਕੀਤੇ ਨਿਯਮਾਂ ਦੀ ਪੁਸ਼ਟੀ ਕਰੋ।"
+        }
+      }
+    },
+    {
+      "id": "delhi-arogya-kosh",
+      "name": "Delhi Arogya Kosh (DAK)",
+      "aliases": [
+        "Delhi Arogya Kosh (DAK)",
+        "Delhi Arogya Kosh"
+      ],
+      "programmeType": "Delhi Government medical assistance programme",
+      "description": "Delhi residents meeting the published residence and income criteria; treatment through the concerned Delhi Government hospital. The DGHS page describes family income up to ₹3 lakh/year and 3-year Delhi domicile proof.",
+      "eligibilitySummary": "Delhi residents meeting the published residence and income criteria; treatment through the concerned Delhi Government hospital. The DGHS page describes family income up to ₹3 lakh/year and 3-year Delhi domicile proof.",
+      "documentsToPrepare": "Application form; income certificate from area SDM (up to ₹3 lakh) or National Food Security Card for income below ₹1 lakh; proof of Delhi residence for last 3 years; original hospital estimate signed by treating doctor and countersigned by Medical Superintendent; two attested patient photos; treatment records; minor's birth certificate and parent's domicile proof where relevant.",
+      "stateCoverage": "Delhi",
+      "governmentLevel": "State",
+      "officialLinks": [
+        "https://dgehs.delhi.gov.in/hi/node/7913",
+        "https://health.delhi.gov.in/health/delhi-arogya-kosh",
+        "https://pumpkin-pike-m4wj.squarespace.com/blogs/dak",
+        "https://www.myscheme.gov.in/schemes/dak",
+        "https://www.millenniumpost.in/delhi/delhi-arogya-kosh-more-inclusive-than-ayushman-bharat-scheme-385383",
+        "https://www.janlaabh.in/delhi-arogya-kosh",
+        "https://joinditto.in/articles/health-insurance/delhi-arogya-kosh/",
+        "https://dgehs.delhi.gov.in/sites/default/files/inline-files/cc_0.pdf",
+        "https://wwwhyab-jan"
+      ],
+      "applicationStepCount": 8,
+      "verificationStatus": "Verified — core criteria and application route.",
+      "translations": {
+        "mr": {
+          "name": "दिल्ली आरोग्य कोष (DAK)",
+          "programmeType": "दिल्ली सरकार वैद्यकीय सहाय्यता कार्यक्रम",
+          "description": "प्रकाशित निवास आणि उत्पन्न निकष पूर्ण करणारे दिल्लीचे रहिवासी; संबंधित दिल्ली सरकारी रुग्णालयामार्फत उपचार. डीजीएचएस (DGHS) पृष्ठावर ₹३ लाख/वर्ष पर्यंतचे कौटुंबिक उत्पन्न आणि ३ वर्षांच्या दिल्ली अधिवासाचा पुरावा नमूद आहे."
+        },
+        "bn": {
+          "name": "দিল্লি আরোগ্য কোষ (DAK)",
+          "programmeType": "দিল্লি সরকারের চিকিৎসা সহায়তা কর্মসূচি",
+          "description": "প্রকাশিত বাসস্থান এবং আয়ের মানদণ্ড পূরণকারী দিল্লির বাসিন্দারা সংশ্লিষ্ট দিল্লি সরকারি হাসপাতালের মাধ্যমে চিকিৎসা পাবেন। ডিজিএইচএস (DGHS) পেজে বার্ষিক ৩ লক্ষ টাকা পর্যন্ত পারিবারিক আয় এবং ৩ বছরের দিল্লির অধিবাসী হওয়ার প্রমাণের কথা উল্লেখ করা হয়েছে।"
+        },
+        "kn": {
+          "name": "ದೆಹಲಿ ಆರೋಗ್ಯ ಕೋಶ (DAK)",
+          "programmeType": "ದೆಹಲಿ ಸರ್ಕಾರದ ವೈದ್ಯಕೀಯ ನೆರವು ಕಾರ್ಯಕ್ರಮ",
+          "description": "ಪ್ರಕಟಿತ ನಿವಾಸ ಮತ್ತು ಆದಾಯ ಮಾನದಂಡಗಳನ್ನು ಪೂರೈಸುವ ದೆಹಲಿ ನಿವಾಸಿಗಳು; ಸಂಬಂಧಿತ ದೆಹಲಿ ಸರ್ಕಾರಿ ಆಸ್ಪತ್ರೆಯ ಮೂಲಕ ಚಿಕಿತ್ಸೆ. DGHS ಪುಟವು ಕುಟುಂಬದ ಆದಾಯ ₹3 ಲಕ್ಷ/ವರ್ಷ ಮತ್ತು 3 ವರ್ಷಗಳ ದೆಹಲಿ ನಿವಾಸ ಪುರಾವೆಯನ್ನು ವಿವರಿಸುತ್ತದೆ."
+        },
+        "hi": {
+          "name": "दिल्ली आरोग्य कोष (DAK)",
+          "programmeType": "दिल्ली सरकार चिकित्सा सहायता कार्यक्रम",
+          "description": "दिल्ली के निवासी जो पब्लिश किए गए निवास और आय क्राइटेरिया को पूरा करते हैं; संबंधित दिल्ली सरकार के अस्पताल से इलाज। DGHS पेज पर परिवार की आय ₹3 लाख/साल तक और 3 साल का दिल्ली डोमिसाइल प्रूफ बताया गया है।"
+        },
+        "te": {
+          "name": "ఢిల్లీ ఆరోగ్య కోష్ (DAK)",
+          "programmeType": "ఢిల్లీ ప్రభుత్వ వైద్య సహాయ కార్యక్రమం",
+          "description": "ప్రచురితమైన నివాస మరియు ఆదాయ ప్రమాణాలకు అనుగుణంగా ఉన్న ఢిల్లీ నివాసితులు; సంబంధిత ఢిల్లీ ప్రభుత్వ ఆసుపత్రి ద్వారా చికిత్స పొందుతున్నవారు. DGHS పేజీ ప్రకారం సంవత్సరానికి ₹3 లక్షల వరకు కుటుంబ ఆదాయం మరియు 3 సంవత్సరాల ఢిల్లీ నివాస ధృవీకరణ పత్రం అవసరం."
+        },
+        "ur": {
+          "name": "دہلی آروگیہ کوش (ڈی اے کے)",
+          "programmeType": "دہلی حکومت کا طبی امداد پروگرام",
+          "description": "دہلی کے رہائشی شائع شدہ رہائش اور آمدنی کے معیار پر پورا اترتے ہیں۔ دہلی کے متعلقہ سرکاری ہسپتال کے ذریعے علاج۔ DGHS صفحہ ₹3 لاکھ/سال تک کی خاندانی آمدنی اور 3 سالہ دہلی ڈومیسائل ثبوت کو بیان کرتا ہے۔"
+        },
+        "pa": {
+          "name": "ਦਿੱਲੀ ਅਰੋਗਿਆ ਕੋਸ਼ (DAK)",
+          "programmeType": "ਦਿੱਲੀ ਸਰਕਾਰ ਦਾ ਮੈਡੀਕਲ ਸਹਾਇਤਾ ਪ੍ਰੋਗਰਾਮ",
+          "description": "ਪ੍ਰਕਾਸ਼ਿਤ ਰਿਹਾਇਸ਼ ਅਤੇ ਆਮਦਨ ਦੇ ਮਾਪਦੰਡਾਂ ਨੂੰ ਪੂਰਾ ਕਰਨ ਵਾਲੇ ਦਿੱਲੀ ਨਿਵਾਸੀ; ਸਬੰਧਤ ਦਿੱਲੀ ਸਰਕਾਰੀ ਹਸਪਤਾਲ ਰਾਹੀਂ ਇਲਾਜ। ਡੀਜੀਐਚਐਸ ਪੰਨਾ ₹3 ਲੱਖ/ਸਾਲ ਤੱਕ ਦੀ ਪਰਿਵਾਰਕ ਆਮਦਨ ਅਤੇ 3-ਸਾਲ ਦੇ ਦਿੱਲੀ ਨਿਵਾਸ ਸਬੂਤ ਦਾ ਵਰਣਨ ਕਰਦਾ ਹੈ।"
+        }
+      }
+    },
+    {
+      "id": "aas",
+      "name": "AAS (Aggarwal Aggregator Services) / AAS Cancer Care Solutions",
+      "aliases": [
+        "AAS (Aggarwal Aggregator Services) / AAS Cancer Care Solutions",
+        "AAS (Aggarwal Aggregator Services)"
+      ],
+      "programmeType": "Private healthcare service / medical-loan facilitation (NOT a grant or government scheme)",
+      "description": "Prospective patients seeking information about medical loans, cancer-care coordination, second opinion or consultation. Public site does not establish grant eligibility, loan APR, lender, approval rules or universal terms.",
+      "eligibilitySummary": "Prospective patients seeking information about medical loans, cancer-care coordination, second opinion or consultation. Public site does not establish grant eligibility, loan APR, lender, approval rules or universal terms.",
+      "documentsToPrepare": "Do not send sensitive documents until provider identity, privacy notice, lender/finance partner, fees, interest/APR, repayment schedule and consent are verified. For a quote, provider may request diagnosis and estimate; confirm necessity first.",
+      "stateCoverage": "",
+      "governmentLevel": "",
+      "officialLinks": [
+        "https://medicitynewchandigarh.in/contact/",
+        "https://medicitynewchandigarh.in/",
+        "https://medicitynewchandigarh.in/aggarwalaggregatorservices/",
+        "https://medicitynewchandigarh.in/aas-cancer/"
+      ],
+      "applicationStepCount": 7,
+      "verificationStatus": "Partially verified — advertised service categories only.",
+      "translations": {
+        "mr": {
+          "name": "एएएस (अग्रवाल एग्रीगेटर सर्व्हिसेस) / एएएस कॅन्सर केअर सोल्युशन्स",
+          "programmeType": "खाजगी आरोग्य सेवा / वैद्यकीय कर्ज सुविधा (अनुदान किंवा सरकारी योजना नाही)",
+          "description": "वैद्यकीय कर्ज, कर्करोग-उपचार समन्वय, दुसरे मत किंवा सल्लामसलत यांबद्दल माहिती शोधणारे संभाव्य रुग्ण. सार्वजनिक संकेतस्थळ अनुदान पात्रता, कर्जाचा वार्षिक व्याजदर (APR), कर्जदाता, मंजुरीचे नियम किंवा सार्वत्रिक अटी निश्चित करत नाही."
+        },
+        "bn": {
+          "name": "এএএস (আগরওয়াল অ্যাগ্রিগেটর সার্ভিসেস) / এএএস ক্যান্সার কেয়ার সলিউশনস",
+          "programmeType": "বেসরকারি স্বাস্থ্যসেবা / চিকিৎসা-ঋণ সহায়তা (কোনো অনুদান বা সরকারি প্রকল্প নয়)",
+          "description": "সম্ভাব্য রোগীরা চিকিৎসা ঋণ, ক্যান্সার-যত্ন সমন্বয়, দ্বিতীয় মতামত বা পরামর্শ সম্পর্কে তথ্য খুঁজছেন। এই পাবলিক সাইটটি অনুদানের যোগ্যতা, ঋণের বার্ষিক সুদের হার, ঋণদাতা, অনুমোদনের নিয়মাবলী বা সার্বজনীন শর্তাবলী নির্ধারণ করে না।"
+        },
+        "kn": {
+          "name": "AAS (ಅಗರ್ವಾಲ್ ಅಗ್ರಿಗೇಟರ್ ಸರ್ವೀಸಸ್) / AAS ಕ್ಯಾನ್ಸರ್ ಕೇರ್ ಸೊಲ್ಯೂಷನ್ಸ್",
+          "programmeType": "ಖಾಸಗಿ ಆರೋಗ್ಯ ಸೇವೆ / ವೈದ್ಯಕೀಯ ಸಾಲ ಸೌಲಭ್ಯ (ಅನುದಾನ ಅಥವಾ ಸರ್ಕಾರಿ ಯೋಜನೆ ಅಲ್ಲ)",
+          "description": "ವೈದ್ಯಕೀಯ ಸಾಲಗಳು, ಕ್ಯಾನ್ಸರ್-ಆರೈಕೆ ಸಮನ್ವಯ, ಎರಡನೇ ಅಭಿಪ್ರಾಯ ಅಥವಾ ಸಮಾಲೋಚನೆಯ ಬಗ್ಗೆ ಮಾಹಿತಿ ಪಡೆಯಲು ಬಯಸುವ ರೋಗಿಗಳು. ಸಾರ್ವಜನಿಕ ಸೈಟ್ ಅನುದಾನ ಅರ್ಹತೆ, ಸಾಲದ APR, ಸಾಲದಾತ, ಅನುಮೋದನೆ ನಿಯಮಗಳು ಅಥವಾ ಸಾರ್ವತ್ರಿಕ ನಿಯಮಗಳನ್ನು ಸ್ಥಾಪಿಸುವುದಿಲ್ಲ."
+        },
+        "hi": {
+          "name": "एएएस (अग्रवाल एग्रीगेटर सर्विसेज) / एएएस कैंसर केयर सॉल्यूशंस",
+          "programmeType": "प्राइवेट हेल्थकेयर सर्विस / मेडिकल-लोन सुविधा (कोई ग्रांट या सरकारी स्कीम नहीं)",
+          "description": "मेडिकल लोन, कैंसर-केयर कोऑर्डिनेशन, सेकंड ओपिनियन या कंसल्टेशन के बारे में जानकारी चाहने वाले होने वाले मरीज़। पब्लिक साइट ग्रांट एलिजिबिलिटी, लोन APR, लेंडर, अप्रूवल नियम या यूनिवर्सल शर्तें तय नहीं करती है।"
+        },
+        "te": {
+          "name": "AAS (అగర్వాల్ అగ్రిగేటర్ సర్వీసెస్) / AAS క్యాన్సర్ కేర్ సొల్యూషన్స్",
+          "programmeType": "ప్రైవేట్ ఆరోగ్య సంరక్షణ సేవ / వైద్య-రుణ సౌకర్యం (గ్రాంట్ లేదా ప్రభుత్వ పథకం కాదు)",
+          "description": "వైద్య రుణాలు, క్యాన్సర్ సంరక్షణ సమన్వయం, రెండవ అభిప్రాయం లేదా సంప్రదింపుల గురించి సమాచారం కోరుకునే కాబోయే రోగుల కోసం. ఈ పబ్లిక్ సైట్ గ్రాంట్ అర్హత, రుణ ఏపీఆర్, రుణదాత, ఆమోద నియమాలు లేదా సార్వత్రిక నిబంధనలను నిర్ధారించదు."
+        },
+        "ur": {
+          "name": "AAS (اگروال ایگریگیٹر سروسز) / AAS کینسر کیئر سلوشنز",
+          "programmeType": "پرائیویٹ ہیلتھ کیئر سروس / میڈیکل لون کی سہولت (گرانٹ یا سرکاری اسکیم نہیں)",
+          "description": "ممکنہ مریض طبی قرضوں، کینسر کی دیکھ بھال کوآرڈینیشن، دوسری رائے یا مشاورت کے بارے میں معلومات حاصل کرنے کے خواہاں ہیں۔ عوامی سائٹ گرانٹ کی اہلیت، قرض APR، قرض دہندہ، منظوری کے قواعد یا عالمگیر شرائط قائم نہیں کرتی ہے۔"
+        },
+        "pa": {
+          "name": "ਏਏਐਸ (ਅਗਰਵਾਲ ਐਗਰੀਗੇਟਰ ਸੇਵਾਵਾਂ) / ਏਏਐਸ ਕੈਂਸਰ ਕੇਅਰ ਸਲਿਊਸ਼ਨਜ਼",
+          "programmeType": "ਨਿੱਜੀ ਸਿਹਤ ਸੰਭਾਲ ਸੇਵਾ / ਮੈਡੀਕਲ-ਕਰਜ਼ਾ ਸਹੂਲਤ (ਕੋਈ ਗ੍ਰਾਂਟ ਜਾਂ ਸਰਕਾਰੀ ਯੋਜਨਾ ਨਹੀਂ)",
+          "description": "ਸੰਭਾਵੀ ਮਰੀਜ਼ ਜੋ ਮੈਡੀਕਲ ਕਰਜ਼ਿਆਂ, ਕੈਂਸਰ-ਸੰਭਾਲ ਤਾਲਮੇਲ, ਦੂਜੀ ਰਾਏ ਜਾਂ ਸਲਾਹ-ਮਸ਼ਵਰੇ ਬਾਰੇ ਜਾਣਕਾਰੀ ਚਾਹੁੰਦੇ ਹਨ। ਜਨਤਕ ਸਾਈਟ ਗ੍ਰਾਂਟ ਯੋਗਤਾ, ਕਰਜ਼ਾ APR, ਕਰਜ਼ਾਦਾਤਾ, ਪ੍ਰਵਾਨਗੀ ਨਿਯਮ ਜਾਂ ਵਿਆਪਕ ਸ਼ਰਤਾਂ ਸਥਾਪਤ ਨਹੀਂ ਕਰਦੀ ਹੈ।"
+        }
+      }
+    },
+    {
+      "id": "youwecan",
+      "name": "The YouWeCan Cancer Treatment Fund",
+      "aliases": [
+        "The YouWeCan Cancer Treatment Fund",
+        "YouWeCan Cancer Treatment Fund"
+      ],
+      "programmeType": "Private non-profit paediatric cancer treatment grant",
+      "description": "Cancer patients who are Indian citizens, below the age threshold specified by the current fund form/page, family income ≤₹2 lakh/year, and prognosis criteria as stated by the fund. Official YouWeCan pages show an age inconsistency (<16 on one page, below 18 on another); confirm before applying. PM-JAY/CGHS/ESIS/employer support exclusions apply as published.",
+      "eligibilitySummary": "Cancer patients who are Indian citizens, below the age threshold specified by the current fund form/page, family income ≤₹2 lakh/year, and prognosis criteria as stated by the fund. Official YouWeCan pages show an age inconsistency (<16 on one page, below 18 on another); confirm before applying. PM-JAY/CGHS/ESIS/employer support exclusions apply as published.",
+      "documentsToPrepare": "Current application form; patient Aadhaar/birth proof; parent/guardian IDs; diagnosis/pathology and treatment summary; treating doctor prognosis/estimate; family income proof; ration card if requested; hospital details; declarations about PM-JAY/CGHS/ESIS/employer aid; bank details only as requested on official form.",
+      "stateCoverage": "",
+      "governmentLevel": "",
+      "officialLinks": [
+        "https://www.youwecan.org/YWC-cancer-fund",
+        "https://www.youwecan.org/cancer-scholarship",
+        "https://www.youwecan.org/ngo",
+        "https://www.youwecan.org/",
+        "https://www.csrbox.org/Impact/description/India_CSR_news_YouWeCan-supports-the-treatment-of-paediatric-cancer-patients-in-partnership-with-Smiths-Group-India_1851",
+        "https://www.spglobal.com/content/dam/spglobal/corporate/en/who-we-are/corporate-responsibility/reports-commitments/India-CSR-Fund-Disclosure.pdf"
+      ],
+      "applicationStepCount": 8,
+      "verificationStatus": "Partially verified — age conflict must be clarified directly.",
+      "translations": {
+        "mr": {
+          "name": "यूवीकॅन कर्करोग उपचार निधी",
+          "programmeType": "खाजगी गैर-लाभकारी बाल कर्करोग उपचार अनुदान",
+          "description": "कर्करोगाचे रुग्ण जे भारतीय नागरिक आहेत, सध्याच्या निधी अर्ज/पानावर नमूद केलेल्या वयोमर्यादेपेक्षा कमी वयाचे आहेत, कौटुंबिक उत्पन्न ₹२ लाख/वर्ष किंवा त्यापेक्षा कमी आहे आणि निधीने सांगितलेल्या रोगनिदान निकषांनुसार पात्र आहेत. अधिकृत YouWeCan पानांवर वयामध्ये विसंगती आढळते (एका पानावर <१६, तर दुसऱ्या पानावर १८ पेक्षा कमी); अर्ज करण्यापूर्वी याची खात्री करा. PM-JAY/CGHS/ESIS/नियोक्ता सहाय्यासंबंधीचे अपवाद प्रकाशित केल्याप्रमाणे लागू होतील."
+        },
+        "bn": {
+          "name": "ইউউইক্যান ক্যান্সার চিকিৎসা তহবিল",
+          "programmeType": "বেসরকারি অলাভজনক শিশু ক্যান্সার চিকিৎসা অনুদান",
+          "description": "ক্যান্সার রোগী যারা ভারতীয় নাগরিক, বর্তমান তহবিল ফর্ম/পৃষ্ঠায় উল্লেখিত বয়সের সীমার নিচে, যাদের পারিবারিক আয় বছরে ₹২ লক্ষ বা তার কম এবং যারা তহবিল দ্বারা উল্লিখিত রোগনির্ণয়ের মানদণ্ড পূরণ করেন। অফিসিয়াল YouWeCan পৃষ্ঠাগুলিতে বয়সের একটি অসঙ্গতি দেখা যায় (একটি পৃষ্ঠায় <১৬, অন্যটিতে ১৮-এর নিচে); আবেদন করার আগে তা যাচাই করে নিন। প্রকাশিত নিয়ম অনুযায়ী PM-JAY/CGHS/ESIS/নিয়োগকর্তার সহায়তার আওতা থেকে বাদ পড়ার শর্তাবলী প্রযোজ্য।"
+        },
+        "kn": {
+          "name": "YouWeCan ಕ್ಯಾನ್ಸರ್ ಚಿಕಿತ್ಸಾ ನಿಧಿ",
+          "programmeType": "ಖಾಸಗಿ ಲಾಭರಹಿತ ಮಕ್ಕಳ ಕ್ಯಾನ್ಸರ್ ಚಿಕಿತ್ಸಾ ಅನುದಾನ",
+          "description": "ಭಾರತೀಯ ನಾಗರಿಕರಾಗಿರುವ ಕ್ಯಾನ್ಸರ್ ರೋಗಿಗಳು, ಪ್ರಸ್ತುತ ನಿಧಿ ನಮೂನೆ/ಪುಟದಲ್ಲಿ ನಿರ್ದಿಷ್ಟಪಡಿಸಿದ ವಯಸ್ಸಿನ ಮಿತಿಗಿಂತ ಕಡಿಮೆ, ಕುಟುಂಬದ ಆದಾಯ ≤₹2 ಲಕ್ಷ/ವರ್ಷ, ಮತ್ತು ನಿಧಿಯಿಂದ ಹೇಳಲಾದ ಮುನ್ನರಿವು ಮಾನದಂಡಗಳು. ಅಧಿಕೃತ YouWeCan ಪುಟಗಳು ವಯಸ್ಸಿನ ಅಸಂಗತತೆಯನ್ನು ತೋರಿಸುತ್ತವೆ (ಒಂದು ಪುಟದಲ್ಲಿ <16, ಇನ್ನೊಂದು ಪುಟದಲ್ಲಿ 18 ಕ್ಕಿಂತ ಕಡಿಮೆ); ಅರ್ಜಿ ಸಲ್ಲಿಸುವ ಮೊದಲು ದೃಢೀಕರಿಸಿ. PM-JAY/CGHS/ESIS/ಉದ್ಯೋಗದಾತ ಬೆಂಬಲ ಹೊರಗಿಡುವಿಕೆಗಳು ಪ್ರಕಟವಾದಂತೆ ಅನ್ವಯಿಸುತ್ತವೆ."
+        },
+        "hi": {
+          "name": "यूवीकैन कैंसर उपचार निधि",
+          "programmeType": "निजी गैर-लाभकारी बाल चिकित्सा कैंसर उपचार अनुदान",
+          "description": "कैंसर के मरीज़ जो भारतीय नागरिक हैं, मौजूदा फंड फ़ॉर्म/पेज में बताई गई उम्र से कम हैं, परिवार की इनकम ≤₹2 लाख/साल है, और फंड में बताए गए प्रोग्नोसिस क्राइटेरिया हैं। ऑफिशियल YouWeCan पेज पर उम्र में अंतर दिख रहा है (एक पेज पर <16, दूसरे पर 18 से कम); अप्लाई करने से पहले कन्फर्म करें। PM-JAY/CGHS/ESIS/एम्प्लॉयर सपोर्ट एक्सक्लूज़न पब्लिश हुए अनुसार लागू होते हैं।"
+        },
+        "te": {
+          "name": "యూవీక్యాన్ క్యాన్సర్ చికిత్స నిధి",
+          "programmeType": "ప్రైవేట్ లాభాపేక్షలేని పిల్లల క్యాన్సర్ చికిత్స గ్రాంట్",
+          "description": "భారత పౌరులైన క్యాన్సర్ రోగులు, ప్రస్తుత ఫండ్ ఫారం/పేజీలో పేర్కొన్న వయోపరిమితి కంటే తక్కువ వయస్సు కలిగి ఉండాలి, కుటుంబ ఆదాయం సంవత్సరానికి ₹2 లక్షలు లేదా అంతకంటే తక్కువ ఉండాలి, మరియు ఫండ్ పేర్కొన్న రోగ నిర్ధారణ ప్రమాణాలను కలిగి ఉండాలి. అధికారిక YouWeCan పేజీలలో వయస్సులో వ్యత్యాసం కనిపిస్తోంది (<16 ఒక పేజీలో, 18 కంటే తక్కువ మరొక పేజీలో); దరఖాస్తు చేసే ముందు నిర్ధారించుకోండి. ప్రచురించిన విధంగా PM-JAY/CGHS/ESIS/యజమాని మద్దతు మినహాయింపులు వర్తిస్తాయి."
+        },
+        "ur": {
+          "name": "YouWeCan کینسر ٹریٹمنٹ فنڈ",
+          "programmeType": "نجی غیر منافع بخش پیڈیاٹرک کینسر کے علاج کی گرانٹ",
+          "description": "کینسر کے مریض جو ہندوستانی شہری ہیں، موجودہ فنڈ فارم/صفحہ کی طرف سے متعین عمر کی حد سے کم، خاندانی آمدنی 2 لاکھ/سال، اور تشخیصی معیار جیسا کہ فنڈ نے بیان کیا ہے۔ YouWeCan کے آفیشل صفحات عمر میں تضاد دکھاتے ہیں (ایک صفحہ پر <16، دوسرے صفحہ پر 18 سے کم)؛ درخواست دینے سے پہلے تصدیق کریں۔ PM-JAY/CGHS/ESIS/ایمپلائر سپورٹ کے اخراج کا اطلاق جیسا کہ شائع ہوا ہے۔"
+        },
+        "pa": {
+          "name": "YouWeCan ਕੈਂਸਰ ਇਲਾਜ ਫੰਡ",
+          "programmeType": "ਨਿੱਜੀ ਗੈਰ-ਮੁਨਾਫ਼ਾ ਬਾਲ ਕੈਂਸਰ ਇਲਾਜ ਗ੍ਰਾਂਟ",
+          "description": "ਕੈਂਸਰ ਦੇ ਮਰੀਜ਼ ਜੋ ਭਾਰਤੀ ਨਾਗਰਿਕ ਹਨ, ਮੌਜੂਦਾ ਫੰਡ ਫਾਰਮ/ਪੰਨੇ ਦੁਆਰਾ ਨਿਰਧਾਰਤ ਉਮਰ ਸੀਮਾ ਤੋਂ ਘੱਟ, ਪਰਿਵਾਰਕ ਆਮਦਨ ≤₹2 ਲੱਖ/ਸਾਲ, ਅਤੇ ਫੰਡ ਦੁਆਰਾ ਦੱਸੇ ਅਨੁਸਾਰ ਪੂਰਵ-ਅਨੁਮਾਨ ਮਾਪਦੰਡ। ਅਧਿਕਾਰਤ YouWeCan ਪੰਨੇ ਉਮਰ ਦੀ ਅਸੰਗਤਤਾ ਦਿਖਾਉਂਦੇ ਹਨ (ਇੱਕ ਪੰਨੇ 'ਤੇ <16, ਦੂਜੇ ਪੰਨੇ 'ਤੇ 18 ਤੋਂ ਘੱਟ); ਅਰਜ਼ੀ ਦੇਣ ਤੋਂ ਪਹਿਲਾਂ ਪੁਸ਼ਟੀ ਕਰੋ। PM-JAY/CGHS/ESIS/ਮਾਲਕ ਸਹਾਇਤਾ ਅਪਵਾਦ ਪ੍ਰਕਾਸ਼ਿਤ ਅਨੁਸਾਰ ਲਾਗੂ ਹੁੰਦੇ ਹਨ।"
+        }
+      }
+    },
+    {
+      "id": "ics-parent",
+      "name": "Indian Cancer Society (ICS) – parent organisation / general programmes",
+      "aliases": [
+        "Indian Cancer Society (ICS) – parent organisation / general programmes",
+        "Indian Cancer Society (ICS)",
+        "Indian Cancer Society (parent organization)"
+      ],
+      "programmeType": "National cancer NGO; not one universal grant",
+      "description": "Cancer patients, survivors and communities; support differs by ICS programme and branch. The Cancer Cure Fund is a separate specific programme with separate eligibility and documents.",
+      "eligibilitySummary": "Cancer patients, survivors and communities; support differs by ICS programme and branch. The Cancer Cure Fund is a separate specific programme with separate eligibility and documents.",
+      "documentsToPrepare": "For general counselling/referral, diagnosis and treating-hospital details may be requested. For financial support, ask which specific ICS fund applies; do not reuse Cancer Cure Fund criteria for all ICS services.",
+      "stateCoverage": "",
+      "governmentLevel": "",
+      "officialLinks": [
+        "https://www.indiancancersociety.org/",
+        "https://www.indiancancersociety.org/what-do-we-do/cancer-cure",
+        "https://ascopubs.org/doi/10.1200/JCO.2026.44.16_suppl.1610",
+        "https://indiancancersocietydelhi.in/focuses-on-early-detection-of-cancer/",
+        "https://www.pib.gov.in/PressReleasePage.aspx?PRID=2298997&reg=48&lang=2",
+        "https://indiancancersocietydelhi.in/focuses-on-early-ofcantection/"
+      ],
+      "applicationStepCount": 7,
+      "verificationStatus": "Verified — organization; parent vs fund distinction required.",
+      "translations": {
+        "mr": {
+          "name": "इंडियन कॅन्सर सोसायटी (आयसीएस) – मूळ संस्था / सर्वसाधारण कार्यक्रम",
+          "programmeType": "राष्ट्रीय कर्करोग स्वयंसेवी संस्था; एकही सार्वत्रिक अनुदान नाही",
+          "description": "कर्करोग रुग्ण, कर्करोगातून बरे झालेले आणि समुदाय; आयसीएस (ICS) कार्यक्रम आणि शाखानुसार मिळणारी मदत वेगवेगळी असते. कॅन्सर क्युअर फंड (Cancer Cure Fund) हा एक स्वतंत्र, विशिष्ट कार्यक्रम असून त्यासाठी स्वतंत्र पात्रता आणि कागदपत्रे लागतात."
+        },
+        "bn": {
+          "name": "ইন্ডিয়ান ক্যান্সার সোসাইটি (ICS) – মূল সংস্থা / সাধারণ কার্যক্রম",
+          "programmeType": "জাতীয় ক্যান্সার এনজিও; কোনো সার্বজনীন অনুদান নয়",
+          "description": "ক্যান্সার রোগী, আরোগ্যপ্রাপ্ত ব্যক্তি এবং সম্প্রদায়; আইসিএস প্রোগ্রাম এবং শাখাভেদে সহায়তা ভিন্ন হয়। ক্যান্সার কিওর ফান্ড একটি পৃথক নির্দিষ্ট প্রোগ্রাম, যার জন্য আলাদা যোগ্যতা এবং কাগজপত্র প্রয়োজন।"
+        },
+        "kn": {
+          "name": "ಭಾರತೀಯ ಕ್ಯಾನ್ಸರ್ ಸೊಸೈಟಿ (ICS) - ಪೋಷಕ ಸಂಸ್ಥೆ / ಸಾಮಾನ್ಯ ಕಾರ್ಯಕ್ರಮಗಳು",
+          "programmeType": "ರಾಷ್ಟ್ರೀಯ ಕ್ಯಾನ್ಸರ್ NGO; ಒಂದೇ ಒಂದು ಸಾರ್ವತ್ರಿಕ ಅನುದಾನವಲ್ಲ.",
+          "description": "ಕ್ಯಾನ್ಸರ್ ರೋಗಿಗಳು, ಬದುಕುಳಿದವರು ಮತ್ತು ಸಮುದಾಯಗಳು; ಬೆಂಬಲವು ICS ಕಾರ್ಯಕ್ರಮ ಮತ್ತು ಶಾಖೆಯಿಂದ ಬದಲಾಗುತ್ತದೆ. ಕ್ಯಾನ್ಸರ್ ಚಿಕಿತ್ಸಾ ನಿಧಿಯು ಪ್ರತ್ಯೇಕ ಅರ್ಹತೆ ಮತ್ತು ದಾಖಲೆಗಳನ್ನು ಹೊಂದಿರುವ ಪ್ರತ್ಯೇಕ ನಿರ್ದಿಷ್ಟ ಕಾರ್ಯಕ್ರಮವಾಗಿದೆ."
+        },
+        "hi": {
+          "name": "इंडियन कैंसर सोसाइटी (ICS) – मूल संगठन / सामान्य कार्यक्रम",
+          "programmeType": "नेशनल कैंसर NGO; एक भी यूनिवर्सल ग्रांट नहीं",
+          "description": "कैंसर के मरीज़, सर्वाइवर और कम्युनिटी; ICS प्रोग्राम और ब्रांच के हिसाब से सपोर्ट अलग-अलग होता है। कैंसर क्योर फंड एक अलग खास प्रोग्राम है जिसमें अलग एलिजिबिलिटी और डॉक्यूमेंट्स होते हैं।"
+        },
+        "te": {
+          "name": "ఇండియన్ క్యాన్సర్ సొసైటీ (ICS) – మాతృ సంస్థ / సాధారణ కార్యక్రమాలు",
+          "programmeType": "జాతీయ క్యాన్సర్ స్వచ్ఛంద సంస్థ; ఒక్క సార్వత్రిక గ్రాంటు కూడా లేదు",
+          "description": "క్యాన్సర్ రోగులు, క్యాన్సర్ నుండి కోలుకున్నవారు మరియు సమాజాలకు; ICS కార్యక్రమం మరియు శాఖను బట్టి మద్దతు మారుతుంది. క్యాన్సర్ నివారణ నిధి అనేది ప్రత్యేక అర్హతలు మరియు పత్రాలతో కూడిన ఒక ప్రత్యేక కార్యక్రమం."
+        },
+        "ur": {
+          "name": "انڈین کینسر سوسائٹی (ICS) - والدین کی تنظیم / عمومی پروگرام",
+          "programmeType": "نیشنل کینسر این جی او؛ ایک عالمی گرانٹ نہیں",
+          "description": "کینسر کے مریض، زندہ بچ جانے والے اور کمیونٹیز؛ سپورٹ ICS پروگرام اور برانچ کے لحاظ سے مختلف ہے۔ کینسر کیور فنڈ ایک الگ مخصوص پروگرام ہے جس میں علیحدہ اہلیت اور دستاویزات ہیں۔"
+        },
+        "pa": {
+          "name": "ਇੰਡੀਅਨ ਕੈਂਸਰ ਸੋਸਾਇਟੀ (ICS) - ਮੂਲ ਸੰਗਠਨ / ਆਮ ਪ੍ਰੋਗਰਾਮ",
+          "programmeType": "ਰਾਸ਼ਟਰੀ ਕੈਂਸਰ ਐਨਜੀਓ; ਇੱਕ ਵੀ ਯੂਨੀਵਰਸਲ ਗ੍ਰਾਂਟ ਨਹੀਂ",
+          "description": "ਕੈਂਸਰ ਦੇ ਮਰੀਜ਼, ਬਚੇ ਹੋਏ ਲੋਕ ਅਤੇ ਭਾਈਚਾਰੇ; ਸਹਾਇਤਾ ICS ਪ੍ਰੋਗਰਾਮ ਅਤੇ ਸ਼ਾਖਾ ਅਨੁਸਾਰ ਵੱਖਰੀ ਹੁੰਦੀ ਹੈ। ਕੈਂਸਰ ਇਲਾਜ ਫੰਡ ਇੱਕ ਵੱਖਰਾ ਵਿਸ਼ੇਸ਼ ਪ੍ਰੋਗਰਾਮ ਹੈ ਜਿਸ ਵਿੱਚ ਵੱਖਰੀ ਯੋਗਤਾ ਅਤੇ ਦਸਤਾਵੇਜ਼ ਹਨ।"
+        }
+      }
+    },
+    {
+      "id": "cankids",
+      "name": "CanKids...KidsCan",
+      "aliases": [
+        "CanKids...KidsCan",
+        "CanKids",
+        "CanKids KidsCan"
+      ],
+      "programmeType": "National childhood cancer NGO / holistic support network",
+      "description": "Children with cancer and their families. Support is delivered through CanKids Hospital Support Units and state projects; no universal grant amount or single national income threshold is published.",
+      "eligibilitySummary": "Children with cancer and their families. Support is delivered through CanKids Hospital Support Units and state projects; no universal grant amount or single national income threshold is published.",
+      "documentsToPrepare": "Child identity/birth proof; parent/guardian contact and ID; diagnosis/pathology; treating hospital and oncologist details; treatment plan/estimate; family socioeconomic details if requested; consent for case coordination and records sharing.",
+      "stateCoverage": "",
+      "governmentLevel": "",
+      "officialLinks": [
+        "https://cankidsindia.org/",
+        "https://cankidsindia.org/our-model/",
+        "https://cankidsindia.org/who-we-are/",
+        "https://www.palliativecare.in/subhita-the-cankids-pediatric-palliative-care-centers-experience/",
+        "https://www.kotak.bank.in/content/dam/Kotak/about-us/csr-policy/impact-assessment-reports/fy-2025-26/CanKids-KidsCan-FY-22-23-Project.pdf",
+        "https://cankidsindia.org/the-help-we-give/"
+      ],
+      "applicationStepCount": 8,
+      "verificationStatus": "Verified — organization and support model; specific case funding varies.",
+      "translations": {
+        "mr": {
+          "name": "कॅनकिड्स...किड्सकॅन",
+          "programmeType": "राष्ट्रीय बाल कर्करोग स्वयंसेवी संस्था / समग्र सहाय्य नेटवर्क",
+          "description": "कर्करोगग्रस्त मुले आणि त्यांचे कुटुंबीय. कॅनकिड्स हॉस्पिटल सपोर्ट युनिट्स आणि राज्य प्रकल्पांमार्फत सहाय्य पुरवले जाते; कोणतीही सार्वत्रिक अनुदान रक्कम किंवा एकच राष्ट्रीय उत्पन्न मर्यादा जाहीर केलेली नाही."
+        },
+        "bn": {
+          "name": "CanKids...KidsCan",
+          "programmeType": "জাতীয় শিশু ক্যান্সার এনজিও / সামগ্রিক সহায়তা নেটওয়ার্ক",
+          "description": "ক্যান্সার আক্রান্ত শিশু এবং তাদের পরিবারবর্গ। ক্যানকিডস হসপিটাল সাপোর্ট ইউনিট এবং রাষ্ট্রীয় প্রকল্পের মাধ্যমে সহায়তা প্রদান করা হয়; কোনো সার্বজনীন অনুদানের পরিমাণ বা একক জাতীয় আয়ের সীমা প্রকাশ করা হয়নি।"
+        },
+        "kn": {
+          "name": "ಮಕ್ಕಳೇ... ಮಕ್ಕಳೇ",
+          "programmeType": "ರಾಷ್ಟ್ರೀಯ ಬಾಲ್ಯದ ಕ್ಯಾನ್ಸರ್ NGO / ಸಮಗ್ರ ಬೆಂಬಲ ಜಾಲ",
+          "description": "ಕ್ಯಾನ್ಸರ್ ಪೀಡಿತ ಮಕ್ಕಳು ಮತ್ತು ಅವರ ಕುಟುಂಬಗಳು. ಕ್ಯಾನ್‌ಕಿಡ್ಸ್ ಆಸ್ಪತ್ರೆ ಬೆಂಬಲ ಘಟಕಗಳು ಮತ್ತು ರಾಜ್ಯ ಯೋಜನೆಗಳ ಮೂಲಕ ಬೆಂಬಲವನ್ನು ನೀಡಲಾಗುತ್ತದೆ; ಯಾವುದೇ ಸಾರ್ವತ್ರಿಕ ಅನುದಾನ ಮೊತ್ತ ಅಥವಾ ಒಂದೇ ರಾಷ್ಟ್ರೀಯ ಆದಾಯದ ಮಿತಿಯನ್ನು ಪ್ರಕಟಿಸಲಾಗಿಲ್ಲ."
+        },
+        "hi": {
+          "name": "कैनकिड्स...किड्सकैन",
+          "programmeType": "नेशनल चाइल्डहुड कैंसर NGO / होलिस्टिक सपोर्ट नेटवर्क",
+          "description": "कैंसर से पीड़ित बच्चे और उनके परिवार। कैनकिड्स हॉस्पिटल सपोर्ट यूनिट्स और राज्य प्रोजेक्ट्स के ज़रिए मदद दी जाती है; कोई यूनिवर्सल ग्रांट अमाउंट या सिंगल नेशनल इनकम थ्रेशहोल्ड पब्लिश नहीं किया गया है।"
+        },
+        "te": {
+          "name": "కెన్‌కిడ్స్...కిడ్స్‌కెన్",
+          "programmeType": "జాతీయ బాల్య క్యాన్సర్ స్వచ్ఛంద సంస్థ / సమగ్ర సహాయ నెట్‌వర్క్",
+          "description": "క్యాన్సర్‌తో బాధపడుతున్న పిల్లలు మరియు వారి కుటుంబాలు. కాన్‌కిడ్స్ హాస్పిటల్ సపోర్ట్ యూనిట్లు మరియు రాష్ట్ర ప్రాజెక్టుల ద్వారా మద్దతు అందించబడుతుంది; సార్వత్రిక గ్రాంట్ మొత్తం లేదా ఒకే జాతీయ ఆదాయ పరిమితి ఏదీ ప్రచురించబడలేదు."
+        },
+        "ur": {
+          "name": "کین بچے...بچے کین",
+          "programmeType": "نیشنل چائلڈ ہوڈ کینسر این جی او / ہولیسٹک سپورٹ نیٹ ورک",
+          "description": "کینسر میں مبتلا بچے اور ان کے اہل خانہ۔ امداد CanKids ہسپتال سپورٹ یونٹس اور ریاستی منصوبوں کے ذریعے فراہم کی جاتی ہے۔ کوئی یونیورسل گرانٹ رقم یا واحد قومی آمدنی کی حد شائع نہیں کی گئی ہے۔"
+        },
+        "pa": {
+          "name": "ਕੈਨਕਿਡਜ਼...ਕਿਡਜ਼ਕੈਨ",
+          "programmeType": "ਰਾਸ਼ਟਰੀ ਬਚਪਨ ਦੇ ਕੈਂਸਰ NGO / ਸੰਪੂਰਨ ਸਹਾਇਤਾ ਨੈੱਟਵਰਕ",
+          "description": "ਕੈਂਸਰ ਤੋਂ ਪੀੜਤ ਬੱਚੇ ਅਤੇ ਉਨ੍ਹਾਂ ਦੇ ਪਰਿਵਾਰ। ਸਹਾਇਤਾ ਕੈਨਕਿਡਜ਼ ਹਸਪਤਾਲ ਸਹਾਇਤਾ ਇਕਾਈਆਂ ਅਤੇ ਰਾਜ ਪ੍ਰੋਜੈਕਟਾਂ ਰਾਹੀਂ ਦਿੱਤੀ ਜਾਂਦੀ ਹੈ; ਕੋਈ ਵੀ ਯੂਨੀਵਰਸਲ ਗ੍ਰਾਂਟ ਰਕਮ ਜਾਂ ਸਿੰਗਲ ਰਾਸ਼ਟਰੀ ਆਮਦਨ ਸੀਮਾ ਪ੍ਰਕਾਸ਼ਿਤ ਨਹੀਂ ਕੀਤੀ ਜਾਂਦੀ।"
+        }
+      }
+    },
+    {
+      "id": "tata-trusts",
+      "name": "Tata Trusts – Medical Grants",
+      "aliases": [
+        "Tata Trusts – Medical Grants",
+        "Tata Trusts",
+        "Tata Trusts Medical Grants"
+      ],
+      "programmeType": "Charitable medical grant programme",
+      "description": "Financially disadvantaged Indian residents needing specific medical treatment. Programme primarily supports Mumbai patients but considers requests from linked hospitals outside Mumbai. Application is assessed socio-economically and depends on available funds.",
+      "eligibilitySummary": "Financially disadvantaged Indian residents needing specific medical treatment. Programme primarily supports Mumbai patients but considers requests from linked hospitals outside Mumbai. Application is assessed socio-economically and depends on available funds.",
+      "documentsToPrepare": "Current Tata Trusts medical application form; patient and immediate-family details; diagnosis and doctor/hospital reports; treatment estimate; income/financial documents; hospital details; consent/declarations; any supporting documents listed in the current form. Submit before discharge; do not wait until treatment is completed.",
+      "stateCoverage": "",
+      "governmentLevel": "",
+      "officialLinks": [
+        "https://tatatrusts.org/explore-our-work/enabling-human-potential/individual-grants/medical-grants",
+        "https://www.tatatrusts.org/Upload/Content_Files/medical-application-form.pdf",
+        "https://tatatrusts.org/pdf/focus-area/individual-grants/medical-application-form.pdf",
+        "https://www.tatatrusts.org/upload/pdf/medical-application-form.pdf",
+        "https://economictimes.indiatimes.com/magazines/panache/ratan-tatas-personal-story-behind-his-cancer-treatment-commitment/articleshow/114271244.cms?from=mdr",
+        "https://www.tatatrusts.org/media/media-reports/on-world-cancer-day-tata-trusts-ceo-flags-late-diagnosis-crisis-as-india-s-cancer-cases-set-to-surge-24-by-2030",
+        "https://horizons.tatatrusts.org/2025/october/pdf/tata-trusts-horizons-october-2025.pdf",
+        "https://www.tatatrusts.org/our-work/healthcare/cancer-care",
+        "https://www.tatatrusts.org/Upload/Content_Files/medical-application.flication"
+      ],
+      "applicationStepCount": 9,
+      "verificationStatus": "Verified — official programme page and form.",
+      "translations": {
+        "mr": {
+          "name": "टाटा ट्रस्ट्स – वैद्यकीय अनुदान",
+          "programmeType": "धर्मादाय वैद्यकीय अनुदान कार्यक्रम",
+          "description": "विशिष्ट वैद्यकीय उपचारांची गरज असलेले आर्थिकदृष्ट्या दुर्बळ भारतीय रहिवासी. हा कार्यक्रम प्रामुख्याने मुंबईतील रुग्णांना सहाय्य करतो, परंतु मुंबईबाहेरील संलग्न रुग्णालयांकडून आलेल्या विनंत्यांचाही विचार केला जातो. अर्जाचे मूल्यांकन सामाजिक-आर्थिक दृष्ट्या केले जाते आणि ते उपलब्ध निधीवर अवलंबून असते."
+        },
+        "bn": {
+          "name": "টাটা ট্রাস্টস – চিকিৎসা অনুদান",
+          "programmeType": "দাতব্য চিকিৎসা অনুদান কর্মসূচি",
+          "description": "আর্থিকভাবে অসচ্ছল ভারতীয় বাসিন্দা যাদের নির্দিষ্ট চিকিৎসার প্রয়োজন। এই কর্মসূচিটি প্রাথমিকভাবে মুম্বাইয়ের রোগীদের সহায়তা করে, তবে মুম্বাইয়ের বাইরের সংযুক্ত হাসপাতালগুলো থেকেও আবেদন বিবেচনা করা হয়। আবেদনপত্রটি আর্থ-সামাজিক অবস্থার ভিত্তিতে মূল্যায়ন করা হয় এবং তা উপলব্ধ তহবিলের উপর নির্ভরশীল।"
+        },
+        "kn": {
+          "name": "ಟಾಟಾ ಟ್ರಸ್ಟ್‌ಗಳು - ವೈದ್ಯಕೀಯ ಅನುದಾನಗಳು",
+          "programmeType": "ದತ್ತಿ ವೈದ್ಯಕೀಯ ಅನುದಾನ ಕಾರ್ಯಕ್ರಮ",
+          "description": "ಆರ್ಥಿಕವಾಗಿ ಹಿಂದುಳಿದ ಭಾರತೀಯ ನಿವಾಸಿಗಳಿಗೆ ನಿರ್ದಿಷ್ಟ ವೈದ್ಯಕೀಯ ಚಿಕಿತ್ಸೆ ಅಗತ್ಯವಿದೆ. ಈ ಕಾರ್ಯಕ್ರಮವು ಪ್ರಾಥಮಿಕವಾಗಿ ಮುಂಬೈ ರೋಗಿಗಳನ್ನು ಬೆಂಬಲಿಸುತ್ತದೆ ಆದರೆ ಮುಂಬೈನ ಹೊರಗಿನ ಸಂಬಂಧಿತ ಆಸ್ಪತ್ರೆಗಳಿಂದ ಬರುವ ವಿನಂತಿಗಳನ್ನು ಪರಿಗಣಿಸುತ್ತದೆ. ಅರ್ಜಿಯನ್ನು ಸಾಮಾಜಿಕ-ಆರ್ಥಿಕವಾಗಿ ನಿರ್ಣಯಿಸಲಾಗುತ್ತದೆ ಮತ್ತು ಲಭ್ಯವಿರುವ ಹಣವನ್ನು ಅವಲಂಬಿಸಿರುತ್ತದೆ."
+        },
+        "hi": {
+          "name": "टाटा ट्रस्ट्स – चिकित्सा अनुदान",
+          "programmeType": "धर्मार्थ चिकित्सा अनुदान कार्यक्रम",
+          "description": "पैसे की कमी वाले भारतीय निवासी जिन्हें खास मेडिकल इलाज की ज़रूरत है। प्रोग्राम मुख्य रूप से मुंबई के मरीज़ों को सपोर्ट करता है, लेकिन मुंबई के बाहर के जुड़े हुए अस्पतालों के रिक्वेस्ट पर भी विचार करता है। एप्लीकेशन को सोशियो-इकोनॉमिक रूप से देखा जाता है और यह उपलब्ध फंड पर निर्भर करता है।"
+        },
+        "te": {
+          "name": "టాటా ట్రస్ట్స్ – వైద్య గ్రాంట్లు",
+          "programmeType": "దాతృత్వ వైద్య గ్రాంట్ కార్యక్రమం",
+          "description": "నిర్దిష్ట వైద్య చికిత్స అవసరమైన ఆర్థికంగా వెనుకబడిన భారతీయ నివాసితుల కోసం ఈ కార్యక్రమం ఉద్దేశించబడింది. ఈ కార్యక్రమం ప్రధానంగా ముంబై రోగులకు మద్దతు ఇస్తుంది, కానీ ముంబై వెలుపల ఉన్న అనుబంధ ఆసుపత్రుల నుండి వచ్చే అభ్యర్థనలను కూడా పరిగణిస్తుంది. దరఖాస్తును సామాజిక-ఆర్థిక ప్రాతిపదికన అంచనా వేస్తారు మరియు అది అందుబాటులో ఉన్న నిధులపై ఆధారపడి ఉంటుంది."
+        },
+        "ur": {
+          "name": "ٹاٹا ٹرسٹ – میڈیکل گرانٹس",
+          "programmeType": "چیریٹیبل میڈیکل گرانٹ پروگرام",
+          "description": "مالی طور پر پسماندہ ہندوستانی باشندوں کو مخصوص طبی علاج کی ضرورت ہے۔ پروگرام بنیادی طور پر ممبئی کے مریضوں کی مدد کرتا ہے لیکن ممبئی سے باہر منسلک ہسپتالوں کی درخواستوں پر غور کرتا ہے۔ درخواست کا سماجی و اقتصادی طور پر جائزہ لیا جاتا ہے اور یہ دستیاب فنڈز پر منحصر ہے۔"
+        },
+        "pa": {
+          "name": "ਟਾਟਾ ਟਰੱਸਟ - ਮੈਡੀਕਲ ਗ੍ਰਾਂਟਾਂ",
+          "programmeType": "ਚੈਰੀਟੇਬਲ ਮੈਡੀਕਲ ਗ੍ਰਾਂਟ ਪ੍ਰੋਗਰਾਮ",
+          "description": "ਵਿੱਤੀ ਤੌਰ 'ਤੇ ਕਮਜ਼ੋਰ ਭਾਰਤੀ ਨਿਵਾਸੀਆਂ ਨੂੰ ਖਾਸ ਡਾਕਟਰੀ ਇਲਾਜ ਦੀ ਲੋੜ ਹੈ। ਪ੍ਰੋਗਰਾਮ ਮੁੱਖ ਤੌਰ 'ਤੇ ਮੁੰਬਈ ਦੇ ਮਰੀਜ਼ਾਂ ਦੀ ਸਹਾਇਤਾ ਕਰਦਾ ਹੈ ਪਰ ਮੁੰਬਈ ਤੋਂ ਬਾਹਰ ਜੁੜੇ ਹਸਪਤਾਲਾਂ ਦੀਆਂ ਬੇਨਤੀਆਂ 'ਤੇ ਵਿਚਾਰ ਕਰਦਾ ਹੈ। ਅਰਜ਼ੀ ਦਾ ਸਮਾਜਿਕ-ਆਰਥਿਕ ਤੌਰ 'ਤੇ ਮੁਲਾਂਕਣ ਕੀਤਾ ਜਾਂਦਾ ਹੈ ਅਤੇ ਉਪਲਬਧ ਫੰਡਾਂ 'ਤੇ ਨਿਰਭਰ ਕਰਦਾ ਹੈ।"
+        }
+      }
+    },
+    {
+      "id": "cpaa",
+      "name": "Cancer Patients Aid Association (CPAA)",
+      "aliases": [
+        "Cancer Patients Aid Association (CPAA)"
+      ],
+      "programmeType": "Cancer NGO; patient enrolment, financial support subject to funds, and donation-gateway fundraising",
+      "description": "Socio-economically underprivileged cancer patients. Enrolment or online fundraising registration does not guarantee a grant. CPAA patient form requests income, diagnosis, treatment estimate and bank details.",
+      "eligibilitySummary": "Socio-economically underprivileged cancer patients. Enrolment or online fundraising registration does not guarantee a grant. CPAA patient form requests income, diagnosis, treatment estimate and bank details.",
+      "documentsToPrepare": "Patient enrolment form or online patient registration; photo; Aadhaar/PAN; cost estimate certificate; doctor prognosis/report; income proof (IT return/income certificate etc.); treatment/hospital details; cancelled cheque/bank details if required by the selected route.",
+      "stateCoverage": "",
+      "governmentLevel": "",
+      "officialLinks": [
+        "https://cancer.org.in/patient-form/",
+        "https://cancer.org.in/patient-registration/",
+        "https://cancer.org.in/wp-content/uploads/2023/09/Patient-Enrolment-Form.pdf",
+        "https://cancer.org.in/activities/patient-care/",
+        "https://cancer.org.in/",
+        "https://cancer.org.in/shared-documents/",
+        "https://give.do/ngos/cancer-patients-aid-association",
+        "https://cancer.org.in/mhttps://pages.milaap.org/volunteering-cancer-patients-aid-association-cpaa/ission-vision/",
+        "https://pages.milaap.org/volunteering-cancer-patients-aid-association-cpaa/",
+        "https://cancer.org.in/wp-content/uploads/2025/10/CPAA-Magazine-July2025.pdf.pdf",
+        "https://pages.milaap.org/volunteering-cancer-patients-aid-association/"
+      ],
+      "applicationStepCount": 9,
+      "verificationStatus": "Verified — organization and patient-care support; specific grants are case-dependent.",
+      "translations": {
+        "mr": {
+          "name": "कर्करोग रुग्ण सहाय्यता संघटना (CPAA)",
+          "programmeType": "कर्करोग स्वयंसेवी संस्था; रुग्ण नोंदणी, निधी उपलब्धतेनुसार आर्थिक सहाय्य, आणि देणगी-गेटवेद्वारे निधी उभारणी.",
+          "description": "सामाजिक-आर्थिकदृष्ट्या वंचित कर्करोग रुग्ण. नावनोंदणी किंवा ऑनलाइन निधी संकलन नोंदणी केल्याने अनुदानाची हमी मिळत नाही. CPAA रुग्ण अर्जामध्ये उत्पन्न, निदान, उपचाराचा अंदाजित खर्च आणि बँक तपशील मागितले जातात."
+        },
+        "bn": {
+          "name": "ক্যান্সার রোগী সহায়তা সমিতি (CPAA)",
+          "programmeType": "ক্যান্সার এনজিও; রোগী ভর্তি, তহবিল সাপেক্ষে আর্থিক সহায়তা, এবং অনুদান-গেটওয়ের মাধ্যমে তহবিল সংগ্রহ",
+          "description": "সামাজিকভাবে সুবিধাবঞ্চিত ক্যান্সার রোগী। তালিকাভুক্তি বা অনলাইন তহবিল সংগ্রহের নিবন্ধন অনুদানের নিশ্চয়তা দেয় না। সিপিএএ (CPAA) রোগীর ফর্মে আয়, রোগ নির্ণয়, চিকিৎসার আনুমানিক খরচ এবং ব্যাংক অ্যাকাউন্টের বিবরণ চাওয়া হয়।"
+        },
+        "kn": {
+          "name": "ಕ್ಯಾನ್ಸರ್ ರೋಗಿಗಳ ನೆರವು ಸಂಘ (CPAA)",
+          "programmeType": "ಕ್ಯಾನ್ಸರ್ ಎನ್‌ಜಿಒ; ರೋಗಿಗಳ ದಾಖಲಾತಿ, ನಿಧಿಗೆ ಒಳಪಟ್ಟು ಹಣಕಾಸಿನ ನೆರವು ಮತ್ತು ದೇಣಿಗೆ-ಗೇಟ್‌ವೇ ನಿಧಿಸಂಗ್ರಹಣೆ",
+          "description": "ಸಾಮಾಜಿಕ-ಆರ್ಥಿಕವಾಗಿ ಹಿಂದುಳಿದ ಕ್ಯಾನ್ಸರ್ ರೋಗಿಗಳು. ನೋಂದಣಿ ಅಥವಾ ಆನ್‌ಲೈನ್ ನಿಧಿಸಂಗ್ರಹ ನೋಂದಣಿ ಅನುದಾನವನ್ನು ಖಾತರಿಪಡಿಸುವುದಿಲ್ಲ. CPAA ರೋಗಿಯ ನಮೂನೆಯು ಆದಾಯ, ರೋಗನಿರ್ಣಯ, ಚಿಕಿತ್ಸೆಯ ಅಂದಾಜು ಮತ್ತು ಬ್ಯಾಂಕ್ ವಿವರಗಳನ್ನು ವಿನಂತಿಸುತ್ತದೆ."
+        },
+        "hi": {
+          "name": "कैंसर रोगी सहायता संघ (CPAA)",
+          "programmeType": "कैंसर NGO; मरीज़ों का एनरोलमेंट, फंड के आधार पर फाइनेंशियल मदद, और डोनेशन-गेटवे फंडरेज़िंग",
+          "description": "सामाजिक-आर्थिक रूप से पिछड़े कैंसर मरीज़। एनरोलमेंट या ऑनलाइन फंडरेज़िंग रजिस्ट्रेशन से ग्रांट की गारंटी नहीं मिलती। CPAA पेशेंट फ़ॉर्म में इनकम, डायग्नोसिस, ट्रीटमेंट का अनुमान और बैंक डिटेल्स मांगी जाती हैं।"
+        },
+        "te": {
+          "name": "క్యాన్సర్ రోగుల సహాయ సంఘం (CPAA)",
+          "programmeType": "క్యాన్సర్ స్వచ్ఛంద సంస్థ; రోగుల నమోదు, నిధులు అందుబాటులో ఉన్నంత వరకు ఆర్థిక సహాయం, మరియు విరాళాల ద్వారా నిధుల సేకరణ",
+          "description": "సామాజిక-ఆర్థికంగా వెనుకబడిన క్యాన్సర్ రోగులు. నమోదు లేదా ఆన్‌లైన్ నిధుల సేకరణ రిజిస్ట్రేషన్ గ్రాంటుకు హామీ ఇవ్వదు. CPAA పేషెంట్ ఫారం ఆదాయం, వ్యాధి నిర్ధారణ, చికిత్స అంచనా మరియు బ్యాంకు వివరాలను అభ్యర్థిస్తుంది."
+        },
+        "ur": {
+          "name": "کینسر کے مریضوں کی امداد ایسوسی ایشن (CPAA)",
+          "programmeType": "کینسر این جی او؛ مریض کا اندراج، فنڈز سے مشروط مالی امداد، اور عطیہ گیٹ وے فنڈ ریزنگ",
+          "description": "سماجی و اقتصادی طور پر پسماندہ کینسر کے مریض۔ اندراج یا آن لائن فنڈ ریزنگ رجسٹریشن گرانٹ کی ضمانت نہیں دیتا۔ CPAA مریض فارم آمدنی، تشخیص، علاج کے تخمینہ اور بینک کی تفصیلات کی درخواست کرتا ہے۔"
+        },
+        "pa": {
+          "name": "ਕੈਂਸਰ ਮਰੀਜ਼ਾਂ ਦੀ ਸਹਾਇਤਾ ਐਸੋਸੀਏਸ਼ਨ (CPAA)",
+          "programmeType": "ਕੈਂਸਰ ਐਨਜੀਓ; ਮਰੀਜ਼ ਦਾਖਲਾ, ਫੰਡਾਂ ਦੇ ਅਧੀਨ ਵਿੱਤੀ ਸਹਾਇਤਾ, ਅਤੇ ਦਾਨ-ਪ੍ਰਵੇਸ਼ ਦੁਆਰ ਫੰਡਰੇਜ਼ਿੰਗ",
+          "description": "ਸਮਾਜਿਕ-ਆਰਥਿਕ ਤੌਰ 'ਤੇ ਕਮਜ਼ੋਰ ਕੈਂਸਰ ਮਰੀਜ਼। ਨਾਮਾਂਕਣ ਜਾਂ ਔਨਲਾਈਨ ਫੰਡ ਇਕੱਠਾ ਕਰਨ ਵਾਲੀ ਰਜਿਸਟ੍ਰੇਸ਼ਨ ਗ੍ਰਾਂਟ ਦੀ ਗਰੰਟੀ ਨਹੀਂ ਦਿੰਦੀ। CPAA ਮਰੀਜ਼ ਫਾਰਮ ਆਮਦਨ, ਨਿਦਾਨ, ਇਲਾਜ ਦੇ ਅਨੁਮਾਨ ਅਤੇ ਬੈਂਕ ਵੇਰਵਿਆਂ ਦੀ ਬੇਨਤੀ ਕਰਦਾ ਹੈ।"
+        }
+      }
+    },
+    {
+      "id": "ics-cancer-cure",
+      "name": "Indian Cancer Society – Cancer Cure Fund",
+      "aliases": [
+        "Indian Cancer Society – Cancer Cure Fund",
+        "Indian Cancer Society-Cancer Cure Fund",
+        "Indian Cancer Society-Cancer Cure Fund ",
+        "Indian Cancer Society — Cancer Cure Fund"
+      ],
+      "programmeType": "Specific ICS treatment grant (separate from general ICS activities)",
+      "description": "Indian citizens; family income ≤₹4 lakh/year; treatment at an ICS-empanelled hospital; registered in general ward; projected survival ≥50% adult / ≥60% paediatric per official page. Maximum sanction listed: ₹5 lakh; BMT up to ₹8 lakh.",
+      "eligibilitySummary": "Indian citizens; family income ≤₹4 lakh/year; treatment at an ICS-empanelled hospital; registered in general ward; projected survival ≥50% adult / ≥60% paediatric per official page. Maximum sanction listed: ₹5 lakh; BMT up to ₹8 lakh.",
+      "documentsToPrepare": "Patient Aadhaar (or parent's Aadhaar for paediatric patient); family income proof ≤₹4 lakh; hospital registration page showing general category; treating doctor's initial diagnosis prescription; cost certificate for initial treatment; all cancer-related reports attached/reviewed by hospital.",
+      "stateCoverage": "",
+      "governmentLevel": "",
+      "officialLinks": [
+        "https://www.indiancancersociety.org/what-do-we-do/cancer-cure",
+        "https://www.indiancancersociety.org/",
+        "https://healthviewsonline.com/10-indian-foundations-and-trusts-providing-financial-support-to-cancer-pat",
+        "https://www.indiancancersociety.org/pdf/ics-report-15-16.pdf",
+        "https://en.wikipedia.org/wiki/Indian_Cancer_Society",
+        "https://en.wikipedia.org/wiki/Indian_Cancer"
+      ],
+      "applicationStepCount": 8,
+      "verificationStatus": "Verified — official programme page.",
+      "translations": {
+        "mr": {
+          "name": "भारतीय कर्करोग सोसायटी – कर्करोग उपचार निधी",
+          "programmeType": "विशिष्ट आयसीएस उपचार अनुदान (सर्वसाधारण आयसीएस उपक्रमांपासून स्वतंत्र)",
+          "description": "भारतीय नागरिक; कौटुंबिक उत्पन्न ₹४ लाख/वर्ष किंवा त्यापेक्षा कमी; आयसीएस-सूचीबद्ध रुग्णालयात उपचार; जनरल वॉर्डमध्ये नोंदणीकृत; अधिकृत पानानुसार प्रौढांमध्ये अपेक्षित जगण्याचे प्रमाण ≥५०% / बालकांमध्ये ≥६०%. सूचीबद्ध कमाल मंजूर रक्कम: ₹५ लाख; बीएमटी (BMT) ₹८ लाखांपर्यंत."
+        },
+        "bn": {
+          "name": "ইন্ডিয়ান ক্যান্সার সোসাইটি – ক্যান্সার নিরাময় তহবিল",
+          "programmeType": "নির্দিষ্ট আইসিএস চিকিৎসা অনুদান (সাধারণ আইসিএস কার্যক্রম থেকে পৃথক)",
+          "description": "ভারতীয় নাগরিক; পারিবারিক আয় বছরে ৪ লক্ষ টাকা বা তার কম; আইসিএস-তালিকাভুক্ত হাসপাতালে চিকিৎসা; সাধারণ ওয়ার্ডে নিবন্ধিত; সরকারি পৃষ্ঠা অনুযায়ী প্রাপ্তবয়স্কদের ক্ষেত্রে ৫০% বা তার বেশি এবং শিশুদের ক্ষেত্রে ৬০% বা তার বেশি বেঁচে থাকার সম্ভাবনা। তালিকাভুক্ত সর্বোচ্চ অনুমোদন: ৫ লক্ষ টাকা; বিএমটি ৮ লক্ষ টাকা পর্যন্ত।"
+        },
+        "kn": {
+          "name": "ಭಾರತೀಯ ಕ್ಯಾನ್ಸರ್ ಸೊಸೈಟಿ - ಕ್ಯಾನ್ಸರ್ ಚಿಕಿತ್ಸಾ ನಿಧಿ",
+          "programmeType": "ನಿರ್ದಿಷ್ಟ ICS ಚಿಕಿತ್ಸಾ ಅನುದಾನ (ಸಾಮಾನ್ಯ ICS ಚಟುವಟಿಕೆಗಳಿಂದ ಪ್ರತ್ಯೇಕ)",
+          "description": "ಭಾರತೀಯ ನಾಗರಿಕರು; ಕುಟುಂಬದ ಆದಾಯ ≤₹4 ಲಕ್ಷ/ವರ್ಷ; ICS-ಎಂಪನೇಲ್ಡ್ ಆಸ್ಪತ್ರೆಯಲ್ಲಿ ಚಿಕಿತ್ಸೆ; ಸಾಮಾನ್ಯ ವಾರ್ಡ್‌ನಲ್ಲಿ ನೋಂದಾಯಿಸಲಾಗಿದೆ; ಅಧಿಕೃತ ಪುಟದ ಪ್ರಕಾರ ಅಂದಾಜು ಬದುಕುಳಿಯುವಿಕೆ ≥50% ವಯಸ್ಕ / ≥60% ಮಕ್ಕಳು. ಪಟ್ಟಿ ಮಾಡಲಾದ ಗರಿಷ್ಠ ಅನುಮೋದನೆ: ₹5 ಲಕ್ಷ; ₹8 ಲಕ್ಷದವರೆಗೆ BMT."
+        },
+        "hi": {
+          "name": "इंडियन कैंसर सोसाइटी – कैंसर क्योर फंड",
+          "programmeType": "खास ICS ट्रीटमेंट ग्रांट (आम ICS एक्टिविटी से अलग)",
+          "description": "भारतीय नागरिक; परिवार की इनकम ≤₹4 लाख/साल; ICS-एम्पैनल्ड हॉस्पिटल में इलाज; जनरल वार्ड में रजिस्टर्ड; ऑफिशियल पेज के हिसाब से अनुमानित सर्वाइवल ≥50% एडल्ट / ≥60% पीडियाट्रिक। लिस्टेड मैक्सिमम सैंक्शन: ₹5 लाख; BMT ₹8 लाख तक।"
+        },
+        "te": {
+          "name": "ఇండియన్ క్యాన్సర్ సొసైటీ – క్యాన్సర్ క్యూర్ ఫండ్",
+          "programmeType": "నిర్దిష్ట ICS చికిత్స గ్రాంట్ (సాధారణ ICS కార్యకలాపాల నుండి వేరుగా)",
+          "description": "భారత పౌరులు; కుటుంబ ఆదాయం సంవత్సరానికి ₹4 లక్షలు లేదా అంతకంటే తక్కువ; ICS-ఎంప్యానెల్డ్ ఆసుపత్రిలో చికిత్స; జనరల్ వార్డులో నమోదు; ప్రతి అధికారిక పేజీకి అంచనా వేయబడిన మనుగడ రేటు పెద్దలలో ≥50% / పిల్లలలో ≥60%. పేర్కొన్న గరిష్ట మంజూరు: ₹5 లక్షలు; BMT ₹8 లక్షల వరకు."
+        },
+        "ur": {
+          "name": "انڈین کینسر سوسائٹی - کینسر کیور فنڈ",
+          "programmeType": "مخصوص ICS علاج گرانٹ (عام ICS سرگرمیوں سے الگ)",
+          "description": "ہندوستانی شہری؛ خاندانی آمدنی ≤ ₹4 لاکھ/سال؛ ایک ICS-ایمپینیلڈ ہسپتال میں علاج؛ جنرل وارڈ میں رجسٹرڈ؛ متوقع بقا ≥50% بالغ / ≥60% اطفال فی سرکاری صفحہ۔ زیادہ سے زیادہ منظوری درج ہے: ₹5 لاکھ؛ BMT ₹ 8 لاکھ تک۔"
+        },
+        "pa": {
+          "name": "ਇੰਡੀਅਨ ਕੈਂਸਰ ਸੋਸਾਇਟੀ - ਕੈਂਸਰ ਕਿਊਰ ਫੰਡ",
+          "programmeType": "ਖਾਸ ICS ਇਲਾਜ ਗ੍ਰਾਂਟ (ਆਮ ICS ਗਤੀਵਿਧੀਆਂ ਤੋਂ ਵੱਖਰਾ)",
+          "description": "ਭਾਰਤੀ ਨਾਗਰਿਕ; ਪਰਿਵਾਰਕ ਆਮਦਨ ≤₹4 ਲੱਖ/ਸਾਲ; ICS-ਸੂਚੀਬੱਧ ਹਸਪਤਾਲ ਵਿੱਚ ਇਲਾਜ; ਜਨਰਲ ਵਾਰਡ ਵਿੱਚ ਰਜਿਸਟਰਡ; ਅਨੁਮਾਨਿਤ ਬਚਾਅ ≥50% ਬਾਲਗ / ≥60% ਬਾਲ ਰੋਗ ਪ੍ਰਤੀ ਅਧਿਕਾਰਤ ਪੰਨਾ। ਸੂਚੀਬੱਧ ਵੱਧ ਤੋਂ ਵੱਧ ਮਨਜ਼ੂਰੀ: ₹5 ਲੱਖ; BMT ₹8 ਲੱਖ ਤੱਕ।"
+        }
+      }
+    },
+    {
+      "id": "cghs",
+      "name": "Central Government Health Scheme",
+      "aliases": [
+        "Central Government Health Scheme",
+        "Central Government Health Scheme (CGHS)"
+      ],
+      "programmeType": "Directorate General of CGHS, Wellness Centres, Additional Directors and participating hospitals.",
+      "description": "",
+      "eligibilitySummary": "",
+      "documentsToPrepare": "",
+      "stateCoverage": "",
+      "governmentLevel": "",
+      "officialLinks": [
+        "https://cghs.mohfw.gov.in",
+        "https://services.india.gov.in/service/detail/central-government-health-scheme-cghs",
+        "https://pgportal.gov.in",
+        "https://mowr.nic.in/core/Circulars/2024/GA_28-06-2024_30.pdf",
+        "https://cdnbbsr.s3waas.gov.in/s35b8e4fd39d9786228649a8a8bec4e008/uploads/2025/11/202511182121266379.pdf",
+        "https://roodisha.esic.gov.in/attachments/circularfile/082408efc6d8a02ff887bc2808a7fe94.pdf",
+        "https://eparlib.sansad.in/bitstream/123456789/2992954/1/lsd_18_V_08-08-2025.pdf",
+        "https://sansad.in/getFile/rsnew/Committee_site/Committee_File/ReportFile/14/187/155_2024_2_18.pdf?source=rajyasabha",
+        "https://cghs.mohfw.gov.in/",
+        "https://www.mohfw.gov.in/sites/default/files/JCM-ORDERS.pdf",
+        "https://services.india.gov.in/service/detail/central-government-health-scheme-cghs।",
+        "https://pgportal.gov.in।",
+        "https://services.india.gov.in/service/detail/central-government-health-scheme-cghs۔",
+        "https://pgportal.gov.in۔",
+        "https://cdnbbsr.s3waas.gov.in/s35b8e4fd39d9786228649a8a8bec4e008/uploads/2025/11/20251118212121267pd3f"
+      ],
+      "applicationStepCount": 0,
+      "verificationStatus": "Partially verified — scope/identity only; out of target list.",
+      "translations": {
+        "mr": {
+          "name": "केंद्र सरकार आरोग्य योजना",
+          "programmeType": "सीजीएचएसचे महासंचालनालय, वेलनेस सेंटर्स, अतिरिक्त संचालक आणि सहभागी रुग्णालये.",
+          "description": ""
+        },
+        "bn": {
+          "name": "কেন্দ্রীয় সরকারি স্বাস্থ্য প্রকল্প",
+          "programmeType": "সিজিএইচএস মহাপরিচালক, ওয়েলনেস সেন্টার, অতিরিক্ত পরিচালক এবং অংশগ্রহণকারী হাসপাতালসমূহ।",
+          "description": ""
+        },
+        "kn": {
+          "name": "ಕೇಂದ್ರ ಸರ್ಕಾರದ ಆರೋಗ್ಯ ಯೋಜನೆ",
+          "programmeType": "CGHS, ಕ್ಷೇಮ ಕೇಂದ್ರಗಳ ಮಹಾನಿರ್ದೇಶನಾಲಯ, ಹೆಚ್ಚುವರಿ ನಿರ್ದೇಶಕರು ಮತ್ತು ಭಾಗವಹಿಸುವ ಆಸ್ಪತ್ರೆಗಳು.",
+          "description": ""
+        },
+        "hi": {
+          "name": "केंद्र सरकार स्वास्थ्य योजना",
+          "programmeType": "CGHS डायरेक्टरेट जनरल, वेलनेस सेंटर, एडिशनल डायरेक्टर और भाग लेने वाले अस्पताल।",
+          "description": ""
+        },
+        "te": {
+          "name": "కేంద్ర ప్రభుత్వ ఆరోగ్య పథకం",
+          "programmeType": "సిజిహెచ్ఎస్ డైరెక్టరేట్ జనరల్, వెల్నెస్ సెంటర్లు, అదనపు డైరెక్టర్లు మరియు పాల్గొంటున్న ఆసుపత్రులు.",
+          "description": ""
+        },
+        "ur": {
+          "name": "مرکزی حکومت کی صحت اسکیم",
+          "programmeType": "ڈائریکٹوریٹ جنرل آف سی جی ایچ ایس، فلاحی مراکز، ایڈیشنل ڈائریکٹرز اور شریک ہسپتال۔",
+          "description": ""
+        },
+        "pa": {
+          "name": "ਕੇਂਦਰ ਸਰਕਾਰ ਦੀ ਸਿਹਤ ਯੋਜਨਾ",
+          "programmeType": "ਸੀਜੀਐਚਐਸ ਦੇ ਡਾਇਰੈਕਟੋਰੇਟ ਜਨਰਲ, ਤੰਦਰੁਸਤੀ ਕੇਂਦਰ, ਵਧੀਕ ਨਿਰਦੇਸ਼ਕ ਅਤੇ ਭਾਗ ਲੈਣ ਵਾਲੇ ਹਸਪਤਾਲ।",
+          "description": ""
+        }
+      }
+    },
+    {
+      "id": "wb-cmrf",
+      "name": "West Bengal Chief Minister's Relief Fund – Health Assistance",
+      "aliases": [
+        "West Bengal Chief Minister's Relief Fund – Health Assistance"
+      ],
+      "programmeType": "Discretionary medical financial assistance",
+      "description": "Permanent West Bengal resident; family annual income not above ₹1,20,000 as per portal conditions; unable to bear treatment cost; not eligible for ESI/other insurance/employer reimbursement; once per year.",
+      "eligibilitySummary": "Permanent West Bengal resident; family annual income not above ₹1,20,000 as per portal conditions; unable to bear treatment cost; not eligible for ESI/other insurance/employer reimbursement; once per year.",
+      "documentsToPrepare": "Signed application; MLA/MP recommendation; income certificate; hospital estimate signed by treating doctor/department head and countersigned by hospital authority; patient/applicant details.",
+      "stateCoverage": "West Bengal",
+      "governmentLevel": "State",
+      "officialLinks": [
+        "https://cmrf.wb.gov.in/"
+      ],
+      "applicationStepCount": 0,
+      "verificationStatus": "Official portal checked in prior state research; confirm current rules",
+      "translations": {
+        "mr": {
+          "name": "West Bengal Chief Minister's Relief Fund – Health Assistance",
+          "programmeType": "Discretionary medical financial assistance",
+          "description": ""
+        },
+        "bn": {
+          "name": "West Bengal Chief Minister's Relief Fund – Health Assistance",
+          "programmeType": "Discretionary medical financial assistance",
+          "description": ""
+        },
+        "kn": {
+          "name": "West Bengal Chief Minister's Relief Fund – Health Assistance",
+          "programmeType": "Discretionary medical financial assistance",
+          "description": ""
+        },
+        "hi": {
+          "name": "West Bengal Chief Minister's Relief Fund – Health Assistance",
+          "programmeType": "Discretionary medical financial assistance",
+          "description": ""
+        },
+        "te": {
+          "name": "West Bengal Chief Minister's Relief Fund – Health Assistance",
+          "programmeType": "Discretionary medical financial assistance",
+          "description": ""
+        },
+        "ur": {
+          "name": "West Bengal Chief Minister's Relief Fund – Health Assistance",
+          "programmeType": "Discretionary medical financial assistance",
+          "description": ""
+        },
+        "pa": {
+          "name": "West Bengal Chief Minister's Relief Fund – Health Assistance",
+          "programmeType": "Discretionary medical financial assistance",
+          "description": ""
+        }
+      }
+    },
+    {
+      "id": "swasthya-sathi",
+      "name": "Swasthya Sathi",
+      "aliases": [
+        "Swasthya Sathi"
+      ],
+      "programmeType": "Cashless hospital treatment",
+      "description": "West Bengal residents under scheme enrolment rules; verify active card and beneficiary status.",
+      "eligibilitySummary": "West Bengal residents under scheme enrolment rules; verify active card and beneficiary status.",
+      "documentsToPrepare": "Swasthya Sathi card; enrolment identity/residence documents as required",
+      "stateCoverage": "West Bengal",
+      "governmentLevel": "State",
+      "officialLinks": [
+        "https://swasthyasathi.gov.in/"
+      ],
+      "applicationStepCount": 0,
+      "verificationStatus": "Official portal checked; verify current hospital/package status",
+      "translations": {
+        "mr": {
+          "name": "Swasthya Sathi",
+          "programmeType": "Cashless hospital treatment",
+          "description": ""
+        },
+        "bn": {
+          "name": "Swasthya Sathi",
+          "programmeType": "Cashless hospital treatment",
+          "description": ""
+        },
+        "kn": {
+          "name": "Swasthya Sathi",
+          "programmeType": "Cashless hospital treatment",
+          "description": ""
+        },
+        "hi": {
+          "name": "Swasthya Sathi",
+          "programmeType": "Cashless hospital treatment",
+          "description": ""
+        },
+        "te": {
+          "name": "Swasthya Sathi",
+          "programmeType": "Cashless hospital treatment",
+          "description": ""
+        },
+        "ur": {
+          "name": "Swasthya Sathi",
+          "programmeType": "Cashless hospital treatment",
+          "description": ""
+        },
+        "pa": {
+          "name": "Swasthya Sathi",
+          "programmeType": "Cashless hospital treatment",
+          "description": ""
+        }
+      }
+    },
+    {
+      "id": "uttarakhand-cmrf",
+      "name": "Uttarakhand Chief Minister's Relief Fund (CMRF)",
+      "aliases": [
+        "Uttarakhand Chief Minister's Relief Fund (CMRF)"
+      ],
+      "programmeType": "Discretionary medical assistance",
+      "description": "Financially distressed patients; case-by-case assessment; current rules and application route to be checked.",
+      "eligibilitySummary": "Financially distressed patients; case-by-case assessment; current rules and application route to be checked.",
+      "documentsToPrepare": "Medical certificate; hospital estimate; income and residence proof; other documents as directed",
+      "stateCoverage": "Uttarakhand",
+      "governmentLevel": "State",
+      "officialLinks": [
+        "https://cmrf.uk.gov.in/"
+      ],
+      "applicationStepCount": 0,
+      "verificationStatus": "Official portal identified; details to reconfirm",
+      "translations": {
+        "mr": {
+          "name": "Uttarakhand Chief Minister's Relief Fund (CMRF)",
+          "programmeType": "Discretionary medical assistance",
+          "description": ""
+        },
+        "bn": {
+          "name": "Uttarakhand Chief Minister's Relief Fund (CMRF)",
+          "programmeType": "Discretionary medical assistance",
+          "description": ""
+        },
+        "kn": {
+          "name": "Uttarakhand Chief Minister's Relief Fund (CMRF)",
+          "programmeType": "Discretionary medical assistance",
+          "description": ""
+        },
+        "hi": {
+          "name": "Uttarakhand Chief Minister's Relief Fund (CMRF)",
+          "programmeType": "Discretionary medical assistance",
+          "description": ""
+        },
+        "te": {
+          "name": "Uttarakhand Chief Minister's Relief Fund (CMRF)",
+          "programmeType": "Discretionary medical assistance",
+          "description": ""
+        },
+        "ur": {
+          "name": "Uttarakhand Chief Minister's Relief Fund (CMRF)",
+          "programmeType": "Discretionary medical assistance",
+          "description": ""
+        },
+        "pa": {
+          "name": "Uttarakhand Chief Minister's Relief Fund (CMRF)",
+          "programmeType": "Discretionary medical assistance",
+          "description": ""
+        }
+      }
+    },
+    {
+      "id": "atal-ayushman-uttarakhand",
+      "name": "Atal Ayushman Uttarakhand Yojana (AAUY)",
+      "aliases": [
+        "Atal Ayushman Uttarakhand Yojana (AAUY)"
+      ],
+      "programmeType": "Cashless hospital treatment",
+      "description": "Eligible Uttarakhand households / enrolled beneficiaries; check card and current beneficiary rules.",
+      "eligibilitySummary": "Eligible Uttarakhand households / enrolled beneficiaries; check card and current beneficiary rules.",
+      "documentsToPrepare": "Ayushman/AAUY card and identity documents; clinical records",
+      "stateCoverage": "Uttarakhand",
+      "governmentLevel": "State",
+      "officialLinks": [
+        "https://health.uk.gov.in/"
+      ],
+      "applicationStepCount": 0,
+      "verificationStatus": "Prior state research summary; confirm current state portal details",
+      "translations": {
+        "mr": {
+          "name": "Atal Ayushman Uttarakhand Yojana (AAUY)",
+          "programmeType": "Cashless hospital treatment",
+          "description": ""
+        },
+        "bn": {
+          "name": "Atal Ayushman Uttarakhand Yojana (AAUY)",
+          "programmeType": "Cashless hospital treatment",
+          "description": ""
+        },
+        "kn": {
+          "name": "Atal Ayushman Uttarakhand Yojana (AAUY)",
+          "programmeType": "Cashless hospital treatment",
+          "description": ""
+        },
+        "hi": {
+          "name": "Atal Ayushman Uttarakhand Yojana (AAUY)",
+          "programmeType": "Cashless hospital treatment",
+          "description": ""
+        },
+        "te": {
+          "name": "Atal Ayushman Uttarakhand Yojana (AAUY)",
+          "programmeType": "Cashless hospital treatment",
+          "description": ""
+        },
+        "ur": {
+          "name": "Atal Ayushman Uttarakhand Yojana (AAUY)",
+          "programmeType": "Cashless hospital treatment",
+          "description": ""
+        },
+        "pa": {
+          "name": "Atal Ayushman Uttarakhand Yojana (AAUY)",
+          "programmeType": "Cashless hospital treatment",
+          "description": ""
+        }
+      }
+    },
+    {
+      "id": "west-bengal-governor-s-welfare-fund-medical-assistance",
+      "name": "West Bengal Governor's Welfare Fund – Medical Assistance",
+      "aliases": [
+        "West Bengal Governor's Welfare Fund – Medical Assistance"
+      ],
+      "programmeType": "Discretionary medical assistance",
+      "description": "Poor/needy patients; case assessment and documentation.",
+      "eligibilitySummary": "Poor/needy patients; case assessment and documentation.",
+      "documentsToPrepare": "Address proof; photograph; income certificate; hospital estimate; prognosis report; recommendation where possible",
+      "stateCoverage": "West Bengal",
+      "governmentLevel": "State / Governor's Secretariat",
+      "officialLinks": [
+        "https://rajbhavankolkata.gov.in/"
+      ],
+      "applicationStepCount": 0,
+      "verificationStatus": "Official portal details captured in prior state research; reconfirm before use",
+      "translations": {
+        "mr": {
+          "name": "West Bengal Governor's Welfare Fund – Medical Assistance",
+          "programmeType": "Discretionary medical assistance",
+          "description": ""
+        },
+        "bn": {
+          "name": "West Bengal Governor's Welfare Fund – Medical Assistance",
+          "programmeType": "Discretionary medical assistance",
+          "description": ""
+        },
+        "kn": {
+          "name": "West Bengal Governor's Welfare Fund – Medical Assistance",
+          "programmeType": "Discretionary medical assistance",
+          "description": ""
+        },
+        "hi": {
+          "name": "West Bengal Governor's Welfare Fund – Medical Assistance",
+          "programmeType": "Discretionary medical assistance",
+          "description": ""
+        },
+        "te": {
+          "name": "West Bengal Governor's Welfare Fund – Medical Assistance",
+          "programmeType": "Discretionary medical assistance",
+          "description": ""
+        },
+        "ur": {
+          "name": "West Bengal Governor's Welfare Fund – Medical Assistance",
+          "programmeType": "Discretionary medical assistance",
+          "description": ""
+        },
+        "pa": {
+          "name": "West Bengal Governor's Welfare Fund – Medical Assistance",
+          "programmeType": "Discretionary medical assistance",
+          "description": ""
+        }
+      }
+    },
+    {
+      "id": "major-ailments",
+      "name": "Treatment for Major Ailments",
+      "aliases": [
+        "Treatment for Major Ailments"
+      ],
+      "programmeType": "Worker welfare medical assistance",
+      "description": "Eligible registered workers and dependants; registration/category conditions apply.",
+      "eligibilitySummary": "Eligible registered workers and dependants; registration/category conditions apply.",
+      "documentsToPrepare": "Worker registration; patient diagnosis; hospital estimate; income/identity and dependant proof as specified",
+      "stateCoverage": "West Bengal",
+      "governmentLevel": "State / Labour Department",
+      "officialLinks": [
+        "https://bsk.wb.gov.in/"
+      ],
+      "applicationStepCount": 0,
+      "verificationStatus": "Scheme listing found; ceiling and live process need confirmation",
+      "translations": {
+        "mr": {
+          "name": "Treatment for Major Ailments",
+          "programmeType": "Worker welfare medical assistance",
+          "description": ""
+        },
+        "bn": {
+          "name": "Treatment for Major Ailments",
+          "programmeType": "Worker welfare medical assistance",
+          "description": ""
+        },
+        "kn": {
+          "name": "Treatment for Major Ailments",
+          "programmeType": "Worker welfare medical assistance",
+          "description": ""
+        },
+        "hi": {
+          "name": "Treatment for Major Ailments",
+          "programmeType": "Worker welfare medical assistance",
+          "description": ""
+        },
+        "te": {
+          "name": "Treatment for Major Ailments",
+          "programmeType": "Worker welfare medical assistance",
+          "description": ""
+        },
+        "ur": {
+          "name": "Treatment for Major Ailments",
+          "programmeType": "Worker welfare medical assistance",
+          "description": ""
+        },
+        "pa": {
+          "name": "Treatment for Major Ailments",
+          "programmeType": "Worker welfare medical assistance",
+          "description": ""
+        }
+      }
+    }
+  ]
+}
