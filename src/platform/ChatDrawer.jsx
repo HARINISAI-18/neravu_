@@ -26,11 +26,7 @@ export function ChatAssistantWidget() {
   const history = data.chatHistory || [];
   historyRef.current = history;
 
-  const suggestions = [
-    'What cancer treatments are covered under PM-JAY?',
-    'Are senior citizens 70+ eligible without income limits?',
-    'What documents are required to apply for hospital schemes?'
-  ];
+  const suggestions = ['chat.suggestion.1', 'chat.suggestion.2', 'chat.suggestion.3'].map(t);
 
   const conversationStorageKey = chatIdentity ? `neravu.chat.drawer.${encodeURIComponent(chatIdentity)}` : '';
 
@@ -130,8 +126,8 @@ export function ChatAssistantWidget() {
       updateData({ chatHistory: completedHistory });
     } catch (caught) {
       const failureNotice = controller.signal.aborted
-        ? 'The request took longer than expected to verify with official scheme sources. Please try asking again.'
-        : (caught instanceof Error ? caught.message : 'Chat service temporarily unavailable.');
+        ? t('chat.requestTimeout')
+        : (caught instanceof Error ? caught.message : t('chat.serviceUnavailable'));
       setError(failureNotice);
       const failedHistory = historyRef.current.map((msg) =>
         msg.id === assistantId ? { ...msg, content: failureNotice } : msg
@@ -168,13 +164,13 @@ export function ChatAssistantWidget() {
         type="button"
         className="floating-assistant-btn"
         onClick={() => setIsOpen((prev) => !prev)}
-        aria-label="Open Neravu Chat Assistant"
-        title="Ask Neravu AI Assistant"
+        aria-label={t('chat.open')}
+        title={t('chat.open')}
       >
         <div className="btn-icon-wrap">
           <Sparkles size={18} />
         </div>
-        <span className="assistant-btn-text">Ask Assistant</span>
+        <span className="assistant-btn-text">{t('chat.askAssistant')}</span>
         <span className="pulse-dot" />
       </button>
 
@@ -188,7 +184,7 @@ export function ChatAssistantWidget() {
       {/* Slide-over Right Sidebar Drawer (IDE Agent style) */}
       <aside
         className={`assistant-drawer ${isOpen ? 'open' : ''}`}
-        aria-label="Neravu AI Assistant"
+        aria-label={t('chat.title')}
         role="dialog"
         aria-modal="true"
       >
@@ -199,7 +195,7 @@ export function ChatAssistantWidget() {
               <Sparkles size={18} />
             </div>
             <div>
-              <h3>Neravu Assistant</h3>
+              <h3>{t('chat.title')}</h3>
             </div>
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
@@ -208,7 +204,7 @@ export function ChatAssistantWidget() {
               className="drawer-close-btn"
               onClick={clearChat}
               disabled={busy || !history.length}
-              title="New Conversation"
+              title={t('chat.newConversation')}
             >
               <RotateCcw size={16} />
             </button>
@@ -216,7 +212,7 @@ export function ChatAssistantWidget() {
               type="button"
               className="drawer-close-btn"
               onClick={() => setIsOpen(false)}
-              aria-label="Close Assistant"
+              aria-label={t('chat.close')}
             >
               <X size={20} />
             </button>
@@ -230,9 +226,9 @@ export function ChatAssistantWidget() {
               <div className="assistant-avatar" style={{ width: '48px', height: '48px', margin: '0 auto 12px' }}>
                 <Sparkles size={22} />
               </div>
-              <h2 style={{ fontSize: '18px' }}>How can I help you today?</h2>
+              <h2 style={{ fontSize: '18px' }}>{t('chat.welcome')}</h2>
               <p style={{ fontSize: '12px', color: '#666', marginBottom: '16px' }}>
-                Ask about scheme eligibility, evidence requirements, hospitals, or cancer care navigation.
+                {t('chat.description')}
               </p>
               <div className="suggested-questions" style={{ flexDirection: 'column', gap: '8px' }}>
                 {suggestions.map((s) => (
@@ -242,7 +238,7 @@ export function ChatAssistantWidget() {
                     onClick={() => void sendQuestion(s)}
                     style={{ textAlign: 'left', padding: '10px 12px', fontSize: '12px', lineHeight: '1.4' }}
                   >
-                    "{s}"
+                    {s}
                   </button>
                 ))}
               </div>
@@ -252,7 +248,7 @@ export function ChatAssistantWidget() {
               {history.map((msg) => (
                 <article className={`chat-message ${msg.role}`} key={msg.id}>
                   <div className="message-label">
-                    {msg.role === 'user' ? 'You' : 'Neravu Assistant'}
+                    {msg.role === 'user' ? t('chat.you') : t('chat.title')}
                   </div>
                   {msg.content ? (
                     <div className="chat-body-text" style={{ whiteSpace: 'pre-wrap' }}>
@@ -264,7 +260,7 @@ export function ChatAssistantWidget() {
                       <span className="dot dot-2" />
                       <span className="dot dot-3" />
                       <span style={{ marginLeft: 8, fontSize: '12px', color: '#6b7280' }}>
-                        Verifying with official scheme evidence...
+                        {t('chat.verifying')}
                       </span>
                     </div>
                   )}
@@ -272,7 +268,7 @@ export function ChatAssistantWidget() {
                   {/* Evidence Sources */}
                   {msg.role === 'assistant' && msg.sources?.length > 0 && (
                     <div className="source-list" style={{ marginTop: '10px' }}>
-                      <strong>Official Sources:</strong>
+                      <strong>{t('chat.sources')}</strong>
                       {msg.sources.map((src, i) => (
                         <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
                           {src.url ? (
@@ -301,13 +297,14 @@ export function ChatAssistantWidget() {
             <input
               value={question}
               onChange={(e) => setQuestion(e.target.value)}
-              placeholder="Ask about schemes, documents, or benefits..."
+              placeholder={t('chat.placeholder')}
               disabled={busy}
               style={{ padding: '10px 14px', fontSize: '13px', borderRadius: '10px' }}
             />
             <button
               type="submit"
               className="button button-primary"
+              aria-label={t('chat.send')}
               disabled={busy || !question.trim()}
               style={{ minWidth: '44px', padding: '0 12px', borderRadius: '10px' }}
             >
@@ -316,10 +313,10 @@ export function ChatAssistantWidget() {
           </form>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '8px' }}>
             <small style={{ fontSize: '10px', color: '#888' }}>
-              Official evidence verified · Language: {language.toUpperCase()}
+              {t('chat.language', { language: language.toUpperCase() })}
             </small>
             <small style={{ fontSize: '10px', color: '#888' }}>
-              Press Esc to close
+              {t('chat.closeHint')}
             </small>
           </div>
         </div>
@@ -327,4 +324,3 @@ export function ChatAssistantWidget() {
     </>
   );
 }
-

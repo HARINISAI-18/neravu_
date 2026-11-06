@@ -6,7 +6,10 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test:scheme-guidance": "node scripts/validate-scheme-guidance.mjs",
+    "translate:ui": "node scripts/generate-ui-translations.mjs",
+    "translate:ui:validate": "node scripts/generate-ui-translations.mjs --validate"
   },
   "dependencies": {
     "@gsap/react": "^2.1.2",

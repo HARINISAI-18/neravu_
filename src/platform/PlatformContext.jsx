@@ -13,13 +13,58 @@ const defaults = {
   answers: {},
   checkedDocuments: [],
   chatHistory: [],
-  completedStages: []
+  completedStages: [],
+  schemeProgress: {},
+  trackedProgrammeIds: [],
+  schemeApplicationStatus: {},
+  documentProgress: {}
 };
 
 const PlatformContext = createContext(null);
 
+function normalizeSchemeProgress(progress) {
+  if (!progress || typeof progress !== 'object' || Array.isArray(progress)) return {};
+  return Object.fromEntries(
+    Object.entries(progress)
+      .filter(([key, value]) => typeof key === 'string' && Array.isArray(value))
+      .map(([key, value]) => [key, [...new Set(value.filter((step) => Number.isInteger(step) && step > 0))]])
+  );
+}
+
+function normalizeStringArray(value) {
+  return Array.isArray(value) ? [...new Set(value.filter((item) => typeof item === 'string'))] : [];
+}
+
+function normalizeStringMap(value) {
+  if (!value || typeof value !== 'object' || Array.isArray(value)) return {};
+  return Object.fromEntries(
+    Object.entries(value)
+      .filter(([key, item]) => typeof key === 'string' && typeof item === 'string')
+  );
+}
+
+function normalizeStringArrayMap(value) {
+  if (!value || typeof value !== 'object' || Array.isArray(value)) return {};
+  return Object.fromEntries(
+    Object.entries(value)
+      .filter(([key, item]) => typeof key === 'string' && Array.isArray(item))
+      .map(([key, item]) => [key, normalizeStringArray(item)])
+  );
+}
+
 function freshDefaults() {
-  return { ...defaults, answers: {}, assistanceTypes: [], checkedDocuments: [], chatHistory: [], completedStages: [] };
+  return {
+    ...defaults,
+    answers: {},
+    assistanceTypes: [],
+    checkedDocuments: [],
+    chatHistory: [],
+    completedStages: [],
+    schemeProgress: {},
+    trackedProgrammeIds: [],
+    schemeApplicationStatus: {},
+    documentProgress: {}
+  };
 }
 
 function readStoredState() {
@@ -33,6 +78,14 @@ function readStoredState() {
     const savedData = { ...parsed };
     delete savedData.chatHistory;
     savedData.answers = normalizeAssessmentAnswers(savedData.answers);
+    savedData.schemeProgress = normalizeSchemeProgress(savedData.schemeProgress);
+    if (!Array.isArray(savedData.trackedProgrammeIds)) {
+      savedData.trackedProgrammeIds = Object.keys(savedData.schemeProgress)
+        .map((schemeId) => `scheme:${schemeId}`);
+    }
+    savedData.trackedProgrammeIds = normalizeStringArray(savedData.trackedProgrammeIds);
+    savedData.schemeApplicationStatus = normalizeStringMap(savedData.schemeApplicationStatus);
+    savedData.documentProgress = normalizeStringArrayMap(savedData.documentProgress);
     return { data: { ...freshDefaults(), ...savedData }, issue: '' };
   } catch {
     return { data: freshDefaults(), issue: 'Local storage is unavailable. Progress may not persist after you leave this page.' };
@@ -41,7 +94,7 @@ function readStoredState() {
 
 function cloudProgressFrom(data) {
   return {
-    schemaVersion: 1,
+    schemaVersion: 2,
     language: data.language,
     patientRole: data.patientRole,
     assistanceTypes: data.assistanceTypes,
@@ -49,7 +102,11 @@ function cloudProgressFrom(data) {
     assessmentStep: data.assessmentStep ?? 0,
     assessmentComplete: Boolean(data.assessmentComplete),
     checkedDocuments: data.checkedDocuments,
-    completedStages: data.completedStages
+    completedStages: data.completedStages,
+    schemeProgress: data.schemeProgress,
+    trackedProgrammeIds: data.trackedProgrammeIds,
+    schemeApplicationStatus: data.schemeApplicationStatus,
+    documentProgress: data.documentProgress
   };
 }
 
@@ -60,6 +117,10 @@ function hasLocalProgress(data) {
     || data.assistanceTypes?.length
     || data.checkedDocuments?.length
     || data.completedStages?.length
+    || Object.keys(data.schemeProgress || {}).length
+    || data.trackedProgrammeIds?.length
+    || Object.keys(data.schemeApplicationStatus || {}).length
+    || Object.keys(data.documentProgress || {}).length
   );
 }
 
@@ -68,6 +129,7 @@ function normalizeCloudProgress(progress, current) {
     throw new Error('The saved progress record has an invalid format. Your local data was not changed.');
   }
   const allowedLanguages = new Set(['en', 'te', 'hi', 'ta', 'kn', 'ml', 'bn', 'mr', 'gu', 'pa', 'ur']);
+  const schemeProgress = normalizeSchemeProgress(progress.schemeProgress);
   return {
     ...freshDefaults(),
     ...current,
@@ -78,7 +140,13 @@ function normalizeCloudProgress(progress, current) {
     assessmentStep: Number.isInteger(progress.assessmentStep) ? Math.max(0, progress.assessmentStep) : 0,
     assessmentComplete: Boolean(progress.assessmentComplete),
     checkedDocuments: Array.isArray(progress.checkedDocuments) ? progress.checkedDocuments.filter((value) => typeof value === 'string') : [],
-    completedStages: Array.isArray(progress.completedStages) ? progress.completedStages.filter((value) => Number.isInteger(value)) : []
+    completedStages: Array.isArray(progress.completedStages) ? progress.completedStages.filter((value) => Number.isInteger(value)) : [],
+    schemeProgress,
+    trackedProgrammeIds: Array.isArray(progress.trackedProgrammeIds)
+      ? normalizeStringArray(progress.trackedProgrammeIds)
+      : Object.keys(schemeProgress).map((schemeId) => `scheme:${schemeId}`),
+    schemeApplicationStatus: normalizeStringMap(progress.schemeApplicationStatus),
+    documentProgress: normalizeStringArrayMap(progress.documentProgress)
   };
 }
 

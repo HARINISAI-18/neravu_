@@ -24,7 +24,7 @@ const baseNavigation = [
 export function Brand({ compact = false }) {
   const { language } = useLanguage();
   return (
-    <Link to="/" className="brand platform-brand" aria-label="Neravu home">
+    <Link to="/" className="brand platform-brand" aria-label={translate(language, 'brand.home')}>
       <span className="brand-mark"><HeartHandshake size={20} /></span>
       <span>Neravu{!compact && <small>{translate(language, 'brand.tagline')}</small>}</span>
     </Link>
