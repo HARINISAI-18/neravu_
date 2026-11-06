@@ -15,7 +15,7 @@ from uuid import UUID
 
 import httpx
 from dotenv import load_dotenv
-from fastapi import FastAPI, Header, HTTPException, Request
+from fastapi import FastAPI, File, Form, Header, HTTPException, Request, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse
 from pydantic import BaseModel, ConfigDict, Field
@@ -216,7 +216,7 @@ def chat(
     _enforce_rate_limit(user_id, request)
 
     # Normalize response language
-    lang = payload.language if payload.language in {"en", "te", "hi"} else "en"
+    lang = payload.language if payload.language in SUPPORTED_LANGUAGES else "en"
 
     def execute_query() -> dict:
         from app.services.question_intent import classify_intent, safe_medical_response, greeting_response
@@ -347,3 +347,261 @@ def chat(
         media_type="text/event-stream",
         headers={"Cache-Control": "no-cache, no-transform", "X-Accel-Buffering": "no"},
     )
+
+
+# ---------------------------------------------------------
+# Voice APIs (Sarvam AI STT & TTS Integration)
+# ---------------------------------------------------------
+
+VOICE_RATE_LIMIT_REQUESTS = int(os.getenv("VOICE_RATE_LIMIT_REQUESTS", "20"))
+VOICE_RATE_LIMIT_WINDOW = int(os.getenv("VOICE_RATE_LIMIT_WINDOW_SECONDS", "60"))
+MAX_AUDIO_BYTES = int(os.getenv("MAX_AUDIO_BYTES", str(8 * 1024 * 1024)))  # 8 MB max
+recent_voice_requests: dict[str, deque[float]] = defaultdict(deque)
+
+
+def _enforce_voice_rate_limit(user_id: str, request: Request | None) -> None:
+    if request is None:
+        return
+    client_ip = request.client.host if request.client else "unknown"
+    key = f"voice:{user_id}:{client_ip}"
+    now = time.monotonic()
+    requests = recent_voice_requests[key]
+    while requests and now - requests[0] > VOICE_RATE_LIMIT_WINDOW:
+        requests.popleft()
+    if len(requests) >= VOICE_RATE_LIMIT_REQUESTS:
+        raise HTTPException(
+            status_code=429,
+            detail="Too many voice requests. Please wait a moment before speaking again.",
+        )
+    requests.append(now)
+
+
+class SynthesizeRequest(BaseModel):
+    model_config = ConfigDict(extra="ignore")
+    text: str = Field(..., max_length=5000)
+    language: str = "en"
+    speaker: str | None = None
+
+
+@app.post("/api/voice/transcribe")
+async def voice_transcribe(
+    file: UploadFile = File(...),
+    language: str = Form(default="auto"),
+    request: Request = None,
+    authorization: Annotated[str | None, Header()] = None,
+    guest_session: Annotated[str | None, Header(alias="X-Guest-Session")] = None,
+):
+    """Transcribes an uploaded audio file and detects its spoken Indian language."""
+    user_id = _resolve_identity(authorization, guest_session)
+    _enforce_voice_rate_limit(user_id, request)
+
+    audio_bytes = await file.read()
+    if not audio_bytes:
+        raise HTTPException(status_code=422, detail="Audio file cannot be empty.")
+    if len(audio_bytes) > MAX_AUDIO_BYTES:
+        raise HTTPException(status_code=413, detail=f"Audio file exceeds maximum size of {MAX_AUDIO_BYTES // (1024 * 1024)}MB.")
+
+    from app.services.voice_service import transcribe_audio
+
+    try:
+        res = transcribe_audio(
+            file_bytes=audio_bytes,
+            filename=file.filename or "recording.webm",
+            content_type=file.content_type or "audio/webm",
+            language_code=language if language != "auto" else "unknown",
+        )
+        return res
+    except Exception as exc:
+        logger.exception("Voice transcription endpoint failed")
+        raise HTTPException(status_code=502, detail=f"Speech transcription failed: {exc}")
+
+
+@app.post("/api/voice/synthesize")
+def voice_synthesize(
+    payload: SynthesizeRequest,
+    request: Request = None,
+    authorization: Annotated[str | None, Header()] = None,
+    guest_session: Annotated[str | None, Header(alias="X-Guest-Session")] = None,
+):
+    """Synthesizes text into high-quality speech using Sarvam AI Bulbul TTS."""
+    user_id = _resolve_identity(authorization, guest_session)
+    _enforce_voice_rate_limit(user_id, request)
+
+    from app.services.voice_service import synthesize_speech
+
+    audio_base64 = synthesize_speech(
+        text=payload.text,
+        language=payload.language,
+        speaker=payload.speaker,
+    )
+    if not audio_base64:
+        raise HTTPException(status_code=502, detail="Speech synthesis failed or produced no audio.")
+
+    return {
+        "audio_base64": audio_base64,
+        "language": payload.language,
+        "mime_type": "audio/wav",
+    }
+
+
+@app.post("/api/voice/chat")
+async def voice_chat(
+    file: UploadFile = File(...),
+    conversation_id: str | None = Form(default=None),
+    language: str = Form(default="auto"),
+    enable_tts: bool = Form(default=True),
+    scheme_id: UUID | None = Form(default=None),
+    patient_facts_json: str | None = Form(default=None),
+    request: Request = None,
+    authorization: Annotated[str | None, Header()] = None,
+    guest_session: Annotated[str | None, Header(alias="X-Guest-Session")] = None,
+):
+    """
+    Unified Voice RAG Pipeline:
+    1. Transcribes incoming audio in user's native language using Sarvam STT.
+    2. Runs hybrid RAG query in the exact same language.
+    3. Synthesizes the evidence-grounded answer to speech using Sarvam Bulbul TTS.
+    """
+    user_id = _resolve_identity(authorization, guest_session)
+    _enforce_voice_rate_limit(user_id, request)
+
+    audio_bytes = await file.read()
+    if not audio_bytes:
+        raise HTTPException(status_code=422, detail="Audio file cannot be empty.")
+    if len(audio_bytes) > MAX_AUDIO_BYTES:
+        raise HTTPException(status_code=413, detail=f"Audio file exceeds maximum size of {MAX_AUDIO_BYTES // (1024 * 1024)}MB.")
+
+    from app.services.voice_service import transcribe_audio, synthesize_speech
+
+    # Step 1: Transcribe Speech & Detect Language
+    try:
+        stt_res = transcribe_audio(
+            file_bytes=audio_bytes,
+            filename=file.filename or "recording.wav",
+            content_type=file.content_type or "audio/wav",
+            language_code=language if (language and language not in ("auto", "en")) else "unknown",
+        )
+    except Exception as exc:
+        logger.exception("STT transcription step failed in voice_chat")
+        raise HTTPException(status_code=502, detail=f"Could not transcribe voice audio: {exc}")
+
+    query = stt_res.get("transcript", "").strip()
+    detected_lang = stt_res.get("language")
+
+    # Determine response language: prioritize the language the user actually spoke!
+    from app.services.voice_service import detect_indic_script
+    script_lang = detect_indic_script(query)
+    if script_lang:
+        active_lang = script_lang
+    elif detected_lang and detected_lang != "en":
+        active_lang = detected_lang
+    elif language and language != "auto" and language in SUPPORTED_LANGUAGES and language != "en":
+        active_lang = language
+    else:
+        active_lang = detected_lang or "en"
+
+    if active_lang not in SUPPORTED_LANGUAGES:
+        active_lang = "en"
+
+    # Handle case where user audio was completely empty / silence / unintelligible
+    if not query:
+        unclear_msg = (
+            "క్షమించండి, మీ వాయిస్ స్పష్టంగా వినబడలేదు. దయచేసి మళ్లీ ప్రయత్నించండి."
+            if active_lang == "te"
+            else (
+                "क्षमा करें, आपकी आवाज़ स्पष्ट रूप से सुनाई नहीं दी। कृपया फिर से बोलें।"
+                if active_lang == "hi"
+                else "Sorry, we could not clearly capture your voice. Please try speaking again."
+            )
+        )
+        audio_base64 = synthesize_speech(unclear_msg, language=active_lang) if enable_tts else None
+        return {
+            "transcript": "",
+            "answer": unclear_msg,
+            "language": active_lang,
+            "audio_base64": audio_base64,
+            "sources": [],
+            "verification_status": "unclear_audio",
+            "intent": "audio_error",
+            "conversation_id": conversation_id or str(uuid.uuid4()),
+            "message_id": str(uuid.uuid4()),
+        }
+
+    # Step 2: Execute RAG Pipeline with the transcribed query and detected language
+    from app.services.question_intent import classify_intent, safe_medical_response, greeting_response
+    from app.services.rag_chat import chat_with_neravu
+
+    patient_facts = None
+    if patient_facts_json:
+        try:
+            patient_facts = json.loads(patient_facts_json)
+        except Exception:
+            patient_facts = None
+
+    intent = classify_intent(query)
+    if intent == "greeting":
+        rag_res = {**greeting_response(active_lang), "intent": intent}
+    elif intent == "urgent_medical" and safe_medical_response(intent, active_lang) is not None:
+        rag_res = {**safe_medical_response(intent, active_lang), "intent": intent}
+    elif intent == "cancer_knowledge":
+        from app.services.medical_knowledge import chat_with_medical_knowledge
+        rag_res = {**chat_with_medical_knowledge(query, active_lang), "intent": intent}
+    elif intent == "eligibility" and scheme_id is not None and patient_facts is not None:
+        from app.routes.engines import EligibilityRequest, evaluate_scheme_eligibility
+        rag_res = {
+            **evaluate_scheme_eligibility(scheme_id, EligibilityRequest(patient_facts=patient_facts)),
+            "intent": intent,
+        }
+    else:
+        # Standard Scheme Hybrid RAG in the user's language
+        rag_res = {**chat_with_neravu(question=query, language=active_lang), "intent": intent}
+
+    # Step 3: Format and normalize sources
+    raw_sources = rag_res.get("sources") or []
+    normalized_sources = []
+    for s in raw_sources:
+        if isinstance(s, dict):
+            title = (
+                s.get("source_reference")
+                or s.get("title")
+                or s.get("claim_text")
+                or "Evidence"
+            )
+            locator = s.get("source_locator")
+            if isinstance(locator, str) and locator.startswith("Page "):
+                title = f"{title} - {locator}"
+            source_status = s.get("source_status")
+            if source_status and "unverified" in str(source_status).lower():
+                title = f"{title} (Unverified source)"
+            normalized_sources.append({
+                "title": title,
+                "url": s.get("source_url") or s.get("url", ""),
+            })
+        elif isinstance(s, str):
+            normalized_sources.append({"title": s, "url": ""})
+
+    answer_text = rag_res.get("answer", "").strip()
+
+    # Step 4: Synthesize text response into speech via Sarvam TTS
+    audio_base64 = None
+    if enable_tts and answer_text:
+        try:
+            audio_base64 = synthesize_speech(
+                text=answer_text,
+                language=active_lang,
+            )
+        except Exception as exc:
+            logger.warning(f"Voice chat TTS synthesis step warning: {exc}")
+
+    return {
+        "transcript": query,
+        "answer": answer_text,
+        "language": active_lang,
+        "audio_base64": audio_base64,
+        "sources": normalized_sources,
+        "verification_status": rag_res.get("verification_status", "verified"),
+        "intent": rag_res.get("intent", "scheme_qa"),
+        "conversation_id": conversation_id or str(uuid.uuid4()),
+        "message_id": str(uuid.uuid4()),
+    }
+

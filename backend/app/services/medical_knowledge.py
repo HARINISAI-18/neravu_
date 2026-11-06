@@ -65,7 +65,7 @@ def chat_with_medical_knowledge(question: str, language: str = "en") -> dict:
             "te": "ఈ క్యాన్సర్ ప్రశ్నకు ఈ సేవలో ధృవీకరించిన ఆధారం లేదు. దయచేసి మీ ఆంకాలజీ బృందాన్ని అడగండి. నేను నిర్ధారణ చేయలేను లేదా చికిత్స మార్చమని సలహా ఇవ్వలేను.",
         }
         return {
-            "answer": fallback[language],
+            "answer": fallback.get(language, fallback["en"]),
             "language": language,
             "sources": [],
             "verification_status": "no_curated_medical_evidence",

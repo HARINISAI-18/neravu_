@@ -255,6 +255,79 @@ export async function askGuidance({ question, language, conversationId = null, s
   return { ...finalResult, sources: normalizeSources(finalResult.sources) };
 }
 
+export async function sendVoiceChat({
+  audioBlob,
+  conversationId = null,
+  language = 'auto',
+  enableTts = true,
+  schemeId = null,
+  patientFacts = null,
+  signal,
+}) {
+  const session = await authService.getSession();
+  const headers = {};
+  if (session?.access_token) {
+    headers.Authorization = `Bearer ${session.access_token}`;
+  } else {
+    const guest = await getGuestSession();
+    headers['X-Guest-Session'] = guest.session_token;
+  }
+
+  const formData = new FormData();
+  formData.append('file', audioBlob, 'recording.wav');
+  if (conversationId) formData.append('conversation_id', conversationId);
+  if (language) formData.append('language', language);
+  formData.append('enable_tts', String(enableTts));
+  if (schemeId) formData.append('scheme_id', schemeId);
+  if (patientFacts) formData.append('patient_facts_json', JSON.stringify(patientFacts));
+
+  const response = await fetch(`${apiBaseUrl}/api/voice/chat`, {
+    method: 'POST',
+    headers,
+    body: formData,
+    signal,
+  });
+
+  if (!response.ok) {
+    const result = await response.json().catch(() => ({}));
+    throw new Error(result.detail || `Voice service returned error ${response.status}.`);
+  }
+
+  const result = await response.json();
+  return {
+    ...result,
+    transcript: result.transcript || '',
+    answer: (result.answer || '').trim(),
+    audio_base64: result.audio_base64 || null,
+    sources: normalizeSources(result.sources),
+  };
+}
+
+export async function synthesizeSpeech({ text, language = 'en', signal }) {
+  const session = await authService.getSession();
+  const headers = { 'Content-Type': 'application/json' };
+  if (session?.access_token) {
+    headers.Authorization = `Bearer ${session.access_token}`;
+  } else {
+    const guest = await getGuestSession();
+    headers['X-Guest-Session'] = guest.session_token;
+  }
+
+  const response = await fetch(`${apiBaseUrl}/api/voice/synthesize`, {
+    method: 'POST',
+    headers,
+    body: JSON.stringify({ text, language }),
+    signal,
+  });
+
+  if (!response.ok) {
+    const result = await response.json().catch(() => ({}));
+    throw new Error(result.detail || `Speech synthesis failed with status ${response.status}.`);
+  }
+
+  return response.json();
+}
+
 export const isRagConfigured = true;
 
 export async function getAuthHeaders() {

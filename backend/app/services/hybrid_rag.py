@@ -280,40 +280,43 @@ def _retrieve_directory_records(connection, question: str, recommendations: bool
 
 
 def _retrieve_document_chunks(connection, embedding: str, question: str, limit: int) -> list[dict]:
-    rows = connection.execute(
-        text("""
-            WITH vector_ranked AS (
-                SELECT id, row_number() OVER (ORDER BY embedding <=> CAST(:embedding AS vector(384))) AS rank
-                FROM public.supplemental_knowledge_chunks
-                ORDER BY embedding <=> CAST(:embedding AS vector(384))
-                LIMIT :limit
-            ), lexical_ranked AS (
-                SELECT id, row_number() OVER (
+    try:
+        rows = connection.execute(
+            text("""
+                WITH vector_ranked AS (
+                    SELECT id, row_number() OVER (ORDER BY embedding <=> CAST(:embedding AS vector(384))) AS rank
+                    FROM public.supplemental_knowledge_chunks
+                    ORDER BY embedding <=> CAST(:embedding AS vector(384))
+                    LIMIT :limit
+                ), lexical_ranked AS (
+                    SELECT id, row_number() OVER (
+                        ORDER BY ts_rank_cd(search_vector, plainto_tsquery('simple', :question)) DESC
+                    ) AS rank
+                    FROM public.supplemental_knowledge_chunks
+                    WHERE search_vector @@ plainto_tsquery('simple', :question)
                     ORDER BY ts_rank_cd(search_vector, plainto_tsquery('simple', :question)) DESC
-                ) AS rank
-                FROM public.supplemental_knowledge_chunks
-                WHERE search_vector @@ plainto_tsquery('simple', :question)
-                ORDER BY ts_rank_cd(search_vector, plainto_tsquery('simple', :question)) DESC
+                    LIMIT :limit
+                ), candidate_ids AS (
+                    SELECT id FROM vector_ranked
+                    UNION
+                    SELECT id FROM lexical_ranked
+                )
+                SELECT d.id AS chunk_id, d.document_name,
+                       d.source_url, d.page_number, d.chunk_text,
+                       d.verification_status,
+                       COALESCE(1.0 / (60 + v.rank), 0)
+                         + COALESCE(1.0 / (60 + l.rank), 0) AS rrf_score
+                FROM candidate_ids c
+                JOIN public.supplemental_knowledge_chunks d ON d.id = c.id
+                LEFT JOIN vector_ranked v ON v.id = d.id
+                LEFT JOIN lexical_ranked l ON l.id = d.id
+                ORDER BY rrf_score DESC
                 LIMIT :limit
-            ), candidate_ids AS (
-                SELECT id FROM vector_ranked
-                UNION
-                SELECT id FROM lexical_ranked
-            )
-            SELECT d.id AS chunk_id, d.document_name,
-                   d.source_url, d.page_number, d.chunk_text,
-                   d.verification_status,
-                   COALESCE(1.0 / (60 + v.rank), 0)
-                     + COALESCE(1.0 / (60 + l.rank), 0) AS rrf_score
-            FROM candidate_ids c
-            JOIN public.supplemental_knowledge_chunks d ON d.id = c.id
-            LEFT JOIN vector_ranked v ON v.id = d.id
-            LEFT JOIN lexical_ranked l ON l.id = d.id
-            ORDER BY rrf_score DESC
-            LIMIT :limit
-        """),
-        {"embedding": embedding, "question": question, "limit": limit},
-    ).mappings().all()
+            """),
+            {"embedding": embedding, "question": question, "limit": limit},
+        ).mappings().all()
+    except Exception:
+        return []
     return [
         {
             "chunk_id": str(row["chunk_id"]),

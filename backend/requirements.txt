@@ -17,6 +17,7 @@ alembic>=1.13,<2
 pgvector>=0.3,<1
 PyJWT[crypto]>=2.10,<3
 PyMuPDF>=1.24,<2
+av>=12,<20
 
 # Embeddings, hybrid retrieval and reranking
 sentence-transformers>=3.0,<6

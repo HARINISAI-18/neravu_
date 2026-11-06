@@ -1,8 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { ArrowRight, RotateCcw, Sparkles, Trash2, X, ExternalLink, ShieldCheck } from 'lucide-react';
+import { ArrowRight, RotateCcw, Sparkles, Trash2, X, ExternalLink, ShieldCheck, Mic, Square, Volume2, VolumeX, Loader2 } from 'lucide-react';
 import { usePlatform } from './PlatformContext';
 import { translate, useLanguage } from './i18n';
-import { askGuidance, getChatIdentity, isRagConfigured } from './services';
+import { askGuidance, getChatIdentity, isRagConfigured, sendVoiceChat, synthesizeSpeech } from './services';
+import { createWavRecorder } from './wavRecorder';
 
 export function openChatAssistant(initialQuestion = '') {
   window.dispatchEvent(new CustomEvent('open-neravu-chat', { detail: { question: initialQuestion } }));
@@ -20,11 +21,20 @@ export function ChatAssistantWidget() {
   const [chatIdentity, setChatIdentity] = useState('');
   const [conversationId, setConversationId] = useState(null);
 
+  const [isRecording, setIsRecording] = useState(false);
+  const [recordingSeconds, setRecordingSeconds] = useState(0);
+  const [playingMessageId, setPlayingMessageId] = useState(null);
+  const [synthesizingId, setSynthesizingId] = useState(null);
+
   const chatEndRef = useRef(null);
   const requestControllerRef = useRef(null);
   const historyRef = useRef(data.chatHistory || []);
   const history = data.chatHistory || [];
   historyRef.current = history;
+
+  const wavRecorderRef = useRef(null);
+  const recordingTimerRef = useRef(null);
+  const currentAudioRef = useRef(null);
 
   const suggestions = ['chat.suggestion.1', 'chat.suggestion.2', 'chat.suggestion.3'].map(t);
 
@@ -145,6 +155,206 @@ export function ChatAssistantWidget() {
     e?.preventDefault();
     void sendQuestion(question);
   };
+
+  const playAudioMessage = (msgId, base64Audio) => {
+    if (currentAudioRef.current) {
+      currentAudioRef.current.pause();
+      currentAudioRef.current = null;
+    }
+    if (playingMessageId === msgId) {
+      setPlayingMessageId(null);
+      return;
+    }
+    const audio = new Audio(`data:audio/wav;base64,${base64Audio}`);
+    audio.onended = () => setPlayingMessageId(null);
+    audio.onerror = () => setPlayingMessageId(null);
+    currentAudioRef.current = audio;
+    audio.play().catch(() => setPlayingMessageId(null));
+    setPlayingMessageId(msgId);
+  };
+
+  const handleTogglePlayback = async (msg) => {
+    if (playingMessageId === msg.id) {
+      currentAudioRef.current?.pause();
+      setPlayingMessageId(null);
+      return;
+    }
+    if (msg.audio_base64) {
+      playAudioMessage(msg.id, msg.audio_base64);
+      return;
+    }
+    setSynthesizingId(msg.id);
+    try {
+      const targetLang = msg.language || language;
+      const res = await synthesizeSpeech({ text: msg.content, language: targetLang });
+      if (res?.audio_base64) {
+        const nextHistory = historyRef.current.map((m) =>
+          m.id === msg.id ? { ...m, audio_base64: res.audio_base64 } : m
+        );
+        historyRef.current = nextHistory;
+        updateData({ chatHistory: nextHistory });
+        playAudioMessage(msg.id, res.audio_base64);
+      }
+    } catch {
+      setError(t('chat.serviceUnavailable') || 'Failed to synthesize speech.');
+    } finally {
+      setSynthesizingId(null);
+    }
+  };
+
+  const sendVoiceQuestion = async (audioBlob) => {
+    if (!audioBlob || busy || !chatIdentity) return;
+    setError('');
+    setQuestion('');
+
+    const currentHistory = historyRef.current;
+    const userMsgId = `${Date.now()}-user`;
+    let pending = [...currentHistory, { id: userMsgId, role: 'user', content: '🎤 ...', isVoice: true }];
+    setBusy(true);
+
+    const assistantId = `${Date.now()}-assistant`;
+    pending = [...pending, { id: assistantId, role: 'assistant', content: '', sources: [], audio_base64: null }];
+    historyRef.current = pending;
+    updateData({ chatHistory: pending });
+
+    const controller = new AbortController();
+    requestControllerRef.current = controller;
+    const timeoutId = window.setTimeout(() => controller.abort(), 90000);
+
+    try {
+      const result = await sendVoiceChat({
+        audioBlob,
+        conversationId,
+        language: 'auto',
+        enableTts: true,
+        signal: controller.signal,
+      });
+
+      setConversationId(result.conversation_id || null);
+      if (conversationStorageKey && result.conversation_id) {
+        try {
+          sessionStorage.setItem(conversationStorageKey, result.conversation_id);
+        } catch {}
+      }
+
+      const completedHistory = historyRef.current.map((msg) => {
+        if (msg.id === userMsgId) {
+          return { ...msg, content: result.transcript ? `🎤 ${result.transcript}` : '🎤 (Voice message)' };
+        }
+        if (msg.id === assistantId) {
+          return {
+            ...msg,
+            content: result.answer,
+            sources: result.sources,
+            audio_base64: result.audio_base64,
+            language: result.language,
+          };
+        }
+        return msg;
+      });
+      historyRef.current = completedHistory;
+      updateData({ chatHistory: completedHistory });
+
+      if (result.audio_base64) {
+        playAudioMessage(assistantId, result.audio_base64);
+      }
+    } catch (caught) {
+      const failureNotice = controller.signal.aborted
+        ? t('chat.requestTimeout')
+        : (caught instanceof Error ? caught.message : t('chat.serviceUnavailable'));
+      setError(failureNotice);
+      const failedHistory = historyRef.current.map((msg) =>
+        msg.id === assistantId ? { ...msg, content: failureNotice } : msg
+      );
+      historyRef.current = failedHistory;
+      updateData({ chatHistory: failedHistory });
+    } finally {
+      window.clearTimeout(timeoutId);
+      if (requestControllerRef.current === controller) requestControllerRef.current = null;
+      setBusy(false);
+    }
+  };
+
+  const startRecording = async () => {
+    if (busy) return;
+    setError('');
+    try {
+      const recorder = await createWavRecorder();
+      wavRecorderRef.current = recorder;
+      setIsRecording(true);
+      setRecordingSeconds(0);
+
+      if (recordingTimerRef.current) clearInterval(recordingTimerRef.current);
+      recordingTimerRef.current = setInterval(() => {
+        setRecordingSeconds((prev) => {
+          if (prev >= 30) {
+            void stopRecording();
+            return 30;
+          }
+          return prev + 1;
+        });
+      }, 1000);
+    } catch {
+      setError(t('chat.voiceError') || 'Microphone access denied or not supported.');
+      setIsRecording(false);
+    }
+  };
+
+  const stopRecording = async () => {
+    if (recordingTimerRef.current) {
+      clearInterval(recordingTimerRef.current);
+      recordingTimerRef.current = null;
+    }
+    const recorder = wavRecorderRef.current;
+    wavRecorderRef.current = null;
+    setIsRecording(false);
+    setRecordingSeconds(0);
+
+    if (recorder) {
+      try {
+        const wavBlob = await recorder.stop();
+        if (wavBlob && wavBlob.size > 0) {
+          void sendVoiceQuestion(wavBlob);
+        }
+      } catch {
+        setError('Failed to process recorded audio.');
+      }
+    }
+  };
+
+  const cancelRecording = () => {
+    if (recordingTimerRef.current) {
+      clearInterval(recordingTimerRef.current);
+      recordingTimerRef.current = null;
+    }
+    const recorder = wavRecorderRef.current;
+    wavRecorderRef.current = null;
+    if (recorder) {
+      recorder.cancel();
+    }
+    setIsRecording(false);
+    setRecordingSeconds(0);
+  };
+
+  useEffect(() => {
+    return () => {
+      currentAudioRef.current?.pause();
+      if (recordingTimerRef.current) clearInterval(recordingTimerRef.current);
+      if (wavRecorderRef.current) {
+        wavRecorderRef.current.cancel();
+      }
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!isOpen) {
+      currentAudioRef.current?.pause();
+      setPlayingMessageId(null);
+      if (isRecording) {
+        cancelRecording();
+      }
+    }
+  }, [isOpen]);
 
   const clearChat = () => {
     if (busy) return;
@@ -282,6 +492,36 @@ export function ChatAssistantWidget() {
                       ))}
                     </div>
                   )}
+
+                  {/* Audio Speech Playback (Sarvam Bulbul TTS) */}
+                  {msg.role === 'assistant' && msg.content && (
+                    <div>
+                      <button
+                        type="button"
+                        className={`voice-playback-btn ${playingMessageId === msg.id ? 'playing' : ''}`}
+                        onClick={() => void handleTogglePlayback(msg)}
+                        disabled={busy || synthesizingId === msg.id}
+                        title={playingMessageId === msg.id ? t('chat.pauseVoice') : t('chat.playVoice')}
+                      >
+                        {synthesizingId === msg.id ? (
+                          <>
+                            <Loader2 size={12} className="spin" />
+                            <span>{t('chat.voiceProcessing')}</span>
+                          </>
+                        ) : playingMessageId === msg.id ? (
+                          <>
+                            <VolumeX size={13} />
+                            <span>{t('chat.pauseVoice')}</span>
+                          </>
+                        ) : (
+                          <>
+                            <Volume2 size={13} />
+                            <span>{t('chat.playVoice')}</span>
+                          </>
+                        )}
+                      </button>
+                    </div>
+                  )}
                 </article>
               ))}
 
@@ -293,24 +533,66 @@ export function ChatAssistantWidget() {
         {/* Input Footer */}
         <div className="assistant-drawer-footer">
           {error && <p className="form-error" style={{ marginBottom: '8px', fontSize: '11px' }}>{error}</p>}
-          <form className="chat-input-row" onSubmit={handleSend} style={{ border: 'none', padding: 0 }}>
-            <input
-              value={question}
-              onChange={(e) => setQuestion(e.target.value)}
-              placeholder={t('chat.placeholder')}
-              disabled={busy}
-              style={{ padding: '10px 14px', fontSize: '13px', borderRadius: '10px' }}
-            />
-            <button
-              type="submit"
-              className="button button-primary"
-              aria-label={t('chat.send')}
-              disabled={busy || !question.trim()}
-              style={{ minWidth: '44px', padding: '0 12px', borderRadius: '10px' }}
-            >
-              <ArrowRight size={17} />
-            </button>
-          </form>
+          
+          {isRecording ? (
+            <div className="recording-status-banner">
+              <div style={{ display: 'flex', alignItems: 'center' }}>
+                <span className="recording-indicator-dot" />
+                <strong>{t('chat.voiceRecording')}</strong>
+                <span style={{ marginLeft: '8px', fontFamily: 'monospace', fontWeight: 600 }}>
+                  {`0:${recordingSeconds.toString().padStart(2, '0')} / 0:30`}
+                </span>
+              </div>
+              <div style={{ display: 'flex', gap: '6px' }}>
+                <button
+                  type="button"
+                  className="button button-outline"
+                  onClick={cancelRecording}
+                  style={{ padding: '4px 8px', fontSize: '11px', minHeight: '28px' }}
+                >
+                  {t('chat.voiceCancel')}
+                </button>
+                <button
+                  type="button"
+                  className="button button-primary"
+                  onClick={stopRecording}
+                  style={{ padding: '4px 10px', fontSize: '11px', minHeight: '28px', backgroundColor: '#dc2626' }}
+                >
+                  <Square size={11} style={{ marginRight: '4px' }} />
+                  {t('chat.voiceSend')}
+                </button>
+              </div>
+            </div>
+          ) : (
+            <form className="chat-input-row" onSubmit={handleSend} style={{ border: 'none', padding: 0 }}>
+              <button
+                type="button"
+                className="voice-mic-btn"
+                onClick={startRecording}
+                disabled={busy}
+                title={t('chat.voicePrompt')}
+                aria-label={t('chat.voicePrompt')}
+              >
+                <Mic size={17} />
+              </button>
+              <input
+                value={question}
+                onChange={(e) => setQuestion(e.target.value)}
+                placeholder={t('chat.placeholder')}
+                disabled={busy}
+                style={{ padding: '10px 14px', fontSize: '13px', borderRadius: '10px', flex: 1 }}
+              />
+              <button
+                type="submit"
+                className="button button-primary"
+                aria-label={t('chat.send')}
+                disabled={busy || !question.trim()}
+                style={{ minWidth: '44px', padding: '0 12px', borderRadius: '10px' }}
+              >
+                <ArrowRight size={17} />
+              </button>
+            </form>
+          )}
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '8px' }}>
             <small style={{ fontSize: '10px', color: '#888' }}>
               {t('chat.language', { language: language.toUpperCase() })}

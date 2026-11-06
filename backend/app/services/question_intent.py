@@ -96,7 +96,7 @@ def safe_medical_response(intent: Intent, language: str) -> dict | None:
             "te": "ఇది అత్యవసర వైద్య సహాయం అవసరమయ్యే పరిస్థితి కావచ్చు. వెంటనే మీ క్యాన్సర్ వైద్య బృందాన్ని లేదా స్థానిక అత్యవసర సేవలను సంప్రదించండి. ఈ చాట్ సమాధానం కోసం వేచి ఉండకండి.",
         }
         return {
-            "answer": messages[language],
+            "answer": messages.get(language, messages["en"]),
             "intent": intent,
             "verification_status": "safety_routed",
             "sources": [],
@@ -108,7 +108,7 @@ def safe_medical_response(intent: Intent, language: str) -> dict | None:
             "te": "ఈ సేవలో సాధారణ క్యాన్సర్ సమాచారానికి ధృవీకరించిన వైద్య ఆధారాలు ప్రస్తుతం లేవు. చికిత్స లేదా మందులు మార్చే ముందు మీ ఆంకాలజీ బృందం లేదా ఫార్మసిస్ట్‌ను సంప్రదించండి.",
         }
         return {
-            "answer": messages[language],
+            "answer": messages.get(language, messages["en"]),
             "intent": intent,
             "verification_status": "no_curated_medical_evidence",
             "sources": [],

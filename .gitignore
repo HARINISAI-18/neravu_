@@ -25,4 +25,4 @@ dist/
 *.log
 
 # Workspace notes & docs
-Neravu_Backend_AI_Handoff.pdf
+/Neravu_Backend_AI_Handoff

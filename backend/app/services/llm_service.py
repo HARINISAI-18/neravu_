@@ -8,7 +8,20 @@ from openai import OpenAI
 
 load_dotenv(Path(__file__).resolve().parents[3] / ".env")
 
-LANGUAGES = {"en": "English", "te": "Telugu", "hi": "Hindi"}
+LANGUAGES = {
+    "en": "English",
+    "te": "Telugu",
+    "hi": "Hindi",
+    "ta": "Tamil",
+    "kn": "Kannada",
+    "ml": "Malayalam",
+    "bn": "Bengali",
+    "mr": "Marathi",
+    "gu": "Gujarati",
+    "pa": "Punjabi",
+    "od": "Odia",
+    "ur": "Urdu",
+}
 
 INDIC_DIGITS_MAP = str.maketrans({
     "०": "0", "१": "1", "२": "2", "३": "3", "४": "4",

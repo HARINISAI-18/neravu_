@@ -282,3 +282,103 @@
 .tracker-guidance-step>.guidance-stuck{padding:10px 12px}
 @media(max-width:600px){.tracker-guidance-heading{grid-template-columns:28px minmax(0,1fr);align-items:start}.tracker-guidance-check{grid-column:2;grid-row:2}.tracker-guidance-heading h3{grid-column:2;grid-row:1}.tracker-guidance-heading .tracker-step{grid-column:1;grid-row:1}}
 @media(max-width:720px){.guidance-section-grid,.guidance-checklist{grid-template-columns:1fr}.guidance-step{grid-template-columns:34px minmax(0,1fr);gap:10px;padding:15px}.guidance-step-check{grid-column:2;grid-row:1;justify-self:end}.guidance-step-number{grid-column:1;grid-row:1}.guidance-step-content{grid-column:1/-1}.guidance-step-content h3{padding-right:60px}}
+
+
+/* ------------------------------------------------------------------
+   Voice Assistant (Sarvam STT / TTS) Styles
+   ------------------------------------------------------------------ */
+.voice-mic-btn {
+  width: 40px;
+  height: 40px;
+  min-width: 40px;
+  padding: 0;
+  border-radius: 10px;
+  display: grid;
+  place-items: center;
+  border: 1px solid #e1d8e8;
+  background: #fbf9fd;
+  color: #71429a;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.voice-mic-btn:hover:not(:disabled) {
+  background: #f2ebf7;
+  color: #57297e;
+  border-color: #cbbed7;
+}
+.voice-mic-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.voice-mic-btn.active-recording {
+  background: #fee2e2;
+  color: #dc2626;
+  border-color: #fca5a5;
+  animation: pulseMic 1.4s infinite ease-in-out;
+}
+@keyframes pulseMic {
+  0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.4); }
+  50% { transform: scale(1.05); box-shadow: 0 0 0 8px rgba(220, 38, 38, 0); }
+  100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(220, 38, 38, 0); }
+}
+
+.recording-status-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 10px;
+  padding: 8px 12px;
+  margin-bottom: 8px;
+  font-size: 12px;
+  color: #991b1b;
+}
+.recording-indicator-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #dc2626;
+  display: inline-block;
+  margin-right: 6px;
+  animation: blinkDot 1s infinite alternate;
+}
+@keyframes blinkDot {
+  0% { opacity: 0.3; }
+  100% { opacity: 1; }
+}
+
+.voice-playback-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 10px;
+  padding: 5px 11px;
+  border-radius: 999px;
+  border: 1px solid #e3d9ea;
+  background: #fbf9fd;
+  color: #68418a;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.voice-playback-btn:hover {
+  background: #f2ebf7;
+  border-color: #c9bada;
+  color: #532d74;
+}
+.voice-playback-btn.playing {
+  background: #71429a;
+  color: #ffffff;
+  border-color: #71429a;
+}
+.voice-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 4px;
+  font-size: 11px;
+  color: #71429a;
+  font-weight: 600;
+}
