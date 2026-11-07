@@ -5,7 +5,7 @@ import {
   HeartHandshake, Home, Languages, LogIn, LogOut, MessageCircle, Settings, ShieldCheck, UserRound
 } from 'lucide-react';
 import { languageOptions } from './data';
-import { getTranslationCoverage, translate, translateOption, useLanguage } from './i18n';
+import { translate, translateOption, useLanguage } from './i18n';
 import { usePlatform } from './PlatformContext';
 import { authService, isSupabaseConfigured } from './services';
 import { ChatAssistantWidget } from './ChatDrawer';
@@ -49,21 +49,6 @@ export function LanguageSelect({ className = '' }) {
   );
 }
 
-export function TranslationNotice() {
-  const { language } = useLanguage();
-  const coverage = getTranslationCoverage(language);
-  if (language === 'en') return null;
-  return (
-    <aside className="translation-notice" role="note" data-coverage={coverage} data-review-status="unreviewed-draft">
-      <p>{translate(language, 'language.translationNotice')}</p>
-      <details>
-        <summary>{translate(language, 'language.viewEnglish')}</summary>
-        <p>{translate('en', 'language.translationNotice')}</p>
-      </details>
-    </aside>
-  );
-}
-
 export function PlatformLayout() {
   const { language } = useLanguage();
   const {
@@ -103,7 +88,6 @@ export function PlatformLayout() {
         </div>
       </header>
       {storageIssue && <div className="storage-alert" role="status">{storageIssue}</div>}
-      <TranslationNotice />
       {user && cloudStatus === 'checking' && <div className="cloud-status" role="status">{t('cloud.checking')}</div>}
       {user && cloudStatus === 'saving' && <div className="cloud-status" role="status">{t('cloud.saving')}</div>}
       {user && cloudStatus === 'saved' && <div className="cloud-status saved" role="status">{t('cloud.saved')}</div>}

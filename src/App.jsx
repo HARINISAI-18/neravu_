@@ -2,7 +2,7 @@ import React, { lazy, Suspense, useEffect, useRef, useState } from 'react';
 import { HeartHandshake, Menu, X, ArrowDown, Languages, FileCheck2, SearchCheck, Headset } from 'lucide-react';
 import { Link, Navigate, Route, Routes } from 'react-router-dom';
 import { PlatformProvider } from './platform/PlatformContext';
-import { BrandLogo, LanguageSelect, PlatformLayout, TranslationNotice } from './platform/components';
+import { BrandLogo, LanguageSelect, PlatformLayout } from './platform/components';
 import { translate, useLanguage } from './platform/i18n';
 
 const HospitalScene = lazy(() => import('./scene/HospitalScene'));
@@ -150,7 +150,6 @@ function LandingPage() {
   return (
     <div id="top" className="site-shell">
       <Navbar />
-      <TranslationNotice />
       <main>
         <section className="hero">
           <div className="hero-copy">

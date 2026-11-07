@@ -29,7 +29,7 @@ import {
   publishScheme, fetchAdminSyncStatus, retryAdminSync, getAuthHeaders
 } from './services';
 import {
-  BrandLogo, DemoNotice, LanguageSelect, OptionGrid, PageHeading, RouteFooter, TranslationNotice
+  BrandLogo, DemoNotice, LanguageSelect, OptionGrid, PageHeading, RouteFooter
 } from './components';
 
 const roleOptions = ['Myself', 'Parent', 'Spouse', 'Child', 'Other family member'];
@@ -118,7 +118,6 @@ export function SetupPage() {
       </header>
       <div className="flow-progress"><span style={{ width: `${((stepIndex + 1) / 3) * 100}%` }} /></div>
       <main className="flow-content" id="main-content">
-        <TranslationNotice />
         <span className="eyebrow">{t('onboarding.eyebrow')}</span>
         <h1>{title}</h1>
         {step === 'role' && <>
@@ -175,7 +174,6 @@ export function AssessmentAccessPage() {
     <div className="auth-page">
       <header className="flow-header"><Link to="/" className="brand" aria-label="Neravu home"><BrandLogo /></Link><div className="flow-header-actions"><LanguageSelect /><span className="flow-step-count">{t('access.beforeQuestions')}</span></div></header>
       <main className="auth-card access-card" id="main-content">
-        <TranslationNotice />
         <span className="auth-icon"><ShieldCheck size={23} /></span>
         <span className="eyebrow">{t('access.eyebrow')}</span>
         <h1>{t('access.title')}</h1>
@@ -466,7 +464,6 @@ export function AssessmentPage() {
         <div className="flow-header-actions"><LanguageSelect /><Link className="quiet-link" to="/login">{t('nav.login')}</Link></div>
       </header>
       <main className="assessment-content" id="main-content">
-        <TranslationNotice />
         <div className="assessment-progress-label"><span>{t(sectionLabels[activeQuestion.section])}</span><span>{t('assessment.step', { current: index + 1, total: questions.length })}</span></div>
         <div className="flow-progress"><span style={{ width: `${((index + 1) / questions.length) * 100}%` }} /></div>
         <h1>{t('assessment.title')}</h1>
@@ -556,7 +553,6 @@ export function AssessmentShortlistPage() {
     <div className="assessment-page">
       <IntakeFlowHeader language={language} t={t} />
       <main className="review-content" id="main-content">
-        <TranslationNotice />
         <span className="eyebrow">{t('assessment.reviewEyebrow')}</span>
         <h1>{t('intake.shortlistTitle')}</h1>
         <p className="muted-copy">{t('intake.shortlistDescription')}</p>
@@ -622,7 +618,6 @@ export function AssessmentFollowUpPage() {
     <div className="assessment-page">
       <IntakeFlowHeader language={language} t={t} />
       <main className="assessment-content" id="main-content">
-        <TranslationNotice />
         <div className="assessment-progress-label"><span>{t(sectionLabels[question.section])}</span><span>{t('assessment.step', { current: index + 1, total: questions.length })}</span></div>
         <div className="flow-progress"><span style={{ width: `${((index + 1) / Math.max(questions.length, 1)) * 100}%` }} /></div>
         <h1>{t('intake.followUpIntro')}</h1>
@@ -764,7 +759,6 @@ export function ReviewPage() {
     <div className="assessment-page">
       <IntakeFlowHeader language={language} t={t} />
       <main className="review-content" id="main-content">
-        <TranslationNotice />
         <span className="eyebrow">{t('assessment.reviewEyebrow')}</span><h1>{t('assessment.review')}</h1><p className="muted-copy">{t('assessment.reviewHelp')}</p>
         {Object.entries(groups).map(([section, questions]) => <section className="review-section" key={section}>
           <h2>{t(sectionLabels[section])}</h2>
@@ -944,7 +938,6 @@ export function AuthPage() {
     <div className="auth-page">
       <header className="flow-header"><Link to="/" className="brand" aria-label="Neravu home"><BrandLogo /></Link><LanguageSelect /></header>
       <main className="auth-card" id="main-content">
-        <TranslationNotice />
         <span className="auth-icon"><LockKeyhole size={23} /></span>
         <h1>{t(titleKey)}</h1>
         <p className="muted-copy">{t(isSupabaseConfigured ? 'auth.providerNotice' : 'auth.demoNotice')}</p>
@@ -1900,7 +1893,6 @@ export function SchemeGuidancePage() {
 
   return (
     <div className="page-content scheme-guidance-page">
-      <TranslationNotice />
       <Link className="guidance-back-link" to="/schemes"><ArrowLeft size={16} /> {guidanceText(language, 'back')}</Link>
       <PageHeading
         eyebrow={summary['Programme Type'] || scheme.programmeType || guidanceText(language, 'sourceSnapshot')}
@@ -3675,7 +3667,6 @@ export function SettingsPage() {
   return <div className="page-content"><PageHeading eyebrow={t('settings.eyebrow')} title={t('page.settings')} description={t('settings.description')} />
     <section className="content-card settings-card"><div className="settings-title"><span className="support-icon-small"><Languages size={19} /></span><div><h2>{t('settings.title')}</h2><p>{t('settings.languageDescription')}</p></div></div><LanguageSelect className="settings-language" />
       <div className="supported-languages"><h3>{t('settings.available')}</h3>{languageOptions.map((option) => <span className="language-tag" key={option.code}>{option.nativeName}<small>{option.name}</small></span>)}</div>
-      <DemoNotice>{t('settings.translations')}</DemoNotice>
     </section>
   </div>;
 }

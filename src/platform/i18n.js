@@ -24,8 +24,6 @@ export const translations = {
     'nav.space': 'YOUR SUPPORT SPACE',
     'nav.localNote': 'Guest progress is stored locally on this device.',
     'nav.languageLabel': 'Display language',
-    'language.translationNotice': 'This interface uses machine-translated draft text that has not been reviewed by a human. English text may appear; use the English original for critical eligibility, amounts and application conditions.',
-    'language.viewEnglish': 'View the English source notice',
     'nav.signOut': 'Sign out',
     'common.demo': 'DEMO DATA',
     'common.notVerified': 'This information is for discovery only and has not been verified for eligibility or current availability.',
@@ -234,7 +232,6 @@ export const translations = {
     'settings.title': 'Display language',
     'settings.languageDescription': 'Choose your preferred language for the interface.',
     'settings.available': 'Available languages',
-    'settings.translations': 'English is the source language. Non-English interface catalogs are machine-translated drafts pending human review; some text may still appear in English. Verify programme details against official sources.',
     'landing.nav.approach': 'Our approach',
     'landing.nav.help': 'How it helps',
     'landing.nav.human': 'Human support',
@@ -956,8 +953,6 @@ export const translations = {
     'nav.space': 'మీ సహాయ స్థలం',
     'nav.localNote': 'అతిథి పురోగతి ఈ పరికరంలో సేవ్ అవుతుంది.',
     'nav.languageLabel': 'ప్రదర్శన భాష',
-    'language.translationNotice': 'ఈ భాషలో కొన్ని ఇంటర్‌ఫేస్, పథక వివరాలు ఇంకా అనువదించి నిపుణులచే సమీక్షించలేదు. ఆంగ్ల పాఠ్యం కనిపించవచ్చు; అర్హత, మొత్తాలు, దరఖాస్తు షరతులకు ఆంగ్ల మూలాన్ని చూడండి.',
-    'language.viewEnglish': 'ఆంగ్ల మూల సూచనను చూడండి',
     'nav.signOut': 'సైన్ అవుట్',
     'common.demo': 'డెమో సమాచారం',
     'common.notVerified': 'ఇది సమాచారాన్ని తెలుసుకోవడానికి మాత్రమే. అర్హత లేదా ప్రస్తుత లభ్యత ధృవీకరించబడలేదు.',
@@ -1110,7 +1105,6 @@ export const translations = {
     'settings.title': 'ప్రదర్శన భాష',
     'settings.languageDescription': 'ఇంటర్‌ఫేస్ కోసం మీకు నచ్చిన భాషను ఎంచుకోండి.',
     'settings.available': 'అందుబాటులో ఉన్న భాషలు',
-    'settings.translations': 'ఇంగ్లీష్ మూల భాష. ఇతర భాషల ఇంటర్‌ఫేస్ అనువాదాలు మానవ సమీక్ష కోసం వేచి ఉన్న యంత్ర అనువాద ముసాయిదాలు; కొన్ని వాక్యాలు ఇంగ్లీష్‌లో కనిపించవచ్చు. పథక వివరాలను అధికారిక మూలాల ద్వారా ధృవీకరించండి.',
     'auth.login': 'నెరవులో లాగిన్',
     'auth.signup': 'ఖాతా సృష్టించండి',
     'auth.demoNotice': 'ఈ డెమోలో ధృవీకరణ అనుసంధానం లేదు. ఖాతా లేదా పాస్‌వర్డ్ సృష్టించబడదు లేదా సురక్షితంగా భద్రపరచబడదు.',
@@ -1284,8 +1278,6 @@ export const translations = {
     'nav.space': 'आपकी सहायता जगह',
     'nav.localNote': 'अतिथि की प्रगति इसी डिवाइस पर सेव है।',
     'nav.languageLabel': 'प्रदर्शन भाषा',
-    'language.translationNotice': 'इस भाषा में कुछ इंटरफ़ेस और योजना सामग्री का अनुवाद और मानवीय समीक्षा अभी बाकी है। अंग्रेज़ी पाठ दिख सकता है; पात्रता, राशि और आवेदन शर्तों के लिए अंग्रेज़ी मूल देखें।',
-    'language.viewEnglish': 'अंग्रेज़ी मूल सूचना देखें',
     'nav.signOut': 'लॉग आउट',
     'common.demo': 'डेमो जानकारी',
     'common.notVerified': 'यह जानकारी केवल खोज के लिए है। पात्रता या वर्तमान उपलब्धता की पुष्टि नहीं हुई है।',
@@ -1436,7 +1428,6 @@ export const translations = {
     'settings.title': 'प्रदर्शन भाषा',
     'settings.languageDescription': 'इंटरफ़ेस के लिए अपनी पसंदीदा भाषा चुनें।',
     'settings.available': 'उपलब्ध भाषाएँ',
-    'settings.translations': 'अंग्रेज़ी मूल भाषा है। अन्य भाषाओं के इंटरफ़ेस अनुवाद मशीन से बने प्रारूप हैं और मानवीय समीक्षा की प्रतीक्षा में हैं; कुछ पाठ अंग्रेज़ी में दिख सकता है। योजना की जानकारी आधिकारिक स्रोतों से सत्यापित करें।',
     'auth.login': 'नेरवु में लॉग इन करें',
     'auth.signup': 'खाता बनाएँ',
     'auth.demoNotice': 'इस डेमो में प्रमाणीकरण जुड़ा नहीं है। कोई खाता या पासवर्ड नहीं बनाया जाएगा या सुरक्षित रूप से सेव नहीं होगा।',
@@ -1621,16 +1612,8 @@ function getCatalog(language) {
   };
 }
 
-export function getTranslationCoverage(language) {
-  const sourceKeys = Object.keys(translations.en);
-  if (!sourceKeys.length) return 100;
-  const availableKeys = new Set(Object.keys(getCatalog(language)));
-  return Math.round((sourceKeys.filter((key) => availableKeys.has(key)).length / sourceKeys.length) * 100);
-}
-
 export function translate(language, key, values = {}) {
-  let text = (key === 'language.translationNotice' ? translationNotices[language] : undefined)
-    ?? getCatalog(language)[key]
+  let text = getCatalog(language)[key]
     ?? translations.en[key]
     ?? key;
   for (const [name, value] of Object.entries(values)) {
@@ -1639,18 +1622,6 @@ export function translate(language, key, values = {}) {
   return text;
 }
 
-const translationNotices = {
-  te: 'ఈ భాషలోని అనువాదాలు సమీక్షించని ముసాయిదాలు; మానవ సమీక్ష ఇంకా జరగలేదు. అర్హత, మొత్తం, దరఖాస్తు షరతులు మరియు అధికారిక పత్రాల కోసం ఆంగ్ల మూలాన్ని చూడండి.',
-  hi: 'इस भाषा के अनुवाद समीक्षा-रहित प्रारूप हैं; इनकी मानवीय समीक्षा अभी नहीं हुई है। पात्रता, राशि, आवेदन शर्तों और आधिकारिक दस्तावेज़ों के लिए अंग्रेज़ी मूल देखें।',
-  ta: 'இந்த மொழிபெயர்ப்புகள் மதிப்பாய்வு செய்யப்படாத வரைவுகள்; மனித மதிப்பாய்வு இன்னும் செய்யப்படவில்லை. தகுதி, தொகை, விண்ணப்ப நிபந்தனைகள் மற்றும் அதிகாரப்பூர்வ ஆவணங்களுக்கு ஆங்கில மூலத்தைப் பார்க்கவும்.',
-  kn: 'ಈ ಭಾಷೆಯ ಅನುವಾದಗಳು ಪರಿಶೀಲಿಸದ ಕರಡುಗಳಾಗಿವೆ; ಮಾನವ ಪರಿಶೀಲನೆ ಇನ್ನೂ ಆಗಿಲ್ಲ. ಅರ್ಹತೆ, ಮೊತ್ತ, ಅರ್ಜಿ ಷರತ್ತುಗಳು ಮತ್ತು ಅಧಿಕೃತ ದಾಖಲೆಗಳಿಗಾಗಿ ಇಂಗ್ಲಿಷ್ ಮೂಲವನ್ನು ನೋಡಿ.',
-  ml: 'ഈ ഭാഷയിലെ വിവർത്തനങ്ങൾ അവലോകനം ചെയ്യാത്ത കരടുകളാണ്; മനുഷ്യപരിശോധന ഇതുവരെ നടന്നിട്ടില്ല. യോഗ്യത, തുക, അപേക്ഷാ വ്യവസ്ഥകൾ, ഔദ്യോഗിക രേഖകൾ എന്നിവയ്ക്ക് ഇംഗ്ലീഷ് മൂലം പരിശോധിക്കുക.',
-  bn: 'এই ভাষার অনুবাদগুলি পর্যালোচনা না-করা খসড়া; এখনও মানব-পর্যালোচনা হয়নি। যোগ্যতা, অর্থের পরিমাণ, আবেদনের শর্ত এবং সরকারি নথির জন্য ইংরেজি মূল দেখুন।',
-  mr: 'या भाषेतील भाषांतरे पुनरावलोकन न केलेले मसुदे आहेत; मानवी पुनरावलोकन अद्याप झालेले नाही. पात्रता, रक्कम, अर्जाच्या अटी आणि अधिकृत कागदपत्रांसाठी इंग्रजी मूळ पहा.',
-  gu: 'આ ભાષાના અનુવાદો સમીક્ષા વગરના ડ્રાફ્ટ છે; તેમની માનવીય સમીક્ષા હજી થઈ નથી. પાત્રતા, રકમ, અરજીની શરતો અને સત્તાવાર દસ્તાવેજો માટે અંગ્રેજી મૂળ જુઓ.',
-  pa: 'ਇਸ ਭਾਸ਼ਾ ਦੇ ਅਨੁਵਾਦ ਬਿਨਾਂ ਸਮੀਖਿਆ ਵਾਲੇ ਮਸੌਦੇ ਹਨ; ਇਨ੍ਹਾਂ ਦੀ ਮਨੁੱਖੀ ਸਮੀਖਿਆ ਹਾਲੇ ਨਹੀਂ ਹੋਈ। ਯੋਗਤਾ, ਰਕਮ, ਅਰਜ਼ੀ ਦੀਆਂ ਸ਼ਰਤਾਂ ਅਤੇ ਸਰਕਾਰੀ ਦਸਤਾਵੇਜ਼ਾਂ ਲਈ ਅੰਗਰੇਜ਼ੀ ਮੂਲ ਵੇਖੋ।',
-  ur: 'اس زبان کے تراجم غیر نظرثانی شدہ مسودے ہیں؛ ان کا انسانی جائزہ ابھی نہیں ہوا۔ اہلیت، رقم، درخواست کی شرائط اور سرکاری دستاویزات کے لیے انگریزی اصل دیکھیں۔'
-};
 
 export function translateOption(language, option) {
   return getCatalog(language)[`option.${option}`] ?? translations.en[`option.${option}`] ?? option;
