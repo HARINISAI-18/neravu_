@@ -1,0 +1,926 @@
+{
+  "sourceWorkbook": "Neravu_Hospital_Financial_Assistance_Research.xlsx",
+  "hospitalMappings": [
+    {
+      "programme": "Indian Cancer Society – Cancer Cure Fund",
+      "hospitalOrNetwork": "Homi Bhabha Cancer Hospital & Research Centre, Visakhapatnam",
+      "cityState": "Visakhapatnam, Andhra Pradesh",
+      "relationshipEvidence": "Official ICS Cancer Cure empanelled hospital (2025 listing)",
+      "assistanceType": "Treatment grant; up to ₹5 lakh; BMT up to ₹8 lakh",
+      "eligibilityConditions": "Hospital must confirm current intake and patient registration/general ward status; income ≤₹4 lakh/year; Indian citizen; clinical eligibility",
+      "hospitalAccessSteps": "Hospital social worker/medical social work department to prepare and route Cancer Cure application; confirm current coordinator",
+      "evidenceConfidence": "High – official NGO programme page names hospital",
+      "primarySourceUrl": "https://www.indiancancersociety.org/what-do-we-do/cancer-cure",
+      "caveat": "Empanelled list explicitly names HBCH-Vizag; verify that the current empanelment term remains active before referral.",
+      "sourceSheet": "Hospital Mapping",
+      "sourceRow": 2,
+      "programmeKeys": [
+        "ics-cancer-cure"
+      ]
+    },
+    {
+      "programme": "Indian Cancer Society – Cancer Cure Fund",
+      "hospitalOrNetwork": "Basavatarakam Indo American Cancer Hospital & Research Institute",
+      "cityState": "Hyderabad, Telangana",
+      "relationshipEvidence": "Official ICS Cancer Cure empanelled hospital (2015 listing)",
+      "assistanceType": "Treatment grant; up to ₹5 lakh; BMT up to ₹8 lakh",
+      "eligibilityConditions": "Income ≤₹4 lakh/year; Indian citizen; general category; clinical eligibility",
+      "hospitalAccessSteps": "Hospital social worker/medical social work department to prepare and route application; confirm current intake",
+      "evidenceConfidence": "High – official NGO programme page names hospital",
+      "primarySourceUrl": "https://www.indiancancersociety.org/what-do-we-do/cancer-cure",
+      "caveat": "Listed in ICS empanelled hospitals; older empanelment year, reconfirm current status.",
+      "sourceSheet": "Hospital Mapping",
+      "sourceRow": 3,
+      "programmeKeys": [
+        "ics-cancer-cure"
+      ]
+    },
+    {
+      "programme": "Indian Cancer Society – Cancer Cure Fund",
+      "hospitalOrNetwork": "Tata Memorial Hospital",
+      "cityState": "Mumbai, Maharashtra",
+      "relationshipEvidence": "Official ICS Cancer Cure empanelled hospital",
+      "assistanceType": "Treatment grant; up to ₹5 lakh; BMT up to ₹8 lakh",
+      "eligibilityConditions": "Income ≤₹4 lakh/year; Indian citizen; general category; clinical eligibility",
+      "hospitalAccessSteps": "Hospital social work / Cancer Cure coordinator",
+      "evidenceConfidence": "High – official NGO programme page names hospital",
+      "primarySourceUrl": "https://www.indiancancersociety.org/what-do-we-do/cancer-cure",
+      "caveat": "Named in ICS empanelled hospitals list.",
+      "sourceSheet": "Hospital Mapping",
+      "sourceRow": 4,
+      "programmeKeys": [
+        "ics-cancer-cure"
+      ]
+    },
+    {
+      "programme": "Indian Cancer Society – Cancer Cure Fund",
+      "hospitalOrNetwork": "Cancer Institute (WIA), Adyar",
+      "cityState": "Chennai, Tamil Nadu",
+      "relationshipEvidence": "Official ICS Cancer Cure empanelled hospital",
+      "assistanceType": "Treatment grant; up to ₹5 lakh; BMT up to ₹8 lakh",
+      "eligibilityConditions": "Income ≤₹4 lakh/year; Indian citizen; general category; clinical eligibility",
+      "hospitalAccessSteps": "Hospital social work / Cancer Cure coordinator",
+      "evidenceConfidence": "High – official NGO programme page names hospital",
+      "primarySourceUrl": "https://www.indiancancersociety.org/what-do-we-do/cancer-cure",
+      "caveat": "Named in ICS empanelled hospitals list.",
+      "sourceSheet": "Hospital Mapping",
+      "sourceRow": 5,
+      "programmeKeys": [
+        "ics-cancer-cure"
+      ]
+    },
+    {
+      "programme": "Indian Cancer Society – Cancer Cure Fund",
+      "hospitalOrNetwork": "Christian Medical College (CMC), Vellore",
+      "cityState": "Vellore, Tamil Nadu",
+      "relationshipEvidence": "Official ICS Cancer Cure empanelled hospital",
+      "assistanceType": "Treatment grant; up to ₹5 lakh; BMT up to ₹8 lakh",
+      "eligibilityConditions": "Income ≤₹4 lakh/year; Indian citizen; general category; clinical eligibility",
+      "hospitalAccessSteps": "Hospital social work / Cancer Cure coordinator",
+      "evidenceConfidence": "High – official NGO programme page names hospital",
+      "primarySourceUrl": "https://www.indiancancersociety.org/what-do-we-do/cancer-cure",
+      "caveat": "Named in ICS empanelled hospitals list.",
+      "sourceSheet": "Hospital Mapping",
+      "sourceRow": 6,
+      "programmeKeys": [
+        "ics-cancer-cure"
+      ]
+    },
+    {
+      "programme": "Indian Cancer Society – Cancer Cure Fund",
+      "hospitalOrNetwork": "Gujarat Cancer Research Institute (GCRI)",
+      "cityState": "Ahmedabad, Gujarat",
+      "relationshipEvidence": "Official ICS Cancer Cure empanelled hospital",
+      "assistanceType": "Treatment grant; up to ₹5 lakh; BMT up to ₹8 lakh",
+      "eligibilityConditions": "Income ≤₹4 lakh/year; Indian citizen; general category; clinical eligibility",
+      "hospitalAccessSteps": "Hospital social work / Cancer Cure coordinator",
+      "evidenceConfidence": "High – official NGO programme page names hospital",
+      "primarySourceUrl": "https://www.indiancancersociety.org/what-do-we-do/cancer-cure",
+      "caveat": "Named in ICS empanelled hospitals list.",
+      "sourceSheet": "Hospital Mapping",
+      "sourceRow": 7,
+      "programmeKeys": [
+        "ics-cancer-cure"
+      ]
+    },
+    {
+      "programme": "Indian Cancer Society – Cancer Cure Fund",
+      "hospitalOrNetwork": "Sri Shankara Cancer Hospital & Research Centre",
+      "cityState": "Bengaluru, Karnataka",
+      "relationshipEvidence": "Official ICS Cancer Cure empanelled hospital",
+      "assistanceType": "Treatment grant; up to ₹5 lakh; BMT up to ₹8 lakh",
+      "eligibilityConditions": "Income ≤₹4 lakh/year; Indian citizen; general category; clinical eligibility",
+      "hospitalAccessSteps": "Hospital social work / Cancer Cure coordinator",
+      "evidenceConfidence": "High – official NGO programme page names hospital",
+      "primarySourceUrl": "https://www.indiancancersociety.org/what-do-we-do/cancer-cure",
+      "caveat": "ICS partner statement also reports 200 patients supported over five years, but not approval rate.",
+      "sourceSheet": "Hospital Mapping",
+      "sourceRow": 8,
+      "programmeKeys": [
+        "ics-cancer-cure"
+      ]
+    },
+    {
+      "programme": "Cuddles Foundation – FoodHeals",
+      "hospitalOrNetwork": "Homi Bhabha Cancer Hospital & Research Centre",
+      "cityState": "Visakhapatnam, Andhra Pradesh",
+      "relationshipEvidence": "Official Cuddles partner hospital",
+      "assistanceType": "In-kind nutrition: nutritionist assessment, supplements, meals and ration support; not a cash grant",
+      "eligibilityConditions": "Childhood cancer patient; services depend on active hospital programme and clinical assessment",
+      "hospitalAccessSteps": "Paediatric oncology team refers child to Cuddles nutrition team within partner hospital",
+      "evidenceConfidence": "High – official Cuddles hospital list names HBCH Vizag",
+      "primarySourceUrl": "https://www.cuddlesfoundation.org/cuddles-foundation/",
+      "caveat": "Official list shows HBCH Vizag under Andhra Pradesh; programme is nutrition assistance, not treatment-cost reimbursement.",
+      "sourceSheet": "Hospital Mapping",
+      "sourceRow": 9,
+      "programmeKeys": [
+        "cuddles-foundation"
+      ]
+    },
+    {
+      "programme": "Cuddles Foundation – FoodHeals",
+      "hospitalOrNetwork": "MNJ Institute of Oncology & Regional Cancer Centre",
+      "cityState": "Hyderabad, Telangana",
+      "relationshipEvidence": "Official Cuddles partner hospital",
+      "assistanceType": "In-kind nutrition support; not a cash grant",
+      "eligibilityConditions": "Childhood cancer patient; confirm current programme availability",
+      "hospitalAccessSteps": "Paediatric oncology team / Cuddles nutritionist",
+      "evidenceConfidence": "High – official Cuddles hospital list names MNJ",
+      "primarySourceUrl": "https://www.cuddlesfoundation.org/cuddles-foundation/",
+      "caveat": "Official list shows MNJ Cancer Hospital in Hyderabad.",
+      "sourceSheet": "Hospital Mapping",
+      "sourceRow": 10,
+      "programmeKeys": [
+        "cuddles-foundation"
+      ]
+    },
+    {
+      "programme": "Cuddles Foundation – FoodHeals",
+      "hospitalOrNetwork": "Basavatarakam Indo American Cancer Hospital & Research Institute",
+      "cityState": "Hyderabad, Telangana",
+      "relationshipEvidence": "Official Cuddles partner hospital",
+      "assistanceType": "In-kind nutrition support; not a cash grant",
+      "eligibilityConditions": "Childhood cancer patient; confirm current programme availability",
+      "hospitalAccessSteps": "Paediatric oncology team / Cuddles nutritionist",
+      "evidenceConfidence": "High – official Cuddles hospital list names hospital",
+      "primarySourceUrl": "https://www.cuddlesfoundation.org/cuddles-foundation/",
+      "caveat": "Official list shows Basavatarakam in Hyderabad.",
+      "sourceSheet": "Hospital Mapping",
+      "sourceRow": 11,
+      "programmeKeys": [
+        "cuddles-foundation"
+      ]
+    },
+    {
+      "programme": "CanKids...KidsCan",
+      "hospitalOrNetwork": "AIIMS Patna",
+      "cityState": "Patna, Bihar",
+      "relationshipEvidence": "Official CanKids hospital network",
+      "assistanceType": "Patient navigation and holistic childhood-cancer support; not a universal cash grant",
+      "eligibilityConditions": "Childhood cancer patient; case-based support and local programme availability",
+      "hospitalAccessSteps": "Hospital Support Unit / CanKids navigator",
+      "evidenceConfidence": "High – official CanKids hospital network",
+      "primarySourceUrl": "https://cankidsindia.org/hospital-list/",
+      "caveat": "Hospital network listing establishes partnership; it does not establish direct grant approval.",
+      "sourceSheet": "Hospital Mapping",
+      "sourceRow": 12,
+      "programmeKeys": [
+        "cankids"
+      ]
+    },
+    {
+      "programme": "CanKids...KidsCan",
+      "hospitalOrNetwork": "Indira Gandhi Institute of Medical Sciences",
+      "cityState": "Patna, Bihar",
+      "relationshipEvidence": "Official CanKids hospital network",
+      "assistanceType": "Patient navigation and holistic childhood-cancer support",
+      "eligibilityConditions": "Childhood cancer patient; case-based support",
+      "hospitalAccessSteps": "Hospital Support Unit / CanKids navigator",
+      "evidenceConfidence": "High – official CanKids hospital network",
+      "primarySourceUrl": "https://cankidsindia.org/hospital-list/",
+      "caveat": "Listed in CanKids Patna network.",
+      "sourceSheet": "Hospital Mapping",
+      "sourceRow": 13,
+      "programmeKeys": [
+        "cankids"
+      ]
+    },
+    {
+      "programme": "CanKids...KidsCan",
+      "hospitalOrNetwork": "Mahavir Cancer Sansthan",
+      "cityState": "Patna, Bihar",
+      "relationshipEvidence": "Official CanKids hospital network",
+      "assistanceType": "Patient navigation and holistic childhood-cancer support",
+      "eligibilityConditions": "Childhood cancer patient; case-based support",
+      "hospitalAccessSteps": "Hospital Support Unit / CanKids navigator",
+      "evidenceConfidence": "High – official CanKids hospital network",
+      "primarySourceUrl": "https://cankidsindia.org/hospital-list/",
+      "caveat": "Listed in CanKids Patna network.",
+      "sourceSheet": "Hospital Mapping",
+      "sourceRow": 14,
+      "programmeKeys": [
+        "cankids"
+      ]
+    },
+    {
+      "programme": "CanKids...KidsCan",
+      "hospitalOrNetwork": "Dr. Bhubaneswar Borooah Cancer Institute",
+      "cityState": "Guwahati, Assam",
+      "relationshipEvidence": "Official CanKids hospital network",
+      "assistanceType": "Patient navigation and holistic childhood-cancer support",
+      "eligibilityConditions": "Childhood cancer patient; case-based support",
+      "hospitalAccessSteps": "Hospital Support Unit / CanKids navigator",
+      "evidenceConfidence": "High – official CanKids hospital network",
+      "primarySourceUrl": "https://cankidsindia.org/hospital-list/",
+      "caveat": "Listed in CanKids Guwahati network.",
+      "sourceSheet": "Hospital Mapping",
+      "sourceRow": 15,
+      "programmeKeys": [
+        "cankids"
+      ]
+    },
+    {
+      "programme": "CanKids...KidsCan",
+      "hospitalOrNetwork": "Cachar Cancer Hospital & Research Centre",
+      "cityState": "Silchar, Assam",
+      "relationshipEvidence": "Official CanKids hospital network",
+      "assistanceType": "Patient navigation and holistic childhood-cancer support",
+      "eligibilityConditions": "Childhood cancer patient; case-based support",
+      "hospitalAccessSteps": "Hospital Support Unit / CanKids navigator",
+      "evidenceConfidence": "High – official CanKids hospital network",
+      "primarySourceUrl": "https://cankidsindia.org/hospital-list/",
+      "caveat": "Listed in CanKids Silchar network.",
+      "sourceSheet": "Hospital Mapping",
+      "sourceRow": 16,
+      "programmeKeys": [
+        "cankids"
+      ]
+    },
+    {
+      "programme": "St. Jude India ChildCare Centres",
+      "hospitalOrNetwork": "Homi Bhabha Cancer Hospital & Research Centre",
+      "cityState": "Visakhapatnam, Andhra Pradesh",
+      "relationshipEvidence": "Official St. Jude centre at/serving hospital",
+      "assistanceType": "Free accommodation, meals, transport and family support; not direct treatment grant",
+      "eligibilityConditions": "Child receiving cancer treatment at HBCH; centre capacity/eligibility confirmation required",
+      "hospitalAccessSteps": "HBCH treating team / St. Jude centre referral",
+      "evidenceConfidence": "High – official St. Jude centre page names HBCH-Vizag",
+      "primarySourceUrl": "https://stjudechild.org/centers/",
+      "caveat": "St. Jude states Vizag centre supports families whose children are treated at HBCH.",
+      "sourceSheet": "Hospital Mapping",
+      "sourceRow": 17,
+      "programmeKeys": [
+        "st-jude"
+      ]
+    },
+    {
+      "programme": "St. Jude India ChildCare Centres",
+      "hospitalOrNetwork": "MNJ Institute of Oncology & Regional Cancer Centre",
+      "cityState": "Hyderabad, Telangana",
+      "relationshipEvidence": "Officially named treating-hospital relationship",
+      "assistanceType": "Free accommodation, meals, transport and family support",
+      "eligibilityConditions": "Child receiving treatment at named Hyderabad hospitals; capacity and intake must be checked",
+      "hospitalAccessSteps": "Treating hospital / St. Jude Hyderabad centre",
+      "evidenceConfidence": "High – official St. Jude update names MNJ",
+      "primarySourceUrl": "https://stjudechild.org/latest-updates/celebrating-international-childhood-cancer-day-new/",
+      "caveat": "St. Jude's Hyderabad update lists MNJ among hospitals whose patients stay at its centre.",
+      "sourceSheet": "Hospital Mapping",
+      "sourceRow": 18,
+      "programmeKeys": [
+        "st-jude"
+      ]
+    },
+    {
+      "programme": "St. Jude India ChildCare Centres",
+      "hospitalOrNetwork": "Basavatarakam Indo American Cancer Hospital",
+      "cityState": "Hyderabad, Telangana",
+      "relationshipEvidence": "Officially named treating-hospital relationship",
+      "assistanceType": "Free accommodation, meals, transport and family support",
+      "eligibilityConditions": "Child receiving treatment at named Hyderabad hospitals; capacity and intake must be checked",
+      "hospitalAccessSteps": "Treating hospital / St. Jude Hyderabad centre",
+      "evidenceConfidence": "High – official St. Jude update names hospital",
+      "primarySourceUrl": "https://stjudechild.org/latest-updates/celebrating-international-childhood-cancer-day-new/",
+      "caveat": "St. Jude's Hyderabad update lists Basavatarakam.",
+      "sourceSheet": "Hospital Mapping",
+      "sourceRow": 19,
+      "programmeKeys": [
+        "st-jude"
+      ]
+    },
+    {
+      "programme": "St. Jude India ChildCare Centres",
+      "hospitalOrNetwork": "Rainbow Children's Hospital",
+      "cityState": "Hyderabad, Telangana",
+      "relationshipEvidence": "Officially named treating-hospital relationship",
+      "assistanceType": "Free accommodation, meals, transport and family support",
+      "eligibilityConditions": "Child receiving treatment at named Hyderabad hospitals; capacity and intake must be checked",
+      "hospitalAccessSteps": "Treating hospital / St. Jude Hyderabad centre",
+      "evidenceConfidence": "High – official St. Jude update names hospital",
+      "primarySourceUrl": "https://stjudechild.org/latest-updates/celebrating-international-childhood-cancer-day-new/",
+      "caveat": "St. Jude's Hyderabad update lists Rainbow.",
+      "sourceSheet": "Hospital Mapping",
+      "sourceRow": 20,
+      "programmeKeys": [
+        "st-jude"
+      ]
+    },
+    {
+      "programme": "St. Jude India ChildCare Centres",
+      "hospitalOrNetwork": "NIMS Hospital",
+      "cityState": "Hyderabad, Telangana",
+      "relationshipEvidence": "Officially named treating-hospital relationship",
+      "assistanceType": "Free accommodation, meals, transport and family support",
+      "eligibilityConditions": "Child receiving treatment at named Hyderabad hospitals; capacity and intake must be checked",
+      "hospitalAccessSteps": "Treating hospital / St. Jude Hyderabad centre",
+      "evidenceConfidence": "High – official St. Jude update names hospital",
+      "primarySourceUrl": "https://stjudechild.org/latest-updates/celebrating-international-childhood-cancer-day-new/",
+      "caveat": "St. Jude's Hyderabad update lists NIMS.",
+      "sourceSheet": "Hospital Mapping",
+      "sourceRow": 21,
+      "programmeKeys": [
+        "st-jude"
+      ]
+    },
+    {
+      "programme": "St. Jude India ChildCare Centres",
+      "hospitalOrNetwork": "Little Star Children's Hospital",
+      "cityState": "Hyderabad, Telangana",
+      "relationshipEvidence": "Officially named treating-hospital relationship",
+      "assistanceType": "Free accommodation, meals, transport and family support",
+      "eligibilityConditions": "Child receiving treatment at named Hyderabad hospitals; capacity and intake must be checked",
+      "hospitalAccessSteps": "Treating hospital / St. Jude Hyderabad centre",
+      "evidenceConfidence": "High – official St. Jude update names hospital",
+      "primarySourceUrl": "https://stjudechild.org/latest-updates/celebrating-international-childhood-cancer-day-new/",
+      "caveat": "St. Jude's Hyderabad update lists Little Star.",
+      "sourceSheet": "Hospital Mapping",
+      "sourceRow": 22,
+      "programmeKeys": [
+        "st-jude"
+      ]
+    },
+    {
+      "programme": "PM-JAY / AB-PMJAY",
+      "hospitalOrNetwork": "Homi Bhabha Cancer Hospital & Research Centre",
+      "cityState": "Visakhapatnam, Andhra Pradesh",
+      "relationshipEvidence": "Official NHA hospital list; Medical Oncology, Radiation Oncology and Surgical Oncology listed",
+      "assistanceType": "Cashless package-based hospital treatment; up to ₹5 lakh/family/year subject to beneficiary eligibility and package",
+      "eligibilityConditions": "Eligible PM-JAY beneficiary; confirm exact oncology package and hospital's live empanelment",
+      "hospitalAccessSteps": "Ayushman Mitra / hospital PM-JAY desk; pre-authorisation before treatment",
+      "evidenceConfidence": "High – NHA list names hospital and oncology specialties",
+      "primarySourceUrl": "https://nha.gov.in/img/resources/PMJAY-Hospital-List.pdf",
+      "caveat": "NHA PDF is an official list but the surfaced version is older; check live NHA hospital search before referral.",
+      "sourceSheet": "Hospital Mapping",
+      "sourceRow": 23,
+      "programmeKeys": [
+        "pmjay"
+      ]
+    },
+    {
+      "programme": "Dr. NTR Vaidya Seva (Andhra Pradesh)",
+      "hospitalOrNetwork": "HBCH & Research Centre, Visakhapatnam",
+      "cityState": "Visakhapatnam, Andhra Pradesh",
+      "relationshipEvidence": "Cancer centre; state scheme hospital participation must be checked live",
+      "assistanceType": "Cashless listed therapies; AP government page describes scheme and network hospital model",
+      "eligibilityConditions": "AP beneficiary and listed therapy; verify current package, hospital empanelment and oncology specialty",
+      "hospitalAccessSteps": "Hospital Aarogyasri/NTR Vaidya Seva desk; pre-authorisation",
+      "evidenceConfidence": "Medium – state programme verified, exact current hospital participation needs live check",
+      "primarySourceUrl": "https://hmfw.ap.gov.in/ntr-aarogyaseva-org.aspx",
+      "caveat": "Do not infer hospital participation from its cancer-centre status; confirm with official trust/hospital desk.",
+      "sourceSheet": "Hospital Mapping",
+      "sourceRow": 24,
+      "programmeKeys": [
+        "ntr-vaidya-seva"
+      ]
+    },
+    {
+      "programme": "HMCPF / RAN",
+      "hospitalOrNetwork": "Government cancer hospitals / RCCs / TCCCs / SCIs including HBCH-Vizag (TCCC candidate)",
+      "cityState": "All India; institution-specific",
+      "relationshipEvidence": "Government hospital route under current PIB description; institution eligibility must be confirmed",
+      "assistanceType": "One-time assistance up to ₹15 lakh; funds released to treating hospital",
+      "eligibilityConditions": "Below state/UT threshold poverty line, or eligible NFSA/AAY/PM-JAY-not-covered pathway per PIB; case approval required",
+      "hospitalAccessSteps": "Government hospital medical social worker prepares RAN ID/application; treating doctor signs; Medical Superintendent countersigns offline cases",
+      "evidenceConfidence": "High – current PIB confirms routes and amount; individual hospital designation must be verified",
+      "primarySourceUrl": "https://www.pib.gov.in/PressReleasePage.aspx?PRID=2154159",
+      "caveat": "Current PIB (8 Aug 2025) says RCCs/TCCCs/SCIs and other government hospitals with cancer facilities; 2019 guidelines contain older revolving-fund list. Confirm current operational designation with MoHFW/hospital.",
+      "sourceSheet": "Hospital Mapping",
+      "sourceRow": 25,
+      "programmeKeys": [
+        "hmcpf"
+      ]
+    },
+    {
+      "programme": "HMCPF / RAN",
+      "hospitalOrNetwork": "MNJ Institute of Oncology & Regional Cancer Centre",
+      "cityState": "Hyderabad, Telangana",
+      "relationshipEvidence": "Named historic HMCPF Regional Cancer Centre; current process should be confirmed",
+      "assistanceType": "One-time assistance up to ₹15 lakh, case/eligibility dependent",
+      "eligibilityConditions": "Below threshold poverty line / eligible NFSA route; current scheme conditions apply",
+      "hospitalAccessSteps": "Hospital social work / RAN nodal officer",
+      "evidenceConfidence": "High – historic RCC designation plus current PIB scheme",
+      "primarySourceUrl": "https://www.mohfw.gov.in/sites/default/files/RAN_Guideline_2019.pdf",
+      "caveat": "Historical HMCPF RCC list names MNJ; check current RCC status and live RAN process.",
+      "sourceSheet": "Hospital Mapping",
+      "sourceRow": 26,
+      "programmeKeys": [
+        "hmcpf"
+      ]
+    },
+    {
+      "programme": "HMCPF / RAN",
+      "hospitalOrNetwork": "Tata Memorial Hospital",
+      "cityState": "Mumbai, Maharashtra",
+      "relationshipEvidence": "Government cancer institute; current HMCPF route subject to current rules",
+      "assistanceType": "One-time assistance up to ₹15 lakh, case/eligibility dependent",
+      "eligibilityConditions": "Eligibility and non-duplication conditions apply; current MoHFW rules govern",
+      "hospitalAccessSteps": "Hospital social work / RAN nodal officer",
+      "evidenceConfidence": "Medium – institution is a major government cancer centre; current RAN pathway to be confirmed",
+      "primarySourceUrl": "https://www.pib.gov.in/PressReleasePage.aspx?PRID=2154159",
+      "caveat": "Included as a likely government cancer facility pathway; do not mark HMCPF empanelment as confirmed without hospital confirmation.",
+      "sourceSheet": "Hospital Mapping",
+      "sourceRow": 27,
+      "programmeKeys": [
+        "hmcpf"
+      ]
+    },
+    {
+      "programme": "Tata Trusts – Individual Medical Grants",
+      "hospitalOrNetwork": "Linked hospital network (47 hospitals FY2025-26; names not published on page)",
+      "cityState": "Pan-India; programme primarily Mumbai",
+      "relationshipEvidence": "Official linked-hospital model; specific current hospital names not publicly disclosed on page",
+      "assistanceType": "Case-based medical grant; no fixed public cap; funds available",
+      "eligibilityConditions": "Financially disadvantaged patient; socio-economic assessment; treatment-specific; funds available",
+      "hospitalAccessSteps": "Linked hospital social worker conducts initial assessment and submits application; email route also available",
+      "evidenceConfidence": "High – network size and process officially published; names withheld/not listed",
+      "primarySourceUrl": "https://tatatrusts.org/explore-our-work/enabling-human-potential/individual-grants/medical-grants",
+      "caveat": "Do not invent individual partner hospital names. Ask Tata Trusts for current linked-hospital list and validity dates.",
+      "sourceSheet": "Hospital Mapping",
+      "sourceRow": 28,
+      "programmeKeys": [
+        "tata-trusts"
+      ]
+    },
+    {
+      "programme": "CPAA – Total Management of Cancer / Patient Fundraising Gateway",
+      "hospitalOrNetwork": "No public current empanelled-hospital roster verified",
+      "cityState": "Branch-led / programme-based",
+      "relationshipEvidence": "Hospital-specific access not publicly listed in the patient enrolment page",
+      "assistanceType": "Case-based financial/medical aid; gateway funds tied to verified hospital estimates/bills",
+      "eligibilityConditions": "Underprivileged cancer patients; programme and available funds determine eligibility",
+      "hospitalAccessSteps": "Patient enrolment / branch assessment; hospital estimate and doctor's prognosis; CPAA verifies case",
+      "evidenceConfidence": "Medium – NGO programme is official; hospital roster not public",
+      "primarySourceUrl": "https://cancer.org.in/patient-form/",
+      "caveat": "CPAA page is not evidence of a named hospital partnership. Obtain written confirmation from branch.",
+      "sourceSheet": "Hospital Mapping",
+      "sourceRow": 29,
+      "programmeKeys": [
+        "cpaa"
+      ]
+    },
+    {
+      "programme": "CanSupport",
+      "hospitalOrNetwork": "No public national hospital partner roster verified",
+      "cityState": "Delhi NCR and other service geographies in workbook",
+      "relationshipEvidence": "Home-based palliative care / navigation; hospital referrals are not the same as grant partner status",
+      "assistanceType": "Palliative care and referral support; not general treatment grant",
+      "eligibilityConditions": "Advanced cancer / palliative need and geographic coverage",
+      "hospitalAccessSteps": "Treating hospital referral or CanSupport intake; confirm local service coverage",
+      "evidenceConfidence": "Low – no hospital-level grant partnership established",
+      "primarySourceUrl": "https://cansupport.org/",
+      "caveat": "Do not label referred hospitals as funded/partner hospitals without formal confirmation.",
+      "sourceSheet": "Hospital Mapping",
+      "sourceRow": 30,
+      "programmeKeys": [
+        "cansupport"
+      ]
+    },
+    {
+      "programme": "Pallium India",
+      "hospitalOrNetwork": "No public hospital-level financial grant roster verified",
+      "cityState": "National network / Kerala base",
+      "relationshipEvidence": "Palliative care ecosystem and training/advocacy; not a general cancer treatment grant",
+      "assistanceType": "Palliative care services and referral network; no general cash grant",
+      "eligibilityConditions": "Palliative care need; local service availability varies",
+      "hospitalAccessSteps": "Local palliative care unit / Pallium India network referral",
+      "evidenceConfidence": "Low – hospital-level grant relationships not established",
+      "primarySourceUrl": "https://palliumindia.org/",
+      "caveat": "Map local palliative care units separately from financial assistance programmes.",
+      "sourceSheet": "Hospital Mapping",
+      "sourceRow": 31,
+      "programmeKeys": [
+        "pallium-india"
+      ]
+    },
+    {
+      "programme": "Bengal Cancer Foundation / KDFCC / Garia Welfare Society / Hitaishini",
+      "hospitalOrNetwork": "No named hospital partners verified in sources reviewed",
+      "cityState": "West Bengal",
+      "relationshipEvidence": "Programme descriptions in source workbook; named hospital tie-ups not independently verified",
+      "assistanceType": "Case-dependent aid/support; no hospital success data found",
+      "eligibilityConditions": "Must be assessed directly by organisation",
+      "hospitalAccessSteps": "Contact NGO and ask for currently active hospital referral partners and caseworker details",
+      "evidenceConfidence": "Low – requires primary-source verification",
+      "primarySourceUrl": "https://www.cancersupportindia.org/directory",
+      "caveat": "Do not infer partner hospitals from location or patient referrals.",
+      "sourceSheet": "Hospital Mapping",
+      "sourceRow": 32,
+      "programmeKeys": [
+        "bengal-cancer-foundation",
+        "kdfcc",
+        "garia-welfare-society",
+        "hitaishini"
+      ]
+    },
+    {
+      "programme": "Kamlesh Cancer Foundation / Ganga Prem Hospice / Can Protect / Him Samvad",
+      "hospitalOrNetwork": "No named hospital partners verified in sources reviewed",
+      "cityState": "Uttarakhand",
+      "relationshipEvidence": "Support mix includes financial/medical aid, hospice, screening and referrals; no published grant-hospital roster verified",
+      "assistanceType": "Case-dependent; palliative/hospice/screening is not direct treatment grant",
+      "eligibilityConditions": "Programme-specific; geography and current funding must be confirmed",
+      "hospitalAccessSteps": "Contact organisation and local hospital social-work department",
+      "evidenceConfidence": "Low – requires primary-source verification",
+      "primarySourceUrl": "https://www.cancersupportindia.org/directory",
+      "caveat": "Separate hospice/palliative service access from treatment-finance application eligibility.",
+      "sourceSheet": "Hospital Mapping",
+      "sourceRow": 33,
+      "programmeKeys": [
+        "kamlesh-cancer-foundation",
+        "ganga-prem-hospice",
+        "can-protect-foundation",
+        "him-samvad"
+      ]
+    },
+    {
+      "programme": "CanSupport",
+      "hospitalOrNetwork": "No named hospital partners verified in sources reviewed",
+      "cityState": "Delhi NCR; Haryana; Punjab; Uttar Pradesh; Jharkhand; Himachal Pradesh; Pune (per supplied directory)",
+      "relationshipEvidence": "Home-based palliative care / referral support; hospital referral is not evidence of grant partnership",
+      "assistanceType": "Palliative care, pain management, counselling; not general treatment grant",
+      "eligibilityConditions": "Advanced cancer / palliative need and geographic coverage",
+      "hospitalAccessSteps": "CanSupport intake / treating team referral; confirm district coverage",
+      "evidenceConfidence": "Low – no named hospital-level financial partnership established",
+      "primarySourceUrl": "https://cansupport.org/",
+      "caveat": "Request current referral hospital list; distinguish palliative referral from financial aid.",
+      "sourceSheet": "Hospital Mapping",
+      "sourceRow": 34,
+      "programmeKeys": [
+        "cansupport"
+      ]
+    },
+    {
+      "programme": "Pallium India",
+      "hospitalOrNetwork": "No named hospital partners verified in sources reviewed",
+      "cityState": "National; Kerala base",
+      "relationshipEvidence": "Palliative care network / training / advocacy; not a general treatment grant",
+      "assistanceType": "Palliative care and symptom relief; no general cash grant",
+      "eligibilityConditions": "Palliative care need; local service availability varies",
+      "hospitalAccessSteps": "Local palliative care unit / Pallium India network",
+      "evidenceConfidence": "Low – no named grant-partner hospitals verified",
+      "primarySourceUrl": "https://palliumindia.org/",
+      "caveat": "Map local palliative care units separately from financial assistance programmes.",
+      "sourceSheet": "Hospital Mapping",
+      "sourceRow": 35,
+      "programmeKeys": [
+        "pallium-india"
+      ]
+    },
+    {
+      "programme": "Dhanvantari Cancer Foundation",
+      "hospitalOrNetwork": "Website claims 38 partner hospitals but public page reviewed does not name them",
+      "cityState": "Andhra Pradesh and Telangana",
+      "relationshipEvidence": "Self-described financial-aid navigation and NGO patient fund; hospital names not published on page",
+      "assistanceType": "Website claims ₹10,000–₹75,000 internal patient fund and CSR support; verify programme funding and rules",
+      "eligibilityConditions": "Case assessment; confirm registration, current funding, geographic scope and audit evidence",
+      "hospitalAccessSteps": "Foundation caseworker / hospital social worker; no public partner roster verified",
+      "evidenceConfidence": "Medium-low – organisation's own site only; metrics and partner count self-reported",
+      "primarySourceUrl": "https://www.dhanvantaricancerfoundation.org/financial-aid",
+      "caveat": "Before listing as a vetted referral, request registration certificate, audited annual report, named hospital list, active grant criteria and beneficiary outcome data.",
+      "sourceSheet": "Hospital Mapping",
+      "sourceRow": 36,
+      "programmeKeys": [
+        "dhanvantari-cancer-foundation"
+      ]
+    },
+    {
+      "programme": "Bengal Cancer Foundation",
+      "hospitalOrNetwork": "No named hospital partners verified in sources reviewed",
+      "cityState": "West Bengal",
+      "relationshipEvidence": "Programme-level support listing; hospital relationship not verified",
+      "assistanceType": "Financial/logistical support described in directory; no public grant cap verified",
+      "eligibilityConditions": "Organisation-specific assessment and current funds",
+      "hospitalAccessSteps": "Contact foundation and hospital social-work department",
+      "evidenceConfidence": "Low – secondary directory lead only",
+      "primarySourceUrl": "https://www.cancersupportindia.org/directory",
+      "caveat": "Do not infer partner status from the city or referral activity.",
+      "sourceSheet": "Hospital Mapping",
+      "sourceRow": 37,
+      "programmeKeys": [
+        "bengal-cancer-foundation"
+      ]
+    },
+    {
+      "programme": "Kalpana Datta Foundation for Cancer Care (KDFCC)",
+      "hospitalOrNetwork": "No named hospital partners verified in sources reviewed",
+      "cityState": "West Bengal",
+      "relationshipEvidence": "Programme-level support listing; hospital relationship not verified",
+      "assistanceType": "Monetary assistance described in directory; no public grant cap verified",
+      "eligibilityConditions": "Organisation-specific assessment and current funds",
+      "hospitalAccessSteps": "Contact foundation and hospital social-work department",
+      "evidenceConfidence": "Low – secondary directory lead only",
+      "primarySourceUrl": "https://www.cancersupportindia.org/directory",
+      "caveat": "Request current hospital partners and evidence of active patient grants.",
+      "sourceSheet": "Hospital Mapping",
+      "sourceRow": 38,
+      "programmeKeys": [
+        "kdfcc"
+      ]
+    },
+    {
+      "programme": "Garia Welfare Society",
+      "hospitalOrNetwork": "No named hospital partners verified in sources reviewed",
+      "cityState": "West Bengal",
+      "relationshipEvidence": "Screening / treatment facilitation lead; hospital partner not verified",
+      "assistanceType": "Screening and facilitation; not confirmed direct treatment grant",
+      "eligibilityConditions": "Programme and location-specific",
+      "hospitalAccessSteps": "Contact society for current referral hospitals",
+      "evidenceConfidence": "Low – secondary directory lead only",
+      "primarySourceUrl": "https://www.cancersupportindia.org/directory",
+      "caveat": "Do not classify screening as financial assistance.",
+      "sourceSheet": "Hospital Mapping",
+      "sourceRow": 39,
+      "programmeKeys": [
+        "garia-welfare-society"
+      ]
+    },
+    {
+      "programme": "Hitaishini",
+      "hospitalOrNetwork": "No named hospital partners verified in sources reviewed",
+      "cityState": "West Bengal",
+      "relationshipEvidence": "Peer support / counselling / rehabilitation listing; hospital partner not verified",
+      "assistanceType": "Counselling, peer support and rehabilitation; no direct grant verified",
+      "eligibilityConditions": "Women affected by cancer; service-specific",
+      "hospitalAccessSteps": "Contact organisation for current referral routes",
+      "evidenceConfidence": "Low – secondary directory lead only",
+      "primarySourceUrl": "https://www.cancersupportindia.org/directory",
+      "caveat": "Not a treatment financing scheme unless a direct grant is separately confirmed.",
+      "sourceSheet": "Hospital Mapping",
+      "sourceRow": 40,
+      "programmeKeys": [
+        "hitaishini"
+      ]
+    },
+    {
+      "programme": "Kamlesh Cancer Foundation",
+      "hospitalOrNetwork": "No named hospital partners verified in sources reviewed",
+      "cityState": "Uttarakhand",
+      "relationshipEvidence": "Financial/medical assistance listing; named hospital tie-ups not verified",
+      "assistanceType": "Case-based assistance; amount and active funds not published",
+      "eligibilityConditions": "Organisation-specific assessment",
+      "hospitalAccessSteps": "Contact foundation and local hospital social-work desk",
+      "evidenceConfidence": "Low – secondary directory lead only",
+      "primarySourceUrl": "https://www.cancersupportindia.org/directory",
+      "caveat": "Request written confirmation of current grant availability and hospital referral partners.",
+      "sourceSheet": "Hospital Mapping",
+      "sourceRow": 41,
+      "programmeKeys": [
+        "kamlesh-cancer-foundation"
+      ]
+    },
+    {
+      "programme": "Shradha Cancer Care Trust – Ganga Prem Hospice",
+      "hospitalOrNetwork": "No named hospital partners verified in sources reviewed",
+      "cityState": "Uttarakhand",
+      "relationshipEvidence": "Hospice / palliative-care service listing; hospital tie-up not verified",
+      "assistanceType": "Hospice and palliative care; not treatment-cost insurance",
+      "eligibilityConditions": "Palliative / hospice eligibility and capacity",
+      "hospitalAccessSteps": "Treating oncologist referral / hospice intake",
+      "evidenceConfidence": "Low – secondary directory lead only",
+      "primarySourceUrl": "https://www.cancersupportindia.org/directory",
+      "caveat": "Show under palliative care, not direct financial grant.",
+      "sourceSheet": "Hospital Mapping",
+      "sourceRow": 42,
+      "programmeKeys": [
+        "ganga-prem-hospice"
+      ]
+    },
+    {
+      "programme": "Can Protect Foundation",
+      "hospitalOrNetwork": "No named hospital partners verified in sources reviewed",
+      "cityState": "Uttarakhand",
+      "relationshipEvidence": "Screening / prevention outreach listing; hospital partner not verified",
+      "assistanceType": "Breast/cervical screening and outreach; no direct treatment grant verified",
+      "eligibilityConditions": "Screening programme criteria and local availability",
+      "hospitalAccessSteps": "Contact foundation for active screening locations",
+      "evidenceConfidence": "Low – secondary directory lead only",
+      "primarySourceUrl": "https://www.cancersupportindia.org/directory",
+      "caveat": "Do not classify screening outreach as treatment financial assistance.",
+      "sourceSheet": "Hospital Mapping",
+      "sourceRow": 43,
+      "programmeKeys": [
+        "can-protect-foundation"
+      ]
+    },
+    {
+      "programme": "Him Samvad Association",
+      "hospitalOrNetwork": "No named hospital partners verified in sources reviewed",
+      "cityState": "Uttarakhand",
+      "relationshipEvidence": "Awareness / screening / psychosocial referral listing; hospital partner not verified",
+      "assistanceType": "Awareness and support; no direct grant verified",
+      "eligibilityConditions": "Programme and local availability",
+      "hospitalAccessSteps": "Contact association for current referral network",
+      "evidenceConfidence": "Low – secondary directory lead only",
+      "primarySourceUrl": "https://www.cancersupportindia.org/directory",
+      "caveat": "No grant or hospital approval data located in reviewed sources.",
+      "sourceSheet": "Hospital Mapping",
+      "sourceRow": 44,
+      "programmeKeys": [
+        "him-samvad"
+      ]
+    }
+  ],
+  "programmeRules": [
+    {
+      "programme": "AB PM-JAY",
+      "programmeType": "Public insurance entitlement / cashless treatment",
+      "publishedBenefit": "Up to ₹5 lakh per eligible family per year; package- and eligibility-dependent",
+      "hospitalAccessRule": "NHA empanelled hospital list; exact oncology speciality and package must match",
+      "whoHelpsApply": "NHA live hospital search + Ayushman Mitra pre-authorisation",
+      "criticalCaution": "Do not equate hospital empanelment with successful claim approval",
+      "officialSource": "https://nha.gov.in/img/resources/PMJAY-Hospital-List.pdf",
+      "sourceSheet": "Programme Rules",
+      "sourceRow": 2,
+      "programmeKeys": [
+        "pmjay"
+      ]
+    },
+    {
+      "programme": "Dr. NTR Vaidya Seva (AP)",
+      "programmeType": "State cashless treatment scheme",
+      "publishedBenefit": "State package / current eligibility; AP official page has older stated ₹2.5 lakh baseline and 1,044 listed therapies; current enhancements require live confirmation",
+      "hospitalAccessRule": "AP state network hospitals; verify hospital and oncology package in live portal",
+      "whoHelpsApply": "104 / state trust and hospital Aarogyasri desk",
+      "criticalCaution": "Workbook's earlier ₹25 lakh amount not verified from AP official source reviewed; don't publish until current G.O. confirms",
+      "officialSource": "https://hmfw.ap.gov.in/ntr-aarogyaseva-org.aspx",
+      "sourceSheet": "Programme Rules",
+      "sourceRow": 3,
+      "programmeKeys": [
+        "ntr-vaidya-seva"
+      ]
+    },
+    {
+      "programme": "HMCPF / RAN",
+      "programmeType": "One-time hospital-directed financial assistance",
+      "publishedBenefit": "Up to ₹15 lakh per current PIB release; case approval required",
+      "hospitalAccessRule": "RCC/TCCC/SCI and other government hospitals with cancer facilities, per PIB 2025",
+      "whoHelpsApply": "Government hospital RAN nodal officer; RAN ID/TMS or offline prescribed form",
+      "criticalCaution": "2019 guideline contains older conditions and revolving-fund list; reconcile with 2025 PIB operational update",
+      "officialSource": "https://www.pib.gov.in/PressReleasePage.aspx?PRID=2154159",
+      "sourceSheet": "Programme Rules",
+      "sourceRow": 4,
+      "programmeKeys": [
+        "hmcpf"
+      ]
+    },
+    {
+      "programme": "HMDG",
+      "programmeType": "Discretionary medical grant",
+      "publishedBenefit": "Current cap and exact cancer applicability require MoHFW confirmation; historical figures in workbook conflict",
+      "hospitalAccessRule": "Government hospital route; verify whether the current case and institution qualify",
+      "whoHelpsApply": "Hospital Medical Superintendent / MoHFW",
+      "criticalCaution": "Do not show ₹2–15 lakh or ₹50,000 as confirmed without current official circular",
+      "officialSource": "https://mohfw.gov.in/",
+      "sourceSheet": "Programme Rules",
+      "sourceRow": 5,
+      "programmeKeys": [
+        "hmdg"
+      ]
+    },
+    {
+      "programme": "PMNRF",
+      "programmeType": "Discretionary relief fund",
+      "publishedBenefit": "No fixed guaranteed amount publicly established in reviewed source",
+      "hospitalAccessRule": "Government hospitals and PMNRF-approved private hospitals; case-specific",
+      "whoHelpsApply": "Hospital and PMNRF prescribed application route",
+      "criticalCaution": "Not a guaranteed cancer insurance policy; no approval-rate data found",
+      "officialSource": "https://pmnrf.gov.in/",
+      "sourceSheet": "Programme Rules",
+      "sourceRow": 6,
+      "programmeKeys": [
+        "pmnrf"
+      ]
+    },
+    {
+      "programme": "CGHS",
+      "programmeType": "Employment / pension-linked health entitlement; not a charity grant",
+      "publishedBenefit": "As per current CGHS rules and package rates",
+      "hospitalAccessRule": "Current CGHS empanelled oncology providers / referrals",
+      "whoHelpsApply": "CGHS Wellness Centre and hospital billing/authorisation desk",
+      "criticalCaution": "Only eligible beneficiaries/dependants; not general public cancer aid",
+      "officialSource": "https://cghs.mohfw.gov.in/",
+      "sourceSheet": "Programme Rules",
+      "sourceRow": 7,
+      "programmeKeys": [
+        "cghs"
+      ]
+    },
+    {
+      "programme": "Tata Trusts Medical Grants",
+      "programmeType": "Discretionary charitable medical grant",
+      "publishedBenefit": "No fixed public cap; depends on need, review and funds",
+      "hospitalAccessRule": "47 linked hospitals in FY2025-26; names not listed publicly",
+      "whoHelpsApply": "Hospital social worker submits application; direct email route also described",
+      "criticalCaution": "Obtain current linked hospital list directly from Tata Trusts",
+      "officialSource": "https://tatatrusts.org/explore-our-work/enabling-human-potential/individual-grants/medical-grants",
+      "sourceSheet": "Programme Rules",
+      "sourceRow": 8,
+      "programmeKeys": [
+        "tata-trusts"
+      ]
+    },
+    {
+      "programme": "Delhi Arogya Kosh",
+      "programmeType": "Delhi-specific assistance programme",
+      "publishedBenefit": "Up to ₹5 lakh per workbook; verify current DGHS order",
+      "hospitalAccessRule": "Eligible Delhi government / listed facilities; exact live provider list required",
+      "whoHelpsApply": "DGHS / hospital nodal officer",
+      "criticalCaution": "Not relevant outside Delhi unless residency criteria met",
+      "officialSource": "https://dgehs.delhi.gov.in/",
+      "sourceSheet": "Programme Rules",
+      "sourceRow": 9,
+      "programmeKeys": [
+        "delhi-arogya-kosh"
+      ]
+    },
+    {
+      "programme": "Indian Cancer Society – Cancer Cure",
+      "programmeType": "NGO treatment grant",
+      "publishedBenefit": "Up to ₹5 lakh; BMT up to ₹8 lakh",
+      "hospitalAccessRule": "Only ICS empanelled hospitals",
+      "whoHelpsApply": "Hospital Cancer Cure coordinator; general ward registration and income/clinical docs",
+      "criticalCaution": "Published cumulative impact, no approval-rate denominator",
+      "officialSource": "https://www.indiancancersociety.org/what-do-we-do/cancer-cure",
+      "sourceSheet": "Programme Rules",
+      "sourceRow": 10,
+      "programmeKeys": [
+        "ics-cancer-cure"
+      ]
+    },
+    {
+      "programme": "CPAA",
+      "programmeType": "NGO case-based financial/medical aid and fundraising gateway",
+      "publishedBenefit": "Case-by-case; no fixed grant cap",
+      "hospitalAccessRule": "No public current hospital roster verified",
+      "whoHelpsApply": "CPAA branch / patient enrolment; hospital estimate and prognosis",
+      "criticalCaution": "Do not claim a hospital is CPAA partner without written confirmation",
+      "officialSource": "https://cancer.org.in/patient-form/",
+      "sourceSheet": "Programme Rules",
+      "sourceRow": 11,
+      "programmeKeys": [
+        "cpaa"
+      ]
+    },
+    {
+      "programme": "CanKids",
+      "programmeType": "Childhood cancer navigation / holistic support",
+      "publishedBenefit": "Case-specific; not a universal cash grant",
+      "hospitalAccessRule": "Published hospital network list",
+      "whoHelpsApply": "CanKids Hospital Support Unit / patient navigator",
+      "criticalCaution": "Hospital network means care coordination, not necessarily direct grant",
+      "officialSource": "https://cankidsindia.org/hospital-list/",
+      "sourceSheet": "Programme Rules",
+      "sourceRow": 12,
+      "programmeKeys": [
+        "cankids"
+      ]
+    },
+    {
+      "programme": "Cuddles Foundation",
+      "programmeType": "In-kind nutrition support for children with cancer",
+      "publishedBenefit": "Food, supplements, diet counselling; no cash cap",
+      "hospitalAccessRule": "40+ hospitals / 12+ states; official list includes AP HBCH Vizag and Telangana MNJ/BIACH",
+      "whoHelpsApply": "Paediatric oncology referral to in-hospital nutrition team",
+      "criticalCaution": "Not treatment-cost insurance; do not count nutrition service as cash grant",
+      "officialSource": "https://www.cuddlesfoundation.org/cuddles-foundation/",
+      "sourceSheet": "Programme Rules",
+      "sourceRow": 13,
+      "programmeKeys": [
+        "cuddles-foundation"
+      ]
+    },
+    {
+      "programme": "St. Jude India ChildCare Centres",
+      "programmeType": "Accommodation / transport / meals / family support",
+      "publishedBenefit": "In-kind support; no cash grant cap",
+      "hospitalAccessRule": "Centres in 13 cities; Vizag centre linked to HBCH; Hyderabad centre lists MNJ/BIACH/Rainbow/NIMS/Little Star",
+      "whoHelpsApply": "Treating hospital and St Jude centre intake",
+      "criticalCaution": "Treatment-abandonment metric is not grant approval rate",
+      "officialSource": "https://stjudechild.org/centers/",
+      "sourceSheet": "Programme Rules",
+      "sourceRow": 14,
+      "programmeKeys": [
+        "st-jude"
+      ]
+    }
+  ]
+}

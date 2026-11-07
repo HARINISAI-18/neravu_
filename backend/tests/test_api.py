@@ -4,7 +4,7 @@ from unittest.mock import AsyncMock, patch
 
 from fastapi.testclient import TestClient
 
-from app.main import app, recent_requests
+from app.main import app, recent_requests, response_language_for_text
 from app.services.dify_service import DifyServiceError, dify_service
 
 
@@ -26,6 +26,11 @@ class ChatApiTests(unittest.TestCase):
             os.environ.pop("GUEST_SESSION_SECRET", None)
         else:
             os.environ["GUEST_SESSION_SECRET"] = self.previous_secret
+
+    def test_typed_indic_script_overrides_ui_language(self):
+        self.assertEqual(response_language_for_text("ఈ పథకం ఏమిటి?", "en"), "te")
+        self.assertEqual(response_language_for_text("What does this scheme cover?", "te"), "te")
+        self.assertEqual(response_language_for_text("What does this scheme cover?", "xx"), "en")
 
     def test_guest_session_issues_stable_identity_token(self):
         response = self.client.post("/api/guest-session")

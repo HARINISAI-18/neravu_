@@ -86,6 +86,14 @@ recent_requests: dict[str, deque[float]] = defaultdict(deque)
 SUPPORTED_LANGUAGES = {"en", "te", "hi", "ta", "kn", "ml", "bn", "mr", "gu", "pa", "ur"}
 
 
+def response_language_for_text(question: str, selected_language: str) -> str:
+    language = selected_language if selected_language in SUPPORTED_LANGUAGES else "en"
+    from app.services.voice_service import detect_indic_script
+
+    detected_language = detect_indic_script(question)
+    return detected_language if detected_language in SUPPORTED_LANGUAGES else language
+
+
 class ChatRequest(BaseModel):
     model_config = ConfigDict(extra="ignore")
 
@@ -215,8 +223,8 @@ def chat(
     user_id = _resolve_identity(authorization, guest_session)
     _enforce_rate_limit(user_id, request)
 
-    # Normalize response language
-    lang = payload.language if payload.language in SUPPORTED_LANGUAGES else "en"
+    # Prefer the language of Indic-script text; otherwise honor the UI selection.
+    lang = response_language_for_text(query, payload.language)
 
     def execute_query() -> dict:
         from app.services.question_intent import classify_intent, safe_medical_response, greeting_response
@@ -604,4 +612,3 @@ async def voice_chat(
         "conversation_id": conversation_id or str(uuid.uuid4()),
         "message_id": str(uuid.uuid4()),
     }
-

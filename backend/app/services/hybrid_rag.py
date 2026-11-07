@@ -1,4 +1,6 @@
+import json
 import os
+from pathlib import Path
 
 os.environ["HF_HUB_OFFLINE"] = "1"
 os.environ["HF_HUB_DISABLE_SYMLINKS_WARNING"] = "1"
@@ -20,6 +22,127 @@ RECOMMENDATION_PATTERN = re.compile(
     r"सुझाव|सुझाएं|कौन सी योजना|సూచించండి|సిఫార్సు|ఏ పథకం",
     re.IGNORECASE,
 )
+HOSPITAL_QUERY_PATTERN = re.compile(
+    r"\b(hospitals?|hospital list|empanelled|empaneled|network hospitals?|"
+    r"provider network|treat(?:ment)? at which|where can .* (?:treatment|treated))\b|"
+    r"ఆసుపత్రి|ఆసుపత్రుల|హాస్పిటల్|చికిత్స ఎక్కడ",
+    re.IGNORECASE,
+)
+HOSPITAL_PROGRAMME_ALIASES = {
+    "ics-cancer-cure": ("ics cancer cure", "indian cancer society", "cancer cure fund"),
+    "cuddles-foundation": ("cuddles",),
+    "cankids": ("cankids", "can kids"),
+    "st-jude": ("st jude",),
+    "pmjay": ("pm jay", "pmjay", "ayushman bharat"),
+    "ntr-vaidya-seva": ("ntr vaidya seva", "aarogyasri"),
+    "hmcpf": ("hmcpf", "rashtriya arogya nidhi"),
+    "tata-trusts": ("tata trusts", "tata trust"),
+    "cpaa": ("cpaa", "cancer patients aid association"),
+    "cansupport": ("cansupport",),
+    "pallium-india": ("pallium",),
+    "dhanvantari-cancer-foundation": ("dhanvantari",),
+    "bengal-cancer-foundation": ("bengal cancer foundation",),
+    "kdfcc": ("kdfcc", "kalpana datta"),
+    "garia-welfare-society": ("garia welfare society",),
+    "hitaishini": ("hitaishini",),
+    "kamlesh-cancer-foundation": ("kamlesh cancer foundation",),
+    "ganga-prem-hospice": ("ganga prem",),
+    "can-protect-foundation": ("can protect",),
+    "him-samvad": ("him samvad",),
+}
+
+
+def is_hospital_request(question: str) -> bool:
+    return bool(HOSPITAL_QUERY_PATTERN.search(question))
+
+
+@lru_cache(maxsize=1)
+def _hospital_research():
+    path = Path(__file__).resolve().parents[1] / "data" / "hospitalResearch.json"
+    with path.open(encoding="utf-8") as source:
+        return json.load(source)
+
+
+def _retrieve_hospital_research(question: str) -> list[dict]:
+    data = _hospital_research()
+    normalized_question = re.sub(r"[^a-z0-9]+", " ", question.casefold()).strip()
+    question_words = set(normalized_question.split())
+    matched_programmes = {
+        key
+        for key, aliases in HOSPITAL_PROGRAMME_ALIASES.items()
+        if any(alias in normalized_question for alias in aliases)
+    }
+
+    mappings = []
+    for record in data.get("hospitalMappings", []):
+        matching_keys = set(record.get("programmeKeys", [])) & matched_programmes
+        if matched_programmes:
+            if not matching_keys:
+                continue
+        else:
+            searchable = " ".join(
+                str(record.get(key, ""))
+                for key in ("hospitalOrNetwork", "cityState", "programme")
+            ).casefold()
+            searchable_words = set(re.sub(r"[^a-z0-9]+", " ", searchable).split())
+            if len(question_words & searchable_words) == 0:
+                continue
+            matching_keys = set(record.get("programmeKeys", []))
+        mappings.append((record, matching_keys))
+
+    results = []
+    for record, _matching_keys in mappings:
+        source_reference = record.get("programme") or "Hospital access research"
+        results.append({
+            "chunk_id": f"hospital-map-{record['sourceRow']}",
+            "source_reference": source_reference,
+            "source_url": record.get("primarySourceUrl", ""),
+            "source_locator": f"{record.get('sourceSheet', 'Hospital Mapping')} row {record['sourceRow']}",
+            "field_path": "hospital_research",
+            "source_status": "Unverified research workbook; confirm current hospital participation",
+            "chunk_text": "\n".join(
+                f"{label}: {record[key]}"
+                for key, label in (
+                    ("hospitalOrNetwork", "Hospital or network"),
+                    ("cityState", "City and state"),
+                    ("relationshipEvidence", "Relationship evidence"),
+                    ("assistanceType", "Assistance type"),
+                    ("eligibilityConditions", "Patient eligibility and conditions"),
+                    ("hospitalAccessSteps", "How the hospital facilitates access"),
+                    ("evidenceConfidence", "Evidence confidence"),
+                    ("caveat", "Important caveat and next verification"),
+                )
+                if record.get(key)
+            ),
+            "rrf_score": 1.0,
+            "rerank_score": 1.0,
+        })
+
+    for rule in data.get("programmeRules", []):
+        if matched_programmes and not (set(rule.get("programmeKeys", [])) & matched_programmes):
+            continue
+        results.append({
+            "chunk_id": f"hospital-rule-{rule['sourceRow']}",
+            "source_reference": rule.get("programme") or "Programme hospital access rule",
+            "source_url": rule.get("officialSource", ""),
+            "source_locator": f"{rule.get('sourceSheet', 'Programme Rules')} row {rule['sourceRow']}",
+            "field_path": "hospital_research",
+            "source_status": "Unverified research workbook; confirm current hospital participation",
+            "chunk_text": "\n".join(
+                f"{label}: {rule[key]}"
+                for key, label in (
+                    ("programmeType", "Programme type"),
+                    ("publishedBenefit", "Published benefit"),
+                    ("hospitalAccessRule", "Hospital access rule"),
+                    ("whoHelpsApply", "Who helps the patient apply"),
+                    ("criticalCaution", "Critical caution"),
+                )
+                if rule.get(key)
+            ),
+            "rrf_score": 0.9,
+            "rerank_score": 0.9,
+        })
+    return results
 
 
 @lru_cache(maxsize=1)
@@ -435,6 +558,8 @@ def hybrid_retrieve(
         )
 
     candidates = [dict(row) for row in rows] + supplemental + legacy + directory
+    hospital_research = _retrieve_hospital_research(question) if is_hospital_request(question) else []
+    candidates.extend(hospital_research)
     if not candidates:
         return []
 
@@ -485,6 +610,20 @@ def hybrid_retrieve(
             }
         )
         return selected[:30]
+
+    if is_hospital_request(question):
+        selected = [
+            item for item in ranked
+            if item.get("field_path") == "hospital_research"
+        ]
+        selected_ids = {item.get("chunk_id") for item in selected}
+        for item in ranked:
+            if item.get("chunk_id") not in selected_ids:
+                selected.append(item)
+                selected_ids.add(item.get("chunk_id"))
+            if len(selected) >= top_k:
+                break
+        return selected[:top_k]
 
     selected = []
     selected_ids = set()

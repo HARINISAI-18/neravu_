@@ -1,22 +1,40 @@
 
-from app.services.hybrid_rag import hybrid_retrieve
+from app.services.hybrid_rag import hybrid_retrieve, is_hospital_request
 from app.services.llm_service import generate_answer, validate_cited_answer
+
+
+NO_EVIDENCE_MESSAGES = {
+    "en": "No relevant information was found in the current knowledge base.",
+    "te": "ప్రస్తుత సమాచార నిల్వలో సంబంధిత సమాచారం కనుగొనబడలేదు. దయచేసి అధికారిక మూలాలను తనిఖీ చేయండి.",
+}
+
+UNVERIFIABLE_ANSWER_MESSAGES = {
+    "en": (
+        "The retrieved evidence was not sufficient to produce a verifiable answer. "
+        "Please consult the official source or contact the programme authority."
+    ),
+    "te": (
+        "తిరిగి పొందిన ఆధారాలతో ధృవీకరించదగిన సమాధానం ఇవ్వడం సాధ్యపడలేదు. "
+        "దయచేసి అధికారిక మూలాన్ని చూడండి లేదా పథక అధికారిని సంప్రదించండి."
+    ),
+}
 
 
 def chat_with_neravu(question: str, language: str = "en"):
     from app.services.hybrid_rag import is_recommendation_request
 
     is_recommendation = is_recommendation_request(question)
+    is_hospital_question = is_hospital_request(question)
     # Retrieve and rerank relevant knowledge chunks
     chunks = hybrid_retrieve(
         question=question,
         candidate_count=30,
-        top_k=15 if is_recommendation else 5,
+        top_k=15 if is_recommendation or is_hospital_question else 5,
     )
 
     if not chunks:
         return {
-            "answer": "No relevant information was found in the current knowledge base.",
+            "answer": NO_EVIDENCE_MESSAGES.get(language, NO_EVIDENCE_MESSAGES["en"]),
             "language": language,
             "sources": [],
             "verification_status": "no_published_evidence",
@@ -33,7 +51,7 @@ def chat_with_neravu(question: str, language: str = "en"):
     answer = validate_cited_answer(answer, chunks, question=question)
     if answer is None:
         return {
-            "answer": "The retrieved evidence was not sufficient to produce a verifiable answer. Please consult the official source or contact the programme authority.",
+            "answer": UNVERIFIABLE_ANSWER_MESSAGES.get(language, UNVERIFIABLE_ANSWER_MESSAGES["en"]),
             "language": language,
             "sources": [
                 {

@@ -13,6 +13,8 @@ import {
   getNgoRecommendation, getSchemeRecommendation, guidanceText, knownStates, loadSchemeGuidance,
   schemeGuidance, schemeGuidanceSnapshot, stateTracker, workbookNgos
 } from './schemeGuidance';
+import { getHospitalResearchForNgo, getHospitalResearchForScheme } from './hospitalResearch';
+import { getDocumentAssistanceForTarget } from './documentAssistance';
 import { translate, translateOption, useLanguage } from './i18n';
 import { openChatAssistant } from './ChatDrawer';
 import { usePlatform } from './PlatformContext';
@@ -38,6 +40,51 @@ const assistanceOptions = [
   { id: 'applications', icon: FileCheck2, title: 'assist.applications', detail: 'assist.applicationsHelp' },
   { id: 'unsure', icon: CircleHelp, title: 'assist.unsure', detail: 'assist.unsureHelp' }
 ];
+
+function HospitalResearchSection({ research, language, showEmpty = false }) {
+  const t = (key) => translate(language, key);
+  if (!research || (!research.mappings.length && !research.rules.length && !showEmpty)) return null;
+  return (
+    <section className="content-card" style={{ margin: '16px 0', padding: '16px' }}>
+      <h3 style={{ marginTop: 0 }}>{t('hospital.sectionTitle')}</h3>
+      <p className="muted-copy">{t('hospital.verifyCurrent')}</p>
+      {!research.mappings.length && (
+        <p className="muted-copy">{t('hospital.noSpecificMapping')}</p>
+      )}
+      {research.rules.map((rule) => (
+        <div className="guidance-fact" key={`${rule.sourceSheet}-${rule.sourceRow}`}>
+          <strong>{rule.hospitalAccessRule}</strong>
+          {rule.whoHelpsApply && <p><strong>{t('hospital.accessHelp')}:</strong> {rule.whoHelpsApply}</p>}
+          {rule.criticalCaution && <p><strong>{t('hospital.caveat')}:</strong> {rule.criticalCaution}</p>}
+          {rule.officialSource && (
+            <a href={rule.officialSource} target="_blank" rel="noreferrer">
+              {t('hospital.source')} <ExternalLink size={13} />
+            </a>
+          )}
+        </div>
+      ))}
+      {research.mappings.map((record) => (
+        <details className="guidance-disclosure" key={`${record.sourceSheet}-${record.sourceRow}`}>
+          <summary>
+            <strong>{record.hospitalOrNetwork}</strong>
+            {record.cityState && <span> · {record.cityState}</span>}
+          </summary>
+          {record.relationshipEvidence && <p><strong>{t('hospital.relationship')}:</strong> {record.relationshipEvidence}</p>}
+          {record.assistanceType && <p><strong>{t('hospital.assistance')}:</strong> {record.assistanceType}</p>}
+          {record.eligibilityConditions && <p><strong>{t('hospital.eligibility')}:</strong> {record.eligibilityConditions}</p>}
+          {record.hospitalAccessSteps && <p><strong>{t('hospital.accessHelp')}:</strong> {record.hospitalAccessSteps}</p>}
+          {record.evidenceConfidence && <p><strong>{t('hospital.confidence')}:</strong> {record.evidenceConfidence}</p>}
+          {record.caveat && <p><strong>{t('hospital.caveat')}:</strong> {record.caveat}</p>}
+          {record.primarySourceUrl && (
+            <a href={record.primarySourceUrl} target="_blank" rel="noreferrer">
+              {t('hospital.source')} <ExternalLink size={13} />
+            </a>
+          )}
+        </details>
+      ))}
+    </section>
+  );
+}
 
 export function SetupPage() {
   const { step = 'role' } = useParams();
@@ -934,6 +981,11 @@ export function NgoPage() {
                   {ngo.source_notes && <p><strong>{t('ngo.sourceNotes')}:</strong> {ngo.source_notes}</p>}
                 </details>
               )}
+              <HospitalResearchSection
+                research={getHospitalResearchForNgo(ngo.organization_name)}
+                language={language}
+                showEmpty
+              />
 
               <div style={{ display: 'flex', gap: '8px', marginTop: 'auto', paddingTop: '8px', flexWrap: 'wrap' }}>
                 {ngo.website_url && (
@@ -1097,6 +1149,13 @@ export function SchemesPage() {
               <p>{selectedStateLead['Next Action / Verification Notes']}</p>
             )}
           </div>
+        )}
+        {browseState === 'Andhra Pradesh' && (
+          <HospitalResearchSection
+            research={getHospitalResearchForScheme('ntr-vaidya-seva', 'Dr. NTR Vaidya Seva')}
+            language={language}
+            showEmpty
+          />
         )}
       </section>
       {loading && <div className="route-loading" role="status">{t('schemes.loading')}</div>}
@@ -1330,6 +1389,7 @@ export function SchemeGuidancePage() {
   const applicationRoute = summary['Contact / Submission Point']
     || governmentRecord['Application / Referral Route']
     || '';
+  const hospitalResearch = getHospitalResearchForScheme(scheme.id, scheme.name);
   const contactText = governmentRecord['Helpline / Contact'] || '';
 
   const toggleStep = (stepNumber, checked) => {
@@ -1381,6 +1441,8 @@ export function SchemeGuidancePage() {
         )}
         {liveError && <p role="status">{t('schemes.connecting')} {liveError}</p>}
       </div>
+
+      <HospitalResearchSection research={hospitalResearch} language={language} showEmpty />
 
       <div className="guidance-section-grid">
         {(eligibilityText || eligibilityResearch.length > 0) && (
@@ -1512,10 +1574,13 @@ export function DocumentsPage() {
   const { data, updateData } = usePlatform();
   const { language } = useLanguage();
   const t = (key, values) => translate(language, key, values);
-  const [selectedTarget, setSelectedTarget] = useState(`scheme:${schemeGuidance[0]?.id || ''}`);
+  const [selectedTarget, setSelectedTarget] = useState('directory:all');
+  const [openDocumentId, setOpenDocumentId] = useState(null);
   const [schemeDetail, setSchemeDetail] = useState(null);
   const [detailError, setDetailError] = useState('');
   const targets = [
+    { id: 'directory:all', name: t('documents.targetAll'), type: 'directory' },
+    { id: 'insurance:private', name: t('documents.targetInsurance'), type: 'insurance' },
     ...schemeGuidance.map((scheme) => ({
       id: `scheme:${scheme.id}`,
       name: scheme.translations?.[language]?.name || scheme.name,
@@ -1531,6 +1596,15 @@ export function DocumentsPage() {
   ];
   const selected = targets.find((target) => target.id === selectedTarget) || targets[0];
   const checked = data.documentProgress?.[selectedTarget] || [];
+  const assistanceDocuments = getDocumentAssistanceForTarget(selected);
+  const documentGroups = ['identityInsurance', 'financial', 'payment', 'conditional', 'medical'];
+  const documentIcons = {
+    identity: UserRound,
+    insurance: ShieldCheck,
+    eligibility: ClipboardCheck,
+    payment: Wallet,
+    medical: Stethoscope
+  };
 
   useEffect(() => {
     if (!selected || selected.type !== 'scheme') {
@@ -1585,17 +1659,26 @@ export function DocumentsPage() {
 
   return (
     <div className="page-content">
-      <PageHeading eyebrow={t('docs.eyebrow')} title={t('page.documents')} description={t('docs.description')} />
+      <PageHeading eyebrow={t('docs.eyebrow')} title={t('documents.centerTitle')} description={t('documents.centerSubtitle')} />
+      <p className="document-security-note"><LockKeyhole size={17} aria-hidden="true" />{t('documents.securityNotice')}</p>
 
       {targets.length > 0 && (
-        <div style={{ marginBottom: '20px', display: 'flex', alignItems: 'center', gap: '12px' }}>
-          <label htmlFor="documents-target-select" style={{ fontWeight: 'bold', fontSize: '13px' }}>{t('docs.selectScheme')}</label>
+        <div className="document-target-picker">
+          <label htmlFor="documents-target-select">{t('documents.targetLabel')}</label>
           <select
             id="documents-target-select"
             value={selectedTarget}
-            onChange={(e) => setSelectedTarget(e.target.value)}
-            style={{ padding: '8px 12px', borderRadius: '8px', border: '1px solid #ccc', fontSize: '13px', background: '#fff' }}
+            onChange={(e) => {
+              setSelectedTarget(e.target.value);
+              setOpenDocumentId(null);
+            }}
+            className="document-target-select"
           >
+            <optgroup label={t('documents.centerTitle')}>
+              {targets.filter((target) => ['directory', 'insurance'].includes(target.type)).map((target) => (
+                <option key={target.id} value={target.id}>{target.name}</option>
+              ))}
+            </optgroup>
             <optgroup label={t('directory.schemes')}>
               {targets.filter((target) => target.type === 'scheme').map((target) => (
                 <option key={target.id} value={target.id}>{target.name}</option>
@@ -1610,6 +1693,98 @@ export function DocumentsPage() {
         </div>
       )}
 
+      <section className="document-assistance-list" aria-label={t('documents.centerTitle')}>
+        <p className="document-relevance-note">{t('documents.relevanceNote')}</p>
+        {documentGroups.map((group) => {
+          const groupDocuments = assistanceDocuments.filter((document) => document.category === group);
+          if (!groupDocuments.length) return null;
+          return (
+            <section className="document-assistance-group" key={group} aria-labelledby={`document-group-${group}`}>
+              <h2 id={`document-group-${group}`}>{t(`documents.section.${group}`)}</h2>
+              <div className="document-assistance-grid">
+                {groupDocuments.map((document) => {
+                  const Icon = documentIcons[document.icon] || FileText;
+                  const isOpen = openDocumentId === document.id;
+                  return (
+                    <article className="document-assistance-card content-card" key={document.id}>
+                      <div className="document-assistance-title">
+                        <span className="support-icon-small"><Icon size={18} aria-hidden="true" /></span>
+                        <div>
+                          <h3>{t(document.name)}</h3>
+                          <span className="status-chip">{t(document.status)}</span>
+                        </div>
+                      </div>
+                      <label className="document-have">
+                        <input
+                          type="checkbox"
+                          checked={checked.includes(document.progressKey || document.id)}
+                          aria-label={t('documents.markHave', { name: t(document.name) })}
+                          onChange={() => toggle(document.progressKey || document.id)}
+                        />
+                        <span>{t('documents.haveIt')}</span>
+                      </label>
+                      <p className="document-assistance-purpose"><strong>{t('documents.purposeLabel')}:</strong> {t(document.purpose)}</p>
+                      <p className="document-meta"><strong>{t('documents.availabilityLabel')}:</strong> {t(document.availability)}</p>
+                      <button
+                        type="button"
+                        className="button button-outline document-howto-button"
+                        aria-expanded={isOpen}
+                        aria-controls={`document-details-${document.id}`}
+                        onClick={() => setOpenDocumentId(isOpen ? null : document.id)}
+                      >
+                        {t('documents.howToGet')}
+                      </button>
+                      <div
+                        className="document-assistance-details"
+                        id={`document-details-${document.id}`}
+                        hidden={!isOpen}
+                      >
+                          <h4>{t('documents.stepsLabel')}</h4>
+                          <ol>{document.instructions.map((step) => <li key={step}>{t(step)}</li>)}</ol>
+                          <h4>{t('documents.detailsLabel')}</h4>
+                          <p>{t(document.requiredDetails)}</p>
+                          {document.provider && (
+                            <>
+                              <h4>{t('documents.departmentLabel')}</h4>
+                              <p>{t(document.provider)}</p>
+                            </>
+                          )}
+                          <h4>{t('documents.digitalLabel')}</h4>
+                          <p>{t(document.digitalCopy)}</p>
+                          <h4>{t('documents.alternativesLabel')}</h4>
+                          <p>{t(document.alternatives)}</p>
+                          {document.portals.length ? (
+                            <div className="document-portal-links">
+                              {document.portals.map((portal) => (
+                                <a
+                                  className="button button-primary"
+                                  href={portal.url}
+                                  key={portal.url}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                >
+                                  {t('documents.openPortal')} — {portal.label} <ExternalLink size={14} aria-hidden="true" />
+                                </a>
+                              ))}
+                            </div>
+                          ) : <p className="muted-copy">{t(document.category === 'medical' ? 'documents.medical.noPortal' : 'documents.noPortal')}</p>}
+                          <p className="document-caution">{t('documents.notAcceptanceGuarantee')}</p>
+                      </div>
+                    </article>
+                  );
+                })}
+              </div>
+            </section>
+          );
+        })}
+        {selected?.type === 'scheme' && (
+          <Link className="button button-outline" to={`/schemes/${selected.schemeId}`}>
+            {t('documents.returnToScheme', { scheme: selected.name })}
+          </Link>
+        )}
+      </section>
+
+      {['scheme', 'ngo'].includes(selected?.type) && (
       <div className="content-card checklist-card">
         <div className="checklist-heading">
           <span className="support-icon-small"><FileText size={19} /></span>
@@ -1631,6 +1806,7 @@ export function DocumentsPage() {
                     <p style={{ whiteSpace: 'pre-line' }}>{documentText}</p>
                   </div>
                 )}
+                {checklistItems.length > 0 && <p className="document-relevance-note">{t('documents.schemeCaveat')}</p>}
                 {checklistItems.length > 0 ? (
                   <div className="document-list">
                     {checklistItems.map((item) => {
@@ -1663,6 +1839,7 @@ export function DocumentsPage() {
         ) : null}
         <p className="muted-copy">{t('docs.noUpload')}</p>
       </div>
+      )}
     </div>
   );
 }
