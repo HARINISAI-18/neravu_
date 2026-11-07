@@ -51,6 +51,9 @@ export function filterWorkbookNgos({ search = '', state = '', directAid = '' } =
 }
 
 export function incomeBandRange(value) {
+  if (typeof value === 'number' && Number.isFinite(value) && value >= 0) {
+    return { minimum: value, maximum: value };
+  }
   const normalized = String(value || '').toLocaleLowerCase().replace(/,/g, '');
   if (!normalized || /not sure|prefer not/.test(normalized)) return null;
   const amounts = normalized.match(/\d+(?:\.\d+)?/g)?.map(Number) || [];
@@ -402,20 +405,35 @@ export function buildSchemeCards(publishedSchemes = [], language = 'en') {
     const government = entry.governmentRecords?.[0] || {};
     const localized = entry.translations?.[language] || {};
     const localizedSummary = localized.journeySummary?.[0] || {};
+    const publishedLocalized = published?.translations?.[language] || {};
+    const localizedDescription = localizedSummary['Who May Apply / Eligibility Snapshot']
+      || localized.description
+      || publishedLocalized.description
+      || publishedLocalized.summary;
     return {
       ...published,
       id: published?.id || entry.id,
-      official_name: localizedSummary.Programme || localized.name || published?.official_name || entry.name,
+      official_name: localizedSummary.Programme || localized.name || publishedLocalized.official_name || published?.official_name || entry.name,
       aliases: entry.aliases,
-      programme_type: localizedSummary['Programme Type'] || localized.programmeType || published?.programme_type || entry.programmeType,
-      description: localizedSummary['Who May Apply / Eligibility Snapshot']
-        || localized.description
+      programme_type: localizedSummary['Programme Type'] || localized.programmeType || publishedLocalized.programme_type || published?.programme_type || entry.programmeType,
+      description: localizedDescription
         || published?.description
         || summary['Who May Apply / Eligibility Snapshot']
         || government['Eligibility Summary']
         || '',
-      eligibilitySummary: entry.eligibilitySummary || government['Eligibility Summary'] || '',
-      documentsToPrepare: entry.documentsToPrepare || summary['Documents to Prepare'] || government['Documents Commonly Required'] || '',
+      descriptionIsLocalized: Boolean(localizedDescription),
+      eligibilitySummary: localizedSummary['Who May Apply / Eligibility Snapshot']
+        || localized.eligibilitySummary
+        || entry.eligibilitySummary
+        || government['Eligibility Summary']
+        || '',
+      documentsToPrepare: localizedSummary['Documents to Prepare']
+        || localized.documentsToPrepare
+        || entry.documentsToPrepare
+        || summary['Documents to Prepare']
+        || government['Documents Commonly Required']
+        || '',
+      documentsToPrepareIsLocalized: Boolean(localizedSummary['Documents to Prepare'] || localized.documentsToPrepare),
       stateCoverage: entry.stateCoverage || government['State / UT Coverage'] || '',
       governmentLevel: entry.governmentLevel || government['Government Level'] || '',
       guidanceSlug: entry.id,
@@ -424,5 +442,16 @@ export function buildSchemeCards(publishedSchemes = [], language = 'en') {
       link: entry.officialLinks[0] || ''
     };
   });
-  return cards.concat(publishedSchemes.filter((scheme) => !matchedIds.has(scheme.id)));
+  return cards.concat(publishedSchemes.filter((scheme) => !matchedIds.has(scheme.id)).map((scheme) => {
+    const localized = scheme.translations?.[language] || {};
+    return {
+      ...scheme,
+      official_name: localized.official_name || localized.name || scheme.official_name || scheme.name,
+      programme_type: localized.programme_type || scheme.programme_type,
+      description: localized.description || localized.summary || scheme.description || scheme.summary || '',
+      descriptionIsLocalized: Boolean(localized.description || localized.summary),
+      documentsToPrepare: localized.documentsToPrepare || scheme.documentsToPrepare,
+      documentsToPrepareIsLocalized: Boolean(localized.documentsToPrepare)
+    };
+  }));
 }

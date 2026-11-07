@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { ArrowRight, RotateCcw, Sparkles, Trash2, X, ExternalLink, ShieldCheck, Mic, Square, Volume2, VolumeX, Loader2 } from 'lucide-react';
 import { usePlatform } from './PlatformContext';
 import { translate, useLanguage } from './i18n';
+import { languageOptions } from './data';
 import { askGuidance, getChatIdentity, isRagConfigured, sendVoiceChat, synthesizeSpeech } from './services';
 import { createWavRecorder } from './wavRecorder';
 
@@ -12,7 +13,8 @@ export function openChatAssistant(initialQuestion = '') {
 export function ChatAssistantWidget() {
   const { data, updateData, user } = usePlatform();
   const { language } = useLanguage();
-  const t = (key) => translate(language, key);
+  const t = (key, values) => translate(language, key, values);
+  const languageName = languageOptions.find((option) => option.code === language)?.nativeName || language;
 
   const [isOpen, setIsOpen] = useState(false);
   const [question, setQuestion] = useState('');
@@ -595,7 +597,7 @@ export function ChatAssistantWidget() {
           )}
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '8px' }}>
             <small style={{ fontSize: '10px', color: '#888' }}>
-              {t('chat.language', { language: language.toUpperCase() })}
+              {t('chat.language', { language: languageName })}
             </small>
             <small style={{ fontSize: '10px', color: '#888' }}>
               {t('chat.closeHint')}

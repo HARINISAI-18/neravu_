@@ -21,14 +21,17 @@ const baseNavigation = [
   { to: '/settings', key: 'nav.settings', icon: Settings }
 ];
 
-export function Brand({ compact = false }) {
+export function Brand() {
   const { language } = useLanguage();
   return (
     <Link to="/" className="brand platform-brand" aria-label={translate(language, 'brand.home')}>
-      <span className="brand-mark"><HeartHandshake size={20} /></span>
-      <span>Neravu{!compact && <small>{translate(language, 'brand.tagline')}</small>}</span>
+      <BrandLogo />
     </Link>
   );
+}
+
+export function BrandLogo() {
+  return <img className="brand-logo" src="/neravu-logo.png" alt="Neravu — Cancer Support, Guidance, Assistance" />;
 }
 
 export function LanguageSelect({ className = '' }) {

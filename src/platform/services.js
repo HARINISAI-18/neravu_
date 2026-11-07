@@ -362,7 +362,7 @@ export async function fetchSchemeJourney(schemeId) {
 }
 
 export async function evaluateEligibility(schemeId, patientFacts) {
-  const res = await fetch(`${apiBaseUrl}/api/schemes/${schemeId}/eligibility`, {
+  const res = await fetch(`${apiBaseUrl}/api/schemes/${schemeId}/eligibility/evaluate`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ patient_facts: patientFacts }),

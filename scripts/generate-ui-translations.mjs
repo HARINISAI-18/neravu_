@@ -3,6 +3,8 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { translations } from '../src/platform/i18n.js';
 import { generatedTranslations } from '../src/platform/generatedTranslations.js';
+import { manualTranslations } from '../src/platform/manualTranslations.js';
+import { intakeTranslations } from '../src/platform/intakeTranslations.js';
 import { languageOptions } from '../src/platform/data.js';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -108,7 +110,12 @@ async function main() {
   const validateCatalogs = (catalogs) => {
     const coverage = {};
     for (const language of targets) {
-      const merged = { ...(translations[language] || {}), ...(catalogs[language] || {}) };
+      const merged = {
+        ...(translations[language] || {}),
+        ...(catalogs[language] || {}),
+        ...(intakeTranslations[language] || {}),
+        ...(manualTranslations[language] || {})
+      };
       for (const [key, text] of Object.entries(merged)) {
         if (typeof text !== 'string') {
           throw new Error(`${language} translation key "${key}" is not a string.`);
@@ -139,9 +146,11 @@ async function main() {
   for (const language of targets) {
     const existing = translations[language] || {};
     const keysToTranslate = sourceKeys.filter((key) => (
-      !Object.hasOwn(existing, key) || !existing[key]
+      (!Object.hasOwn(existing, key) || !existing[key])
+      && !Object.hasOwn(intakeTranslations[language] || {}, key)
+      && !Object.hasOwn(manualTranslations[language] || {}, key)
     ));
-    const catalog = { ...(generatedTranslations[language] || {}) };
+    const catalog = { ...(generatedTranslations[language] || {}), ...(manualTranslations[language] || {}) };
 
     for (let offset = 0; offset < keysToTranslate.length; offset += batchSize) {
       const batchKeys = keysToTranslate.slice(offset, offset + batchSize);
@@ -165,7 +174,7 @@ async function main() {
   const coverage = validateCatalogs(result);
   for (const language of targets) {
     const missing = sourceKeys.filter((key) => !(
-      translations[language]?.[key] || result[language]?.[key]
+      translations[language]?.[key] || intakeTranslations[language]?.[key] || result[language]?.[key]
     ));
     if (missing.length) {
       throw new Error(`${language} catalog is missing ${missing.length} keys. No catalogs were written.`);

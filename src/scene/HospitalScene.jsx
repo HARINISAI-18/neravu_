@@ -1,6 +1,6 @@
 import React, { useLayoutEffect, useRef } from 'react';
 import { Canvas, useThree } from '@react-three/fiber';
-import { ContactShadows, Environment, Html } from '@react-three/drei';
+import { Html } from '@react-three/drei';
 import * as THREE from 'three';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -437,6 +437,7 @@ function SceneCard({ position, title, detail, scene, icon = '✓', muted = false
 
 function SceneContent({ sceneRefs }) {
   const camera = useThree((state) => state.camera);
+  const invalidate = useThree((state) => state.invalidate);
   const cameraTarget = useRef(new THREE.Vector3(0, 1.25, 0));
 
   useLayoutEffect(() => {
@@ -484,6 +485,7 @@ function SceneContent({ sceneRefs }) {
         });
         gsap.set(chapters.slice(1), { autoAlpha: 0 });
         gsap.set('.scene-html', { autoAlpha: 0 });
+        gsap.set(scenes.ward, { visible: true });
 
         const overlays = Object.fromEntries(
           keys.map((key) => [key, gsap.utils.toArray(`.scene-html-${key}`)]),
@@ -495,7 +497,9 @@ function SceneContent({ sceneRefs }) {
             end: 'bottom bottom',
             scrub: 1,
             invalidateOnRefresh: true,
+            onUpdate: () => invalidate(),
           },
+          onUpdate: () => invalidate(),
         });
 
         const animateHuman = (human, property, values, start, duration) => {
@@ -612,9 +616,11 @@ function SceneContent({ sceneRefs }) {
             timeline.to(scenes[previous.key].scale, {
               x: 0.001, y: 0.001, z: 0.001, duration: 0.022, ease: 'power1.in',
             }, point.start - 0.006);
+            timeline.set(scenes[point.key], { visible: true }, point.start + 0.018);
             timeline.to(scenes[point.key].scale, {
               x: 1, y: 1, z: 1, duration: 0.025, ease: 'power2.out',
             }, point.start + 0.018);
+            timeline.set(scenes[previous.key], { visible: false }, point.start + 0.02);
           }
 
           const next = waypoints[index + 1];
@@ -648,6 +654,7 @@ function SceneContent({ sceneRefs }) {
           onUpdate: () => camera.lookAt(cameraTarget.current),
         }, finalScene.start);
       });
+      invalidate();
     };
 
     frameId = requestAnimationFrame(initializeTimeline);
@@ -655,7 +662,7 @@ function SceneContent({ sceneRefs }) {
       cancelAnimationFrame(frameId);
       context?.revert();
     };
-  }, [camera, sceneRefs]);
+  }, [camera, invalidate, sceneRefs]);
 
   return (
     <>
@@ -665,7 +672,7 @@ function SceneContent({ sceneRefs }) {
         position={[-3, 8, 5]}
         intensity={1.05}
         castShadow
-        shadow-mapSize={[2048, 2048]}
+        shadow-mapSize={[1024, 1024]}
         shadow-camera-far={22}
         shadow-camera-left={-8}
         shadow-camera-right={8}
@@ -688,7 +695,7 @@ function SceneContent({ sceneRefs }) {
         <WardEquipment />
       </group>
 
-      <group ref={sceneRefs.reception} scale={0.001}>
+      <group ref={sceneRefs.reception} scale={0.001} visible={false}>
         <RoomShell reception />
         <group ref={sceneRefs.caregiver} position={[-3, 0, 0.5]}>
           <Person position={[0, 0, 0]} shirt="#72508e" motionRefs={sceneRefs.humans.caregiverReception} />
@@ -704,7 +711,7 @@ function SceneContent({ sceneRefs }) {
         </Html>
       </group>
 
-      <group ref={sceneRefs.paperwork} scale={0.001}>
+      <group ref={sceneRefs.paperwork} scale={0.001} visible={false}>
         <RoomShell />
         <Person position={[0, 0, 0.72]} shirt="#72508e" motionRefs={sceneRefs.humans.paperwork} />
         <Paper position={[-1.85, 2.18, 0]} rotation={[0, 0.2, -0.12]} title="MEDICAL BILL" />
@@ -717,7 +724,7 @@ function SceneContent({ sceneRefs }) {
         </Html>
       </group>
 
-      <group ref={sceneRefs.clarity} scale={0.001}>
+      <group ref={sceneRefs.clarity} scale={0.001} visible={false}>
         <Block position={[0, -0.13, 0]} size={[10, 0.26, 7]} color="#f1edf4" />
         <Block position={[0, 2.4, -3.4]} size={[10, 4.8, 0.14]} color="#fbf9fc" />
         <Person position={[-2.3, 0, 0.55]} shirt="#72508e" motionRefs={sceneRefs.humans.clarity} />
@@ -735,7 +742,7 @@ function SceneContent({ sceneRefs }) {
         </mesh>
       </group>
 
-      <group ref={sceneRefs.support} scale={0.001}>
+      <group ref={sceneRefs.support} scale={0.001} visible={false}>
         <Block position={[0, -0.13, 0]} size={[10, 0.26, 7]} color="#f1edf4" />
         <Block position={[0, 2.45, -3.4]} size={[10, 4.9, 0.14]} color="#fbf9fc" />
         <Person position={[-2.7, 0, 0.6]} shirt="#72508e" motionRefs={sceneRefs.humans.support} />
@@ -748,7 +755,7 @@ function SceneContent({ sceneRefs }) {
         </mesh>
       </group>
 
-      <group ref={sceneRefs.checklist} scale={0.001}>
+      <group ref={sceneRefs.checklist} scale={0.001} visible={false}>
         <Block position={[0, -0.13, 0]} size={[10, 0.26, 7]} color="#f1edf4" />
         <Block position={[0, 2.45, -3.4]} size={[10, 4.9, 0.14]} color="#fbf9fc" />
         <Person position={[-2.65, 0, 0.55]} shirt="#72508e" />
@@ -759,7 +766,7 @@ function SceneContent({ sceneRefs }) {
         <Person position={[0.95, 0.92, 0.65]} shirt="#795792" coat motionRefs={sceneRefs.humans.therapist} />
       </group>
 
-      <group ref={sceneRefs.together} scale={0.001}>
+      <group ref={sceneRefs.together} scale={0.001} visible={false}>
         <RoomShell />
         <Bed />
         <Person position={[-1.12, 0, 0]} shirt="#a98dbb" lying motionRefs={sceneRefs.humans.finalPatient} />
@@ -776,7 +783,6 @@ function SceneContent({ sceneRefs }) {
         </mesh>
       </group>
 
-      <ContactShadows position={[0, -0.005, 0]} opacity={0.2} scale={13} blur={2.8} far={5} />
     </>
   );
 }
@@ -806,17 +812,14 @@ export default function HospitalScene() {
   }).current;
 
   return (
-    <div className="canvas-wrap">
-      <Canvas
-        shadows
-        dpr={[1, 1.6]}
-        camera={{ position: [0.25, 3.7, 8.8], fov: 36 }}
-        gl={{ antialias: true, alpha: true }}
-      >
-        <color attach="background" args={['#f8f6fa']} />
-        <SceneContent sceneRefs={sceneRefs} />
-        <Environment preset="studio" environmentIntensity={0.3} />
-      </Canvas>
-    </div>
+    <Canvas
+      frameloop="demand"
+      dpr={[1, 1.25]}
+      camera={{ position: [0.25, 3.7, 8.8], fov: 36 }}
+      gl={{ antialias: true, alpha: true }}
+    >
+      <color attach="background" args={['#f8f6fa']} />
+      <SceneContent sceneRefs={sceneRefs} />
+    </Canvas>
   );
 }

@@ -12,25 +12,57 @@ export const languageOptions = [
   { code: 'ur', name: 'Urdu', nativeName: 'اردو' }
 ];
 
-export const questionDefinitions = [
-  { key: 'relationship', section: 'person', type: 'select', prompt: 'q.relationship', options: ['Myself', 'Parent', 'Spouse', 'Child', 'Other family member'], required: true },
-  { key: 'age', section: 'person', type: 'text', inputType: 'number', prompt: 'q.age', placeholder: 'q.agePlaceholder', optional: true },
-  { key: 'state', section: 'person', type: 'select', prompt: 'q.state', options: ['Andhra Pradesh', 'Arunachal Pradesh', 'Assam', 'Bihar', 'Chhattisgarh', 'Goa', 'Gujarat', 'Haryana', 'Himachal Pradesh', 'Jharkhand', 'Karnataka', 'Kerala', 'Madhya Pradesh', 'Maharashtra', 'Manipur', 'Meghalaya', 'Mizoram', 'Nagaland', 'Odisha', 'Punjab', 'Rajasthan', 'Sikkim', 'Tamil Nadu', 'Telangana', 'Tripura', 'Uttar Pradesh', 'Uttarakhand', 'West Bengal', 'Andaman and Nicobar Islands', 'Chandigarh', 'Dadra and Nagar Haveli and Daman and Diu', 'Delhi', 'Jammu and Kashmir', 'Ladakh', 'Lakshadweep', 'Puducherry'], required: true },
-  { key: 'district', section: 'person', type: 'text', prompt: 'q.district', placeholder: 'q.districtPlaceholder', optional: true },
-  { key: 'annual_family_income', section: 'person', type: 'select', prompt: 'q.annualIncome', options: ['Below ₹1 lakh', '₹1–3 lakh', '₹3–5 lakh', '₹5–10 lakh', 'Above ₹10 lakh', 'Not sure', 'Prefer not to say'], required: true },
-  { key: 'familyCategory', section: 'person', type: 'select', prompt: 'q.familyCategory', options: ['General', 'Scheduled Caste (SC)', 'Scheduled Tribe (ST)', 'Other Backward Class (OBC)', 'Minority community', 'Other', 'Not sure', 'Prefer not to say'], optional: true },
-  { key: 'diagnosed', section: 'cancer', type: 'select', prompt: 'q.diagnosed', options: ['Yes', 'No', 'Diagnosis pending', 'Not sure', 'Prefer not to say'], required: true },
-  { key: 'cancerType', section: 'cancer', type: 'select', prompt: 'q.cancerType', options: ['Breast', 'Blood', 'Lung', 'Cervical', 'Oral', 'Other', 'Not sure', 'Prefer not to say'], optional: true },
-  { key: 'treatmentStatus', section: 'cancer', type: 'select', prompt: 'q.treatmentStatus', options: ['Not started', 'Chemotherapy', 'Radiation', 'Surgery', 'Follow-up', 'Completed', 'Not sure', 'Prefer not to say'], optional: true },
-  { key: 'hospitalType', section: 'cancer', type: 'select', prompt: 'q.hospitalType', options: ['Government', 'Private', 'Not admitted', 'Not sure', 'Prefer not to say'], required: true },
-  { key: 'pmjayCard', section: 'assistance', type: 'select', prompt: 'q.pmjayCard', options: ['Yes', 'No', 'Not sure', 'Prefer not to say'], optional: true },
-  { key: 'rationCard', section: 'assistance', type: 'select', prompt: 'q.rationCard', options: ['Yes', 'No', 'Not sure', 'Prefer not to say'], optional: true },
-  { key: 'incomeCertificate', section: 'assistance', type: 'select', prompt: 'q.incomeCertificate', options: ['Yes', 'No', 'Not sure', 'Prefer not to say'], optional: true },
-  { key: 'receivedAssistance', section: 'assistance', type: 'select', prompt: 'q.receivedAssistance', options: ['Yes', 'No', 'Not sure', 'Prefer not to say'], optional: true },
-  { key: 'empanelledHospital', section: 'assistance', type: 'select', prompt: 'q.empanelledHospital', options: ['Yes', 'No', 'Not sure', 'Prefer not to say'], optional: true },
-  { key: 'assistanceAmount', section: 'financial', type: 'select', prompt: 'q.assistanceAmount', options: ['Below ₹50,000', '₹50,000–₹1 lakh', '₹1–5 lakh', 'Above ₹5 lakh', 'Not sure', 'Prefer not to say'], required: true },
-  { key: 'expenses', section: 'financial', type: 'multiselect', prompt: 'q.expenses', options: ['Chemotherapy', 'Surgery', 'Radiation', 'Medicines', 'Hospitalization', 'Diagnostics', 'Travel and Accommodation', 'Other'], optional: true }
+const stateOptions = ['Andhra Pradesh', 'Arunachal Pradesh', 'Assam', 'Bihar', 'Chhattisgarh', 'Goa', 'Gujarat', 'Haryana', 'Himachal Pradesh', 'Jharkhand', 'Karnataka', 'Kerala', 'Madhya Pradesh', 'Maharashtra', 'Manipur', 'Meghalaya', 'Mizoram', 'Nagaland', 'Odisha', 'Punjab', 'Rajasthan', 'Sikkim', 'Tamil Nadu', 'Telangana', 'Tripura', 'Uttar Pradesh', 'Uttarakhand', 'West Bengal', 'Andaman and Nicobar Islands', 'Chandigarh', 'Dadra and Nagar Haveli and Daman and Diu', 'Delhi', 'Jammu and Kashmir', 'Ladakh', 'Lakshadweep', 'Puducherry'];
+const yesNoUnknown = ['Yes', 'No', "I'm not sure", 'Prefer to skip'];
+const applicationStatusOptions = ['Yes', 'No', 'We applied and are waiting for a decision', "I'm not sure", 'Prefer to skip'];
+const cancerTypeOptions = [
+  'Bladder cancer', 'Bone cancer', 'Brain cancer', 'Breast cancer', 'Cervical cancer',
+  'Colorectal cancer', 'Endometrial cancer', 'Esophageal cancer', 'Eye cancer',
+  'Gallbladder cancer', 'Head and neck cancer', 'Hodgkin lymphoma', 'Kidney cancer',
+  'Liver cancer', 'Lung cancer', 'Melanoma', 'Multiple myeloma', 'Neuroblastoma',
+  'Non-Hodgkin lymphoma', 'Oral cancer', 'Ovarian cancer', 'Pancreatic cancer',
+  'Prostate cancer', 'Stomach cancer', 'Thyroid cancer', 'Uterine cancer',
+  'Leukemia', 'Other'
 ];
+
+export const questionDefinitions = [
+  { key: 'state', section: 'person', type: 'state', prompt: 'q.state', options: stateOptions, required: true },
+  { key: 'cancerCareStage', section: 'cancer', type: 'select', prompt: 'intake.cancerCareStage', options: ['Waiting for tests or a diagnosis', 'Diagnosed and planning treatment', 'Treatment is ongoing', 'Treatment is complete and follow-up care is needed', "I'm not sure"], required: true },
+  { key: 'cancerType', section: 'cancer', type: 'search', prompt: 'intake.cancerType', placeholder: 'intake.cancerTypePlaceholder', options: cancerTypeOptions, conditional: (answers) => answers.cancerCareStage === 'Diagnosed and planning treatment', optional: true },
+  { key: 'expenses', section: 'financial', type: 'multiselect', prompt: 'intake.expenses', options: ['Tests or scans', 'Surgery', 'Chemotherapy or other cancer medicines', 'Radiation therapy', 'Hospital stay', 'Follow-up care', 'Travel or accommodation', 'Other costs', "I'm not sure yet"], required: true },
+  { key: 'assistanceAmount', section: 'financial', type: 'amount', prompt: 'intake.assistanceAmount', optional: true },
+  { key: 'hospitalStatus', section: 'cancer', type: 'select', prompt: 'intake.hospitalStatus', options: ['Yes, care is planned or underway there', "We're still deciding", "I'm not sure"], required: true },
+  { key: 'hospitalName', section: 'cancer', type: 'hospital', prompt: 'intake.hospitalName', placeholder: 'intake.hospitalNamePlaceholder', options: [], conditional: (answers) => answers.hospitalStatus === 'Yes, care is planned or underway there', required: true },
+  { key: 'hospitalType', section: 'cancer', type: 'select', prompt: 'intake.hospitalType', options: ['Government or public hospital', 'Private hospital', 'Charitable or trust hospital', "I'm not sure"], conditional: (answers) => answers.hospitalStatus === 'Yes, care is planned or underway there', required: true },
+  { key: 'receivedAssistance', section: 'assistance', type: 'select', prompt: 'intake.receivedAssistance', options: applicationStatusOptions, required: true },
+  { key: 'assistanceProgramme', section: 'assistance', type: 'search', prompt: 'intake.assistanceProgramme', placeholder: 'intake.assistanceProgrammePlaceholder', options: [], conditional: (answers) => ['Yes', 'We applied and are waiting for a decision'].includes(answers.receivedAssistance), optional: true }
+];
+
+export const followUpQuestionDefinitions = [
+  { key: 'age', section: 'person', type: 'number', prompt: 'intake.age', placeholder: 'intake.agePlaceholder', max: 120, optional: true, requiredIfCandidate: /age|child|children|minor|pediatric|paediatric/i },
+  { key: 'annual_family_income', section: 'person', type: 'amount', prompt: 'intake.householdIncome', optional: true, requiredIfCandidate: /income|financial|economically|poor patient/i },
+  { key: 'incomeCertificate', section: 'assistance', type: 'select', prompt: 'intake.incomeCertificate', options: ['Yes', 'No', 'Application pending', "I'm not sure", 'Prefer to skip'], requiredIfCandidate: /income certificate|income proof|income document/i },
+  { key: 'pmjayCard', section: 'assistance', type: 'select', prompt: 'intake.pmjayCard', options: yesNoUnknown, conditional: (_answers, candidates) => candidates.some((scheme) => /pm.?jay|ayushman bharat/i.test(`${scheme.official_name || ''} ${scheme.name || ''}`)) },
+  { key: 'rationCard', section: 'assistance', type: 'select', prompt: 'intake.rationCard', options: yesNoUnknown, requiredIfCandidate: /ration card/i },
+  { key: 'categoryCertificate', section: 'assistance', type: 'select', prompt: 'intake.categoryCertificate', options: ['Yes', 'No', 'Application pending', "I'm not sure", 'Prefer to skip'], requiredIfCandidate: /caste|category certificate|scheduled caste|scheduled tribe|other backward class/i },
+  { key: 'bplCertificate', section: 'assistance', type: 'select', prompt: 'intake.bplCertificate', options: ['Yes', 'No', 'Application pending', "I'm not sure", 'Prefer to skip'], requiredIfCandidate: /\bBPL\b|below poverty line/i },
+  { key: 'stateHealthCard', section: 'assistance', type: 'select', prompt: 'intake.stateHealthCard', options: yesNoUnknown, requiredIfCandidate: /state health card|state health insurance card/i },
+  { key: 'pmjayHospitalAccepts', section: 'assistance', type: 'select', prompt: 'intake.pmjayHospitalAccepts', options: ['Yes', 'No', "I haven't asked yet", "I'm not sure"], conditional: (answers, candidates) => Boolean(answers.hospitalName?.name) && candidates.some((scheme) => /pm.?jay|ayushman bharat/i.test(`${scheme.official_name || ''} ${scheme.name || ''}`)) }
+];
+
+export function getApplicableQuestions(definitions, answers = {}, candidates = []) {
+  const candidateText = candidates.map((candidate) => [
+    candidate.eligibilitySummary,
+    candidate.documentsToPrepare,
+    candidate.description,
+    candidate.eligibility,
+    candidate.what_support_offered
+  ].filter(Boolean).join(' ')).join(' ');
+  return definitions.filter((question) => {
+    if (question.conditional && !question.conditional(answers, candidates)) return false;
+    return !question.requiredIfCandidate || question.requiredIfCandidate.test(candidateText);
+  });
+}
 
 export const sectionLabels = {
   person: 'section.person',

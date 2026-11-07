@@ -1,6 +1,6 @@
 .platform-shell,.flow-page,.assessment-page,.auth-page{min-height:100vh;background:#f8f6fa;color:#292331}
 .platform-topbar{height:74px;padding:0 clamp(20px,5vw,76px);display:flex;align-items:center;justify-content:space-between;background:#fff;border-bottom:1px solid #eee9f2;position:sticky;top:0;z-index:25}
-.platform-brand{font-size:20px;gap:10px}.platform-brand>span:last-child{display:flex;flex-direction:column;line-height:1.05}.platform-brand small{font:500 10px 'DM Sans',sans-serif;letter-spacing:0;color:#897e90;margin-top:4px}
+.platform-brand{font-size:20px;gap:10px}.platform-brand .brand-logo{width:112px;height:70px}
 .platform-top-actions{display:flex;align-items:center;gap:20px}.guest-indicator,.guest-pill{display:inline-flex;align-items:center;gap:7px;color:#62586c;font-size:12px}.guest-indicator svg,.guest-pill svg{color:#6b9b77}
 .language-select{height:40px;padding:0 10px;display:inline-flex;align-items:center;gap:8px;border:1px solid #e8e1ed;border-radius:11px;background:#fff;color:#704897}.language-select select{max-width:130px;border:0;background:transparent;color:#42384b;font:600 12px 'DM Sans',sans-serif;outline:none}
 .button{min-height:42px;padding:0 16px;border:1px solid transparent;border-radius:12px;display:inline-flex;align-items:center;justify-content:center;gap:9px;font:700 13px 'DM Sans',sans-serif;cursor:pointer;transition:background .18s ease,transform .18s ease,border .18s ease}
@@ -414,3 +414,54 @@
 @media(max-width:760px){.document-assistance-grid{grid-template-columns:1fr}}
 @media(max-width:900px){.document-target-picker{grid-template-columns:1fr;gap:7px}}
 @media(max-width:520px){.document-target-picker{grid-template-columns:1fr;gap:7px}.document-target-select{font-size:12px}}
+
+.page-heading h1{font-size:clamp(26px,2.5vw,35px);line-height:1.18;text-wrap:balance;overflow-wrap:anywhere}
+.page-heading p{font-size:13px;line-height:1.65}
+@media(max-width:760px){
+  .page-heading h1{font-size:clamp(25px,5.5vw,32px)}
+}
+
+.intake-select,.intake-search-fields input{
+  width:100%;
+  min-height:46px;
+  padding:11px 13px;
+  border:1px solid #ded5e5;
+  border-radius:11px;
+  background:#fff;
+  color:#403449;
+  font:500 14px 'DM Sans',sans-serif;
+}
+.intake-select:focus,.intake-search-fields input:focus{
+  outline:3px solid #d9c4e7;
+  outline-offset:2px;
+  border-color:#8c62a7;
+}
+.intake-search-fields{display:grid;gap:12px}
+.intake-number-input{display:flex;align-items:center;gap:10px;max-width:480px}
+.intake-number-input>span{color:#71429a;font-size:18px;font-weight:700}
+.intake-number-input input{flex:1}
+.intake-candidate-list{display:grid;gap:14px;margin:24px 0}
+.intake-candidate{display:grid;gap:10px}
+.intake-candidate-heading{display:flex;justify-content:space-between;align-items:flex-start;gap:14px}
+.intake-candidate-heading h2{margin:5px 0 0;font:700 18px/1.35 Manrope,sans-serif;color:#352a40}
+.intake-candidate p,.intake-result-card p{margin:0;color:#706779;font-size:13px;line-height:1.65}
+.intake-candidate-reason{padding:10px 12px;border-radius:10px;background:#f8f4fb}
+.intake-candidate-reason strong,.intake-result-card strong{color:#554265}
+.intake-candidate .text-link,.intake-result-card .text-link{display:inline-flex;align-items:center;gap:6px;justify-self:start}
+.intake-empty{padding:16px;border:1px dashed #d8cde0;border-radius:12px;color:#716579}
+.intake-missing-list{margin:18px 0;padding:16px 18px;border:1px solid #e8dfed;border-radius:13px;background:#fff}
+.intake-missing-list ul,.intake-result-card ul{margin:9px 0 0;padding-left:22px;color:#706779;font-size:13px;line-height:1.7}
+.intake-screening{display:grid;gap:14px;margin:30px 0}
+.intake-screening>h2{margin:0;font:700 22px Manrope,sans-serif;color:#352a40}
+.intake-screening>.muted-copy{margin:0}
+.intake-result-card{display:grid;gap:10px}
+.intake-result-card h3{margin:0;font:700 17px/1.35 Manrope,sans-serif;color:#352a40}
+.intake-result-card small{color:#83788a;font-size:11px;line-height:1.5}
+.intake-result-card .status-chip.potential-match{background:#edf6ee;color:#4f7956}
+.intake-result-card .status-chip.not-eligible{background:#fff1f0;color:#9e3d39}
+.intake-result-card .status-chip.unknown{background:#f6f1f8;color:#806890}
+@media(max-width:600px){
+  .intake-candidate-heading{flex-direction:column;align-items:flex-start}
+  .intake-candidate-heading h2{font-size:16px}
+  .intake-select,.intake-search-fields input{font-size:16px}
+}

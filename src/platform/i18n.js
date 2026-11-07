@@ -1,5 +1,7 @@
 import { createContext, useContext } from 'react';
 import { generatedTranslations } from './generatedTranslations.js';
+import { manualTranslations } from './manualTranslations.js';
+import { intakeTranslations } from './intakeTranslations.js';
 
 export const LanguageContext = createContext({ language: 'en', setLanguage: () => {} });
 
@@ -69,6 +71,62 @@ export const translations = {
     'assessment.step': 'Question {current} of {total}',
     'assessment.required': 'Choose an answer to continue, or skip if this question is optional.',
     'assessment.saved': 'Progress saves automatically on this device.',
+    'intake.cancerCareStage': 'What stage of cancer care is the patient at?',
+    'intake.cancerType': 'What type of cancer did the care team say the patient has?',
+    'intake.cancerTypePlaceholder': 'Search or enter any cancer type',
+    'intake.expenses': 'Which costs would you like help with? Select all that apply.',
+    'intake.assistanceAmount': 'About how much help do you still need to cover these costs?',
+    'intake.amountPlaceholder': 'Enter amount in Indian rupees',
+    'intake.noEstimate': "I don't have an estimate yet",
+    'intake.hospitalStatus': 'Has the patient chosen a hospital for this care?',
+    'intake.hospitalName': "What is the hospital's name and city?",
+    'intake.hospitalNamePlaceholder': 'Search or enter hospital name',
+    'intake.hospitalCityPlaceholder': 'City',
+    'intake.hospitalType': 'What kind of hospital is it?',
+    'intake.receivedAssistance': 'Have you already received any government financial support for this same course of treatment?',
+    'intake.assistanceProgramme': 'Which programme provided the support, or which one did you apply to?',
+    'intake.assistanceProgrammePlaceholder': 'Search or enter programme name',
+    'intake.age': 'How old is the patient?',
+    'intake.agePlaceholder': 'Age in years',
+    'intake.householdIncome': "About how much does the patient's household earn in a year?",
+    'intake.incomeCertificate': "Does the patient's household have an income certificate?",
+    'intake.pmjayCard': 'Does the patient have an Ayushman Bharat PM-JAY card?',
+    'intake.rationCard': "Does the patient's household have a ration card?",
+    'intake.categoryCertificate': 'Does the patient have the category certificate required by a programme being considered?',
+    'intake.bplCertificate': 'Does the household have a BPL certificate?',
+    'intake.stateHealthCard': 'Does the patient have the state health card required by a programme being considered?',
+    'intake.pmjayHospitalAccepts': 'Has the hospital told you whether it accepts Ayushman Bharat PM-JAY for the planned cancer care?',
+    'intake.shortlistTitle': 'Potential support to explore',
+    'intake.shortlistDescription': 'These preliminary options are based on the information you shared and available programme details. They are not confirmed eligibility or a guarantee of assistance.',
+    'intake.shortlistEmpty': 'The current programme information did not identify a state-matched shortlist. You can continue and review the available guidance.',
+    'intake.whyRelevant': 'Why it may be relevant',
+    'intake.officialProgramme': 'Official programme information',
+    'intake.missingInformation': 'Information still needed to screen this programme',
+    'intake.documentsToPrepare': 'Documents to prepare',
+    'intake.programDetails': 'View programme guidance and application steps',
+    'intake.potential': 'Potential option · verify with the programme',
+    'intake.followUpIntro': 'I have a few questions that can help narrow down your options.',
+    'intake.noFollowUps': 'No additional questions were identified from the available programme information.',
+    'intake.finalMatches': 'Preliminary eligibility screening',
+    'intake.screeningPending': 'Eligibility could not be confirmed from available programme rules. Please verify directly with the programme.',
+    'intake.confirmed': 'Rules indicate a potential match; this is not an approval.',
+    'intake.notEligible': 'Available rules indicate one or more unmet conditions.',
+    'intake.notEvaluated': 'No current source-backed rules are available for this programme.',
+    'intake.coverageInfo': 'Coverage information: {coverage}.',
+    'intake.noCoverageInfo': 'Available coverage information does not rule out your state.',
+    'intake.supportMentions': 'Programme information mentions support related to {expenses}.',
+    'intake.cancerTypeMentioned': 'Programme information mentions {cancerType}.',
+    'intake.careStageMentioned': 'The programme information includes terms related to the reported care stage; confirm the exact conditions with the programme.',
+    'intake.hospitalMentioned': 'The programme information mentions {hospital}; current participation is not verified.',
+    'intake.hospitalCategoryMentioned': 'The programme information mentions the hospital category you selected.',
+    'intake.incomeMismatch': 'An eligibility summary mentions an income condition that may not be met; this is only an unverified preliminary comparison.',
+    'intake.estimatedAmount': 'Estimated amount still needed: {amount}; available data does not provide a consistent basis for comparing benefit limits.',
+    'intake.existingAssistance': 'Existing or pending support was recorded; this was not used to exclude other programmes.',
+    'intake.supportCategoryNgo': 'Charitable and community support',
+    'intake.supportCategoryProgramme': 'Assistance programme',
+    'intake.detailsOnlyInOfficialLanguage': 'Some programme-specific details are available only in the official source language. Use the programme link to verify the current requirements.',
+    'intake.preliminaryDisclaimer': 'Preliminary screening only. A PASS does not confirm official eligibility.',
+    'intake.inr': 'INR',
     'dashboard.hello': 'A clearer next step starts here.',
     'dashboard.subtitle': 'Explore assistance information and organize your next steps. Recommendations are not eligibility decisions.',
     'dashboard.match': 'Potential support to explore',
@@ -182,6 +240,7 @@ export const translations = {
     'landing.nav.human': 'Human support',
     'landing.menu': 'Toggle navigation',
     'landing.getStarted': 'Get started',
+    'landing.aboutUs': 'Know more about us',
     'landing.hero.eyebrow': 'FINANCIAL NAVIGATION FOR CANCER CARE',
     'landing.hero.title': 'No family should navigate this journey alone.',
     'landing.hero.description': 'Neravu helps patients and caregivers understand and access financial assistance with personalized, multilingual guidance.',
@@ -991,7 +1050,7 @@ export const translations = {
     'schemes.category.state': 'రాష్ట్ర ప్రభుత్వ సహాయం',
     'schemes.pmjay': 'Ayushman Bharat PM-JAY (ఆయుష్మాన్ భారత్ PM-JAY): ప్రభుత్వ ఆరోగ్య హామీ పథకం. ఇది అర్హులైన కుటుంబాలకు క్యాన్సర్, చికిత్స, పరీక్షలు, ఆసుప్రవేశం, సంరక్షణకు అందుబాటులో ఉన్న పథకం. అవసరమైన పత్రాలు: అధికార గుర్తింపు, ఆసుపత్రి/OPD/IPD రిజిస్ట్రేషన్, నిర్ధారణ పత్రాలు, పరీక్షలు, స్కాన్లు, బ్యాంకు పాస్‌బుక్ మొదటి పేజీ, ఆదాయ ధృవీకరణ, వివిధ కేటగిరీ రుజువులు. దశలు: పథక అర్హత పరిశీలించడం, పత్రాలను సేకరించడం, ప్యానెల్ ఆసుపత్రి/అథారిటీ ద్వారా నమోదు చేయడం, చికిత్సను ముగించడం, అవసరమైన డాక్యుమెంట్స్ సమర్పించడం. చిక్కులో పడితే: హాస్పిటల్/అధికారుల సహాయాన్ని తీసుకోండి, పత్రాల జాబితాను ధృవీకరించండి, మరియు అధికారిక పత్రాల/సంబంధిత ప్యానెల్ వివరాలను మళ్లీ చూసి ముందుకు వెళ్లండి.',
     'schemes.pnrf': 'Prime Minister’s National Relief Fund (పి.ఎం. నేషనల్ రిలీఫ్ ఫండ్): ఇది కష్టకాలంలో ఆర్థిక సహాయాన్ని కోరుకునే వ్యక్తులు మరియు కుటుంబాలకు సహాయపడే ప్రభుత్వ సహాయ నిధి. అవసరమైన పత్రాలు: అభ్యర్థి వివరాలు, ఆదాయ ధృవీకరణ, కుటుంబ సభ్యుల వివరాలు, చికిత్స/సంబంధిత ఖర్చుల రుజువులు, బంధువుల/సంబంధిత భర్తీ పత్రాలు. దశలు: అర్హతను పరిశీలించడం, అవసరమైన పత్రాల నిక్షేపణ, నిధి కోసం దరఖాస్తు, విచారణ మరియు పునరాలోచన, అధికారిక మార్గదర్శకాన్ని చూసి నిర్ధారణ. చిక్కులో పడితే: అధికారిక వెబ్‌సైట్, సంబంధిత కార్యాలయం లేదా hospital support desk ను సంప్రదించండి; మీ దరఖాస్తు స్థితిని ధృవీకరించండి మరియు పత్రాలు పూర్తవుతున్నాయో ధృవీకరించుకోండి.',
-    'schemes.hmdg': 'Health Minister’s Discretionary Grant (హెల్త్ మినిస్టర్ డిస్క్రీషనరీ గ్రాంట్): ఇది తాత్కాలిక మరియు కేస్-బై-కేస్ సహాయాన్ని అందించగల ప్రభుత్వ సహాయం. అవసరమైన పత్రాలు: కారణ వివరణ, చికిత్స/చికిత్స ఖర్చుల పత్రాలు, ఆదాయ వివరాలు, వైద్య వివరాలు, సంబంధిత పత్రాల ధృవీకరణ, అవసరమైన చోట ఆసుపత్రి/ప్రతినిధి సర్టిఫికేట్. దశలు: సహాయం కావాల్సిన కారణాన్ని వివరించడం, అవసరమైన డాక్యుమెంట్స్ సేకరించడం, అధికారిక సందేశం/సంబంధిత అధికారి వద్ద దరఖాస్తు, అప్డేట్ మరియు సరైన మార్గదర్శకాన్ని పొందడం. చిక్కులో పడితే: ప్రస్తుత పరిస్థితి, తీసుకున్న ఫారమ్లు, అవసరమైతే వైద్య/ఆసుపత్రి సహాయకులతో పరిష్కారం కోరండి మరియు అధికారిక వివరాలు మళ్లీ ధృవీకరించండి.',
+    'schemes.hmdg': 'ప్రతి దరఖాస్తును విడిగా పరిశీలించి, అవసరాన్ని బట్టి సహాయం అందించగల ప్రభుత్వ పథకం. అవసరమైన పత్రాలు: సహాయం కోరే కారణ వివరణ, చికిత్స వివరాలు మరియు ఖర్చు అంచనా, ఆదాయ వివరాలు, వైద్య పత్రాలు, సంబంధిత ధృవీకరణలు, అవసరమైతే ఆసుపత్రి లేదా ప్రతినిధి ధృవీకరణ పత్రం. దరఖాస్తు దశలు: సహాయం అవసరాన్ని వివరించండి, ప్రస్తుత అధికారిక అవసరాల ప్రకారం పత్రాలు సిద్ధం చేయండి, సంబంధిత అధికారి లేదా ఆసుపత్రి ద్వారా దరఖాస్తు సమర్పించండి, ఆపై అధికారిక సమాచారం మరియు సూచనలను అనుసరించండి. సమస్య ఎదురైతే, మీ దరఖాస్తు స్థితిని సంబంధిత ఆసుపత్రి లేదా అధికారితో తనిఖీ చేసి ప్రస్తుత నియమాలను మళ్లీ నిర్ధారించండి.',
     'schemes.state': 'రాష్ట్ర-నిర్దిష్ట ప్రభుత్వ పథకాలు: ప్రతి రాష్ట్రం మరియు జిల్లాకు పథకాలు, అర్హత, డాక్యుమెంట్లు మరియు ప్రక్రియలు వేరువేరుగా ఉంటాయి. ఈ పథకాలను మీరు మీ రాష్ట్ర ప్రభుత్వ, జిల్లా సహాయ కేంద్రం లేదా అధికారిక వెబ్‌సైట్ ద్వారా ధృవీకరించాలి. చిక్కులో పడితే: మీ ప్రాంతీయ అధికారులకు, hospital social worker లేదా district help desk కింద వివరాలు అడగండి మరియు ప్రభుత్వ అధికారిక వెబ్‌సైట్ మరియు పత్రాలను ధృవీకరించండి.',
     'schemes.status.pmjay': 'PDF ఆధారంగా వివరించబడింది · అధికారిక మూలం వద్ద ధృవీకరించండి',
     'schemes.status.pnrf': 'PDF ఆధారంగా వివరించబడింది · అధికారిక ప్రక్రియ ధృవీకరించండి',
@@ -1538,10 +1597,27 @@ export const translations = {
 
 export const useLanguage = () => useContext(LanguageContext);
 
+const landingTranslations = {
+  en: { 'landing.aboutUs': 'Know more about us' },
+  te: { 'landing.aboutUs': 'మా గురించి మరింత తెలుసుకోండి' },
+  hi: { 'landing.aboutUs': 'हमारे बारे में और जानें' },
+  ta: { 'landing.aboutUs': 'எங்களைப் பற்றி மேலும் அறியுங்கள்' },
+  kn: { 'landing.aboutUs': 'ನಮ್ಮ ಬಗ್ಗೆ ಇನ್ನಷ್ಟು ತಿಳಿಯಿರಿ' },
+  ml: { 'landing.aboutUs': 'ഞങ്ങളെക്കുറിച്ച് കൂടുതൽ അറിയുക' },
+  bn: { 'landing.aboutUs': 'আমাদের সম্পর্কে আরও জানুন' },
+  mr: { 'landing.aboutUs': 'आमच्याबद्दल अधिक जाणून घ्या' },
+  gu: { 'landing.aboutUs': 'અમારા વિશે વધુ જાણો' },
+  pa: { 'landing.aboutUs': 'ਸਾਡੇ ਬਾਰੇ ਹੋਰ ਜਾਣੋ' },
+  ur: { 'landing.aboutUs': 'ہمارے بارے میں مزید جانیں' }
+};
+
 function getCatalog(language) {
   return {
     ...translations[language],
-    ...generatedTranslations[language]
+    ...generatedTranslations[language],
+    ...intakeTranslations[language],
+    ...landingTranslations[language],
+    ...manualTranslations[language]
   };
 }
 

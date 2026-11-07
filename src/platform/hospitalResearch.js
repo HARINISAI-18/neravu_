@@ -79,3 +79,18 @@ export function getHospitalResearchForNgo(organizationName) {
 }
 
 export const hospitalResearchSource = research.sourceWorkbook;
+export const researchedHospitalOptions = [...new Set(
+  research.hospitalMappings
+    .map((record) => record.hospitalOrNetwork)
+    .filter((name) => typeof name === 'string' && name.trim())
+)].sort((left, right) => left.localeCompare(right));
+
+export const researchedCityOptions = [...new Set(
+  research.hospitalMappings
+    .map((record) => {
+      if (typeof record.cityState !== 'string') return '';
+      const [city, state] = record.cityState.split(',');
+      return state && !/[;]/.test(city) && !/[;]/.test(state) ? city.trim() : '';
+    })
+    .filter(Boolean)
+)].sort((left, right) => left.localeCompare(right));

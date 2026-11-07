@@ -6,14 +6,15 @@ import {
   Stethoscope, UserRound, Wallet, ExternalLink, AlertCircle, Plus, RefreshCw, Key, Edit, CheckCircle
 } from 'lucide-react';
 import {
-  demoOrganizations, demoSchemes, languageOptions, questionDefinitions, sectionLabels
+  demoOrganizations, demoSchemes, followUpQuestionDefinitions, getApplicableQuestions,
+  languageOptions, questionDefinitions, sectionLabels
 } from './data';
 import {
   buildSchemeCards, filterWorkbookNgos, findSchemeGuidance, getDocumentChecklistForScheme,
   getNgoRecommendation, getSchemeRecommendation, guidanceText, knownStates, loadSchemeGuidance,
   schemeGuidance, schemeGuidanceSnapshot, stateTracker, workbookNgos
 } from './schemeGuidance';
-import { getHospitalResearchForNgo, getHospitalResearchForScheme } from './hospitalResearch';
+import { getHospitalResearchForNgo, getHospitalResearchForScheme, researchedCityOptions, researchedHospitalOptions } from './hospitalResearch';
 import { getDocumentAssistanceForTarget } from './documentAssistance';
 import { translate, translateOption, useLanguage } from './i18n';
 import { openChatAssistant } from './ChatDrawer';
@@ -28,7 +29,7 @@ import {
   publishScheme, fetchAdminSyncStatus, retryAdminSync, getAuthHeaders
 } from './services';
 import {
-  DemoNotice, LanguageSelect, OptionGrid, PageHeading, RouteFooter, TranslationNotice
+  BrandLogo, DemoNotice, LanguageSelect, OptionGrid, PageHeading, RouteFooter, TranslationNotice
 } from './components';
 
 const roleOptions = ['Myself', 'Parent', 'Spouse', 'Child', 'Other family member'];
@@ -112,7 +113,7 @@ export function SetupPage() {
   return (
     <div className="flow-page">
       <header className="flow-header">
-        <Link to="/" className="brand"><span className="brand-mark"><HeartHandshake size={20} /></span>Neravu</Link>
+        <Link to="/" className="brand" aria-label="Neravu home"><BrandLogo /></Link>
         <div className="flow-header-actions"><LanguageSelect /><span className="flow-step-count">{stepIndex + 1} / 3</span></div>
       </header>
       <div className="flow-progress"><span style={{ width: `${((stepIndex + 1) / 3) * 100}%` }} /></div>
@@ -172,7 +173,7 @@ export function AssessmentAccessPage() {
   };
   return (
     <div className="auth-page">
-      <header className="flow-header"><Link to="/" className="brand"><span className="brand-mark"><HeartHandshake size={20} /></span>Neravu</Link><div className="flow-header-actions"><LanguageSelect /><span className="flow-step-count">{t('access.beforeQuestions')}</span></div></header>
+      <header className="flow-header"><Link to="/" className="brand" aria-label="Neravu home"><BrandLogo /></Link><div className="flow-header-actions"><LanguageSelect /><span className="flow-step-count">{t('access.beforeQuestions')}</span></div></header>
       <main className="auth-card access-card" id="main-content">
         <TranslationNotice />
         <span className="auth-icon"><ShieldCheck size={23} /></span>
@@ -204,10 +205,211 @@ export function AssessmentAccessPage() {
   );
 }
 
+const amountSkipOptions = ["I don't have an estimate yet", 'Prefer to skip'];
+const unknownSkipOptions = ["I'm not sure", 'Prefer to skip'];
+
 function answerLabel(value, language) {
   if (Array.isArray(value)) return value.map((item) => translateOption(language, item)).join(', ');
+  if (typeof value === 'number' && Number.isFinite(value)) {
+    return new Intl.NumberFormat(language === 'en' ? 'en-IN' : language, {
+      style: 'currency',
+      currency: 'INR',
+      maximumFractionDigits: 0
+    }).format(value);
+  }
+  if (value && typeof value === 'object') {
+    return [value.name, value.city].filter(Boolean).join(', ');
+  }
   if (typeof value === 'string') return translateOption(language, value);
   return value == null ? '' : String(value);
+}
+
+function getPotentialIntakeCandidates(answers, catalog = buildSchemeCards([], 'en')) {
+  const state = String(answers.state || '');
+  const expenses = Array.isArray(answers.expenses) ? answers.expenses : [];
+  const expenseTerms = {
+    'Tests or scans': /diagnos|test|scan|investigat/i,
+    Surgery: /surg|operation/i,
+    'Chemotherapy or other cancer medicines': /chemotherap|medicine|drug|cancer treatment/i,
+    'Radiation therapy': /radiation|radiotherap/i,
+    'Hospital stay': /hospital|inpatient|admission/i,
+    'Follow-up care': /follow.?up|aftercare|continuing care/i,
+    'Travel or accommodation': /travel|transport|accommodation|lodging/i
+  };
+  const hospital = [answers.hospitalName?.name, answers.hospitalName?.city].filter(Boolean).join(' ').toLocaleLowerCase();
+  const cancerType = String(answers.cancerType || '').toLocaleLowerCase();
+  const stageTerms = {
+    'Waiting for tests or a diagnosis': /diagnos|screen|test|investigat/i,
+    'Diagnosed and planning treatment': /diagnos|treatment|plan|care/i,
+    'Treatment is ongoing': /ongoing|active treatment|treatment|care/i,
+    'Treatment is complete and follow-up care is needed': /follow.?up|aftercare|survivorship|continuing care/i
+  };
+  return [...catalog, ...workbookNgos].flatMap((programme) => {
+    const name = programme.official_name || programme.name || programme.organization_name || 'Unnamed programme';
+    const body = [
+      programme.eligibilitySummary, programme.description, programme.documentsToPrepare,
+      programme.programme_type, programme.category, programme.what_support_offered,
+      programme.eligibility, programme.support_type, programme.stateCoverage,
+      programme.state_coverage, programme.hospital_restrictions
+    ].filter(Boolean).join(' ');
+    if (!/cancer|medical|health|hospital|treatment|patient|financial|relief|support|assistance/i.test(`${name} ${body}`)) return [];
+    const isNgo = Boolean(programme.organization_name);
+    const recommendation = isNgo
+      ? getNgoRecommendation(programme, state, answers.annual_family_income)
+      : getSchemeRecommendation(programme, state, answers.annual_family_income);
+    if (!recommendation.stateMatch) return [];
+    const text = `${name} ${body}`;
+    const matchedExpenses = expenses.filter((expense) => expenseTerms[expense]?.test(text));
+    const hospitalMentioned = hospital.length > 2 && text.toLocaleLowerCase().includes(hospital);
+    const cancerTypeMentioned = cancerType.length > 2 && text.toLocaleLowerCase().includes(cancerType);
+    const stageMentioned = stageTerms[answers.cancerCareStage]?.test(text) || false;
+    const hospitalCategory = String(answers.hospitalType || '').replace(/\s+hospital$/i, '').toLocaleLowerCase();
+    const hospitalCategoryMentioned = Boolean(hospitalCategory && text.toLocaleLowerCase().includes(hospitalCategory));
+    const stateCoverage = programme.stateCoverage || programme.state_coverage || programme.governmentLevel || '';
+    const score = (stateCoverage.toLocaleLowerCase().includes(state.toLocaleLowerCase()) ? 5 : 0)
+      + matchedExpenses.length * 2 + (hospitalMentioned ? 4 : 0)
+      + (cancerTypeMentioned ? 3 : 0) + (stageMentioned ? 1 : 0)
+      + (hospitalCategoryMentioned ? 1 : 0)
+      + (/cancer|oncology/i.test(text) ? 2 : 0);
+    const reasonParts = [
+      stateCoverage
+        ? { key: 'intake.coverageInfo', values: { coverage: stateCoverage } }
+        : { key: 'intake.noCoverageInfo' },
+      matchedExpenses.length
+        ? { key: 'intake.supportMentions', values: { expenses: matchedExpenses } }
+        : null,
+      cancerTypeMentioned
+        ? { key: 'intake.cancerTypeMentioned', values: { cancerType: answers.cancerType } }
+        : null,
+      stageMentioned ? { key: 'intake.careStageMentioned' } : null,
+      hospitalMentioned
+        ? { key: 'intake.hospitalMentioned', values: { hospital: [answers.hospitalName?.name, answers.hospitalName?.city].filter(Boolean).join(', ') } }
+        : null,
+      hospitalCategoryMentioned ? { key: 'intake.hospitalCategoryMentioned' } : null,
+      recommendation.incomeMismatch ? { key: 'intake.incomeMismatch' } : null,
+      answers.assistanceAmount && typeof answers.assistanceAmount === 'number'
+        ? { key: 'intake.estimatedAmount', values: { amount: answers.assistanceAmount } }
+        : null,
+      answers.receivedAssistance && answers.receivedAssistance !== 'No'
+        ? { key: 'intake.existingAssistance' }
+        : null
+    ].filter(Boolean);
+    return [{
+      ...programme,
+      official_name: name,
+      isNgo,
+      matchedExpenses,
+      hospitalMentioned,
+      stateCoverage,
+      score,
+      reasonParts,
+      recommendation,
+      reason: [
+        stateCoverage ? `Coverage information: ${stateCoverage}.` : 'Available coverage information does not rule out your state.',
+        matchedExpenses.length ? `Programme information mentions support related to ${matchedExpenses.join(', ').toLowerCase()}.` : '',
+        cancerTypeMentioned ? `Programme information mentions ${answers.cancerType}.` : '',
+        stageMentioned ? 'The programme information includes terms related to the reported care stage; confirm the exact conditions with the programme.' : '',
+        hospitalMentioned ? 'The programme information mentions the hospital you entered, but current participation is not verified.' : '',
+        hospitalCategoryMentioned ? 'The programme information mentions the hospital category you selected.' : '',
+        recommendation.incomeMismatch ? 'An eligibility summary mentions an income condition that may not be met; this is only an unverified preliminary comparison.' : '',
+        answers.assistanceAmount && typeof answers.assistanceAmount === 'number'
+          ? `Estimated amount still needed: ${answerLabel(answers.assistanceAmount, 'en')}; available data does not provide a consistent basis for comparing benefit limits.`
+          : '',
+        answers.receivedAssistance && answers.receivedAssistance !== 'No'
+          ? 'Existing or pending support was recorded; this was not used to exclude other programmes.'
+          : ''
+      ].filter(Boolean).join(' ')
+    }];
+  }).sort((left, right) => right.score - left.score || left.official_name.localeCompare(right.official_name)).slice(0, 5);
+}
+
+function IntakeQuestionControl({ question, value, onChange, language, t }) {
+  const inputId = `intake-${question.key}`;
+  if (question.type === 'select' || question.type === 'multiselect') {
+    return <OptionGrid options={question.options} value={value} onChange={onChange} multiple={question.type === 'multiselect'} name={question.key} language={language} />;
+  }
+  if (question.type === 'state') {
+    return (
+      <select id={inputId} className="intake-select" value={value || ''} onChange={(event) => onChange(event.target.value)} aria-label={t(question.prompt)}>
+        <option value="">{t('q.state')}</option>
+        {question.options.map((option) => <option key={option} value={option}>{translateOption(language, option)}</option>)}
+      </select>
+    );
+  }
+  if (question.type === 'hospital') {
+    const hospital = value && typeof value === 'object' ? value : {};
+    return (
+      <div className="intake-search-fields">
+        <input
+          id={inputId}
+          type="search"
+          list="neravu-hospital-options"
+          value={hospital.name || ''}
+          onChange={(event) => onChange({ ...hospital, name: event.target.value })}
+          placeholder={t(question.placeholder)}
+          aria-label={t(question.prompt)}
+          autoComplete="off"
+        />
+        <datalist id="neravu-hospital-options">{researchedHospitalOptions.map((name) => <option value={name} key={name} />)}</datalist>
+        <input
+          type="text"
+          list="neravu-city-options"
+          value={hospital.city || ''}
+          onChange={(event) => onChange({ ...hospital, city: event.target.value })}
+          placeholder={t('intake.hospitalCityPlaceholder')}
+          aria-label={t('intake.hospitalCityPlaceholder')}
+          autoComplete="address-level2"
+        />
+        <datalist id="neravu-city-options">{researchedCityOptions.map((city) => <option value={city} key={city} />)}</datalist>
+      </div>
+    );
+  }
+  if (question.type === 'search') {
+    const options = question.key === 'assistanceProgramme'
+      ? [...new Set(schemeGuidance.map((programme) => programme.name).filter(Boolean))]
+      : question.options || [];
+    const listId = `intake-options-${question.key}`;
+    return (
+      <div className="intake-search-fields">
+        <input
+          id={inputId}
+          type="search"
+          list={listId}
+          value={typeof value === 'string' ? value : ''}
+          onChange={(event) => onChange(event.target.value)}
+          placeholder={t(question.placeholder)}
+          aria-label={t(question.prompt)}
+          autoComplete="off"
+        />
+        <datalist id={listId}>{options.map((option) => <option value={option} key={option} />)}</datalist>
+        {question.key === 'cancerType' && <OptionGrid options={unknownSkipOptions} value={value} onChange={onChange} name={question.key} language={language} />}
+      </div>
+    );
+  }
+  if (question.type === 'amount' || question.type === 'number') {
+    const options = question.type === 'amount' ? amountSkipOptions : unknownSkipOptions;
+    return (
+      <div className="intake-search-fields">
+        <label className="intake-number-input" htmlFor={inputId}>
+          <span aria-hidden="true">{question.type === 'amount' ? '₹' : null}</span>
+          <input
+            id={inputId}
+            type="number"
+            inputMode="decimal"
+            min="0"
+            max={question.max}
+            step={question.type === 'amount' ? '1' : '1'}
+            value={typeof value === 'number' ? value : ''}
+            onChange={(event) => onChange(event.target.value === '' ? '' : Number(event.target.value))}
+            placeholder={t(question.placeholder || 'intake.amountPlaceholder')}
+            aria-label={t(question.prompt)}
+          />
+        </label>
+        <OptionGrid options={options} value={options.includes(value) ? value : ''} onChange={(option) => onChange(option)} name={`${question.key}-skip`} language={language} />
+      </div>
+    );
+  }
+  return null;
 }
 
 export function AssessmentPage() {
@@ -215,22 +417,31 @@ export function AssessmentPage() {
   const { data, updateData } = usePlatform();
   const { language } = useLanguage();
   const t = (key, values) => translate(language, key, values);
-  const [index, setIndex] = useState(Math.min(data.assessmentStep || 0, questionDefinitions.length - 1));
+  const questions = getApplicableQuestions(questionDefinitions, data.answers);
+  const [index, setIndex] = useState(Math.min(data.assessmentStep || 0, questions.length - 1));
   const [error, setError] = useState('');
   if (!data.assessmentAccessGranted) return <Navigate to="/assessment/access" replace />;
-  const question = questionDefinitions[index];
-  if (!question) return <Navigate to="/assessment/review" replace />;
-  const value = data.answers[question.key] ?? '';
+  const activeQuestion = questions[index];
+  if (!activeQuestion) return <Navigate to="/assessment/shortlist" replace />;
+  const value = data.answers[activeQuestion.key] ?? '';
   const change = (newValue) => {
     setError('');
-    const answers = { ...data.answers, [question.key]: newValue };
+    const answers = { ...data.answers, [activeQuestion.key]: newValue };
+    if (activeQuestion.key === 'cancerCareStage' && newValue !== 'Diagnosed and planning treatment') delete answers.cancerType;
+    if (activeQuestion.key === 'hospitalStatus' && newValue !== 'Yes, care is planned or underway there') {
+      delete answers.hospitalName;
+      delete answers.hospitalType;
+      delete answers.pmjayHospitalAccepts;
+    }
+    if (activeQuestion.key === 'receivedAssistance' && !['Yes', 'We applied and are waiting for a decision'].includes(newValue)) delete answers.assistanceProgramme;
     updateData({ answers, assessmentStep: index });
   };
   const next = () => {
-    if (question.required && !value && value !== 0) return setError(t('assessment.required'));
-    if (index === questionDefinitions.length - 1) {
+    if (activeQuestion.required && (!value && value !== 0 || (Array.isArray(value) && value.length === 0))) return setError(t('assessment.required'));
+    if (activeQuestion.type === 'hospital' && activeQuestion.required && (!value?.name?.trim() || !value?.city?.trim())) return setError(t('assessment.required'));
+    if (index === questions.length - 1) {
       updateData({ assessmentStep: index });
-      navigate('/assessment/review');
+      navigate('/assessment/shortlist');
     } else {
       const nextIndex = index + 1;
       setIndex(nextIndex);
@@ -251,35 +462,19 @@ export function AssessmentPage() {
   return (
     <div className="assessment-page">
       <header className="flow-header">
-        <Link to="/" className="brand"><span className="brand-mark"><HeartHandshake size={20} /></span>Neravu</Link>
+        <Link to="/" className="brand" aria-label="Neravu home"><BrandLogo /></Link>
         <div className="flow-header-actions"><LanguageSelect /><Link className="quiet-link" to="/login">{t('nav.login')}</Link></div>
       </header>
       <main className="assessment-content" id="main-content">
         <TranslationNotice />
-        <div className="assessment-progress-label"><span>{t(sectionLabels[question.section])}</span><span>{t('assessment.step', { current: index + 1, total: questionDefinitions.length })}</span></div>
-        <div className="flow-progress"><span style={{ width: `${((index + 1) / questionDefinitions.length) * 100}%` }} /></div>
+        <div className="assessment-progress-label"><span>{t(sectionLabels[activeQuestion.section])}</span><span>{t('assessment.step', { current: index + 1, total: questions.length })}</span></div>
+        <div className="flow-progress"><span style={{ width: `${((index + 1) / questions.length) * 100}%` }} /></div>
         <h1>{t('assessment.title')}</h1>
         <p className="muted-copy">{t('assessment.subtitle')}</p>
         <section className="question-card" aria-live="polite">
-          <div className="question-kicker">{t(sectionLabels[question.section])}{question.optional && <span className="optional-pill">{t('common.optional')}</span>}</div>
-          <h2>{t(question.prompt)}</h2>
-          {question.type === 'select' || question.type === 'multiselect' ? (
-            <OptionGrid options={question.options} value={value} onChange={change} multiple={question.type === 'multiselect'} name={question.key} language={language} />
-          ) : (
-            <div className="text-answer">
-              <input
-                type={question.inputType || 'text'}
-                inputMode={question.inputType === 'number' ? 'numeric' : 'text'}
-                min={question.inputType === 'number' ? 0 : undefined}
-                max={question.inputType === 'number' ? 120 : undefined}
-                placeholder={t(question.placeholder)}
-                value={['Not sure', 'Prefer not to say'].includes(value) ? '' : value}
-                onChange={(event) => change(event.target.value)}
-                aria-label={t(question.prompt)}
-              />
-              <OptionGrid options={['Not sure', 'Prefer not to say']} value={value} onChange={change} name={`${question.key}-skip`} language={language} />
-            </div>
-          )}
+          <div className="question-kicker">{t(sectionLabels[activeQuestion.section])}{activeQuestion.optional && <span className="optional-pill">{t('common.optional')}</span>}</div>
+          <h2>{t(activeQuestion.prompt)}</h2>
+          <IntakeQuestionControl question={activeQuestion} value={value} onChange={change} language={language} t={t} />
         </section>
         <p className="autosave-note"><ShieldCheck size={16} /> {t('assessment.saved')}</p>
         {error && <p className="form-error" role="alert">{error}</p>}
@@ -292,35 +487,322 @@ export function AssessmentPage() {
   );
 }
 
+function IntakeFlowHeader({ language, t }) {
+  return (
+    <header className="flow-header">
+      <Link to="/" className="brand" aria-label="Neravu home"><BrandLogo /></Link>
+      <div className="flow-header-actions"><LanguageSelect /><Link className="quiet-link" to="/login">{t('nav.login')}</Link></div>
+    </header>
+  );
+}
+
+function CandidateCard({ candidate, t, language }) {
+  const supportType = candidate.isNgo
+    ? t('intake.supportCategoryNgo')
+    : t('intake.supportCategoryProgramme');
+  const url = candidate.link || candidate.website_url;
+  return (
+    <article className="content-card intake-candidate">
+      <div className="intake-candidate-heading">
+        <div><span className="card-category">{supportType}</span><h2>{candidate.official_name}</h2></div>
+        <span className="status-chip">{t('intake.potential')}</span>
+      </div>
+      <p className="intake-candidate-reason"><strong>{t('intake.whyRelevant')}:</strong> {candidate.reasonParts?.length
+        ? candidate.reasonParts.map((part) => t(part.key, {
+          ...part.values,
+          expenses: Array.isArray(part.values?.expenses)
+            ? part.values.expenses.map((expense) => translateOption(language, expense)).join(', ')
+            : part.values?.expenses,
+          amount: typeof part.values?.amount === 'number' ? answerLabel(part.values.amount, language) : part.values?.amount
+        })).join(' ')
+        : t('intake.screeningPending')}</p>
+      {candidate.description && (language === 'en' || candidate.descriptionIsLocalized) && <p>{candidate.description}</p>}
+      {url && <a className="text-link" href={url} target="_blank" rel="noreferrer">{t('intake.officialProgramme')} <ExternalLink size={14} /></a>}
+      {!candidate.isNgo && candidate.guidanceSlug && <Link className="text-link" to={`/schemes/${candidate.guidanceSlug}`}>{t('intake.programDetails')} <ArrowRight size={14} /></Link>}
+    </article>
+  );
+}
+
+export function AssessmentShortlistPage() {
+  const navigate = useNavigate();
+  const { data } = usePlatform();
+  const { language } = useLanguage();
+  const t = (key, values) => translate(language, key, values);
+  const [candidates, setCandidates] = useState(() => getPotentialIntakeCandidates(data.answers));
+  const [directoryIssue, setDirectoryIssue] = useState('');
+  useEffect(() => {
+    let active = true;
+    fetchSchemes()
+      .then((response) => {
+        if (!active) return;
+        const catalog = buildSchemeCards(response.schemes || [], language);
+        setCandidates(getPotentialIntakeCandidates(data.answers, catalog));
+        setDirectoryIssue('');
+      })
+      .catch((error) => {
+        if (!active) return;
+        console.error('Unable to load programme directory for intake shortlist.', error);
+        setCandidates(getPotentialIntakeCandidates(data.answers));
+        setDirectoryIssue(t('common.error'));
+      });
+    return () => { active = false; };
+  }, [data.answers, language]);
+  if (!data.assessmentAccessGranted) return <Navigate to="/assessment/access" replace />;
+  const missingQuestions = getApplicableQuestions(followUpQuestionDefinitions, data.answers, candidates);
+  const continueToQuestions = () => {
+    navigate('/assessment/follow-up');
+  };
+  return (
+    <div className="assessment-page">
+      <IntakeFlowHeader language={language} t={t} />
+      <main className="review-content" id="main-content">
+        <TranslationNotice />
+        <span className="eyebrow">{t('assessment.reviewEyebrow')}</span>
+        <h1>{t('intake.shortlistTitle')}</h1>
+        <p className="muted-copy">{t('intake.shortlistDescription')}</p>
+        {directoryIssue && <p className="form-error" role="status">{directoryIssue}</p>}
+        {candidates.length ? <div className="intake-candidate-list">
+          {candidates.map((candidate) => <CandidateCard candidate={candidate} t={t} language={language} key={`${candidate.isNgo ? 'ngo' : 'scheme'}-${candidate.id || candidate.official_name}`} />)}
+        </div> : <p className="intake-empty">{t('intake.shortlistEmpty')}</p>}
+        {missingQuestions.length > 0 && <section className="intake-missing-list">
+          <strong>{t('intake.missingInformation')}:</strong>
+          <ul>{missingQuestions.map((question) => <li key={question.key}>{t(question.prompt)}</li>)}</ul>
+        </section>}
+        <RouteFooter>
+          <button type="button" className="button button-outline" onClick={() => navigate('/assessment')}><ArrowLeft size={17} /> {t('common.back')}</button>
+          <button type="button" className="button button-primary" onClick={continueToQuestions}>{t('common.continue')} <ArrowRight size={17} /></button>
+        </RouteFooter>
+      </main>
+    </div>
+  );
+}
+
+export function AssessmentFollowUpPage() {
+  const navigate = useNavigate();
+  const { data, updateData } = usePlatform();
+  const { language } = useLanguage();
+  const t = (key, values) => translate(language, key, values);
+  const candidates = getPotentialIntakeCandidates(data.answers);
+  const questions = getApplicableQuestions(followUpQuestionDefinitions, data.answers, candidates);
+  const [index, setIndex] = useState(Math.min(data.followUpStep || 0, Math.max(questions.length - 1, 0)));
+  const [error, setError] = useState('');
+  if (!data.assessmentAccessGranted) return <Navigate to="/assessment/access" replace />;
+  if (index >= questions.length) return <Navigate to="/assessment/review" replace />;
+  const question = questions[index];
+  const value = data.answers[question.key] ?? '';
+  const change = (newValue) => {
+    setError('');
+    updateData({ answers: { ...data.answers, [question.key]: newValue }, followUpStep: index });
+  };
+  const next = () => {
+    if (question.required && (!value && value !== 0 || (Array.isArray(value) && value.length === 0))) {
+      setError(t('assessment.required'));
+      return;
+    }
+    if (index === questions.length - 1) {
+      updateData({ followUpStep: index });
+      navigate('/assessment/review');
+    } else {
+      const nextIndex = index + 1;
+      setIndex(nextIndex);
+      updateData({ followUpStep: nextIndex });
+    }
+  };
+  const back = () => {
+    if (index === 0) {
+      navigate('/assessment/shortlist');
+      return;
+    }
+    const previousIndex = index - 1;
+    setIndex(previousIndex);
+    updateData({ followUpStep: previousIndex });
+    setError('');
+  };
+  return (
+    <div className="assessment-page">
+      <IntakeFlowHeader language={language} t={t} />
+      <main className="assessment-content" id="main-content">
+        <TranslationNotice />
+        <div className="assessment-progress-label"><span>{t(sectionLabels[question.section])}</span><span>{t('assessment.step', { current: index + 1, total: questions.length })}</span></div>
+        <div className="flow-progress"><span style={{ width: `${((index + 1) / Math.max(questions.length, 1)) * 100}%` }} /></div>
+        <h1>{t('intake.followUpIntro')}</h1>
+        <section className="question-card" aria-live="polite">
+          <div className="question-kicker">{t(sectionLabels[question.section])}{question.optional && <span className="optional-pill">{t('common.optional')}</span>}</div>
+          <h2>{t(question.prompt)}</h2>
+          <IntakeQuestionControl question={question} value={value} onChange={change} language={language} t={t} />
+        </section>
+        <p className="autosave-note"><ShieldCheck size={16} /> {t('assessment.saved')}</p>
+        {error && <p className="form-error" role="alert">{error}</p>}
+        <RouteFooter>
+          <button className="button button-outline" type="button" onClick={back}><ArrowLeft size={17} /> {t('common.back')}</button>
+          <button className="button button-primary" type="button" onClick={next}>{t('common.continue')} <ArrowRight size={17} /></button>
+        </RouteFooter>
+      </main>
+    </div>
+  );
+}
+
+function eligibilityFacts(answers) {
+  const facts = { ...answers };
+  if (answers.hospitalName && typeof answers.hospitalName === 'object') {
+    facts.hospital_name = answers.hospitalName.name || null;
+    facts.hospital_city = answers.hospitalName.city || null;
+    delete facts.hospitalCity;
+    delete facts.hospitalName;
+  }
+  const unanswered = new Set([
+    "I'm not sure", 'Prefer to skip', "I don't have an estimate yet",
+    "I haven't asked yet", 'Not sure', 'Prefer not to say'
+  ]);
+  for (const [key, value] of Object.entries(facts)) {
+    if (value === '' || value == null || (typeof value === 'string' && unanswered.has(value))) {
+      delete facts[key];
+    } else if (Array.isArray(value)) {
+      const knownValues = value.filter((item) => typeof item !== 'string' || !unanswered.has(item));
+      if (knownValues.length) facts[key] = knownValues;
+      else delete facts[key];
+    }
+  }
+  if (typeof facts.age === 'string' && /^\d+$/.test(facts.age)) facts.age = Number(facts.age);
+  if (typeof facts.age === 'string') delete facts.age;
+  if (typeof facts.annual_family_income !== 'number') {
+    delete facts.annual_family_income;
+    delete facts.annual_income;
+  }
+  const aliases = {
+    cancer_type: answers.cancerType,
+    cancer_care_stage: answers.cancerCareStage,
+    hospital_category: answers.hospitalType?.startsWith('Government') ? 'Government'
+      : answers.hospitalType?.startsWith('Private') ? 'Private'
+        : answers.hospitalType?.startsWith('Charitable') ? 'Charitable' : undefined,
+    assistance_programme: answers.assistanceProgramme,
+    received_assistance_status: answers.receivedAssistance,
+    income_certificate: answers.incomeCertificate,
+    pmjay_card: answers.pmjayCard,
+    ration_card: answers.rationCard,
+    category_certificate: answers.categoryCertificate,
+    bpl_certificate: answers.bplCertificate,
+    state_health_card: answers.stateHealthCard,
+    pmjay_hospital_accepts: answers.pmjayHospitalAccepts
+  };
+  if (typeof answers.annual_family_income === 'number') aliases.annual_income = answers.annual_family_income;
+  for (const [key, value] of Object.entries(aliases)) {
+    if (value !== undefined && value !== '' && !(typeof value === 'string' && unanswered.has(value))) facts[key] = value;
+  }
+  return facts;
+}
+
 export function ReviewPage() {
   const navigate = useNavigate();
   const { data, updateData } = usePlatform();
   const { language } = useLanguage();
   const t = (key) => translate(language, key);
-  const groups = useMemo(() => questionDefinitions.reduce((result, question, index) => {
-    (result[question.section] ||= []).push({ question, index });
+  const [screening, setScreening] = useState({ loading: true, candidates: [], error: '' });
+  const localCandidates = getPotentialIntakeCandidates(data.answers);
+  const initialQuestions = getApplicableQuestions(questionDefinitions, data.answers);
+  const followUpQuestions = getApplicableQuestions(followUpQuestionDefinitions, data.answers, localCandidates);
+  const allQuestions = [...initialQuestions, ...followUpQuestions];
+  const groups = allQuestions.reduce((result, question) => {
+    (result[question.section] ||= []).push(question);
     return result;
-  }, {}), []);
+  }, {});
+
+  useEffect(() => {
+    let active = true;
+    const runScreening = async () => {
+      setScreening({ loading: true, candidates: [], error: '' });
+      let candidates = localCandidates;
+      let catalog = [];
+      try {
+        const published = await fetchSchemes();
+        catalog = buildSchemeCards(published.schemes || [], language);
+        candidates = getPotentialIntakeCandidates(data.answers, catalog);
+      } catch (error) {
+        console.error('Unable to load programme directory for eligibility screening.', error);
+        if (active) setScreening({ loading: false, candidates: [], error: t('common.error') });
+      }
+      const facts = eligibilityFacts(data.answers);
+      const assessed = await Promise.all(candidates.map(async (candidate) => {
+        if (candidate.isNgo || !candidate.liveSchemeId) {
+          return { candidate, result: null, error: '' };
+        }
+        try {
+          return { candidate, result: await evaluateEligibility(candidate.liveSchemeId, facts), error: '' };
+        } catch (error) {
+          console.error(`Eligibility screening failed for programme ${candidate.liveSchemeId}.`, error);
+          return { candidate, result: null, error: t('common.error') };
+        }
+      }));
+      if (active) setScreening((current) => ({
+        loading: false,
+        candidates: assessed,
+        error: current.error
+      }));
+    };
+    void runScreening();
+    return () => { active = false; };
+  }, [data.answers, language]);
+
   const finish = () => {
-    updateData({ assessmentComplete: true, assessmentStep: questionDefinitions.length - 1 });
+    updateData({ assessmentComplete: true, assessmentStep: initialQuestions.length - 1 });
     navigate('/dashboard');
+  };
+  const edit = (question) => {
+    const initialIndex = initialQuestions.findIndex((item) => item.key === question.key);
+    if (initialIndex >= 0) {
+      updateData({ assessmentStep: initialIndex });
+      navigate('/assessment');
+      return;
+    }
+    const followUpIndex = followUpQuestions.findIndex((item) => item.key === question.key);
+    if (followUpIndex >= 0) {
+      updateData({ followUpStep: followUpIndex });
+      navigate('/assessment/follow-up');
+    }
   };
   return (
     <div className="assessment-page">
-      <header className="flow-header"><Link to="/" className="brand"><span className="brand-mark"><HeartHandshake size={20} /></span>Neravu</Link><div className="flow-header-actions"><LanguageSelect /><Link className="quiet-link" to="/login">{t('nav.login')}</Link></div></header>
+      <IntakeFlowHeader language={language} t={t} />
       <main className="review-content" id="main-content">
         <TranslationNotice />
         <span className="eyebrow">{t('assessment.reviewEyebrow')}</span><h1>{t('assessment.review')}</h1><p className="muted-copy">{t('assessment.reviewHelp')}</p>
-        {Object.entries(groups).map(([section, entries]) => <section className="review-section" key={section}>
+        {Object.entries(groups).map(([section, questions]) => <section className="review-section" key={section}>
           <h2>{t(sectionLabels[section])}</h2>
-          {entries.map(({ question, index }) => <div className="review-row" key={question.key}>
-            <div><span>{t(question.prompt)}</span><strong>{data.answers[question.key] ? answerLabel(data.answers[question.key], language) : '—'}</strong></div>
-            <button type="button" className="text-link" onClick={() => { updateData({ assessmentStep: index }); navigate('/assessment'); }}>{t('common.edit')}</button>
+          {questions.map((question) => <div className="review-row" key={question.key}>
+            <div><span>{t(question.prompt)}</span><strong>{data.answers[question.key] !== undefined && data.answers[question.key] !== '' ? answerLabel(data.answers[question.key], language) : '—'}</strong></div>
+            <button type="button" className="text-link" onClick={() => edit(question)}>{t('common.edit')}</button>
           </div>)}
         </section>)}
+        <section className="intake-screening">
+          <h2>{t('intake.finalMatches')}</h2>
+          <p className="muted-copy">{t('intake.shortlistDescription')}</p>
+          {screening.loading && <p role="status">{t('common.loading')}</p>}
+          {screening.error && <p className="form-error" role="alert">{screening.error}</p>}
+          {!screening.loading && screening.candidates.length === 0 && <p>{t('intake.screeningPending')}</p>}
+          {screening.candidates.map(({ candidate, result, error }) => {
+            const state = result?.result === 'FAIL' ? 'not-eligible' : result?.result === 'PASS' ? 'potential-match' : 'unknown';
+            const statusText = state === 'not-eligible' ? t('intake.notEligible')
+              : result?.result === 'PASS' ? t('intake.confirmed')
+                : result ? t('intake.screeningPending') : t('intake.notEvaluated');
+            const unresolved = result?.rules?.filter((rule) => rule.result === 'UNKNOWN' || rule.result === 'CONFLICT') || [];
+            return (
+              <article className="content-card intake-result-card" key={`${candidate.isNgo ? 'ngo' : 'scheme'}-${candidate.liveSchemeId || candidate.official_name}`}>
+                <span className={`status-chip ${state}`}>{statusText}</span>
+                <h3>{candidate.official_name}</h3>
+                <p>{language === 'en' ? (result?.reason || candidate.reason || t('intake.screeningPending')) : statusText}</p>
+                {error && <p className="form-error">{error}</p>}
+                {unresolved.length > 0 && language === 'en' && <div><strong>{t('intake.missingInformation')}</strong><ul>{unresolved.map((rule, index) => <li key={`${rule.rule_type}-${index}`}>{rule.explanation}</li>)}</ul></div>}
+                {unresolved.length > 0 && language !== 'en' && <p>{t('intake.detailsOnlyInOfficialLanguage')}</p>}
+                {candidate.documentsToPrepare && (language === 'en' || candidate.documentsToPrepareIsLocalized) && <p><strong>{t('intake.documentsToPrepare')}:</strong> {candidate.documentsToPrepare}</p>}
+                {(candidate.link || candidate.website_url) && <a className="text-link" href={candidate.link || candidate.website_url} target="_blank" rel="noreferrer">{t('intake.officialProgramme')} <ExternalLink size={14} /></a>}
+                {result?.disclaimer && <small>{language === 'en' ? result.disclaimer : t('intake.preliminaryDisclaimer')}</small>}
+              </article>
+            );
+          })}
+        </section>
         <DemoNotice />
         <RouteFooter>
-          <button type="button" className="button button-outline" onClick={() => navigate('/assessment')}><ArrowLeft size={17} /> {t('common.back')}</button>
+          <button type="button" className="button button-outline" onClick={() => navigate(followUpQuestions.length ? '/assessment/follow-up' : '/assessment/shortlist')}><ArrowLeft size={17} /> {t('common.back')}</button>
           <button type="button" className="button button-primary" onClick={finish}>{t('assessment.finish')} <ArrowRight size={17} /></button>
         </RouteFooter>
       </main>
@@ -460,7 +942,7 @@ export function AuthPage() {
 
   return (
     <div className="auth-page">
-      <header className="flow-header"><Link to="/" className="brand"><span className="brand-mark"><HeartHandshake size={20} /></span>Neravu</Link><LanguageSelect /></header>
+      <header className="flow-header"><Link to="/" className="brand" aria-label="Neravu home"><BrandLogo /></Link><LanguageSelect /></header>
       <main className="auth-card" id="main-content">
         <TranslationNotice />
         <span className="auth-icon"><LockKeyhole size={23} /></span>
@@ -526,13 +1008,20 @@ function SchemeCard({ scheme, onSelectDetail, onScreenEligibility, tracked, onTo
     hmdg: 'schemes.category.grant',
     state: 'schemes.category.state'
   };
-  const title = scheme.official_name || scheme.name;
+  const title = translateOption(language, scheme.official_name || scheme.name || '');
   const category = scheme.programme_type
     ? translateOption(language, scheme.programme_type)
     : translate(language, demoCategoryKeys[scheme.id] || 'schemes.category.health');
-  const description = isLive
-    ? scheme.description || scheme.summary || ''
-    : translate(language, `schemes.${scheme.id}`);
+  const demoDescription = translate(language, `schemes.${scheme.id}`);
+  const isMissingDescriptionKey = (typeof scheme.description === 'string' && /^schemes\.[\w.-]+$/.test(scheme.description))
+    || (!isLive && /^schemes\.[\w.-]+$/.test(demoDescription));
+  const description = isMissingDescriptionKey
+    ? language === 'en' ? scheme.eligibilitySummary || '' : translate(language, 'schemes.detailsInEnglish')
+    : isLive
+    ? (language === 'en' || scheme.descriptionIsLocalized
+      ? scheme.description || scheme.summary || ''
+      : translate(language, 'schemes.detailsInEnglish'))
+    : demoDescription;
   const reviewStatusKey = {
     draft: 'admin.statusDraft',
     under_review: 'admin.statusReview',
@@ -541,6 +1030,7 @@ function SchemeCard({ scheme, onSelectDetail, onScreenEligibility, tracked, onTo
   const reviewStatus = scheme.review_status
     ? translate(language, reviewStatusKey || 'admin.statusUnknown')
     : '';
+  const demoStatus = translate(language, `schemes.status.${scheme.id}`);
   const isVerified = scheme.review_status === 'verified';
 
   return (
@@ -556,7 +1046,9 @@ function SchemeCard({ scheme, onSelectDetail, onScreenEligibility, tracked, onTo
       <span className="card-category">{category}</span>
       <h2>{title}</h2>
       <p>{description}</p>
-      {!isLive && scheme.status && <small className="verification-status">{translate(language, `schemes.status.${scheme.id}`)}</small>}
+      {!isLive && scheme.status && !/^schemes\.[\w.-]+$/.test(demoStatus) && (
+        <small className="verification-status">{demoStatus}</small>
+      )}
       {recommendation && (
         <small className="verification-status">
           {translate(language, 'schemes.possibleMatch')}
@@ -567,7 +1059,7 @@ function SchemeCard({ scheme, onSelectDetail, onScreenEligibility, tracked, onTo
         <small className="verification-status">
           {translate(language, 'schemes.version', {
             version: scheme.version,
-            status: reviewStatus
+            status: language === 'en' ? reviewStatus : translate(language, 'schemes.statusLocalized')
           })}
         </small>
       )}
@@ -648,12 +1140,12 @@ export function DashboardPage() {
     fetchSchemes()
       .then((res) => {
         if (active && res?.schemes?.length) {
-          setLiveSchemes(res.schemes);
+          setLiveSchemes(buildSchemeCards(res.schemes, language).slice(0, 3));
         }
       })
       .catch(() => {});
     return () => { active = false; };
-  }, []);
+  }, [language]);
 
   const requestedSupport = assistanceOptions.filter((option) => (data.assistanceTypes || []).includes(option.id));
   const displaySchemes = liveSchemes.length > 0 ? liveSchemes.slice(0, 3) : demoSchemes.slice(0, 3);
@@ -672,7 +1164,7 @@ export function DashboardPage() {
           <span className="eyebrow">{t('dashboard.startingPoint')}</span>
           <h2>
             {data.answers?.relationship
-              ? `${answerLabel(data.answers.relationship, language)}${data.answers.state ? ` · ${data.answers.state}` : ''}`
+              ? `${answerLabel(data.answers.relationship, language)}${data.answers.state ? ` · ${translateOption(language, data.answers.state)}` : ''}`
               : t('dashboard.emptySummary')}
           </h2>
           <p>{requestedSupport.length ? requestedSupport.map((option) => t(option.title)).join(' · ') : t('dashboard.chooseSupport')}</p>
@@ -1047,7 +1539,7 @@ export function SchemesPage() {
   const recommendations = useMemo(() => schemes.map((scheme) => {
     const result = getSchemeRecommendation(scheme, browseState, incomeAnswer);
     const reasons = [];
-    if (browseState && result.stateMatch) reasons.push(t('schemes.stateMatchReason', { state: browseState }));
+    if (browseState && result.stateMatch) reasons.push(t('schemes.stateMatchReason', { state: translateOption(language, browseState) }));
     if (incomeAnswer && !result.incomeMismatch) reasons.push(t('schemes.incomeConsidered'));
     return { scheme, result, reason: reasons.join(' · ') };
   }), [schemes, browseState, incomeAnswer, language]);
@@ -1133,7 +1625,7 @@ export function SchemesPage() {
           onChange={(event) => setBrowseState(event.target.value)}
           style={{ width: '100%', maxWidth: '360px', padding: '8px 12px', borderRadius: '8px', border: '1px solid #ccc', fontSize: '13px', background: '#fff' }}
         >
-          <option value="">{t('directory.useMyState', { state: data.answers?.state || t('directory.allStates') })}</option>
+          <option value="">{t('directory.useMyState', { state: data.answers?.state ? translateOption(language, data.answers.state) : t('directory.allStates') })}</option>
           {knownStates.map((state) => <option key={state} value={state}>{translateOption(language, state)}</option>)}
         </select>
         {recommendedSchemes.length > 0 && (
@@ -1144,9 +1636,15 @@ export function SchemesPage() {
         {selectedStateLead?.['State Government Scheme Lead'] && (
           <div className="guidance-fact" style={{ marginTop: '12px' }}>
             <strong>{t('directory.stateLead', { state: translateOption(language, browseState) })}</strong>
-            <p>{selectedStateLead['State Government Scheme Lead']}</p>
-            {selectedStateLead['Next Action / Verification Notes'] && (
-              <p>{selectedStateLead['Next Action / Verification Notes']}</p>
+            {language === 'en' ? (
+              <>
+                <p>{selectedStateLead['State Government Scheme Lead']}</p>
+                {selectedStateLead['Next Action / Verification Notes'] && (
+                  <p>{selectedStateLead['Next Action / Verification Notes']}</p>
+                )}
+              </>
+            ) : (
+              <p>{t('schemes.detailsOnlyInEnglish')}</p>
             )}
           </div>
         )}
