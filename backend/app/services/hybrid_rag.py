@@ -176,6 +176,7 @@ def _directory_chunk(
     source_status: str | None,
     field_path: str,
     fields: list[tuple[str, object]],
+    rrf_score: float = 0.0,
 ) -> dict:
     values = [
         f"{label}: {str(value).strip()}"
@@ -205,64 +206,105 @@ def _directory_chunk(
         "field_path": field_path,
         "chunk_text": text_value,
         "source_status": display_status,
-        "rrf_score": 0.0,
-        "rerank_score": 0.0,
+        "rrf_score": float(rrf_score),
+        "rerank_score": float(rrf_score),
     }
 
 
-def _retrieve_directory_records(connection, question: str, recommendations: bool) -> list[dict]:
+def _retrieve_directory_records(
+    connection,
+    question: str,
+    recommendations: bool,
+    embedding: str | None = None,
+) -> list[dict]:
     records: list[dict] = []
-    search_condition = (
-        ""
-        if recommendations
-        else """
-            WHERE to_tsvector('simple', searchable_text)
-                  @@ plainto_tsquery('simple', :question)
-        """
-    )
-    scheme_order_condition = (
-        "ORDER BY scheme_name"
-        if recommendations
-        else """
-            ORDER BY ts_rank_cd(
-                to_tsvector('simple', searchable_text),
-                plainto_tsquery('simple', :question)
-            ) DESC, scheme_name
-        """
-    )
-    ngo_order_condition = (
-        "ORDER BY organization_name"
-        if recommendations
-        else """
-            ORDER BY ts_rank_cd(
-                to_tsvector('simple', searchable_text),
-                plainto_tsquery('simple', :question)
-            ) DESC, organization_name
-        """
-    )
+    limit = 20 if recommendations else 8
 
-    scheme_rows = connection.execute(
-        text(f"""
-            WITH records AS (
-              SELECT id, scheme_name, government_level, state_coverage,
-                   benefit_type, published_benefit_limit, cancer_covered,
-                   eligibility_summary, documents_required, application_route,
-                   official_link, helpline_contact, verification_status,
-                   last_checked, source_notes,
-                   concat_ws(' ', scheme_name, government_level, state_coverage,
+    # 1. Government Schemes Directory
+    scheme_rows = []
+    if embedding and not recommendations:
+        try:
+            scheme_rows = connection.execute(
+                text("""
+                    WITH vector_ranked AS (
+                        SELECT id, row_number() OVER (ORDER BY embedding <=> CAST(:embedding AS vector(384))) AS v_rank
+                        FROM public.government_schemes_directory
+                        WHERE embedding IS NOT NULL
+                        ORDER BY embedding <=> CAST(:embedding AS vector(384))
+                        LIMIT :limit
+                    ), lexical_ranked AS (
+                        SELECT id, row_number() OVER (
+                            ORDER BY ts_rank_cd(
+                                to_tsvector('simple', concat_ws(' ', scheme_name, government_level, state_coverage, benefit_type, published_benefit_limit, cancer_covered, eligibility_summary, documents_required, application_route, official_link, helpline_contact, verification_status, source_notes)),
+                                plainto_tsquery('simple', :question)
+                            ) DESC
+                        ) AS l_rank
+                        FROM public.government_schemes_directory
+                        WHERE to_tsvector('simple', concat_ws(' ', scheme_name, government_level, state_coverage, benefit_type, published_benefit_limit, cancer_covered, eligibility_summary, documents_required, application_route, official_link, helpline_contact, verification_status, source_notes)) @@ plainto_tsquery('simple', :question)
+                        LIMIT :limit
+                    ), candidate_ids AS (
+                        SELECT id, v_rank, NULL::bigint AS l_rank FROM vector_ranked
+                        UNION ALL
+                        SELECT id, NULL::bigint AS v_rank, l_rank FROM lexical_ranked
+                    ), scored AS (
+                        SELECT id,
+                               SUM(COALESCE(1.0 / (60 + v_rank), 0) + COALESCE(1.0 / (60 + l_rank), 0)) AS rrf_score
+                        FROM candidate_ids
+                        GROUP BY id
+                    )
+                    SELECT g.*, s.rrf_score
+                    FROM scored s
+                    JOIN public.government_schemes_directory g ON g.id = s.id
+                    ORDER BY s.rrf_score DESC
+                    LIMIT :limit
+                """),
+                {"embedding": embedding, "question": question, "limit": limit},
+            ).mappings().all()
+        except Exception:
+            scheme_rows = []
+
+    if not scheme_rows:
+        search_condition = (
+            ""
+            if recommendations
+            else """
+                WHERE to_tsvector('simple', searchable_text)
+                      @@ plainto_tsquery('simple', :question)
+            """
+        )
+        scheme_order_condition = (
+            "ORDER BY scheme_name"
+            if recommendations
+            else """
+                ORDER BY ts_rank_cd(
+                    to_tsvector('simple', searchable_text),
+                    plainto_tsquery('simple', :question)
+                ) DESC, scheme_name
+            """
+        )
+        scheme_rows = connection.execute(
+            text(f"""
+                WITH records AS (
+                  SELECT id, scheme_name, government_level, state_coverage,
                        benefit_type, published_benefit_limit, cancer_covered,
                        eligibility_summary, documents_required, application_route,
                        official_link, helpline_contact, verification_status,
-                       source_notes) AS searchable_text
-              FROM public.government_schemes_directory
-            )
-            SELECT * FROM records
-            {search_condition}
-            {scheme_order_condition}
-            LIMIT :record_limit
-        """),
-        {"question": question, "record_limit": 20 if recommendations else 8},
-    ).mappings().all()
+                       last_checked, source_notes,
+                       concat_ws(' ', scheme_name, government_level, state_coverage,
+                           benefit_type, published_benefit_limit, cancer_covered,
+                           eligibility_summary, documents_required, application_route,
+                           official_link, helpline_contact, verification_status,
+                           source_notes) AS searchable_text
+                  FROM public.government_schemes_directory
+                )
+                SELECT *, 0.0 AS rrf_score FROM records
+                {search_condition}
+                {scheme_order_condition}
+                LIMIT :record_limit
+            """),
+            {"question": question, "record_limit": limit},
+        ).mappings().all()
+
     for row in scheme_rows:
         records.append(_directory_chunk(
             record_id=row["id"],
@@ -270,6 +312,7 @@ def _retrieve_directory_records(connection, question: str, recommendations: bool
             source_url=row["official_link"],
             source_status=row["verification_status"],
             field_path="government_schemes_directory",
+            rrf_score=float(row.get("rrf_score") or 0.0),
             fields=[
                 ("Government level", row["government_level"]),
                 ("State coverage", row["state_coverage"]),
@@ -285,30 +328,93 @@ def _retrieve_directory_records(connection, question: str, recommendations: bool
             ],
         ))
 
-    ngo_rows = connection.execute(
-        text(f"""
-            WITH records AS (
-              SELECT id, organization_name, organization_type, state_coverage,
-                   city_district, support_type, what_support_offered,
-                   direct_financial_aid, aid_amount_limit, eligibility,
-                   hospital_restrictions, contact_phone, contact_email,
-                   address, website_url, application_route,
-                   verification_status, last_checked, source_notes,
-                   concat_ws(' ', organization_name, organization_type,
-                       state_coverage, city_district, support_type,
-                       what_support_offered, direct_financial_aid,
-                       aid_amount_limit, eligibility, hospital_restrictions,
-                       address, application_route, verification_status,
-                       source_notes) AS searchable_text
-              FROM public.ngo_directory
-            )
-            SELECT * FROM records
-            {search_condition}
-            {ngo_order_condition}
-            LIMIT :record_limit
-        """),
-        {"question": question, "record_limit": 12 if recommendations else 8},
-    ).mappings().all()
+    # 2. NGO Directory
+    ngo_rows = []
+    if embedding and not recommendations:
+        try:
+            ngo_rows = connection.execute(
+                text("""
+                    WITH vector_ranked AS (
+                        SELECT id, row_number() OVER (ORDER BY embedding <=> CAST(:embedding AS vector(384))) AS v_rank
+                        FROM public.ngo_directory
+                        WHERE embedding IS NOT NULL
+                        ORDER BY embedding <=> CAST(:embedding AS vector(384))
+                        LIMIT :limit
+                    ), lexical_ranked AS (
+                        SELECT id, row_number() OVER (
+                            ORDER BY ts_rank_cd(
+                                to_tsvector('simple', concat_ws(' ', organization_name, organization_type, state_coverage, city_district, support_type, what_support_offered, direct_financial_aid, aid_amount_limit, eligibility, hospital_restrictions, address, application_route, verification_status, source_notes)),
+                                plainto_tsquery('simple', :question)
+                            ) DESC
+                        ) AS l_rank
+                        FROM public.ngo_directory
+                        WHERE to_tsvector('simple', concat_ws(' ', organization_name, organization_type, state_coverage, city_district, support_type, what_support_offered, direct_financial_aid, aid_amount_limit, eligibility, hospital_restrictions, address, application_route, verification_status, source_notes)) @@ plainto_tsquery('simple', :question)
+                        LIMIT :limit
+                    ), candidate_ids AS (
+                        SELECT id, v_rank, NULL::bigint AS l_rank FROM vector_ranked
+                        UNION ALL
+                        SELECT id, NULL::bigint AS v_rank, l_rank FROM lexical_ranked
+                    ), scored AS (
+                        SELECT id,
+                               SUM(COALESCE(1.0 / (60 + v_rank), 0) + COALESCE(1.0 / (60 + l_rank), 0)) AS rrf_score
+                        FROM candidate_ids
+                        GROUP BY id
+                    )
+                    SELECT n.*, s.rrf_score
+                    FROM scored s
+                    JOIN public.ngo_directory n ON n.id = s.id
+                    ORDER BY s.rrf_score DESC
+                    LIMIT :limit
+                """),
+                {"embedding": embedding, "question": question, "limit": limit},
+            ).mappings().all()
+        except Exception:
+            ngo_rows = []
+
+    if not ngo_rows:
+        search_cond = (
+            ""
+            if recommendations
+            else """
+                WHERE to_tsvector('simple', searchable_text)
+                      @@ plainto_tsquery('simple', :question)
+            """
+        )
+        ngo_order = (
+            "ORDER BY organization_name"
+            if recommendations
+            else """
+                ORDER BY ts_rank_cd(
+                    to_tsvector('simple', searchable_text),
+                    plainto_tsquery('simple', :question)
+                ) DESC, organization_name
+            """
+        )
+        ngo_rows = connection.execute(
+            text(f"""
+                WITH records AS (
+                  SELECT id, organization_name, organization_type, state_coverage,
+                       city_district, support_type, what_support_offered,
+                       direct_financial_aid, aid_amount_limit, eligibility,
+                       hospital_restrictions, contact_phone, contact_email,
+                       address, website_url, application_route,
+                       verification_status, last_checked, source_notes,
+                       concat_ws(' ', organization_name, organization_type,
+                           state_coverage, city_district, support_type,
+                           what_support_offered, direct_financial_aid,
+                           aid_amount_limit, eligibility, hospital_restrictions,
+                           address, application_route, verification_status,
+                           source_notes) AS searchable_text
+                  FROM public.ngo_directory
+                )
+                SELECT *, 0.0 AS rrf_score FROM records
+                {search_cond}
+                {ngo_order}
+                LIMIT :record_limit
+            """),
+            {"question": question, "record_limit": limit},
+        ).mappings().all()
+
     for row in ngo_rows:
         records.append(_directory_chunk(
             record_id=row["id"],
@@ -316,6 +422,7 @@ def _retrieve_directory_records(connection, question: str, recommendations: bool
             source_url=row["website_url"],
             source_status=row["verification_status"],
             field_path="ngo_directory",
+            rrf_score=float(row.get("rrf_score") or 0.0),
             fields=[
                 ("Organization type", row["organization_type"]),
                 ("State coverage", row["state_coverage"]),
@@ -555,6 +662,7 @@ def hybrid_retrieve(
             connection,
             question,
             recommendations,
+            embedding=vector_value,
         )
 
     candidates = [dict(row) for row in rows] + supplemental + legacy + directory

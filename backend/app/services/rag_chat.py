@@ -29,7 +29,7 @@ def chat_with_neravu(question: str, language: str = "en"):
     chunks = hybrid_retrieve(
         question=question,
         candidate_count=30,
-        top_k=15 if is_recommendation or is_hospital_question else 5,
+        top_k=15 if is_recommendation or is_hospital_question else 8,
     )
 
     if not chunks:

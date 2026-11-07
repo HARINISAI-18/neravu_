@@ -3,21 +3,25 @@
 import argparse
 import hashlib
 import os
+import sys
 from pathlib import Path
 from urllib.parse import quote
 
+PROJECT_ROOT = Path(__file__).resolve().parents[1]
+BACKEND_ROOT = Path(__file__).resolve().parent
+if str(BACKEND_ROOT) not in sys.path:
+    sys.path.insert(0, str(BACKEND_ROOT))
+
+from dotenv import load_dotenv
+load_dotenv(PROJECT_ROOT / ".env")
+load_dotenv(BACKEND_ROOT / ".env")
+
 import fitz
 import httpx
-from dotenv import load_dotenv
 from sqlalchemy import text
 
 from app.db.config import get_database_engine
 from app.services.hybrid_rag import get_embedding_model
-
-PROJECT_ROOT = Path(__file__).resolve().parents[1]
-BACKEND_ROOT = Path(__file__).resolve().parent
-load_dotenv(PROJECT_ROOT / ".env")
-load_dotenv(BACKEND_ROOT / ".env")
 
 MAX_PDF_BYTES = 25 * 1024 * 1024
 MAX_CHUNK_CHARS = 1000
@@ -43,8 +47,8 @@ def _chunks_for_page(page_text: str) -> list[str]:
 
 
 def _download_pdf(bucket: str, object_path: str) -> bytes:
-    supabase_url = (os.getenv("SUPABASE_URL") or "").rstrip("/")
-    service_key = os.getenv("SUPABASE_SERVICE_ROLE_KEY")
+    supabase_url = (os.getenv("SUPABASE_URL") or os.getenv("VITE_SUPABASE_URL") or "").rstrip("/")
+    service_key = os.getenv("SUPABASE_SERVICE_ROLE_KEY") or os.getenv("VITE_SUPABASE_ANON_KEY")
     if not supabase_url or not service_key:
         raise RuntimeError(
             "SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY must be configured "

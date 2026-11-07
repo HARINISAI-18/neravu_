@@ -115,6 +115,18 @@ def validate_cited_answer(answer: str, evidence: list[dict], question: str = "")
         token.replace(",", "")
         for token in re.findall(r"(?<![A-Za-z0-9])\d[\d,]*(?:\.\d+)?", normalized_question)
     }
+    all_evidence_numbers = {
+        token.replace(",", "")
+        for chunk in evidence
+        for token in re.findall(r"(?<![A-Za-z0-9])\d[\d,]*(?:\.\d+)?", str(chunk.get("chunk_text", "")).translate(INDIC_DIGITS_MAP))
+    }
+
+    all_nums_float = set()
+    for token in (question_numbers | all_evidence_numbers):
+        try:
+            all_nums_float.add(float(token))
+        except ValueError:
+            pass
 
     has_at_least_one_citation = False
     for sentence in sentences:
@@ -134,6 +146,27 @@ def validate_cited_answer(answer: str, evidence: list[dict], question: str = "")
                 for token in re.findall(r"(?<![A-Za-z0-9])\d[\d,]*(?:\.\d+)?", cited_text)
             }
             unsupported_numbers = (answer_numbers - question_numbers) - evidence_numbers
+            if unsupported_numbers:
+                unsupported_numbers = unsupported_numbers - all_evidence_numbers
+
+            # Check for currency unit scaling (e.g. Lakh = 100,000, Crore = 10,000,000)
+            if unsupported_numbers:
+                remaining = set()
+                for num_str in unsupported_numbers:
+                    try:
+                        val = float(num_str)
+                        if (
+                            val * 100000 in all_nums_float
+                            or val / 100000 in all_nums_float
+                            or val * 10000000 in all_nums_float
+                            or val / 10000000 in all_nums_float
+                        ):
+                            continue
+                        remaining.add(num_str)
+                    except ValueError:
+                        remaining.add(num_str)
+                unsupported_numbers = remaining
+
             if unsupported_numbers:
                 return None
 
