@@ -85,7 +85,7 @@ STRICT RULES:
             {"role": "user", "content": f"Question:\n{question}\n\nKnowledge excerpts:\n{context}"},
         ],
         temperature=0.1,
-        max_tokens=1500,
+        max_tokens=800,
     )
     choice = response.choices[0]
     answer = choice.message.content

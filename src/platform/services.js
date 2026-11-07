@@ -255,6 +255,35 @@ export async function askGuidance({ question, language, conversationId = null, s
   return { ...finalResult, sources: normalizeSources(finalResult.sources) };
 }
 
+export async function transcribeVoiceAudio({ audioBlob, language = 'auto', signal }) {
+  const session = await authService.getSession();
+  const headers = {};
+  if (session?.access_token) {
+    headers.Authorization = `Bearer ${session.access_token}`;
+  } else {
+    const guest = await getGuestSession();
+    headers['X-Guest-Session'] = guest.session_token;
+  }
+
+  const formData = new FormData();
+  formData.append('file', audioBlob, 'recording.wav');
+  if (language) formData.append('language', language);
+
+  const response = await fetch(`${apiBaseUrl}/api/voice/transcribe`, {
+    method: 'POST',
+    headers,
+    body: formData,
+    signal,
+  });
+
+  if (!response.ok) {
+    const result = await response.json().catch(() => ({}));
+    throw new Error(result.detail || `Transcription failed with status ${response.status}.`);
+  }
+
+  return response.json();
+}
+
 export async function sendVoiceChat({
   audioBlob,
   conversationId = null,

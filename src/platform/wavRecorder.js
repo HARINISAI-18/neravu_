@@ -61,6 +61,11 @@ export async function createWavRecorder() {
 
   const AudioContextClass = window.AudioContext || window.webkitAudioContext;
   const audioContext = new AudioContextClass();
+  if (audioContext.state === 'suspended') {
+    try {
+      await audioContext.resume();
+    } catch {}
+  }
   const sampleRate = audioContext.sampleRate;
   const source = audioContext.createMediaStreamSource(stream);
   const processor = audioContext.createScriptProcessor(4096, 1, 1);
