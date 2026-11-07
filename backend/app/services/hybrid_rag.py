@@ -7,11 +7,49 @@ if os.getenv("HF_HUB_OFFLINE") == "1":
 os.environ["HF_HUB_DISABLE_SYMLINKS_WARNING"] = "1"
 
 import re
+import threading
+import time
+from collections import OrderedDict
 from functools import lru_cache
 
 from sqlalchemy import text
 
 from app.db.config import get_database_engine
+
+
+class LRUTTLCache:
+    """Thread-safe LRU cache with time-to-live (TTL) expiration for retrieval and embeddings."""
+
+    def __init__(self, capacity: int = 256, ttl_seconds: int = 1800):
+        self.capacity = capacity
+        self.ttl = ttl_seconds
+        self.cache: OrderedDict[str, tuple[float, any]] = OrderedDict()
+        self.lock = threading.Lock()
+
+    def get(self, key: str):
+        now = time.monotonic()
+        with self.lock:
+            if key not in self.cache:
+                return None
+            ts, val = self.cache[key]
+            if now - ts > self.ttl:
+                del self.cache[key]
+                return None
+            self.cache.move_to_end(key)
+            return val
+
+    def set(self, key: str, val: any):
+        now = time.monotonic()
+        with self.lock:
+            if key in self.cache:
+                self.cache.move_to_end(key)
+            self.cache[key] = (now, val)
+            if len(self.cache) > self.capacity:
+                self.cache.popitem(last=False)
+
+
+_retrieval_cache = LRUTTLCache(capacity=256, ttl_seconds=1800)
+_embedding_cache = LRUTTLCache(capacity=512, ttl_seconds=3600)
 
 EMBEDDING_MODEL = "intfloat/multilingual-e5-small"
 RERANKER_MODEL = "BAAI/bge-reranker-v2-m3"
@@ -620,14 +658,23 @@ def hybrid_retrieve(
     if not 1 <= top_k <= candidate_count <= 30:
         raise ValueError("Invalid retrieval limits")
 
-    try:
-        embedding = get_embedding_model().encode(
-            "query: " + question,
-            normalize_embeddings=True,
-        )
-    except Exception as exc:
-        logger.warning(f"Embedding model unavailable, falling back to zero vector: {exc}")
-        embedding = [0.0] * 384
+    cache_key = f"{question.strip().casefold()}:{programme_id or ''}:{candidate_count}:{top_k}"
+    cached_chunks = _retrieval_cache.get(cache_key)
+    if cached_chunks is not None:
+        return [dict(c) for c in cached_chunks]
+
+    emb_key = question.strip().casefold()
+    embedding = _embedding_cache.get(emb_key)
+    if embedding is None:
+        try:
+            embedding = get_embedding_model().encode(
+                "query: " + question,
+                normalize_embeddings=True,
+            )
+            _embedding_cache.set(emb_key, embedding)
+        except Exception as exc:
+            logger.warning(f"Embedding model unavailable, falling back to zero vector: {exc}")
+            embedding = [0.0] * 384
 
     vector_value = (
         "[" +
@@ -724,7 +771,9 @@ def hybrid_retrieve(
                 "ngo_directory",
             }
         )
-        return selected[:30]
+        result = selected[:30]
+        _retrieval_cache.set(cache_key, result)
+        return result
 
     if is_hospital_request(question):
         selected = [
@@ -738,7 +787,9 @@ def hybrid_retrieve(
                 selected_ids.add(item.get("chunk_id"))
             if len(selected) >= top_k:
                 break
-        return selected[:top_k]
+        result = selected[:top_k]
+        _retrieval_cache.set(cache_key, result)
+        return result
 
     selected = []
     selected_ids = set()
@@ -762,4 +813,6 @@ def hybrid_retrieve(
             selected_ids.add(item.get("chunk_id"))
         if len(selected) >= top_k:
             break
-    return selected[:top_k]
+    result = selected[:top_k]
+    _retrieval_cache.set(cache_key, result)
+    return result

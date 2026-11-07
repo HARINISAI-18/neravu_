@@ -5,7 +5,7 @@ from app.services.llm_service import get_client
 client = get_client()
 
 response = client.chat.completions.create(
-    model=os.getenv("SARVAM_MODEL", "sarvam-105b"),
+    model=os.getenv("SARVAM_MODEL", "sarvam-105b-conversations"),
     messages=[
         {
             "role": "user",

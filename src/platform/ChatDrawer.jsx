@@ -185,6 +185,7 @@ export function ChatAssistantWidget() {
       playAudioMessage(msg.id, msg.audio_base64);
       return;
     }
+    if (synthesizingId) return; // Prevent duplicate rapid-fire requests
     setSynthesizingId(msg.id);
     try {
       const targetLang = msg.language || language;
@@ -197,8 +198,8 @@ export function ChatAssistantWidget() {
         updateData({ chatHistory: nextHistory });
         playAudioMessage(msg.id, res.audio_base64);
       }
-    } catch {
-      setError(t('chat.serviceUnavailable') || 'Failed to synthesize speech.');
+    } catch (err) {
+      console.warn('Speech playback unavailable:', err);
     } finally {
       setSynthesizingId(null);
     }
@@ -303,7 +304,8 @@ export function ChatAssistantWidget() {
 
       // Phase 4: Synthesize speech in background & auto-play
       if (finalAnswer) {
-        synthesizeSpeech({ text: finalAnswer, language: detectedLang })
+        setSynthesizingId(assistantId);
+        synthesizeSpeech({ text: finalAnswer, language: detectedLang, signal: controller.signal })
           .then((res) => {
             if (res?.audio_base64) {
               const audioHistory = historyRef.current.map((msg) =>
@@ -316,6 +318,9 @@ export function ChatAssistantWidget() {
           })
           .catch((err) => {
             console.warn('Auto voice playback notice:', err);
+          })
+          .finally(() => {
+            setSynthesizingId(null);
           });
       }
     } catch (caught) {

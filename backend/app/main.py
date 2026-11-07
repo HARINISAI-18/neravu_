@@ -24,7 +24,7 @@ load_dotenv(Path(__file__).resolve().parents[1] / ".env")
 
 logger = logging.getLogger(__name__)
 
-# Lifespan: Scheme Publication Background Sync Worker
+# Lifespan: Scheme Publication Background Sync Worker & Embedding Warmup
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     from app.workers.sync_worker import run_sync_worker
@@ -32,12 +32,28 @@ async def lifespan(app: FastAPI):
     worker = asyncio.create_task(run_sync_worker(), name="scheme-publication-sync")
     app.state.scheme_sync_worker = worker
 
+    # Non-blocking background warmup for embeddings (delayed 2s so port binds immediately)
+    async def _warmup_background():
+        await asyncio.sleep(2)
+        try:
+            logger.info("Starting background pre-warming of embedding model...")
+            loop = asyncio.get_running_loop()
+            from app.services.hybrid_rag import get_embedding_model
+            await loop.run_in_executor(None, get_embedding_model)
+            logger.info("Embedding model pre-warming complete.")
+        except Exception as exc:
+            logger.warning(f"Background embedding pre-warming notice: {exc}")
+
+    warmup_task = asyncio.create_task(_warmup_background(), name="embedding-model-warmup")
+
     try:
         yield
     finally:
         worker.cancel()
+        warmup_task.cancel()
         with suppress(asyncio.CancelledError):
             await worker
+            await warmup_task
 
 
 app = FastAPI(title="Neravu API", version="1.0.0", lifespan=lifespan)
@@ -467,7 +483,12 @@ def voice_synthesize(
         speaker=payload.speaker,
     )
     if not audio_base64:
-        raise HTTPException(status_code=502, detail="Speech synthesis failed or produced no audio.")
+        return {
+            "audio_base64": None,
+            "language": payload.language,
+            "mime_type": None,
+            "warning": "Speech synthesis unavailable or timed out.",
+        }
 
     return {
         "audio_base64": audio_base64,

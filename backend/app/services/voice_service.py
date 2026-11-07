@@ -210,7 +210,7 @@ def transcribe_audio(
 
 def clean_text_for_speech(text: str, max_chars: int = 400) -> str:
     """
-    Sanitize answer text so speech synthesis sounds fluent and natural:
+    Sanitize answer text so speech synthesis sounds fluent, natural, and clean:
     - Removes citations like [1], [2], [1, 2]
     - Removes raw URLs and markdown links [text](url)
     - Strips markdown formatting (*, #, _, `, etc.)
@@ -260,7 +260,8 @@ def synthesize_speech(
     if not text or not text.strip():
         return None
 
-    cleaned_text = clean_text_for_speech(text)
+    # Limit spoken readout to ~250 characters (~2 sentences) for low-latency (<4s) TTS playback
+    cleaned_text = clean_text_for_speech(text, max_chars=260)
     if not cleaned_text:
         return None
 
@@ -282,7 +283,7 @@ def synthesize_speech(
         payload["speaker"] = speaker
 
     try:
-        with httpx.Client(timeout=12.0) as client:
+        with httpx.Client(timeout=25.0) as client:
             response = client.post(
                 SARVAM_TTS_URL,
                 headers=headers,
