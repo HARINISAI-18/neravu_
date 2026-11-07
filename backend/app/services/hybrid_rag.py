@@ -618,10 +618,14 @@ def hybrid_retrieve(
     if not 1 <= top_k <= candidate_count <= 30:
         raise ValueError("Invalid retrieval limits")
 
-    embedding = get_embedding_model().encode(
-        "query: " + question,
-        normalize_embeddings=True,
-    )
+    try:
+        embedding = get_embedding_model().encode(
+            "query: " + question,
+            normalize_embeddings=True,
+        )
+    except Exception as exc:
+        logger.warning(f"Embedding model unavailable, falling back to zero vector: {exc}")
+        embedding = [0.0] * 384
 
     vector_value = (
         "[" +

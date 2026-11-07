@@ -236,7 +236,6 @@ def chat(
 
     def execute_query() -> dict:
         from app.services.question_intent import classify_intent, safe_medical_response, greeting_response
-        from app.services.rag_chat import chat_with_neravu
 
         intent = classify_intent(query)
         if intent == "greeting":
@@ -285,6 +284,7 @@ def chat(
             return {**res, "intent": intent}
 
         # Scheme Hybrid RAG + Sarvam 105b
+        from app.services.rag_chat import chat_with_neravu
         res = chat_with_neravu(question=query, language=lang)
         return {**res, "intent": intent}
 
@@ -545,7 +545,6 @@ async def voice_chat(
 
     # Step 2: Execute RAG Pipeline with the transcribed query and detected language
     from app.services.question_intent import classify_intent, safe_medical_response, greeting_response
-    from app.services.rag_chat import chat_with_neravu
 
     patient_facts = None
     if patient_facts_json:
@@ -570,6 +569,7 @@ async def voice_chat(
         }
     else:
         # Standard Scheme Hybrid RAG in the user's language
+        from app.services.rag_chat import chat_with_neravu
         rag_res = {**chat_with_neravu(question=query, language=active_lang), "intent": intent}
 
     # Step 3: Format and normalize sources

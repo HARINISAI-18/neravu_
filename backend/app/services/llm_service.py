@@ -39,7 +39,7 @@ def get_client():
     return OpenAI(
         api_key=api_key,
         base_url=os.getenv("SARVAM_BASE_URL", "https://api.sarvam.ai/v2"),
-        timeout=60.0,
+        timeout=30.0,
         max_retries=1,
     )
 
@@ -85,7 +85,7 @@ STRICT RULES:
             {"role": "user", "content": f"Question:\n{question}\n\nKnowledge excerpts:\n{context}"},
         ],
         temperature=0.1,
-        max_tokens=5000,
+        max_tokens=1500,
     )
     choice = response.choices[0]
     answer = choice.message.content
