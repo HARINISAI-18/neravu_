@@ -68,9 +68,11 @@ else:
 app.add_middleware(
     CORSMiddleware,
     allow_origins=allowed_origins if allowed_origins != ["*"] else ["*"],
-    allow_credentials=True if allowed_origins != ["*"] else False,
+    allow_origin_regex=r"https://.*\.vercel\.app|https://.*\.onrender\.com|http://localhost:\d+",
+    allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
+    expose_headers=["*"],
 )
 
 # Public & Admin Routers
