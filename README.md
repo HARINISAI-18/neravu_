@@ -52,6 +52,15 @@ npm run build
 npm run preview
 ```
 
+### Vercel Deployment
+
+The repository is configured as a Vercel project with two services:
+
+- `app`: the root Vite frontend, public on all non-`/api` paths.
+- `backend`: the `backend` FastAPI service, public on `/api/*`.
+
+The frontend uses same-origin `/api/*` requests in production, so `VITE_API_BASE_URL` can remain unset. No Vercel service binding is configured because the backend does not call the frontend or another repository service; its Supabase, Sarvam, and Dify integrations are external services configured with backend environment variables.
+
 ### Frontend Highlights
 - **3D Cinematic Scroll Story**: Interactive GSAP ScrollTrigger timeline with articulated procedural characters representing the patient/caregiver journey (`src/scene/HospitalScene.jsx`).
 - **Patient Assistance Platform**: Step-by-step assessment, review, dashboard, scheme explorer, local document checklist and tracker, profile/settings, and interactive assistant chat (`src/platform/*`).
