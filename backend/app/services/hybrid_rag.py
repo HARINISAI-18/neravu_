@@ -2,7 +2,8 @@ import json
 import os
 from pathlib import Path
 
-os.environ["HF_HUB_OFFLINE"] = "1"
+if os.getenv("HF_HUB_OFFLINE") == "1":
+    os.environ["HF_HUB_OFFLINE"] = "1"
 os.environ["HF_HUB_DISABLE_SYMLINKS_WARNING"] = "1"
 
 import re

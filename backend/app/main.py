@@ -33,10 +33,16 @@ async def lifespan(app: FastAPI):
     app.state.scheme_sync_worker = worker
 
     async def warm_models():
+        # Defer background model warming so uvicorn binds port and accepts health checks immediately
+        await asyncio.sleep(2.0)
         try:
             loop = asyncio.get_running_loop()
-            from app.services.hybrid_rag import get_embedding_model
-            await loop.run_in_executor(None, get_embedding_model)
+
+            def _load():
+                from app.services.hybrid_rag import get_embedding_model
+                return get_embedding_model()
+
+            await loop.run_in_executor(None, _load)
             logger.info("Hybrid RAG embedding model pre-warmed successfully.")
         except Exception as e:
             logger.warning(f"Could not pre-warm embedding model: {e}")
