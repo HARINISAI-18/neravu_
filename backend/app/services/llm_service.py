@@ -78,7 +78,10 @@ STRICT RULES:
 8. Clearly label information from any source marked unverified, and do not describe it as officially verified.
 9. Keep the answer clear, grounded, and concise. Avoid excessive internal thought.
 """
-    model_name = os.getenv("SARVAM_MODEL", "sarvam-105b-conversations")
+    raw_model = os.getenv("SARVAM_MODEL", "sarvam-105b-conversations")
+    # sarvam-105b is a raw reasoning model that burns 1500+ tokens and causes 60s gateway timeouts.
+    # Automatically upgrade to sarvam-105b-conversations if configured with the base reasoning model.
+    model_name = "sarvam-105b-conversations" if raw_model == "sarvam-105b" else raw_model
     response = get_client().chat.completions.create(
         model=model_name,
         messages=[

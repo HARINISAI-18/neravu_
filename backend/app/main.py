@@ -238,7 +238,13 @@ def _enforce_rate_limit(user_id: str, request: Request | None) -> None:
 @app.get("/health")
 @app.get("/api/health")
 def health() -> dict[str, str]:
-    return {"status": "ok", "service": "neravu-backend"}
+    raw_model = os.getenv("SARVAM_MODEL", "sarvam-105b-conversations")
+    active_model = "sarvam-105b-conversations" if raw_model == "sarvam-105b" else raw_model
+    return {
+        "status": "ok",
+        "service": "neravu-backend",
+        "model": active_model,
+    }
 
 
 # Guest Session Creation
