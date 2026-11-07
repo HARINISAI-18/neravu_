@@ -3,6 +3,36 @@ import { getSupabaseClient, isSupabaseConfigured, supabaseConfigurationIssue } f
 const apiBaseUrl = import.meta.env.VITE_API_BASE_URL?.replace(/\/$/, '') || '';
 let guestSession;
 
+/**
+ * Fetch wrapper that automatically retries when the server is waking up
+ * (Render free tier cold start returns 502/503/504 or network drops).
+ */
+export async function fetchWithRetry(url, options = {}, retries = 2, backoff = 1500) {
+  for (let attempt = 0; attempt <= retries; attempt++) {
+    try {
+      const response = await fetch(url, options);
+      if (response.status >= 502 && response.status <= 504 && attempt < retries) {
+        await new Promise((r) => setTimeout(r, backoff * (attempt + 1)));
+        continue;
+      }
+      return response;
+    } catch (err) {
+      if (attempt < retries) {
+        await new Promise((r) => setTimeout(r, backoff * (attempt + 1)));
+        continue;
+      }
+      throw err;
+    }
+  }
+}
+
+/** Pre-warm the backend container so cold start latency doesn't hit user actions */
+export function warmupBackend() {
+  if (apiBaseUrl) {
+    fetch(`${apiBaseUrl}/health`, { method: 'GET' }).catch(() => {});
+  }
+}
+
 export const authService = {
   get mode() {
     return isSupabaseConfigured ? 'supabase' : 'demo';
@@ -160,7 +190,7 @@ function normalizeSources(value) {
 
 async function getGuestSession() {
   if (!guestSession) {
-    guestSession = fetch(`${apiBaseUrl}/api/guest-session`, {
+    guestSession = fetchWithRetry(`${apiBaseUrl}/api/guest-session`, {
       method: 'POST',
       headers: { Accept: 'application/json' }
     }).then(async (response) => {
@@ -206,7 +236,7 @@ export async function askGuidance({ question, language, conversationId = null, s
     headers['X-Guest-Session'] = guest.session_token;
   }
 
-  const response = await fetch(`${apiBaseUrl}/api/chat`, {
+  const response = await fetchWithRetry(`${apiBaseUrl}/api/chat`, {
     method: 'POST',
     headers,
     body: JSON.stringify({ message: question, conversation_id: conversationId, language, stream }),
@@ -269,7 +299,7 @@ export async function transcribeVoiceAudio({ audioBlob, language = 'auto', signa
   formData.append('file', audioBlob, 'recording.wav');
   if (language) formData.append('language', language);
 
-  const response = await fetch(`${apiBaseUrl}/api/voice/transcribe`, {
+  const response = await fetchWithRetry(`${apiBaseUrl}/api/voice/transcribe`, {
     method: 'POST',
     headers,
     body: formData,
@@ -310,7 +340,7 @@ export async function sendVoiceChat({
   if (schemeId) formData.append('scheme_id', schemeId);
   if (patientFacts) formData.append('patient_facts_json', JSON.stringify(patientFacts));
 
-  const response = await fetch(`${apiBaseUrl}/api/voice/chat`, {
+  const response = await fetchWithRetry(`${apiBaseUrl}/api/voice/chat`, {
     method: 'POST',
     headers,
     body: formData,
@@ -342,7 +372,7 @@ export async function synthesizeSpeech({ text, language = 'en', signal }) {
     headers['X-Guest-Session'] = guest.session_token;
   }
 
-  const response = await fetch(`${apiBaseUrl}/api/voice/synthesize`, {
+  const response = await fetchWithRetry(`${apiBaseUrl}/api/voice/synthesize`, {
     method: 'POST',
     headers,
     body: JSON.stringify({ text, language }),
@@ -368,24 +398,24 @@ export async function getAuthHeaders() {
 }
 
 export async function fetchHealth() {
-  const res = await fetch(`${apiBaseUrl}/api/health`);
+  const res = await fetchWithRetry(`${apiBaseUrl}/api/health`);
   return res.json();
 }
 
 export async function fetchSchemes() {
-  const res = await fetch(`${apiBaseUrl}/api/schemes`);
+  const res = await fetchWithRetry(`${apiBaseUrl}/api/schemes`);
   if (!res.ok) throw new Error(`Failed to fetch schemes: ${res.statusText}`);
   return res.json();
 }
 
 export async function fetchSchemeDetail(schemeId) {
-  const res = await fetch(`${apiBaseUrl}/api/schemes/${schemeId}`);
+  const res = await fetchWithRetry(`${apiBaseUrl}/api/schemes/${schemeId}`);
   if (!res.ok) throw new Error(`Failed to fetch scheme detail: ${res.statusText}`);
   return res.json();
 }
 
 export async function fetchSchemeJourney(schemeId) {
-  const res = await fetch(`${apiBaseUrl}/api/schemes/${schemeId}/journey`);
+  const res = await fetchWithRetry(`${apiBaseUrl}/api/schemes/${schemeId}/journey`);
   if (!res.ok) throw new Error(`Failed to fetch scheme journey: ${res.statusText}`);
   return res.json();
 }

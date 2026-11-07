@@ -383,7 +383,7 @@ async def run_sync_worker() -> None:
     while True:
         try:
             processed = await asyncio.to_thread(process_one_job)
-            await asyncio.sleep(0 if processed else 2)
+            await asyncio.sleep(0 if processed else 30)
         except asyncio.CancelledError:
             raise
         except Exception as error:

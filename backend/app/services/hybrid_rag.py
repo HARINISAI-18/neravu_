@@ -10,11 +10,6 @@ import re
 from functools import lru_cache
 
 from sqlalchemy import text
-from sentence_transformers import SentenceTransformer
-import torch
-
-# Constrain PyTorch to single-thread on cloud instances to avoid CPU contention
-torch.set_num_threads(1)
 
 from app.db.config import get_database_engine
 
@@ -152,6 +147,9 @@ def _retrieve_hospital_research(question: str) -> list[dict]:
 
 @lru_cache(maxsize=1)
 def get_embedding_model():
+    from sentence_transformers import SentenceTransformer
+    import torch
+    torch.set_num_threads(1)
     try:
         return SentenceTransformer(EMBEDDING_MODEL, local_files_only=True)
     except Exception:

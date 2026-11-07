@@ -4,6 +4,10 @@ import { BrowserRouter } from "react-router-dom";
 import App from "./App";
 import "./styles.css";
 import "./platform/platform.css";
+import { warmupBackend } from "./platform/services";
+
+// Trigger early background wake-up for Render cold start
+warmupBackend();
 
 // Suppress noisy browser extension messaging disconnect errors
 window.addEventListener("unhandledrejection", (event) => {

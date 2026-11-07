@@ -24,7 +24,7 @@ load_dotenv(Path(__file__).resolve().parents[1] / ".env")
 
 logger = logging.getLogger(__name__)
 
-# Lifespan: Scheme Publication Background Sync Worker & Model Pre-warming
+# Lifespan: Scheme Publication Background Sync Worker
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     from app.workers.sync_worker import run_sync_worker
@@ -32,22 +32,6 @@ async def lifespan(app: FastAPI):
     worker = asyncio.create_task(run_sync_worker(), name="scheme-publication-sync")
     app.state.scheme_sync_worker = worker
 
-    async def warm_models():
-        # Defer background model warming so uvicorn binds port and accepts health checks immediately
-        await asyncio.sleep(2.0)
-        try:
-            loop = asyncio.get_running_loop()
-
-            def _load():
-                from app.services.hybrid_rag import get_embedding_model
-                return get_embedding_model()
-
-            await loop.run_in_executor(None, _load)
-            logger.info("Hybrid RAG embedding model pre-warmed successfully.")
-        except Exception as e:
-            logger.warning(f"Could not pre-warm embedding model: {e}")
-
-    asyncio.create_task(warm_models())
     try:
         yield
     finally:
@@ -74,6 +58,38 @@ app.add_middleware(
     allow_headers=["*"],
     expose_headers=["*"],
 )
+
+from fastapi.responses import JSONResponse
+
+def _cors_headers_for_request(request: Request) -> dict[str, str]:
+    origin = request.headers.get("origin", "")
+    if origin and ("vercel.app" in origin or "onrender.com" in origin or "localhost" in origin):
+        return {
+            "Access-Control-Allow-Origin": origin,
+            "Access-Control-Allow-Credentials": "true",
+            "Access-Control-Allow-Methods": "*",
+            "Access-Control-Allow-Headers": "*",
+        }
+    return {}
+
+@app.exception_handler(HTTPException)
+async def http_exception_handler(request: Request, exc: HTTPException):
+    headers = _cors_headers_for_request(request)
+    return JSONResponse(
+        status_code=exc.status_code,
+        content={"detail": exc.detail},
+        headers=headers,
+    )
+
+@app.exception_handler(Exception)
+async def generic_exception_handler(request: Request, exc: Exception):
+    logger.exception(f"Unhandled server error on {request.method} {request.url.path}: {exc}")
+    headers = _cors_headers_for_request(request)
+    return JSONResponse(
+        status_code=500,
+        content={"detail": "Internal server error occurred. Please try again."},
+        headers=headers,
+    )
 
 # Public & Admin Routers
 from app.routes.admin_schemes import router as admin_schemes_router
@@ -369,7 +385,7 @@ def chat(
 # Voice APIs (Sarvam AI STT & TTS Integration)
 # ---------------------------------------------------------
 
-VOICE_RATE_LIMIT_REQUESTS = int(os.getenv("VOICE_RATE_LIMIT_REQUESTS", "20"))
+VOICE_RATE_LIMIT_REQUESTS = int(os.getenv("VOICE_RATE_LIMIT_REQUESTS", "60"))
 VOICE_RATE_LIMIT_WINDOW = int(os.getenv("VOICE_RATE_LIMIT_WINDOW_SECONDS", "60"))
 MAX_AUDIO_BYTES = int(os.getenv("MAX_AUDIO_BYTES", str(8 * 1024 * 1024)))  # 8 MB max
 recent_voice_requests: dict[str, deque[float]] = defaultdict(deque)
