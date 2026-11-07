@@ -11,6 +11,10 @@ from functools import lru_cache
 
 from sqlalchemy import text
 from sentence_transformers import SentenceTransformer
+import torch
+
+# Constrain PyTorch to single-thread on cloud instances to avoid CPU contention
+torch.set_num_threads(1)
 
 from app.db.config import get_database_engine
 
