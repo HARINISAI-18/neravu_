@@ -52,14 +52,16 @@ npm run build
 npm run preview
 ```
 
-### Vercel Deployment
+### Deployment Architecture
 
-The repository is configured as a Vercel project with two services:
-
-- `app`: the root Vite frontend, public on all non-`/api` paths.
-- `backend`: the `backend` FastAPI service, public on `/api/*`.
-
-The frontend uses same-origin `/api/*` requests in production, so `VITE_API_BASE_URL` can remain unset. No Vercel service binding is configured because the backend does not call the frontend or another repository service; its Supabase, Sarvam, and Dify integrations are external services configured with backend environment variables.
+- **Frontend (Vercel)**: Deployed as a high-performance Vite Single-Page Application (SPA). All client-side routes fallback to `/index.html` via `vercel.json`.
+- **Backend (Render)**: Deployed as a dedicated Linux web service running FastAPI, Uvicorn, PyTorch, and Sentence-Transformers for hybrid RAG and voice features.
+- **Connecting Frontend to Backend**: In your Vercel Project Settings &rarr; **Environment Variables**, set:
+  ```env
+  VITE_API_BASE_URL=https://<your-render-service-name>.onrender.com
+  VITE_SUPABASE_URL=<your-supabase-url>
+  VITE_SUPABASE_ANON_KEY=<your-supabase-anon-key>
+  ```
 
 ### Frontend Highlights
 - **3D Cinematic Scroll Story**: Interactive GSAP ScrollTrigger timeline with articulated procedural characters representing the patient/caregiver journey (`src/scene/HospitalScene.jsx`).
