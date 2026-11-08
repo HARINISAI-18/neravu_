@@ -1,4 +1,4 @@
-import research from '../../backend/app/data/hospitalResearch.json';
+import research from './hospitalResearch.json';
 
 const normalize = (value) => String(value || '')
   .normalize('NFKD')

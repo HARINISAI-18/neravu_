@@ -52,6 +52,17 @@ npm run build
 npm run preview
 ```
 
+### Deployment Architecture
+
+- **Frontend (Vercel)**: Deployed as a high-performance Vite Single-Page Application (SPA). All client-side routes fallback to `/index.html` via `vercel.json`.
+- **Backend (Render)**: Deployed as a dedicated Linux web service running FastAPI, Uvicorn, PyTorch, and Sentence-Transformers for hybrid RAG and voice features.
+- **Connecting Frontend to Backend**: In your Vercel Project Settings &rarr; **Environment Variables**, set:
+  ```env
+  VITE_API_BASE_URL=https://<your-render-service-name>.onrender.com
+  VITE_SUPABASE_URL=<your-supabase-url>
+  VITE_SUPABASE_ANON_KEY=<your-supabase-anon-key>
+  ```
+
 ### Frontend Highlights
 - **3D Cinematic Scroll Story**: Interactive GSAP ScrollTrigger timeline with articulated procedural characters representing the patient/caregiver journey (`src/scene/HospitalScene.jsx`).
 - **Patient Assistance Platform**: Step-by-step assessment, review, dashboard, scheme explorer, local document checklist and tracker, profile/settings, and interactive assistant chat (`src/platform/*`).

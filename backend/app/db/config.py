@@ -16,10 +16,15 @@ load_dotenv(BACKEND_ROOT / ".env")
 
 
 def get_database_target() -> str:
-    target = os.getenv("NERAVU_DB_TARGET", "local").strip().lower()
-    if target not in {"local", "supabase"}:
-        raise RuntimeError("NERAVU_DB_TARGET must be 'local' or 'supabase'")
-    return target
+    if "NERAVU_DB_TARGET" in os.environ:
+        target = os.environ["NERAVU_DB_TARGET"].strip().lower()
+        if target not in {"local", "supabase"}:
+            raise RuntimeError("NERAVU_DB_TARGET must be 'local' or 'supabase'")
+        return target
+    # In cloud environments like Render or when SUPABASE_DATABASE_URL is provided, auto-select supabase
+    if os.getenv("RENDER") or (os.getenv("SUPABASE_DATABASE_URL") and not os.getenv("DATABASE_URL")):
+        return "supabase"
+    return "local"
 
 
 def get_database_url() -> URL:
@@ -27,13 +32,18 @@ def get_database_url() -> URL:
     variable = "DATABASE_URL" if target == "local" else "SUPABASE_DATABASE_URL"
     value = os.getenv(variable)
     if not value:
-        raise RuntimeError(f"{variable} is missing")
+        if target == "supabase" and os.getenv("DATABASE_URL"):
+            value = os.getenv("DATABASE_URL")
+        else:
+            raise RuntimeError(f"{variable} is missing")
 
     url = make_url(value)
     hostname = (url.host or "").lower()
     if target == "local" and hostname not in {"localhost", "127.0.0.1"}:
         raise RuntimeError("Local database target must use localhost or 127.0.0.1")
-    if target == "supabase" and not hostname.endswith(".supabase.com"):
+    if target == "supabase" and not (
+        hostname.endswith(".supabase.com") or hostname.endswith(".supabase.co")
+    ):
         raise RuntimeError("Supabase database target must use a Supabase host")
     return url
 

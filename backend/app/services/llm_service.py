@@ -39,7 +39,7 @@ def get_client():
     return OpenAI(
         api_key=api_key,
         base_url=os.getenv("SARVAM_BASE_URL", "https://api.sarvam.ai/v2"),
-        timeout=60.0,
+        timeout=30.0,
         max_retries=1,
     )
 
@@ -55,8 +55,8 @@ def generate_answer(question: str, language: str, chunks: list[dict], domain: st
         f"Source: {chunk['source_reference']}\n"
         f"Official URL: {chunk['source_url']}\n"
         f"Evidence location: {chunk['source_locator']}\n"
-        f"Text: {chunk['chunk_text']}"
-        for i, chunk in enumerate(chunks, start=1)
+        f"Text: {chunk['chunk_text'][:900]}"
+        for i, chunk in enumerate(chunks[:8], start=1)
     )
     domain_rules = (
         "Provide general cancer education only. Do not diagnose, estimate prognosis, recommend a drug or dose, or tell someone to start, stop, or change treatment. Encourage the user to discuss individual decisions with their oncology team."
@@ -78,23 +78,31 @@ STRICT RULES:
 8. Clearly label information from any source marked unverified, and do not describe it as officially verified.
 9. Keep the answer clear, grounded, and concise. Avoid excessive internal thought.
 """
+    raw_model = os.getenv("SARVAM_MODEL", "sarvam-105b-conversations")
+    # sarvam-105b is a raw reasoning model that burns 1500+ tokens and causes 60s gateway timeouts.
+    # Automatically upgrade to sarvam-105b-conversations if configured with the base reasoning model.
+    model_name = "sarvam-105b-conversations" if raw_model == "sarvam-105b" else raw_model
     response = get_client().chat.completions.create(
-        model=os.getenv("SARVAM_MODEL", "sarvam-105b"),
+        model=model_name,
         messages=[
             {"role": "system", "content": system_prompt},
             {"role": "user", "content": f"Question:\n{question}\n\nKnowledge excerpts:\n{context}"},
         ],
         temperature=0.1,
-        max_tokens=5000,
+        max_tokens=1000,
     )
     choice = response.choices[0]
     answer = choice.message.content
     if not answer or not answer.strip():
         # Fallback to message reasoning content if available
         reasoning = getattr(choice.message, "reasoning_content", None) or getattr(choice.message, "reasoning", None)
-        if choice.finish_reason == "length" and not answer:
+        if reasoning and reasoning.strip():
+            # If the model put its answer in reasoning, use the tail of reasoning
+            answer = reasoning.strip().split("\n\n")[-1]
+        elif choice.finish_reason == "length":
             raise RuntimeError(f"Sarvam reasoning exceeded token limit. Finish reason: {choice.finish_reason}")
-        raise RuntimeError(f"Sarvam returned empty content. Finish reason: {choice.finish_reason}")
+        else:
+            raise RuntimeError(f"Sarvam returned empty content. Finish reason: {choice.finish_reason}")
     return answer.strip()
 
 

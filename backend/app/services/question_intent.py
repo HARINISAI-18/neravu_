@@ -15,7 +15,7 @@ _URGENT_PATTERNS = (
 )
 
 _GREETING_PATTERN = (
-    r"^(hi|hey|hello|namaste|namaskar|namaskara|namaskaram|vanakkam|good\s+(?:morning|afternoon|evening)|"
+    r"^(hi|hey|hello|hlo|hlw|helo|hii+|heyy+|hy|namaste|namaskar|namaskara|namaskaram|vanakkam|good\s+(?:morning|afternoon|evening)|"
     r"howdy|sup|hola|who\s+are\s+you|what\s+can\s+you\s+do|what\s+is\s+neravu|help|start)[\s!?.~]*$"
 )
 

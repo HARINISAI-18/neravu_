@@ -24,7 +24,7 @@ load_dotenv(Path(__file__).resolve().parents[1] / ".env")
 
 logger = logging.getLogger(__name__)
 
-# Lifespan: Scheme Publication Background Sync Worker & Model Pre-warming
+# Lifespan: Scheme Publication Background Sync Worker & Embedding Warmup
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     from app.workers.sync_worker import run_sync_worker
@@ -32,22 +32,28 @@ async def lifespan(app: FastAPI):
     worker = asyncio.create_task(run_sync_worker(), name="scheme-publication-sync")
     app.state.scheme_sync_worker = worker
 
-    async def warm_models():
+    # Non-blocking background warmup for embeddings (delayed 2s so port binds immediately)
+    async def _warmup_background():
+        await asyncio.sleep(2)
         try:
+            logger.info("Starting background pre-warming of embedding model...")
             loop = asyncio.get_running_loop()
             from app.services.hybrid_rag import get_embedding_model
             await loop.run_in_executor(None, get_embedding_model)
-            logger.info("Hybrid RAG embedding model pre-warmed successfully.")
-        except Exception as e:
-            logger.warning(f"Could not pre-warm embedding model: {e}")
+            logger.info("Embedding model pre-warming complete.")
+        except Exception as exc:
+            logger.warning(f"Background embedding pre-warming notice: {exc}")
 
-    asyncio.create_task(warm_models())
+    warmup_task = asyncio.create_task(_warmup_background(), name="embedding-model-warmup")
+
     try:
         yield
     finally:
         worker.cancel()
+        warmup_task.cancel()
         with suppress(asyncio.CancelledError):
             await worker
+            await warmup_task
 
 
 app = FastAPI(title="Neravu API", version="1.0.0", lifespan=lifespan)
@@ -62,10 +68,44 @@ else:
 app.add_middleware(
     CORSMiddleware,
     allow_origins=allowed_origins if allowed_origins != ["*"] else ["*"],
-    allow_credentials=True if allowed_origins != ["*"] else False,
+    allow_origin_regex=r"https://.*\.vercel\.app|https://.*\.onrender\.com|http://localhost:\d+",
+    allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
+    expose_headers=["*"],
 )
+
+from fastapi.responses import JSONResponse
+
+def _cors_headers_for_request(request: Request) -> dict[str, str]:
+    origin = request.headers.get("origin", "")
+    if origin and ("vercel.app" in origin or "onrender.com" in origin or "localhost" in origin):
+        return {
+            "Access-Control-Allow-Origin": origin,
+            "Access-Control-Allow-Credentials": "true",
+            "Access-Control-Allow-Methods": "*",
+            "Access-Control-Allow-Headers": "*",
+        }
+    return {}
+
+@app.exception_handler(HTTPException)
+async def http_exception_handler(request: Request, exc: HTTPException):
+    headers = _cors_headers_for_request(request)
+    return JSONResponse(
+        status_code=exc.status_code,
+        content={"detail": exc.detail},
+        headers=headers,
+    )
+
+@app.exception_handler(Exception)
+async def generic_exception_handler(request: Request, exc: Exception):
+    logger.exception(f"Unhandled server error on {request.method} {request.url.path}: {exc}")
+    headers = _cors_headers_for_request(request)
+    return JSONResponse(
+        status_code=500,
+        content={"detail": "Internal server error occurred. Please try again."},
+        headers=headers,
+    )
 
 # Public & Admin Routers
 from app.routes.admin_schemes import router as admin_schemes_router
@@ -198,7 +238,13 @@ def _enforce_rate_limit(user_id: str, request: Request | None) -> None:
 @app.get("/health")
 @app.get("/api/health")
 def health() -> dict[str, str]:
-    return {"status": "ok", "service": "neravu-backend"}
+    raw_model = os.getenv("SARVAM_MODEL", "sarvam-105b-conversations")
+    active_model = "sarvam-105b-conversations" if raw_model == "sarvam-105b" else raw_model
+    return {
+        "status": "ok",
+        "service": "neravu-backend",
+        "model": active_model,
+    }
 
 
 # Guest Session Creation
@@ -228,7 +274,6 @@ def chat(
 
     def execute_query() -> dict:
         from app.services.question_intent import classify_intent, safe_medical_response, greeting_response
-        from app.services.rag_chat import chat_with_neravu
 
         intent = classify_intent(query)
         if intent == "greeting":
@@ -277,6 +322,7 @@ def chat(
             return {**res, "intent": intent}
 
         # Scheme Hybrid RAG + Sarvam 105b
+        from app.services.rag_chat import chat_with_neravu
         res = chat_with_neravu(question=query, language=lang)
         return {**res, "intent": intent}
 
@@ -361,7 +407,7 @@ def chat(
 # Voice APIs (Sarvam AI STT & TTS Integration)
 # ---------------------------------------------------------
 
-VOICE_RATE_LIMIT_REQUESTS = int(os.getenv("VOICE_RATE_LIMIT_REQUESTS", "20"))
+VOICE_RATE_LIMIT_REQUESTS = int(os.getenv("VOICE_RATE_LIMIT_REQUESTS", "60"))
 VOICE_RATE_LIMIT_WINDOW = int(os.getenv("VOICE_RATE_LIMIT_WINDOW_SECONDS", "60"))
 MAX_AUDIO_BYTES = int(os.getenv("MAX_AUDIO_BYTES", str(8 * 1024 * 1024)))  # 8 MB max
 recent_voice_requests: dict[str, deque[float]] = defaultdict(deque)
@@ -443,7 +489,12 @@ def voice_synthesize(
         speaker=payload.speaker,
     )
     if not audio_base64:
-        raise HTTPException(status_code=502, detail="Speech synthesis failed or produced no audio.")
+        return {
+            "audio_base64": None,
+            "language": payload.language,
+            "mime_type": None,
+            "warning": "Speech synthesis unavailable or timed out.",
+        }
 
     return {
         "audio_base64": audio_base64,
@@ -537,7 +588,6 @@ async def voice_chat(
 
     # Step 2: Execute RAG Pipeline with the transcribed query and detected language
     from app.services.question_intent import classify_intent, safe_medical_response, greeting_response
-    from app.services.rag_chat import chat_with_neravu
 
     patient_facts = None
     if patient_facts_json:
@@ -562,6 +612,7 @@ async def voice_chat(
         }
     else:
         # Standard Scheme Hybrid RAG in the user's language
+        from app.services.rag_chat import chat_with_neravu
         rag_res = {**chat_with_neravu(question=query, language=active_lang), "intent": intent}
 
     # Step 3: Format and normalize sources

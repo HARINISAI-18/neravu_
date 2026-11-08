@@ -4,7 +4,7 @@ import { ArrowRight, RotateCcw, Sparkles, Trash2, X, ExternalLink, ShieldCheck, 
 import { usePlatform } from './PlatformContext';
 import { translate, useLanguage } from './i18n';
 import { languageOptions } from './data';
-import { askGuidance, getChatIdentity, isRagConfigured, sendVoiceChat, synthesizeSpeech } from './services';
+import { askGuidance, getChatIdentity, isRagConfigured, sendVoiceChat, transcribeVoiceAudio, synthesizeSpeech } from './services';
 import { createWavRecorder } from './wavRecorder';
 
 export function openChatAssistant(initialQuestion = '') {
@@ -187,6 +187,7 @@ export function ChatAssistantWidget() {
       playAudioMessage(msg.id, msg.audio_base64);
       return;
     }
+    if (synthesizingId) return; // Prevent duplicate rapid-fire requests
     setSynthesizingId(msg.id);
     try {
       const targetLang = msg.language || language;
@@ -199,8 +200,8 @@ export function ChatAssistantWidget() {
         updateData({ chatHistory: nextHistory });
         playAudioMessage(msg.id, res.audio_base64);
       }
-    } catch {
-      setError(t('chat.serviceUnavailable') || 'Failed to synthesize speech.');
+    } catch (err) {
+      console.warn('Speech playback unavailable:', err);
     } finally {
       setSynthesizingId(null);
     }
@@ -223,35 +224,79 @@ export function ChatAssistantWidget() {
 
     const controller = new AbortController();
     requestControllerRef.current = controller;
-    const timeoutId = window.setTimeout(() => controller.abort(), 90000);
 
     try {
-      const result = await sendVoiceChat({
+      // Phase 1: Fast Speech-to-Text transcription (2-4 seconds)
+      const sttResult = await transcribeVoiceAudio({
         audioBlob,
-        conversationId,
         language: 'auto',
-        enableTts: true,
         signal: controller.signal,
       });
 
-      setConversationId(result.conversation_id || null);
-      if (conversationStorageKey && result.conversation_id) {
+      const transcript = (sttResult.transcript || '').trim();
+      const detectedLang = sttResult.language || language;
+
+      if (!transcript) {
+        const unclearMsg = detectedLang === 'te'
+          ? 'క్షమించండి, మీ వాయిస్ స్పష్టంగా వినబడలేదు. దయచేసి మళ్లీ మాట్లాడండి.'
+          : detectedLang === 'hi'
+          ? 'क्षमा करें, आपकी आवाज़ स्पष्ट रूप से सुनाई नहीं दी। कृपया फिर से बोलें।'
+          : 'Sorry, we could not clearly capture your voice. Please try speaking again.';
+
+        const completedHistory = historyRef.current.map((msg) => {
+          if (msg.id === userMsgId) {
+            return { ...msg, content: '🎤 (Unclear audio)' };
+          }
+          if (msg.id === assistantId) {
+            return { ...msg, content: unclearMsg, language: detectedLang };
+          }
+          return msg;
+        });
+        historyRef.current = completedHistory;
+        updateData({ chatHistory: completedHistory });
+        return;
+      }
+
+      // Phase 2: Update the user message with the transcribed question
+      const historyWithTranscript = historyRef.current.map((msg) =>
+        msg.id === userMsgId ? { ...msg, content: `🎤 ${transcript}` } : msg
+      );
+      historyRef.current = historyWithTranscript;
+      updateData({ chatHistory: historyWithTranscript });
+
+      // Phase 3: Stream the response via SSE for real-time tokens and zero timeout risk
+      let streamedAnswer = '';
+      const chatResult = await askGuidance({
+        question: transcript,
+        language: detectedLang,
+        conversationId,
+        signal: controller.signal,
+        stream: true,
+        onChunk: (chunk) => {
+          streamedAnswer += chunk;
+          const nextHistory = historyRef.current.map((msg) =>
+            msg.id === assistantId ? { ...msg, content: streamedAnswer, language: detectedLang } : msg
+          );
+          historyRef.current = nextHistory;
+          updateData({ chatHistory: nextHistory });
+        },
+      });
+
+      setConversationId(chatResult.conversation_id || null);
+      if (conversationStorageKey && chatResult.conversation_id) {
         try {
-          sessionStorage.setItem(conversationStorageKey, result.conversation_id);
+          sessionStorage.setItem(conversationStorageKey, chatResult.conversation_id);
         } catch {}
       }
 
+      const finalAnswer = chatResult.answer || streamedAnswer;
       const completedHistory = historyRef.current.map((msg) => {
-        if (msg.id === userMsgId) {
-          return { ...msg, content: result.transcript ? `🎤 ${result.transcript}` : '🎤 (Voice message)' };
-        }
         if (msg.id === assistantId) {
           return {
             ...msg,
-            content: result.answer,
-            sources: result.sources,
-            audio_base64: result.audio_base64,
-            language: result.language,
+            content: finalAnswer,
+            sources: chatResult.sources || [],
+            language: detectedLang,
           };
         }
         return msg;
@@ -259,8 +304,26 @@ export function ChatAssistantWidget() {
       historyRef.current = completedHistory;
       updateData({ chatHistory: completedHistory });
 
-      if (result.audio_base64) {
-        playAudioMessage(assistantId, result.audio_base64);
+      // Phase 4: Synthesize speech in background & auto-play
+      if (finalAnswer) {
+        setSynthesizingId(assistantId);
+        synthesizeSpeech({ text: finalAnswer, language: detectedLang, signal: controller.signal })
+          .then((res) => {
+            if (res?.audio_base64) {
+              const audioHistory = historyRef.current.map((msg) =>
+                msg.id === assistantId ? { ...msg, audio_base64: res.audio_base64 } : msg
+              );
+              historyRef.current = audioHistory;
+              updateData({ chatHistory: audioHistory });
+              playAudioMessage(assistantId, res.audio_base64);
+            }
+          })
+          .catch((err) => {
+            console.warn('Auto voice playback notice:', err);
+          })
+          .finally(() => {
+            setSynthesizingId(null);
+          });
       }
     } catch (caught) {
       const failureNotice = controller.signal.aborted
@@ -273,7 +336,6 @@ export function ChatAssistantWidget() {
       historyRef.current = failedHistory;
       updateData({ chatHistory: failedHistory });
     } finally {
-      window.clearTimeout(timeoutId);
       if (requestControllerRef.current === controller) requestControllerRef.current = null;
       setBusy(false);
     }
