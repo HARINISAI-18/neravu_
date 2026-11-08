@@ -1,6 +1,6 @@
 .platform-shell,.flow-page,.assessment-page,.auth-page{min-height:100vh;background:#f8f6fa;color:#292331}
 .platform-topbar{height:74px;padding:0 clamp(20px,5vw,76px);display:flex;align-items:center;justify-content:space-between;background:#fff;border-bottom:1px solid #eee9f2;position:sticky;top:0;z-index:25}
-.platform-brand{font-size:20px;gap:10px}.platform-brand .brand-logo{width:112px;height:70px}
+.platform-brand{font-size:20px;gap:10px}.platform-brand .brand-logo{width:64px;height:64px}
 .platform-top-actions{display:flex;align-items:center;gap:20px}.guest-indicator,.guest-pill{display:inline-flex;align-items:center;gap:7px;color:#62586c;font-size:12px}.guest-indicator svg,.guest-pill svg{color:#6b9b77}
 .language-select{height:40px;padding:0 10px;display:inline-flex;align-items:center;gap:8px;border:1px solid #e8e1ed;border-radius:11px;background:#fff;color:#704897}.language-select select{max-width:130px;border:0;background:transparent;color:#42384b;font:600 12px 'DM Sans',sans-serif;outline:none}
 .button{min-height:42px;padding:0 16px;border:1px solid transparent;border-radius:12px;display:inline-flex;align-items:center;justify-content:center;gap:9px;font:700 13px 'DM Sans',sans-serif;cursor:pointer;transition:background .18s ease,transform .18s ease,border .18s ease}

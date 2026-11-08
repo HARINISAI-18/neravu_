@@ -6,7 +6,6 @@ import { BrandLogo, LanguageSelect, PlatformLayout } from './platform/components
 import { translate, useLanguage } from './platform/i18n';
 
 const HospitalScene = lazy(() => import('./scene/HospitalScene'));
-const SetupPage = lazy(() => import('./platform/screens').then((module) => ({ default: module.SetupPage })));
 const AssessmentAccessPage = lazy(() => import('./platform/screens').then((module) => ({ default: module.AssessmentAccessPage })));
 const AssessmentPage = lazy(() => import('./platform/screens').then((module) => ({ default: module.AssessmentPage })));
 const AssessmentShortlistPage = lazy(() => import('./platform/screens').then((module) => ({ default: module.AssessmentShortlistPage })));
@@ -77,7 +76,7 @@ function Navbar() {
           </div>
           <div className="nav-actions">
             <LanguageSelect className="landing-language" />
-            <Link className="nav-cta" to="/start/role" onClick={() => setOpen(false)}>{t('landing.getStarted')}</Link>
+            <Link className="nav-cta" to="/assessment/access" onClick={() => setOpen(false)}>{t('landing.getStarted')}</Link>
           </div>
         </nav>
       </div>
@@ -161,9 +160,7 @@ function LandingPage() {
             </a>
           </div>
           <div className="hero-art">
-            <div className="hero-orbit orbit-one" />
-            <div className="hero-orbit orbit-two" />
-            <img className="hero-symbol" src="/neravu-logo.png" alt="Neravu — Cancer Support, Guidance, Assistance" />
+            <img className="hero-symbol" src="/neravu-logo.png" alt="Neravu cancer support emblem" />
             <span className="hero-caption">{t('landing.careValues')}</span>
           </div>
         </section>
@@ -212,8 +209,8 @@ export default function App() {
       <Suspense fallback={<RouteLoading />}>
         <Routes>
           <Route path="/" element={<LandingPage />} />
-          <Route path="/start" element={<Navigate to="/start/role" replace />} />
-          <Route path="/start/:step" element={<SetupPage />} />
+          <Route path="/start" element={<Navigate to="/assessment/access" replace />} />
+          <Route path="/start/:step" element={<Navigate to="/assessment/access" replace />} />
           <Route path="/assessment/access" element={<AssessmentAccessPage />} />
           <Route path="/assessment" element={<AssessmentPage />} />
           <Route path="/assessment/shortlist" element={<AssessmentShortlistPage />} />

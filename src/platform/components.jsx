@@ -31,7 +31,7 @@ export function Brand() {
 }
 
 export function BrandLogo() {
-  return <img className="brand-logo" src="/neravu-logo.png" alt="Neravu — Cancer Support, Guidance, Assistance" />;
+  return <img className="brand-logo" src="/neravu-logo.png" alt="Neravu cancer support emblem" />;
 }
 
 export function LanguageSelect({ className = '' }) {
@@ -133,11 +133,10 @@ export function PlatformLayout() {
 }
 
 export function DemoNotice({ children }) {
-  const { language } = useLanguage();
+  if (!children) return null;
   return (
     <div className="demo-notice" role="note">
-      <span className="demo-label"><ShieldCheck size={14} /> {translate(language, 'common.demo')}</span>
-      <span>{children || translate(language, 'common.notVerified')}</span>
+      <span>{children}</span>
     </div>
   );
 }

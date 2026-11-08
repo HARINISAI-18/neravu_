@@ -449,7 +449,7 @@ export function AssessmentPage() {
   };
   const back = () => {
     if (index === 0) {
-      navigate('/start/support');
+      navigate('/assessment/access');
       return;
     }
     const previousIndex = index - 1;
@@ -794,7 +794,6 @@ export function ReviewPage() {
             );
           })}
         </section>
-        <DemoNotice />
         <RouteFooter>
           <button type="button" className="button button-outline" onClick={() => navigate(followUpQuestions.length ? '/assessment/follow-up' : '/assessment/shortlist')}><ArrowLeft size={17} /> {t('common.back')}</button>
           <button type="button" className="button button-primary" onClick={finish}>{t('assessment.finish')} <ArrowRight size={17} /></button>
@@ -969,7 +968,7 @@ export function AuthPage() {
               <label>{t('auth.password')}<input name="password" type="password" autoComplete={signUp ? 'new-password' : 'current-password'} required minLength={8} disabled={!isSupabaseConfigured} /></label>
               {!signUp && <Link className="quiet-link forgot-link" to={`/forgot-password${nextPath === '/assessment' ? '?next=%2Fassessment' : ''}`}>{t('auth.forgotLink')}</Link>}
               {showConsent && <label className="consent-checkbox"><input type="checkbox" checked={progressConsent} onChange={(event) => setProgressConsent(event.target.checked)} required /> <span>{t('auth.consent')}</span></label>}
-              <button className="button button-primary full-width" type="submit" disabled={busy || !isSupabaseConfigured}>{busy ? t('common.loading') : t('auth.submit')}</button>
+              <button className="button button-primary full-width" type="submit" disabled={busy || !isSupabaseConfigured}>{busy ? t('common.loading') : t(signUp ? 'access.signup' : 'auth.submit')}</button>
             </>
           )}
         </form>
@@ -1030,11 +1029,13 @@ function SchemeCard({ scheme, onSelectDetail, onScreenEligibility, tracked, onTo
     <article className="content-card scheme-card">
       <div className="card-title-row">
         <span className="support-icon-small"><BookOpenCheck size={18} /></span>
-        <span className={`status-chip ${isVerified ? 'verified-chip' : ''}`}>
-          {scheme.isWorkbook
-            ? translate(language, 'schemes.workbookGuidance')
-            : isVerified ? translate(language, 'schemes.verifiedEvidence') : translate(language, 'common.demo')}
-        </span>
+        {(scheme.isWorkbook || isVerified) && (
+          <span className={`status-chip ${isVerified ? 'verified-chip' : ''}`}>
+            {scheme.isWorkbook
+              ? translate(language, 'schemes.workbookGuidance')
+              : translate(language, 'schemes.verifiedEvidence')}
+          </span>
+        )}
       </div>
       <span className="card-category">{category}</span>
       <h2>{title}</h2>
@@ -1151,7 +1152,6 @@ export function DashboardPage() {
         description={t('dashboard.subtitle')}
         action={<span className="guest-pill"><ShieldCheck size={15} /> {t('common.guest')}</span>}
       />
-      <DemoNotice>{user ? t('profile.accountNotice') : undefined}</DemoNotice>
       <section className="profile-summary">
         <div>
           <span className="eyebrow">{t('dashboard.startingPoint')}</span>
@@ -1163,7 +1163,7 @@ export function DashboardPage() {
           <p>{requestedSupport.length ? requestedSupport.map((option) => t(option.title)).join(' · ') : t('dashboard.chooseSupport')}</p>
           <small>{t('dashboard.discoveryDisclaimer')}</small>
         </div>
-        <Link to={data.assessmentComplete ? '/assessment/review' : '/start/role'} className="text-link">
+        <Link to={data.assessmentComplete ? '/assessment/review' : '/assessment/access'} className="text-link">
           {data.assessmentComplete ? t('common.edit') : t('nav.start')} <ArrowRight size={15} />
         </Link>
       </section>
@@ -3618,7 +3618,7 @@ export function AssistantPage() {
       try { sessionStorage.removeItem(conversationStorageKey); } catch { setError(t('assistant.sessionStorageWarning')); }
     }
   };
-  return <div className="page-content assistant-page"><PageHeading eyebrow={t('assistant.eyebrow')} title={t('page.assistant')} description={t('assistant.disclaimer')} action={<button className="button button-outline" type="button" onClick={clearConversation} disabled={busy}><Trash2 size={15} /> {t('assistant.newConversation')}</button>} /><DemoNotice>{t('assistant.demoInfo')}</DemoNotice>
+  return <div className="page-content assistant-page"><PageHeading eyebrow={t('assistant.eyebrow')} title={t('page.assistant')} description={t('assistant.disclaimer')} action={<button className="button button-outline" type="button" onClick={clearConversation} disabled={busy}><Trash2 size={15} /> {t('assistant.newConversation')}</button>} />
     <section className="chat-panel">
       <div className="chat-history" aria-live="polite">
         {!history.length && <div className="chat-welcome"><span className="assistant-avatar"><Sparkles size={20} /></span><h2>{t('chat.pageWelcome')}</h2><p>{t('assistant.suggested')}</p><div className="suggested-questions">{suggestions.map((item) => <button key={item} type="button" onClick={() => setQuestion(item)}>{item}</button>)}</div></div>}
@@ -3655,7 +3655,7 @@ export function ProfilePage() {
       setClearing(false);
     }
   };
-  return <div className="page-content"><PageHeading eyebrow={t('profile.eyebrow')} title={t('page.profile')} description={t('profile.description')} /><DemoNotice>{user ? t('profile.accountNotice') : t('profile.guest')}</DemoNotice>
+  return <div className="page-content"><PageHeading eyebrow={t('profile.eyebrow')} title={t('page.profile')} description={t('profile.description')} />
     <section className="content-card profile-card"><span className="profile-avatar"><UserRound size={25} /></span><div><h2>{user ? displayName || user.email : t('profile.guestTitle')}</h2><p>{data.patientRole ? t('profile.relationship', { relationship: translateOption(language, data.patientRole) }) : t('profile.none')}</p><Link to={data.assessmentComplete ? '/assessment/review' : '/assessment/access'} className="text-link">{t('profile.review')} <ArrowRight size={15} /></Link></div></section>
     <section className="content-card privacy-card"><h2>{t('profile.privacyTitle')}</h2><p>{t('profile.privacyText')}</p><button className="button button-danger" disabled={clearing} onClick={clearProgress}>{clearing ? t('common.loading') : t('profile.clear')}</button>{clearError && <p className="form-error" role="alert">{clearError}</p>}</section>
   </div>;

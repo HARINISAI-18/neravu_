@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import { ArrowRight, RotateCcw, Sparkles, Trash2, X, ExternalLink, ShieldCheck, Mic, Square, Volume2, VolumeX, Loader2 } from 'lucide-react';
 import { usePlatform } from './PlatformContext';
 import { translate, useLanguage } from './i18n';
@@ -12,6 +13,7 @@ export function openChatAssistant(initialQuestion = '') {
 
 export function ChatAssistantWidget() {
   const { data, updateData, user } = usePlatform();
+  const { pathname } = useLocation();
   const { language } = useLanguage();
   const t = (key, values) => translate(language, key, values);
   const languageName = languageOptions.find((option) => option.code === language)?.nativeName || language;
@@ -372,7 +374,7 @@ export function ChatAssistantWidget() {
   return (
     <>
       {/* Floating Bottom-Right Trigger Button */}
-      <button
+      {pathname !== '/assistant' && <button
         type="button"
         className="floating-assistant-btn"
         onClick={() => setIsOpen((prev) => !prev)}
@@ -384,7 +386,7 @@ export function ChatAssistantWidget() {
         </div>
         <span className="assistant-btn-text">{t('chat.askAssistant')}</span>
         <span className="pulse-dot" />
-      </button>
+      </button>}
 
       {/* Backdrop */}
       <div
