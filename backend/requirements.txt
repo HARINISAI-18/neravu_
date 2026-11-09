@@ -19,12 +19,6 @@ PyJWT[crypto]>=2.10,<3
 PyMuPDF>=1.24,<2
 av>=12,<20
 
-# Embeddings, hybrid retrieval and reranking
-sentence-transformers>=3.0,<6
-transformers>=4.44,<5
-torch>=2.3,<3
-numpy>=1.26,<3
-
 # Sarvam Token Factory (OpenAI-compatible API)
 openai>=1.50,<3
 

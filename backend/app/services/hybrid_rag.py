@@ -188,18 +188,22 @@ def _retrieve_hospital_research(question: str) -> list[dict]:
 
 @lru_cache(maxsize=1)
 def get_embedding_model():
-    import gc
-    import torch
-    torch.set_num_threads(1)
-    torch.set_grad_enabled(False)
-    from sentence_transformers import SentenceTransformer
     try:
-        model = SentenceTransformer(EMBEDDING_MODEL, local_files_only=True)
-    except Exception:
-        model = SentenceTransformer(EMBEDDING_MODEL)
-    model.eval()
-    gc.collect()
-    return model
+        import gc
+        import torch
+        torch.set_num_threads(1)
+        torch.set_grad_enabled(False)
+        from sentence_transformers import SentenceTransformer
+        try:
+            model = SentenceTransformer(EMBEDDING_MODEL, local_files_only=True)
+        except Exception:
+            model = SentenceTransformer(EMBEDDING_MODEL)
+        model.eval()
+        gc.collect()
+        return model
+    except (ImportError, ModuleNotFoundError):
+        logger.info("Local torch/sentence-transformers not installed; relying on HF_TOKEN / lexical retrieval.")
+        return None
 
 
 def compute_embedding(text: str) -> list[float]:
@@ -233,6 +237,10 @@ def compute_embedding(text: str) -> list[float]:
             logger.warning("HF Inference API failed (%s), using local fallback", exc)
 
     model = get_embedding_model()
+    if model is None:
+        logger.warning("No local embedding model installed and HF_TOKEN not set/available; returning zero vector")
+        return [0.0] * 384
+
     import torch
     with torch.inference_mode():
         vec = model.encode(text, normalize_embeddings=True)
@@ -268,6 +276,9 @@ def compute_embeddings(texts: list[str]) -> list[list[float]]:
             logger.warning("HF Inference API batch failed (%s), using local fallback", exc)
 
     model = get_embedding_model()
+    if model is None:
+        return [[0.0] * 384 for _ in texts]
+
     import torch
     with torch.inference_mode():
         vecs = model.encode(texts, normalize_embeddings=True, batch_size=8, show_progress_bar=False)
@@ -278,8 +289,11 @@ def compute_embeddings(texts: list[str]) -> list[list[float]]:
 
 @lru_cache(maxsize=1)
 def get_reranker():
-    from sentence_transformers import CrossEncoder
-    return CrossEncoder(RERANKER_MODEL)
+    try:
+        from sentence_transformers import CrossEncoder
+        return CrossEncoder(RERANKER_MODEL)
+    except (ImportError, ModuleNotFoundError):
+        return None
 
 
 @lru_cache(maxsize=1)
@@ -806,24 +820,28 @@ def hybrid_retrieve(
 
     rerank_enabled = os.getenv("ENABLE_RERANKER", "false").lower() in {"1", "true"}
     if rerank_enabled:
-        try:
-            pairs = [
-                (question, item["chunk_text"])
-                for item in candidates
-            ]
-            scores = get_reranker().predict(
-                pairs,
-                batch_size=4,
-                show_progress_bar=False,
-            )
-            for item, score in zip(candidates, scores):
-                item["rerank_score"] = float(score)
-            candidates.sort(
-                key=lambda item: item["rerank_score"],
-                reverse=True,
-            )
-            ranked = candidates
-        except Exception:
+        reranker = get_reranker()
+        if reranker is not None:
+            try:
+                pairs = [
+                    (question, item["chunk_text"])
+                    for item in candidates
+                ]
+                scores = reranker.predict(
+                    pairs,
+                    batch_size=4,
+                    show_progress_bar=False,
+                )
+                for item, score in zip(candidates, scores):
+                    item["rerank_score"] = float(score)
+                candidates.sort(
+                    key=lambda item: item["rerank_score"],
+                    reverse=True,
+                )
+                ranked = candidates
+            except Exception:
+                ranked = candidates
+        else:
             ranked = candidates
     else:
         ranked = candidates
