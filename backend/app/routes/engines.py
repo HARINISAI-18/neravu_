@@ -54,6 +54,7 @@ def _approved_sources(snapshot: dict) -> dict[str, dict]:
     }
 
 
+@router.post("/{scheme_id}/eligibility")
 @router.post("/{scheme_id}/eligibility/evaluate")
 def evaluate_scheme_eligibility(scheme_id: UUID, request: EligibilityRequest):
     try:
@@ -115,6 +116,7 @@ def evaluate_scheme_eligibility(scheme_id: UUID, request: EligibilityRequest):
         raise HTTPException(503, "Database unavailable") from error
 
 
+@router.post("/{scheme_id}/documents")
 @router.post("/{scheme_id}/documents/check")
 def check_scheme_documents(scheme_id: UUID, request: DocumentRequest):
     try:

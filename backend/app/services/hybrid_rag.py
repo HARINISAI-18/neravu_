@@ -1,10 +1,13 @@
 import json
+import logging
 import os
 from pathlib import Path
 
 if os.getenv("HF_HUB_OFFLINE") == "1":
     os.environ["HF_HUB_OFFLINE"] = "1"
 os.environ["HF_HUB_DISABLE_SYMLINKS_WARNING"] = "1"
+
+logger = logging.getLogger(__name__)
 
 import re
 import threading
@@ -185,13 +188,92 @@ def _retrieve_hospital_research(question: str) -> list[dict]:
 
 @lru_cache(maxsize=1)
 def get_embedding_model():
-    from sentence_transformers import SentenceTransformer
+    import gc
     import torch
     torch.set_num_threads(1)
+    torch.set_grad_enabled(False)
+    from sentence_transformers import SentenceTransformer
     try:
-        return SentenceTransformer(EMBEDDING_MODEL, local_files_only=True)
+        model = SentenceTransformer(EMBEDDING_MODEL, local_files_only=True)
     except Exception:
-        return SentenceTransformer(EMBEDDING_MODEL)
+        model = SentenceTransformer(EMBEDDING_MODEL)
+    model.eval()
+    gc.collect()
+    return model
+
+
+def compute_embedding(text: str) -> list[float]:
+    """
+    Compute 384-dimensional normalized embedding for text.
+    Uses Hugging Face Serverless API if HF_TOKEN is configured (0 MB local RAM),
+    otherwise uses local SentenceTransformer with strict single-thread CPU constraints.
+    """
+    hf_token = os.getenv("HF_TOKEN")
+    if hf_token:
+        try:
+            import httpx
+            api_url = os.getenv(
+                "HF_EMBEDDING_API_URL",
+                "https://router.huggingface.co/hf-inference/models/intfloat/multilingual-e5-small",
+            )
+            with httpx.Client(timeout=10.0) as client:
+                resp = client.post(
+                    api_url,
+                    headers={"Authorization": f"Bearer {hf_token.strip()}"},
+                    json={"inputs": text},
+                )
+            if resp.status_code == 200:
+                data = resp.json()
+                if isinstance(data, list) and len(data) == 384:
+                    return [float(x) for x in data]
+                elif isinstance(data, list) and data and isinstance(data[0], list):
+                    return [float(x) for x in data[0]]
+            logger.warning("HF Inference API returned status %s, using local fallback", resp.status_code)
+        except Exception as exc:
+            logger.warning("HF Inference API failed (%s), using local fallback", exc)
+
+    model = get_embedding_model()
+    import torch
+    with torch.inference_mode():
+        vec = model.encode(text, normalize_embeddings=True)
+    if hasattr(vec, "tolist"):
+        return vec.tolist()
+    return [float(x) for x in vec]
+
+
+def compute_embeddings(texts: list[str]) -> list[list[float]]:
+    """Compute embeddings for a batch of texts."""
+    if not texts:
+        return []
+    hf_token = os.getenv("HF_TOKEN")
+    if hf_token:
+        try:
+            import httpx
+            api_url = os.getenv(
+                "HF_EMBEDDING_API_URL",
+                "https://router.huggingface.co/hf-inference/models/intfloat/multilingual-e5-small",
+            )
+            with httpx.Client(timeout=30.0) as client:
+                resp = client.post(
+                    api_url,
+                    headers={"Authorization": f"Bearer {hf_token.strip()}"},
+                    json={"inputs": texts},
+                )
+            if resp.status_code == 200:
+                data = resp.json()
+                if isinstance(data, list) and len(data) == len(texts):
+                    return [[float(x) for x in item] for item in data]
+            logger.warning("HF Inference API batch returned status %s, using local fallback", resp.status_code)
+        except Exception as exc:
+            logger.warning("HF Inference API batch failed (%s), using local fallback", exc)
+
+    model = get_embedding_model()
+    import torch
+    with torch.inference_mode():
+        vecs = model.encode(texts, normalize_embeddings=True, batch_size=8, show_progress_bar=False)
+    if hasattr(vecs, "tolist"):
+        return vecs.tolist()
+    return [[float(x) for x in v] for v in vecs]
 
 
 @lru_cache(maxsize=1)
@@ -667,10 +749,7 @@ def hybrid_retrieve(
     embedding = _embedding_cache.get(emb_key)
     if embedding is None:
         try:
-            embedding = get_embedding_model().encode(
-                "query: " + question,
-                normalize_embeddings=True,
-            )
+            embedding = compute_embedding("query: " + question)
             _embedding_cache.set(emb_key, embedding)
         except Exception as exc:
             logger.warning(f"Embedding model unavailable, falling back to zero vector: {exc}")

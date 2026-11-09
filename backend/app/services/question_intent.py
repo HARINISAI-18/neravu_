@@ -15,8 +15,8 @@ _URGENT_PATTERNS = (
 )
 
 _GREETING_PATTERN = (
-    r"^(hi|hey|hello|hlo|hlw|helo|hii+|heyy+|hy|namaste|namaskar|namaskara|namaskaram|vanakkam|good\s+(?:morning|afternoon|evening)|"
-    r"howdy|sup|hola|who\s+are\s+you|what\s+can\s+you\s+do|what\s+is\s+neravu|help|start)[\s!?.~]*$"
+    r"^(?:(?:hi|hey|hello|hlo|hlw|helo|hii+|heyy+|hy|namaste|namaskar|namaskara|namaskaram|vanakkam|good\s+(?:morning|afternoon|evening)|howdy|sup|hola)[\s,!?.~]*)+$"
+    r"|^(?:who\s+are\s+you|what\s+can\s+you\s+do|what\s+is\s+neravu|help|start)[\s!?.~]*$"
 )
 
 _ELIGIBILITY = r"\b(eligible|eligibility|qualify|qualification|income limit|who can apply)\b|पात्र|అర్హత"

@@ -18,11 +18,9 @@ MAX_CHUNK_CHARS = 1200
 CHUNK_OVERLAP_CHARS = 120
 
 
-@lru_cache(maxsize=1)
-def _embedding_model():
-    from app.services.hybrid_rag import get_embedding_model
-
-    return get_embedding_model()
+def _compute_vectors(texts: list[str]):
+    from app.services.hybrid_rag import compute_embeddings
+    return compute_embeddings(texts)
 
 
 def _split_text(value: str) -> list[str]:
@@ -365,13 +363,7 @@ def process_one_job() -> bool:
         chunks = _build_index_chunks(snapshot)
         if not chunks:
             raise ValueError("publication_snapshot_has_no_approved_claims")
-        model = _embedding_model()
-        vectors = model.encode(
-            ["passage: " + chunk["chunk_text"] for chunk in chunks],
-            normalize_embeddings=True,
-            batch_size=16,
-            show_progress_bar=False,
-        )
+        vectors = _compute_vectors(["passage: " + chunk["chunk_text"] for chunk in chunks])
         _write_index(job, chunks, vectors)
     except Exception as error:
         logger.warning("Scheme sync job failed (%s)", type(error).__name__)

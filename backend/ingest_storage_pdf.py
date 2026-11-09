@@ -21,7 +21,7 @@ import httpx
 from sqlalchemy import text
 
 from app.db.config import get_database_engine
-from app.services.hybrid_rag import get_embedding_model
+from app.services.hybrid_rag import compute_embeddings, get_embedding_model
 
 MAX_PDF_BYTES = 25 * 1024 * 1024
 MAX_CHUNK_CHARS = 1000
@@ -104,13 +104,7 @@ def ingest_storage_pdf(bucket: str, object_path: str) -> dict[str, int | str]:
             "before they can be indexed."
         )
 
-    model = get_embedding_model()
-    vectors = model.encode(
-        ["passage: " + str(chunk["chunk_text"]) for chunk in pages],
-        normalize_embeddings=True,
-        batch_size=16,
-        show_progress_bar=False,
-    )
+    vectors = compute_embeddings(["passage: " + str(chunk["chunk_text"]) for chunk in pages])
     if len(vectors) != len(pages):
         raise RuntimeError("The embedding model returned an incomplete PDF index.")
 
