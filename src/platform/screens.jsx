@@ -6,7 +6,7 @@ import {
   Stethoscope, UserRound, Wallet, ExternalLink, AlertCircle, Plus, RefreshCw, Key, Edit, CheckCircle
 } from 'lucide-react';
 import {
-  demoOrganizations, demoSchemes, followUpQuestionDefinitions, getApplicableQuestions,
+  demoOrganizations, demoSchemes, getApplicableQuestions,
   languageOptions, questionDefinitions, sectionLabels
 } from './data';
 import {
@@ -545,10 +545,6 @@ export function AssessmentShortlistPage() {
     return () => { active = false; };
   }, [data.answers, language]);
   if (!data.assessmentAccessGranted) return <Navigate to="/assessment/access" replace />;
-  const missingQuestions = getApplicableQuestions(followUpQuestionDefinitions, data.answers, candidates);
-  const continueToQuestions = () => {
-    navigate('/assessment/follow-up');
-  };
   return (
     <div className="assessment-page">
       <IntakeFlowHeader language={language} t={t} />
@@ -560,77 +556,9 @@ export function AssessmentShortlistPage() {
         {candidates.length ? <div className="intake-candidate-list">
           {candidates.map((candidate) => <CandidateCard candidate={candidate} t={t} language={language} key={`${candidate.isNgo ? 'ngo' : 'scheme'}-${candidate.id || candidate.official_name}`} />)}
         </div> : <p className="intake-empty">{t('intake.shortlistEmpty')}</p>}
-        {missingQuestions.length > 0 && <section className="intake-missing-list">
-          <strong>{t('intake.missingInformation')}:</strong>
-          <ul>{missingQuestions.map((question) => <li key={question.key}>{t(question.prompt)}</li>)}</ul>
-        </section>}
         <RouteFooter>
           <button type="button" className="button button-outline" onClick={() => navigate('/assessment')}><ArrowLeft size={17} /> {t('common.back')}</button>
-          <button type="button" className="button button-primary" onClick={continueToQuestions}>{t('common.continue')} <ArrowRight size={17} /></button>
-        </RouteFooter>
-      </main>
-    </div>
-  );
-}
-
-export function AssessmentFollowUpPage() {
-  const navigate = useNavigate();
-  const { data, updateData } = usePlatform();
-  const { language } = useLanguage();
-  const t = (key, values) => translate(language, key, values);
-  const candidates = getPotentialIntakeCandidates(data.answers);
-  const questions = getApplicableQuestions(followUpQuestionDefinitions, data.answers, candidates);
-  const [index, setIndex] = useState(Math.min(data.followUpStep || 0, Math.max(questions.length - 1, 0)));
-  const [error, setError] = useState('');
-  if (!data.assessmentAccessGranted) return <Navigate to="/assessment/access" replace />;
-  if (index >= questions.length) return <Navigate to="/assessment/review" replace />;
-  const question = questions[index];
-  const value = data.answers[question.key] ?? '';
-  const change = (newValue) => {
-    setError('');
-    updateData({ answers: { ...data.answers, [question.key]: newValue }, followUpStep: index });
-  };
-  const next = () => {
-    if (question.required && (!value && value !== 0 || (Array.isArray(value) && value.length === 0))) {
-      setError(t('assessment.required'));
-      return;
-    }
-    if (index === questions.length - 1) {
-      updateData({ followUpStep: index });
-      navigate('/assessment/review');
-    } else {
-      const nextIndex = index + 1;
-      setIndex(nextIndex);
-      updateData({ followUpStep: nextIndex });
-    }
-  };
-  const back = () => {
-    if (index === 0) {
-      navigate('/assessment/shortlist');
-      return;
-    }
-    const previousIndex = index - 1;
-    setIndex(previousIndex);
-    updateData({ followUpStep: previousIndex });
-    setError('');
-  };
-  return (
-    <div className="assessment-page">
-      <IntakeFlowHeader language={language} t={t} />
-      <main className="assessment-content" id="main-content">
-        <div className="assessment-progress-label"><span>{t(sectionLabels[question.section])}</span><span>{t('assessment.step', { current: index + 1, total: questions.length })}</span></div>
-        <div className="flow-progress"><span style={{ width: `${((index + 1) / Math.max(questions.length, 1)) * 100}%` }} /></div>
-        <h1>{t('intake.followUpIntro')}</h1>
-        <section className="question-card" aria-live="polite">
-          <div className="question-kicker">{t(sectionLabels[question.section])}{question.optional && <span className="optional-pill">{t('common.optional')}</span>}</div>
-          <h2>{t(question.prompt)}</h2>
-          <IntakeQuestionControl question={question} value={value} onChange={change} language={language} t={t} />
-        </section>
-        <p className="autosave-note"><ShieldCheck size={16} /> {t('assessment.saved')}</p>
-        {error && <p className="form-error" role="alert">{error}</p>}
-        <RouteFooter>
-          <button className="button button-outline" type="button" onClick={back}><ArrowLeft size={17} /> {t('common.back')}</button>
-          <button className="button button-primary" type="button" onClick={next}>{t('common.continue')} <ArrowRight size={17} /></button>
+          <button type="button" className="button button-primary" onClick={() => navigate('/assessment/review')}>{t('assessment.review')} <ArrowRight size={17} /></button>
         </RouteFooter>
       </main>
     </div>
@@ -695,9 +623,7 @@ export function ReviewPage() {
   const [screening, setScreening] = useState({ loading: true, candidates: [], error: '' });
   const localCandidates = getPotentialIntakeCandidates(data.answers);
   const initialQuestions = getApplicableQuestions(questionDefinitions, data.answers);
-  const followUpQuestions = getApplicableQuestions(followUpQuestionDefinitions, data.answers, localCandidates);
-  const allQuestions = [...initialQuestions, ...followUpQuestions];
-  const groups = allQuestions.reduce((result, question) => {
+  const groups = initialQuestions.reduce((result, question) => {
     (result[question.section] ||= []).push(question);
     return result;
   }, {});
@@ -749,11 +675,6 @@ export function ReviewPage() {
       navigate('/assessment');
       return;
     }
-    const followUpIndex = followUpQuestions.findIndex((item) => item.key === question.key);
-    if (followUpIndex >= 0) {
-      updateData({ followUpStep: followUpIndex });
-      navigate('/assessment/follow-up');
-    }
   };
   return (
     <div className="assessment-page">
@@ -795,7 +716,7 @@ export function ReviewPage() {
           })}
         </section>
         <RouteFooter>
-          <button type="button" className="button button-outline" onClick={() => navigate(followUpQuestions.length ? '/assessment/follow-up' : '/assessment/shortlist')}><ArrowLeft size={17} /> {t('common.back')}</button>
+          <button type="button" className="button button-outline" onClick={() => navigate('/assessment/shortlist')}><ArrowLeft size={17} /> {t('common.back')}</button>
           <button type="button" className="button button-primary" onClick={finish}>{t('assessment.finish')} <ArrowRight size={17} /></button>
         </RouteFooter>
       </main>
@@ -1272,7 +1193,7 @@ export function NgoPage() {
   const [ngos, setNgos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-  const [directoryNotice, setDirectoryNotice] = useState('');
+  const [usingWorkbookSnapshot, setUsingWorkbookSnapshot] = useState(false);
   const [search, setSearch] = useState('');
   const [selectedState, setSelectedState] = useState(data.answers?.state || '');
   const [directAidFilter, setDirectAidFilter] = useState('');
@@ -1282,7 +1203,7 @@ export function NgoPage() {
   const loadNgos = async () => {
     setLoading(true);
     setError('');
-    setDirectoryNotice('');
+    setUsingWorkbookSnapshot(false);
     const snapshotNgos = filterWorkbookNgos({
       search,
       state: selectedState,
@@ -1312,8 +1233,8 @@ export function NgoPage() {
       setNgos([...mergedNgos.values()]);
     } catch (err) {
       setNgos(snapshotNgos);
-      if (snapshotNgos.length > 0) setDirectoryNotice(t('ngo.directoryFallbackNote'));
-      else setError(err.message || t('common.error'));
+      if (snapshotNgos.length > 0) setUsingWorkbookSnapshot(true);
+      else setError(t('common.error'));
     } finally {
       setLoading(false);
     }
@@ -1338,27 +1259,25 @@ export function NgoPage() {
         title={t('ngo.page.title')}
         description={t('ngo.page.description')}
       />
-      <p className="translation-notice" role="note">{t('ngo.directorySourceNote')}</p>
-      {directoryNotice && <p className="translation-notice" role="status">{directoryNotice}</p>}
+      {usingWorkbookSnapshot && <p className="ngo-source-status" role="status">{t('ngo.directoryOffline')}</p>}
 
       {/* Filter Toolbar */}
-      <section className="content-card" style={{ marginBottom: '20px', padding: '16px' }}>
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '12px', alignItems: 'center' }}>
-          <div style={{ flex: '1 1 240px' }}>
+      <section className="content-card ngo-filters" aria-label={t('ngo.filters')}>
+        <div className="ngo-filter-row">
+          <div className="ngo-search-field">
             <input
               type="text"
               placeholder={t('ngo.search')}
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              style={{ width: '100%', padding: '8px 12px', borderRadius: '8px', border: '1px solid #ccc', fontSize: '13px' }}
+              aria-label={t('ngo.search')}
             />
           </div>
-
-          <div style={{ flex: '0 1 180px' }}>
+          <div className="ngo-filter-field">
             <select
+              aria-label={t('ngo.allStates')}
               value={selectedState}
               onChange={(e) => setSelectedState(e.target.value)}
-              style={{ width: '100%', padding: '8px 12px', borderRadius: '8px', border: '1px solid #ccc', fontSize: '13px' }}
             >
               <option value="">{t('ngo.allStates')}</option>
               {knownStates.map((st) => (
@@ -1367,11 +1286,11 @@ export function NgoPage() {
             </select>
           </div>
 
-          <div style={{ flex: '0 1 180px' }}>
+          <div className="ngo-filter-field">
             <select
+              aria-label={t('ngo.allAidTypes')}
               value={directAidFilter}
               onChange={(e) => setDirectAidFilter(e.target.value)}
-              style={{ width: '100%', padding: '8px 12px', borderRadius: '8px', border: '1px solid #ccc', fontSize: '13px' }}
             >
               <option value="">{t('ngo.allAidTypes')}</option>
               <option value="Yes">{t('ngo.directAidOnly')}</option>
@@ -1381,9 +1300,8 @@ export function NgoPage() {
 
           <button
             type="button"
-            className="button button-outline"
             onClick={() => { setSearch(''); setSelectedState(''); setDirectAidFilter(''); }}
-            style={{ minHeight: '36px', fontSize: '12px' }}
+            className="button button-outline ngo-reset"
           >
             {t('ngo.reset')}
           </button>
@@ -1391,7 +1309,7 @@ export function NgoPage() {
       </section>
 
       {loading && <div style={{ textAlign: 'center', padding: '40px', color: '#683693' }}>{t('ngo.loading')}</div>}
-      {error && <div style={{ background: '#ffebee', color: '#c62828', padding: '12px 16px', borderRadius: '8px', marginBottom: '20px' }}>{error}</div>}
+      {error && <p className="ngo-error-status" role="alert">{error}</p>}
       {selectedState && (
         <p className="muted-copy">{t('directory.resultsForState', { state: translateOption(language, selectedState) })}</p>
       )}
@@ -1407,79 +1325,65 @@ export function NgoPage() {
       <div className="ngo-grid">
         {rankedNgos.map(({ ngo, trackerId, recommendation }) => {
           const hasDirectAid = ngo.direct_financial_aid?.toLowerCase().startsWith('yes');
+          const phoneValue = ngo.contact_phone?.split(/[,;/]|\bor\b/i, 1)[0].trim();
+          const phoneLink = phoneValue?.replace(/[^\d+]/g, '');
+          const validPhoneLink = phoneLink && phoneLink.replace(/\D/g, '').length >= 7 ? phoneLink : '';
+          const emailLink = typeof ngo.contact_email === 'string'
+            && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(ngo.contact_email.trim())
+            ? ngo.contact_email.trim()
+            : '';
+          const officialUrl = typeof ngo.website_url === 'string' && /^https?:\/\//i.test(ngo.website_url)
+            ? ngo.website_url
+            : '';
+          const hospitalResearch = getHospitalResearchForNgo(ngo.organization_name);
           return (
-            <article className="content-card ngo-card" key={ngo.id || trackerId} style={{ display: 'flex', flexDirection: 'column' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '8px' }}>
+            <article className="content-card ngo-card" key={ngo.id || trackerId}>
+              <div className="ngo-card-heading">
                 <span className="support-icon-small"><HeartHandshake size={18} /></span>
-                <span
-                  style={{
-                    background: hasDirectAid ? '#e8f5e9' : '#f5f0fa',
-                    color: hasDirectAid ? '#2e7d32' : '#683693',
-                    padding: '3px 8px',
-                    borderRadius: '4px',
-                    fontSize: '10px',
-                    fontWeight: 'bold',
-                  }}
-                >
+                <span className={`ngo-type-badge${hasDirectAid ? ' direct-aid' : ''}`}>
                   {hasDirectAid ? t('ngo.directFinancialAid') : translateOption(language, ngo.organization_type || t('ngo.supportNgo')).toUpperCase()}
                 </span>
               </div>
 
-              <h2 style={{ fontSize: '16px', margin: '4px 0 6px 0', color: '#1a1a1a' }}>{ngo.organization_name}</h2>
+              <h2>{ngo.organization_name}</h2>
               {selectedState && recommendation.recommended && (
                 <small className="verification-status">{t('directory.possibleNgoMatch')}</small>
               )}
-              <div style={{ fontSize: '11px', color: '#666', marginBottom: '8px' }}>
+              <div className="ngo-coverage">
                 <strong>{t('ngo.coverage')}</strong> {ngo.state_coverage} {ngo.city_district ? `· ${ngo.city_district}` : ''}
               </div>
 
-              <p style={{ fontSize: '12px', lineHeight: '1.5', color: '#444', flex: 1, margin: '0 0 12px 0' }}>
+              <p className="ngo-summary">
                 {ngo.what_support_offered || ngo.support_type}
               </p>
 
-              {ngo.aid_amount_limit && (
-                <div style={{ background: '#fdf8e2', border: '1px solid #fae8a4', borderRadius: '6px', padding: '6px 10px', fontSize: '11px', color: '#7a5b00', marginBottom: '10px' }}>
-                  <strong>{t('ngo.aidLimit')}</strong> {ngo.aid_amount_limit}
-                </div>
-              )}
-
-              {ngo.contact_phone && (
-                <div style={{ fontSize: '11px', color: '#555', marginBottom: '4px' }}>
-                  <strong>{t('ngo.phone')}</strong> {ngo.contact_phone}
-                </div>
-              )}
-
-              {ngo.contact_email && (
-                <div style={{ fontSize: '11px', color: '#555', marginBottom: '8px' }}>
-                  <strong>{t('ngo.email')}</strong> {ngo.contact_email}
-                </div>
-              )}
-
-              {(ngo.eligibility || ngo.hospital_restrictions || ngo.application_route || ngo.address || ngo.verification_status || ngo.source_notes) && (
-                <details className="guidance-disclosure" style={{ margin: '8px 0' }}>
+              {(ngo.aid_amount_limit || ngo.eligibility || ngo.hospital_restrictions || ngo.application_route || ngo.address || ngo.verification_status || ngo.source_notes || validPhoneLink || emailLink || hospitalResearch) && (
+                <details className="guidance-disclosure ngo-details">
                   <summary>{t('ngo.moreDetails')}</summary>
+                  {ngo.aid_amount_limit && <p><strong>{t('ngo.aidLimit')}:</strong> {ngo.aid_amount_limit}</p>}
                   {ngo.eligibility && <p><strong>{t('ngo.eligibility')}:</strong> {ngo.eligibility}</p>}
                   {ngo.hospital_restrictions && <p><strong>{t('ngo.restrictions')}:</strong> {ngo.hospital_restrictions}</p>}
                   {ngo.application_route && <p><strong>{t('ngo.applicationRoute')}:</strong> {ngo.application_route}</p>}
                   {ngo.address && <p><strong>{t('ngo.address')}:</strong> {ngo.address}</p>}
                   {ngo.verification_status && <p><strong>{t('ngo.verificationStatus')}:</strong> {ngo.verification_status}</p>}
                   {ngo.source_notes && <p><strong>{t('ngo.sourceNotes')}:</strong> {ngo.source_notes}</p>}
+                  {validPhoneLink && <p><strong>{t('ngo.phone')}:</strong> <a href={`tel:${validPhoneLink}`}>{phoneValue}</a></p>}
+                  {emailLink && <p><strong>{t('ngo.email')}:</strong> <a href={`mailto:${emailLink}`}>{emailLink}</a></p>}
+                  <HospitalResearchSection
+                    research={hospitalResearch}
+                    language={language}
+                    showEmpty
+                  />
                 </details>
               )}
-              <HospitalResearchSection
-                research={getHospitalResearchForNgo(ngo.organization_name)}
-                language={language}
-                showEmpty
-              />
 
-              <div style={{ display: 'flex', gap: '8px', marginTop: 'auto', paddingTop: '8px', flexWrap: 'wrap' }}>
-                {ngo.website_url && (
+              <div className="ngo-card-actions">
+                {officialUrl && (
                   <a
-                    href={ngo.website_url}
+                    href={officialUrl}
                     target="_blank"
                     rel="noreferrer"
                     className="button button-outline"
-                    style={{ fontSize: '11px', minHeight: '30px', padding: '4px 10px', display: 'inline-flex', alignItems: 'center', gap: '4px' }}
                   >
                     {t('ngo.officialPortal')} <ExternalLink size={12} />
                   </a>
@@ -1488,7 +1392,6 @@ export function NgoPage() {
                   <button
                     className="button button-outline"
                     type="button"
-                    style={{ fontSize: '11px', minHeight: '30px', padding: '4px 10px' }}
                     onClick={() => updateData({
                       trackedProgrammeIds: trackedProgrammeIds.includes(trackerId)
                         ? trackedProgrammeIds
@@ -1502,7 +1405,6 @@ export function NgoPage() {
                 <Link
                   className="button button-primary"
                   to="/assistant"
-                  style={{ fontSize: '11px', minHeight: '30px', padding: '4px 10px' }}
                 >
                   {t('ngo.askAssistant')} <ArrowRight size={14} />
                 </Link>

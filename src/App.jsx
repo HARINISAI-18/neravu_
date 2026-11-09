@@ -9,7 +9,6 @@ const HospitalScene = lazy(() => import('./scene/HospitalScene'));
 const AssessmentAccessPage = lazy(() => import('./platform/screens').then((module) => ({ default: module.AssessmentAccessPage })));
 const AssessmentPage = lazy(() => import('./platform/screens').then((module) => ({ default: module.AssessmentPage })));
 const AssessmentShortlistPage = lazy(() => import('./platform/screens').then((module) => ({ default: module.AssessmentShortlistPage })));
-const AssessmentFollowUpPage = lazy(() => import('./platform/screens').then((module) => ({ default: module.AssessmentFollowUpPage })));
 const ReviewPage = lazy(() => import('./platform/screens').then((module) => ({ default: module.ReviewPage })));
 const AuthPage = lazy(() => import('./platform/screens').then((module) => ({ default: module.AuthPage })));
 const DashboardPage = lazy(() => import('./platform/screens').then((module) => ({ default: module.DashboardPage })));
@@ -196,8 +195,6 @@ function LandingPage() {
         <a className="brand" href="#top">
           <BrandLogo />
         </a>
-        <span>{t('landing.footer.tagline')}</span>
-        <span>{t('landing.footer.disclaimer')}</span>
       </footer>
     </div>
   );
@@ -214,7 +211,7 @@ export default function App() {
           <Route path="/assessment/access" element={<AssessmentAccessPage />} />
           <Route path="/assessment" element={<AssessmentPage />} />
           <Route path="/assessment/shortlist" element={<AssessmentShortlistPage />} />
-          <Route path="/assessment/follow-up" element={<AssessmentFollowUpPage />} />
+          <Route path="/assessment/follow-up" element={<Navigate to="/assessment/review" replace />} />
           <Route path="/assessment/review" element={<ReviewPage />} />
           <Route path="/login" element={<AuthPage />} />
           <Route path="/signup" element={<AuthPage />} />

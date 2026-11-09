@@ -465,3 +465,26 @@
   .intake-candidate-heading h2{font-size:16px}
   .intake-select,.intake-search-fields input{font-size:16px}
 }
+.ngo-source-status,.ngo-error-status{margin:0 0 14px;color:#776d80;font-size:11px;line-height:1.5}
+.ngo-error-status{color:#9e3d39}
+.ngo-filters{margin-bottom:20px;padding:16px}
+.ngo-filter-row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.ngo-search-field{flex:1 1 240px}
+.ngo-filter-field{flex:0 1 180px}
+.ngo-search-field input,.ngo-filter-field select{width:100%;min-height:40px;padding:8px 12px;border:1px solid #e4dce9;border-radius:9px;background:#fff;color:#42384b;font:500 13px 'DM Sans',sans-serif}
+.ngo-reset{min-height:40px;font-size:12px}
+.ngo-card{display:flex;flex-direction:column;gap:8px;min-width:0}
+.ngo-card-heading{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.ngo-type-badge{padding:5px 8px;border-radius:6px;background:#f5f0fa;color:#683693;font-size:9px;font-weight:700}
+.ngo-type-badge.direct-aid{background:#e8f5e9;color:#2e7d32}
+.ngo-card h2{margin:2px 0;color:#292331;font:700 16px/1.35 Manrope,sans-serif}
+.ngo-card .verification-status{margin:0}
+.ngo-coverage{color:#716a79;font-size:11px}
+.ngo-summary{margin:0!important;color:#5e5665!important;font-size:12px!important;line-height:1.6!important}
+.ngo-details{margin:2px 0!important;font-size:11px}
+.ngo-details>p{margin:8px 0}
+.ngo-details a{color:#68408d;text-decoration:underline;text-underline-offset:2px}
+.ngo-card-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:auto;padding-top:7px}
+.ngo-card-actions .button{min-height:36px;padding:0 11px;font-size:11px}
+.ngo-card a:focus-visible,.ngo-card-actions .button:focus-visible{outline:2px solid #71429a;outline-offset:2px}
+@media(max-width:760px){.ngo-filter-field{flex:1 1 150px}.ngo-card-actions .button{min-height:40px}}

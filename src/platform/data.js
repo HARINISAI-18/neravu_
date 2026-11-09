@@ -13,7 +13,6 @@ export const languageOptions = [
 ];
 
 const stateOptions = ['Andhra Pradesh', 'Arunachal Pradesh', 'Assam', 'Bihar', 'Chhattisgarh', 'Goa', 'Gujarat', 'Haryana', 'Himachal Pradesh', 'Jharkhand', 'Karnataka', 'Kerala', 'Madhya Pradesh', 'Maharashtra', 'Manipur', 'Meghalaya', 'Mizoram', 'Nagaland', 'Odisha', 'Punjab', 'Rajasthan', 'Sikkim', 'Tamil Nadu', 'Telangana', 'Tripura', 'Uttar Pradesh', 'Uttarakhand', 'West Bengal', 'Andaman and Nicobar Islands', 'Chandigarh', 'Dadra and Nagar Haveli and Daman and Diu', 'Delhi', 'Jammu and Kashmir', 'Ladakh', 'Lakshadweep', 'Puducherry'];
-const yesNoUnknown = ['Yes', 'No', "I'm not sure", 'Prefer to skip'];
 const applicationStatusOptions = ['Yes', 'No', 'We applied and are waiting for a decision', "I'm not sure", 'Prefer to skip'];
 const cancerTypeOptions = [
   'Bladder cancer', 'Bone cancer', 'Brain cancer', 'Breast cancer', 'Cervical cancer',
@@ -36,18 +35,6 @@ export const questionDefinitions = [
   { key: 'hospitalType', section: 'cancer', type: 'select', prompt: 'intake.hospitalType', options: ['Government or public hospital', 'Private hospital', 'Charitable or trust hospital', "I'm not sure"], conditional: (answers) => answers.hospitalStatus === 'Yes, care is planned or underway there', required: true },
   { key: 'receivedAssistance', section: 'assistance', type: 'select', prompt: 'intake.receivedAssistance', options: applicationStatusOptions, required: true },
   { key: 'assistanceProgramme', section: 'assistance', type: 'search', prompt: 'intake.assistanceProgramme', placeholder: 'intake.assistanceProgrammePlaceholder', options: [], conditional: (answers) => ['Yes', 'We applied and are waiting for a decision'].includes(answers.receivedAssistance), optional: true }
-];
-
-export const followUpQuestionDefinitions = [
-  { key: 'age', section: 'person', type: 'number', prompt: 'intake.age', placeholder: 'intake.agePlaceholder', max: 120, optional: true, requiredIfCandidate: /age|child|children|minor|pediatric|paediatric/i },
-  { key: 'annual_family_income', section: 'person', type: 'amount', prompt: 'intake.householdIncome', optional: true, requiredIfCandidate: /income|financial|economically|poor patient/i },
-  { key: 'incomeCertificate', section: 'assistance', type: 'select', prompt: 'intake.incomeCertificate', options: ['Yes', 'No', 'Application pending', "I'm not sure", 'Prefer to skip'], requiredIfCandidate: /income certificate|income proof|income document/i },
-  { key: 'pmjayCard', section: 'assistance', type: 'select', prompt: 'intake.pmjayCard', options: yesNoUnknown, conditional: (_answers, candidates) => candidates.some((scheme) => /pm.?jay|ayushman bharat/i.test(`${scheme.official_name || ''} ${scheme.name || ''}`)) },
-  { key: 'rationCard', section: 'assistance', type: 'select', prompt: 'intake.rationCard', options: yesNoUnknown, requiredIfCandidate: /ration card/i },
-  { key: 'categoryCertificate', section: 'assistance', type: 'select', prompt: 'intake.categoryCertificate', options: ['Yes', 'No', 'Application pending', "I'm not sure", 'Prefer to skip'], requiredIfCandidate: /caste|category certificate|scheduled caste|scheduled tribe|other backward class/i },
-  { key: 'bplCertificate', section: 'assistance', type: 'select', prompt: 'intake.bplCertificate', options: ['Yes', 'No', 'Application pending', "I'm not sure", 'Prefer to skip'], requiredIfCandidate: /\bBPL\b|below poverty line/i },
-  { key: 'stateHealthCard', section: 'assistance', type: 'select', prompt: 'intake.stateHealthCard', options: yesNoUnknown, requiredIfCandidate: /state health card|state health insurance card/i },
-  { key: 'pmjayHospitalAccepts', section: 'assistance', type: 'select', prompt: 'intake.pmjayHospitalAccepts', options: ['Yes', 'No', "I haven't asked yet", "I'm not sure"], conditional: (answers, candidates) => Boolean(answers.hospitalName?.name) && candidates.some((scheme) => /pm.?jay|ayushman bharat/i.test(`${scheme.official_name || ''} ${scheme.name || ''}`)) }
 ];
 
 export function getApplicableQuestions(definitions, answers = {}, candidates = []) {
