@@ -1,20 +1,30 @@
 import React, { useEffect, useState } from 'react';
-import { ArrowRight, HeartHandshake, Linkedin, Mail, ShieldCheck, Users } from 'lucide-react';
+import {
+  ArrowRight, Check, CircleCheck, ExternalLink, FileText, Linkedin,
+  Mail, Search, ShieldCheck, Users, Volume2
+} from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { BrandLogo, LanguageSelect } from './components';
+import { aboutStatistics, assistanceJourney, evidenceSource, researchObservations, workflowExamples } from './about-page-data';
 import { translate, useLanguage } from './i18n';
 import './info-pages.css';
 
 const contactEmail = 'optimizers64@gmail.com';
 
-function InfoPageLayout({ activePage, pageTitle, children }) {
+function InfoPageLayout({ activePage, pageTitle, pageDescription, children }) {
   const { language } = useLanguage();
   const t = (key) => translate(language, key);
   useEffect(() => {
     const previousTitle = document.title;
+    const description = document.querySelector('meta[name="description"]');
+    const previousDescription = description?.content;
     document.title = `${pageTitle} | Neravu`;
-    return () => { document.title = previousTitle; };
-  }, [pageTitle]);
+    if (description && pageDescription) description.content = pageDescription;
+    return () => {
+      document.title = previousTitle;
+      if (description && previousDescription !== undefined) description.content = previousDescription;
+    };
+  }, [pageDescription, pageTitle]);
   const links = [
     { to: '/about', key: 'info.nav.about' },
     { to: '/privacy', key: 'info.nav.privacy' },
@@ -37,7 +47,10 @@ function InfoPageLayout({ activePage, pageTitle, children }) {
       </header>
       <main className="info-main" id="main-content">{children}</main>
       <footer className="info-footer">
-        <Link to="/" className="brand info-brand" aria-label={t('brand.home')}><BrandLogo /></Link>
+        <div className="info-footer-brand">
+          <Link to="/" className="brand info-brand" aria-label={t('brand.home')}><BrandLogo /></Link>
+          <span>{t('brand.tagline')}</span>
+        </div>
         <nav className="info-footer-links" aria-label={t('info.footer.label')}>
           {links.map(({ to, key }) => <Link key={to} to={to}>{t(key)}</Link>)}
           <a href={`mailto:${contactEmail}`}>{contactEmail}</a>
@@ -46,13 +59,6 @@ function InfoPageLayout({ activePage, pageTitle, children }) {
     </div>
   );
 }
-
-const storyStages = [
-  { title: 'info.about.story.1.title', body: 'info.about.story.1.body' },
-  { title: 'info.about.story.2.title', body: 'info.about.story.2.body' },
-  { title: 'info.about.story.3.title', body: 'info.about.story.3.body' },
-  { title: 'info.about.story.4.title', body: 'info.about.story.4.body' }
-];
 
 const team = [
   {
@@ -93,100 +99,390 @@ const team = [
   }
 ];
 
-const principles = [
-  { title: 'info.about.principle.1.title', body: 'info.about.principle.1.body' },
-  { title: 'info.about.principle.2.title', body: 'info.about.principle.2.body' },
-  { title: 'info.about.principle.3.title', body: 'info.about.principle.3.body' }
-];
-
-export function AboutPage() {
+function AboutSectionHeading({ eyebrow, title, description, id }) {
   const { language } = useLanguage();
   const t = (key) => translate(language, key);
-
   return (
-    <InfoPageLayout activePage="/about" pageTitle={t('info.about.title')}>
-      <section className="info-hero">
-        <span className="eyebrow">{t('info.about.eyebrow')}</span>
-        <h1>{t('info.about.title')}</h1>
-        <p>{t('info.about.subtitle')}</p>
-      </section>
+    <div className="about-section-heading">
+      <span className="eyebrow">{t(eyebrow)}</span>
+      <h2 id={id}>{t(title)}</h2>
+      {description && <p>{t(description)}</p>}
+    </div>
+  );
+}
 
-      <section className="info-mission" aria-labelledby="mission-heading">
-        <span className="info-section-icon"><HeartHandshake size={23} /></span>
+function CitationLink({ source, label }) {
+  return (
+    <a className="about-citation" href={source.href} target="_blank" rel="noopener noreferrer">
+      {label} <ExternalLink size={13} aria-hidden="true" />
+    </a>
+  );
+}
+
+function AboutStatistics({ t }) {
+  return (
+    <section className="about-section about-statistics" aria-labelledby="about-stats-heading">
+      <AboutSectionHeading eyebrow="info.about.stats.eyebrow" title="info.about.stats.title" id="about-stats-heading" />
+      <div className="about-stat-grid">
+        {aboutStatistics.map((stat, index) => (
+          <article className={`about-stat about-stat-${index + 1}`} key={stat.value}>
+            <p className="about-stat-value">{stat.value}</p>
+            <p className="about-stat-description">{t(stat.description)}</p>
+            {stat.dotCount && (
+              <div className="about-dot-grid" role="img" aria-label={t('info.about.stats.dotLabel', { percent: stat.dotCount })}>
+                {Array.from({ length: 100 }, (_, dot) => (
+                  <span className={dot < stat.dotCount ? 'is-filled' : ''} key={dot} aria-hidden="true" />
+                ))}
+              </div>
+            )}
+            <p className="about-stat-context">{t(stat.context)}</p>
+            <CitationLink source={stat.source} label={`${t('info.about.sourceLabel')}: ${stat.source.title}`} />
+            <p className="about-stat-source-note">{t(stat.source.detail)}</p>
+          </article>
+        ))}
+      </div>
+      <p className="about-stat-footnote">{t('info.about.stats.footnote')}</p>
+    </section>
+  );
+}
+
+function HeroJourneyPreview({ t }) {
+  return (
+    <aside className="about-hero-preview" aria-label={t('info.about.illustrativeLabel')}>
+      <div className="about-preview-heading">
+        <span className="about-preview-mark" aria-hidden="true"><FileText size={17} /></span>
         <div>
-          <h2 id="mission-heading">{t('info.about.mission')}</h2>
-          <p>{t('info.about.missionText')}</p>
+          <span className="about-preview-label">{t('info.about.illustrativeLabel')}</span>
+          <h2>{t('info.about.journey.title')}</h2>
         </div>
-      </section>
+      </div>
+      <ol className="about-preview-steps">
+        {assistanceJourney.slice(0, 3).map((stage, index) => (
+          <li key={stage.title}>
+            <span className="about-preview-step-number">{index + 1}</span>
+            <div>
+              <h3>{t(stage.title)}</h3>
+              <p>{t(stage.question)}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+      <p className="about-preview-footnote">{t('info.about.demo.disclaimer')}</p>
+    </aside>
+  );
+}
 
-      <section className="info-section" aria-labelledby="story-heading">
-        <div className="info-section-heading">
-          <span className="eyebrow">{t('info.about.storyEyebrow')}</span>
-          <h2 id="story-heading">{t('info.about.story')}</h2>
-        </div>
-        <ol className="info-timeline">
-          {storyStages.map((stage, index) => (
-            <li className="info-timeline-item" key={stage.title}>
-              <span className="info-timeline-number">0{index + 1}</span>
-              <div><h3>{t(stage.title)}</h3><p>{t(stage.body)}</p></div>
+function AboutPurpose({ t }) {
+  return (
+    <aside className="about-purpose-band">
+      <span className="eyebrow">{t('info.about.eyebrow')}</span>
+      <p>{t('info.about.missionText')}</p>
+    </aside>
+  );
+}
+
+function JourneyMockup({ kind, t }) {
+  const mockupText = {
+    search: ['info.about.mockup.search.1', 'info.about.mockup.search.2'],
+    eligibility: ['info.about.mockup.eligibility.1', 'info.about.mockup.eligibility.2'],
+    documents: ['info.about.mockup.documents.1', 'info.about.mockup.documents.2'],
+    route: ['info.about.mockup.route.1', 'info.about.mockup.route.2'],
+    followup: ['info.about.mockup.followup.1', 'info.about.mockup.followup.2']
+  }[kind];
+  return (
+    <div className={`about-journey-mockup mockup-${kind}`} aria-label={t('info.about.illustrativeLabel')}>
+      <span className="about-mockup-status" aria-hidden="true"><span />{t(mockupText[0])}</span>
+      <span className="about-mockup-message">{t(mockupText[1])}</span>
+    </div>
+  );
+}
+
+function AssistanceJourney({ t }) {
+  return (
+    <section className="about-section" aria-labelledby="about-journey-heading">
+      <AboutSectionHeading eyebrow="info.about.journey.eyebrow" title="info.about.journey.title" id="about-journey-heading" />
+      <ol className="about-journey-list">
+        {assistanceJourney.map((stage, index) => (
+          <li className="about-journey-step" key={stage.title}>
+            <span className="about-journey-index">{String(index + 1).padStart(2, '0')}</span>
+            <h3>{t(stage.title)}</h3>
+            <p className="about-journey-question">{t(stage.question)}</p>
+            <JourneyMockup kind={stage.mockup} t={t} />
+          </li>
+        ))}
+      </ol>
+      <p className="about-illustration-note">{t('info.about.journey.note')}</p>
+    </section>
+  );
+}
+
+function DocumentGuidance({ t }) {
+  const documents = [
+    { key: 'info.about.document.identity', complete: true },
+    { key: 'info.about.document.income', complete: false },
+    { key: 'info.about.document.medical', complete: true },
+    { key: 'info.about.document.referral', complete: false }
+  ];
+  return (
+    <section className="about-section" aria-labelledby="about-documents-heading">
+      <AboutSectionHeading eyebrow="info.about.documents.eyebrow" title="info.about.documents.title" id="about-documents-heading" />
+      <div className="about-document-compare">
+        <article className="about-document-panel about-document-before">
+          <span className="about-panel-label">{t('info.about.documents.beforeLabel')}</span>
+          <h3>{t('info.about.documents.beforeTitle')}</h3>
+          <p>{t('info.about.documents.beforeText')}</p>
+          <ul className="about-question-list">
+            <li>{t('info.about.documents.question.1')}</li>
+            <li>{t('info.about.documents.question.2')}</li>
+            <li>{t('info.about.documents.question.3')}</li>
+          </ul>
+        </article>
+        <article className="about-document-panel about-document-after">
+          <span className="about-panel-label">{t('info.about.documents.afterLabel')}</span>
+          <h3>{t('info.about.documents.afterTitle')}</h3>
+          <p>{t('info.about.documents.afterText')}</p>
+          <ul className="about-checklist">
+            {documents.map(({ key, complete }) => (
+              <li key={key} className={complete ? 'is-complete' : 'is-needed'}>
+                <span aria-hidden="true">{complete ? <Check size={14} /> : '!'}</span>
+                {t(key)}
+              </li>
+            ))}
+          </ul>
+          <p className="about-document-help">
+            {t('info.about.documents.officialHelp')}{' '}
+            <a href="https://services.india.gov.in/" target="_blank" rel="noopener noreferrer">
+              {t('info.about.documents.officialLink')} <ExternalLink size={12} aria-hidden="true" />
+            </a>
+          </p>
+        </article>
+      </div>
+      <aside className="about-evidence-note">
+        <span className="about-evidence-label">{t('info.about.evidence.published')}</span>
+        <p>{t('info.about.documents.evidence')}</p>
+        <CitationLink source={evidenceSource} label={`${evidenceSource.journal} · ${t('info.about.sourceLabel')}`} />
+      </aside>
+      <p className="about-illustration-note">{t('info.about.documents.note')}</p>
+    </section>
+  );
+}
+
+function ResearchJournal({ t }) {
+  return (
+    <section className="about-section about-research" aria-labelledby="about-research-heading">
+      <AboutSectionHeading eyebrow="info.about.research.eyebrow" title="info.about.research.title" id="about-research-heading" />
+      <div className="about-research-layout">
+        <ol className="about-research-list">
+          {researchObservations.map((observation, index) => (
+            <li key={observation.title}>
+              <span className="about-research-marker">{String(index + 1).padStart(2, '0')}</span>
+              <div><h3>{t(observation.title)}</h3><p>{t(observation.body)}</p></div>
             </li>
           ))}
         </ol>
-      </section>
+        <aside className="about-research-artifact">
+          <span className="about-panel-label">{t('info.about.research.artifactLabel')}</span>
+          <h3>{t('info.about.research.artifactTitle')}</h3>
+          <div className="about-research-sheet" aria-hidden="true">
+            <div className="about-sheet-row about-sheet-header"><span>{t('info.about.research.field.1')}</span><span>{t('info.about.research.field.2')}</span></div>
+            <div className="about-sheet-row"><span>{t('info.about.research.row.1')}</span><span><CircleCheck size={13} /> {t('info.about.research.reviewed')}</span></div>
+            <div className="about-sheet-row"><span>{t('info.about.research.row.2')}</span><span><CircleCheck size={13} /> {t('info.about.research.reviewed')}</span></div>
+            <div className="about-sheet-row"><span>{t('info.about.research.row.3')}</span><span>{t('info.about.research.check')}</span></div>
+          </div>
+          <p>{t('info.about.research.artifactNote')}</p>
+          <span className="about-research-date">{t('info.about.research.date')}</span>
+        </aside>
+      </div>
+    </section>
+  );
+}
 
-      <section className="info-section" aria-labelledby="team-heading">
-        <div className="info-section-heading">
-          <span className="eyebrow">{t('info.about.teamEyebrow')}</span>
-          <h2 id="team-heading">{t('info.about.team')}</h2>
-          <p>{t('info.about.teamIntro')}</p>
+function PracticalSolution({ t }) {
+  const barrierKeys = ['search', 'eligibility', 'documents', 'route', 'progress', 'language'];
+  return (
+    <section className="about-section about-solution" id="solution" aria-labelledby="about-solution-heading">
+      <AboutSectionHeading eyebrow="info.about.solution.eyebrow" title="info.about.solution.title" id="about-solution-heading" />
+      <div className="about-solution-table">
+        <div className="about-solution-column">
+          <h3>{t('info.about.solution.before')}</h3>
+          <ul>{barrierKeys.map((key) => <li key={key}>{t(`info.about.solution.before.${key}`)}</li>)}</ul>
         </div>
-        <div className="info-team-grid">
-          {team.map((member) => (
-            <article className="info-team-card" key={member.initials}>
-              <div className="info-team-person">
-                <span className="info-avatar-frame">
-                  <img
-                    className="info-avatar"
-                    src={member.photo}
-                    alt={member.name}
-                    loading="lazy"
-                    decoding="async"
-                    style={{ objectPosition: member.photoPosition }}
-                  />
-                </span>
-                <div className="info-team-identity">
-                  <h3>{member.name}</h3>
-                  <span>{t(member.role)}</span>
+        <div className="about-solution-column about-solution-neravu">
+          <h3>{t('info.about.solution.after')}</h3>
+          <ul>{barrierKeys.map((key) => <li key={key}><Check size={15} aria-hidden="true" />{t(`info.about.solution.after.${key}`)}</li>)}</ul>
+        </div>
+      </div>
+      <p className="about-solution-disclaimer">{t('info.about.solution.disclaimer')}</p>
+    </section>
+  );
+}
+
+function WorkflowDemonstration({ t }) {
+  const { language } = useLanguage();
+  const [activeExample, setActiveExample] = useState(workflowExamples[0].id);
+  const active = workflowExamples.find((example) => example.id === activeExample) || workflowExamples[0];
+  const checklist = ['info.about.demo.item.identity', 'info.about.demo.item.medical', 'info.about.demo.item.income'];
+  return (
+    <section className="about-section about-demo" aria-labelledby="about-demo-heading">
+      <AboutSectionHeading eyebrow="info.about.demo.eyebrow" title="info.about.demo.title" id="about-demo-heading" />
+      <ol className="about-flow" aria-label={t('info.about.demo.flowLabel')}>
+        {['person', 'share', 'recommend', 'review', 'apply', 'track'].map((step, index) => (
+          <li key={step}><span>{index + 1}</span>{t(`info.about.demo.flow.${step}`)}</li>
+        ))}
+      </ol>
+      <div className="about-demo-shell">
+        <div className="about-demo-controls" role="group" aria-label={t('info.about.demo.controlsLabel')}>
+          {workflowExamples.map((example) => (
+            <button type="button" key={example.id} aria-pressed={activeExample === example.id} onClick={() => setActiveExample(example.id)}>
+              {t(example.label)}
+            </button>
+          ))}
+        </div>
+        <div className="about-demo-window" aria-live="polite">
+          <div className="about-demo-window-top"><span /><span /><span /><span>{t('info.about.demo.sampleLabel')}</span></div>
+          <div className="about-demo-content">
+            <div className="about-demo-screen">
+              <span className="about-demo-product">{t('brand.tagline')}</span>
+              <h3>{t(active.heading)}</h3>
+              {active.id === 'discovery' && (
+                <div className="about-demo-option">
+                  <span className="about-demo-option-icon"><Search size={16} aria-hidden="true" /></span>
+                  <div><strong>{t('info.about.demo.optionTitle')}</strong><p>{t('info.about.demo.optionDescription')}</p></div>
+                  <ArrowRight size={15} aria-hidden="true" />
                 </div>
+              )}
+              {active.id === 'documents' && (
+                <ul className="about-demo-checklist">
+                  {checklist.map((key, index) => <li key={key}><span className={index === 2 ? 'is-needed' : 'is-complete'}>{index === 2 ? '!' : <Check size={12} />}</span>{t(key)}</li>)}
+                </ul>
+              )}
+              {active.id === 'language' && (
+                <div className="about-demo-voice">
+                  <span>{t(`info.about.demo.languagePreview.${language}`)}</span><p>{t('info.about.demo.voiceText')}</p><span className="about-demo-audio"><Volume2 size={16} aria-hidden="true" /> {t('info.about.demo.listenLabel')}</span>
+                </div>
+              )}
+              <p className="about-demo-disclaimer">{t('info.about.demo.disclaimer')}</p>
+            </div>
+            <aside className="about-demo-note">
+              <FileText size={17} aria-hidden="true" />
+              <p>{t('info.about.demo.helperText')}</p>
+            </aside>
+          </div>
+        </div>
+      </div>
+      <p className="about-illustration-note">{t('info.about.demo.note')}</p>
+    </section>
+  );
+}
+
+function AboutTeam({ t }) {
+  return (
+    <section className="about-section" aria-labelledby="team-heading">
+      <AboutSectionHeading eyebrow="info.about.teamEyebrow" title="info.about.team" description="info.about.teamIntro" id="team-heading" />
+      <div className="info-team-grid">
+        {team.map((member) => (
+          <article className={`info-team-card${member.initials === 'RH' ? ' info-team-card--lead' : ''}`} key={member.initials}>
+            <div className="info-team-person">
+              <span className="info-avatar-frame">
+                <img
+                  className="info-avatar"
+                  src={member.photo}
+                  alt={member.name}
+                  loading="lazy"
+                  decoding="async"
+                  style={{ objectPosition: member.photoPosition }}
+                />
+              </span>
+              <div className="info-team-identity">
+                <h3>{member.name}</h3>
+                <span>{t(member.role)}</span>
               </div>
-              <p>{t(member.description)}</p>
-              <a className="info-team-link" href={member.linkedin} target="_blank" rel="noopener noreferrer" aria-label={`${member.name} on ${t('info.about.linkedin')}`}>
-                <Linkedin size={15} aria-hidden="true" /> {t('info.about.linkedin')}
-              </a>
-            </article>
-          ))}
+            </div>
+            <p>{t(member.description)}</p>
+            <a className="info-team-link" href={member.linkedin} target="_blank" rel="noopener noreferrer" aria-label={`${member.name} on ${t('info.about.linkedin')}`}>
+              <Linkedin size={15} aria-hidden="true" /> {t('info.about.linkedin')}
+            </a>
+          </article>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function ResponsibleDevelopment({ t }) {
+  return (
+    <section className="about-section about-responsible" aria-labelledby="about-responsible-heading">
+      <AboutSectionHeading eyebrow="info.about.responsible.eyebrow" title="info.about.responsible.title" id="about-responsible-heading" />
+      <div className="about-responsible-layout">
+        <div>
+          <p className="about-responsible-intro">{t('info.about.responsible.intro')}</p>
+          <ul className="about-responsible-list">
+            {['programmes', 'sources', 'matching', 'languages', 'role'].map((item) => <li key={item}><Check size={15} aria-hidden="true" />{t(`info.about.responsible.${item}`)}</li>)}
+          </ul>
         </div>
+        <aside className="about-limits">
+          <h3>{t('info.about.responsible.limitsTitle')}</h3>
+          <ul>
+            {['decisions', 'changes', 'verify', 'evaluation', 'outcomes'].map((item) => <li key={item}>{t(`info.about.responsible.limit.${item}`)}</li>)}
+          </ul>
+          <Link to="/privacy">{t('info.about.responsible.privacy')} <ArrowRight size={14} aria-hidden="true" /></Link>
+        </aside>
+      </div>
+    </section>
+  );
+}
+
+export function AboutPage() {
+  const { language } = useLanguage();
+  const t = (key, values) => translate(language, key, values);
+
+  return (
+    <InfoPageLayout
+      activePage="/about"
+      pageTitle={t('info.about.metaTitle')}
+      pageDescription={t('info.about.metaDescription')}
+    >
+      <section className="about-hero" aria-labelledby="about-title">
+        <div className="about-hero-copy">
+          <span className="eyebrow">{t('info.about.eyebrow')}</span>
+          <h1 id="about-title">
+            {t('info.about.heroTitleLead')} <span>{t('info.about.heroTitleAccent')}</span>
+          </h1>
+          <p>{t('info.about.subtitle')}</p>
+          <p className="about-hero-byline">{t('info.about.heroByline')}</p>
+          <a className="about-hero-link" href="#solution">{t('info.about.heroCta')} <ArrowRight size={16} aria-hidden="true" /></a>
+        </div>
+        <HeroJourneyPreview t={t} />
       </section>
 
-      <section className="info-section" aria-labelledby="approach-heading">
-        <div className="info-section-heading">
-          <span className="eyebrow">{t('info.about.approachEyebrow')}</span>
-          <h2 id="approach-heading">{t('info.about.approach')}</h2>
-        </div>
-        <div className="info-principle-grid">
-          {principles.map((principle) => (
-            <article className="info-principle-card" key={principle.title}>
-              <ShieldCheck size={20} aria-hidden="true" />
-              <h3>{t(principle.title)}</h3>
-              <p>{t(principle.body)}</p>
-            </article>
-          ))}
-        </div>
-      </section>
+      <AboutPurpose t={t} />
 
-      <section className="info-cta">
-        <div><h2>{t('info.about.ctaTitle')}</h2><p>{t('info.about.ctaText')}</p></div>
-        <Link className="button button-primary" to="/assessment/access">{t('info.about.ctaButton')} <ArrowRight size={16} /></Link>
+      <AboutStatistics t={t} />
+
+      <AssistanceJourney t={t} />
+
+      <DocumentGuidance t={t} />
+
+      <ResearchJournal t={t} />
+
+      <PracticalSolution t={t} />
+
+      <WorkflowDemonstration t={t} />
+
+      <AboutTeam t={t} />
+
+      <ResponsibleDevelopment t={t} />
+
+      <section className="about-closing" aria-labelledby="about-closing-heading">
+        <div>
+          <span className="eyebrow">{t('info.about.closing.eyebrow')}</span>
+          <h2 id="about-closing-heading">{t('info.about.closing.title')}</h2>
+          <p>{t('info.about.closing.text')}</p>
+        </div>
+        <div className="about-closing-actions">
+          <Link className="button button-primary" to="/assessment/access">{t('info.about.closing.start')} <ArrowRight size={16} aria-hidden="true" /></Link>
+          <Link className="about-contact-link" to="/contact">{t('info.about.closing.contact')}</Link>
+        </div>
       </section>
     </InfoPageLayout>
   );
