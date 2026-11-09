@@ -48,76 +48,55 @@ function InfoPageLayout({ activePage, pageTitle, children }) {
 }
 
 const storyStages = [
-  {
-    title: 'We started by exploring existing assistance platforms.',
-    body: 'We looked at government and financial-assistance services to understand how families search for help.'
-  },
-  {
-    title: 'Information was often difficult to follow.',
-    body: 'Broken links, scattered information, and unclear application instructions made it harder to know what to do next.'
-  },
-  {
-    title: 'We listened and researched.',
-    body: 'We contacted NGOs about available support and referral requirements, reviewed official sources, and structured scheme information.'
-  },
-  {
-    title: 'We brought patient and clinical perspectives into the work.',
-    body: 'Clinical insight and discussions with three patients and caregivers helped us focus on practical obstacles families encounter.'
-  }
+  { title: 'info.about.story.1.title', body: 'info.about.story.1.body' },
+  { title: 'info.about.story.2.title', body: 'info.about.story.2.body' },
+  { title: 'info.about.story.3.title', body: 'info.about.story.3.body' },
+  { title: 'info.about.story.4.title', body: 'info.about.story.4.body' }
 ];
 
 const team = [
   {
     initials: 'RH',
     name: 'Dr. Reem Hunain',
-    role: 'Clinical Lead',
+    role: 'info.about.team.reem.role',
     photo: '/team/reem-hunain.png',
     photoPosition: 'center 36%',
     linkedin: 'https://www.linkedin.com/in/reemhunain/',
-    description: 'An MBBS physician and MPH student specialising in Global Health at UC Berkeley, with experience spanning primary care, oncology, and global health research. Provides clinical and patient-centred guidance, helping translate complex assistance requirements into understandable information.'
+    description: 'info.about.team.reem.description'
   },
   {
     initials: 'HS',
     name: 'Ch. Harini Sai',
-    role: 'Technical Lead',
+    role: 'info.about.team.harini.role',
     photo: '/team/harini-sai.jpg',
     photoPosition: 'center 48%',
     linkedin: 'https://www.linkedin.com/in/harini-sai18/',
-    description: 'Leads frontend development, database architecture, platform integration, user experience, and coordination of technical components.'
+    description: 'info.about.team.harini.description'
   },
   {
     initials: 'LC',
     name: 'Ch. Leela Chaitanya',
-    role: 'Team Lead',
+    role: 'info.about.team.chaitanya.role',
     photo: '/team/leela-chaitanya.jpeg',
     photoPosition: 'center 14%',
     linkedin: 'https://www.linkedin.com/in/chunduri-leela-chaitanya-081537217/',
-    description: 'Contributes to AI capabilities, intelligent information retrieval, RAG integration, and automation of assistance-related workflows.'
+    description: 'info.about.team.chaitanya.description'
   },
   {
     initials: 'RS',
     name: 'R. Santosh',
-    role: 'Backend Development',
+    role: 'info.about.team.santosh.role',
     photo: '/team/santosh-reddi.png',
     photoPosition: 'center 42%',
     linkedin: 'https://www.linkedin.com/in/santoshreddi-22614cm003/',
-    description: 'Responsible for backend engineering, server-side architecture, APIs, database integration, and reliable communication between frontend and AI components.'
+    description: 'info.about.team.santosh.description'
   }
 ];
 
 const principles = [
-  {
-    title: 'Patient-centred design',
-    body: 'Understand real obstacles before building solutions.'
-  },
-  {
-    title: 'Evidence-guided assistance',
-    body: 'Connect families to structured programme information and supporting sources.'
-  },
-  {
-    title: 'Inclusive technology',
-    body: 'Make guidance accessible through regional languages, text, and voice.'
-  }
+  { title: 'info.about.principle.1.title', body: 'info.about.principle.1.body' },
+  { title: 'info.about.principle.2.title', body: 'info.about.principle.2.body' },
+  { title: 'info.about.principle.3.title', body: 'info.about.principle.3.body' }
 ];
 
 export function AboutPage() {
@@ -136,7 +115,7 @@ export function AboutPage() {
         <span className="info-section-icon"><HeartHandshake size={23} /></span>
         <div>
           <h2 id="mission-heading">{t('info.about.mission')}</h2>
-          <p>We believe finding financial assistance should not become another burden during cancer treatment. Neravu helps families move from searching for support to understanding their next step.</p>
+          <p>{t('info.about.missionText')}</p>
         </div>
       </section>
 
@@ -149,7 +128,7 @@ export function AboutPage() {
           {storyStages.map((stage, index) => (
             <li className="info-timeline-item" key={stage.title}>
               <span className="info-timeline-number">0{index + 1}</span>
-              <div><h3>{stage.title}</h3><p>{stage.body}</p></div>
+              <div><h3>{t(stage.title)}</h3><p>{t(stage.body)}</p></div>
             </li>
           ))}
         </ol>
@@ -177,12 +156,12 @@ export function AboutPage() {
                 </span>
                 <div className="info-team-identity">
                   <h3>{member.name}</h3>
-                  <span>{member.role}</span>
+                  <span>{t(member.role)}</span>
                 </div>
               </div>
-              <p>{member.description}</p>
-              <a className="info-team-link" href={member.linkedin} target="_blank" rel="noopener noreferrer" aria-label={`${member.name} on LinkedIn`}>
-                <Linkedin size={15} aria-hidden="true" /> LinkedIn
+              <p>{t(member.description)}</p>
+              <a className="info-team-link" href={member.linkedin} target="_blank" rel="noopener noreferrer" aria-label={`${member.name} on ${t('info.about.linkedin')}`}>
+                <Linkedin size={15} aria-hidden="true" /> {t('info.about.linkedin')}
               </a>
             </article>
           ))}
@@ -198,8 +177,8 @@ export function AboutPage() {
           {principles.map((principle) => (
             <article className="info-principle-card" key={principle.title}>
               <ShieldCheck size={20} aria-hidden="true" />
-              <h3>{principle.title}</h3>
-              <p>{principle.body}</p>
+              <h3>{t(principle.title)}</h3>
+              <p>{t(principle.body)}</p>
             </article>
           ))}
         </div>
@@ -214,47 +193,12 @@ export function AboutPage() {
 }
 
 const privacySections = [
-  {
-    title: 'Information the guided experience may use',
-    content: <>
-      <p>The assessment may ask for your state, cancer-care stage or type, treatment costs, hospital and assistance details, and information relevant to programme matching. Checklists and application progress can also be saved.</p>
-      <p>Neravu does not automatically collect medical reports, identity documents, or financial account documents through the assessment. Account details, such as your email, are handled by Supabase when you choose to sign in.</p>
-    </>
-  },
-  {
-    title: 'Guest mode and saved progress',
-    content: <>
-      <p>In guest mode, assessment answers and progress are stored in local browser storage on this device. They may be lost if you clear site data or use another browser or device.</p>
-      <p>Cloud progress synchronisation is opt-in. When signed in, the app asks for consent before reading or saving your assistance progress to Supabase. The project schema defines row-level security policies for user progress; the deployed database must have the corresponding schema and policies applied for those controls to protect the live project.</p>
-    </>
-  },
-  {
-    title: 'AI and external services',
-    content: <>
-      <p>When you use the assistant, your question and selected language are sent to the Neravu backend, which uses Sarvam AI to generate a response from retrieved information. Voice features send audio or text to the backend for transcription or speech processing with Sarvam.</p>
-      <p>Do not include information you do not want processed by these services. Provider handling and retention are subject to the applicable provider terms and configuration; Neravu does not make a blanket claim that provider processing or retention never occurs.</p>
-      <p>The repository does not establish a universal retention period for assistant or provider data. Check the deployed service configuration and provider terms for current retention details.</p>
-    </>
-  },
-  {
-    title: 'Consent and your choices',
-    content: <>
-      <p>Optional assessment questions can be skipped. Account progress synchronisation requires a separate affirmative consent. You can continue as a guest and keep progress on this device.</p>
-      <p>The contact form does not submit data to a Neravu server. It opens an email draft only after you choose to continue; your email provider receives anything only if you review and send that draft. Neravu does not currently offer a referral-sharing workflow through this page.</p>
-    </>
-  },
-  {
-    title: 'Security measures and deployment limits',
-    content: <>
-      <p>The application uses Supabase authentication. Its database schema defines row-level security for profiles and patient progress, and the backend checks signed Supabase tokens and admin roles for protected administration routes. Guest chat sessions use HMAC-signed tokens.</p>
-      <p>These are code-level measures, not a certification. Their effectiveness depends on applying the database schema and policies and setting production secrets correctly. Keep service-role and AI provider keys on the server; never expose them in frontend variables. Hosting and HTTPS configuration should also be checked for the deployed services.</p>
-      <p>Neravu does not claim HIPAA compliance, independent security certification, routine penetration testing, or automatic deletion of all data.</p>
-    </>
-  },
-  {
-    title: 'Important limits',
-    content: <p>Neravu provides informational and application-preparation assistance. AI-generated responses may be incomplete or outdated. Eligibility and funding decisions remain with the responsible organisations. Neravu does not replace medical professionals or provide medical diagnosis. Confirm important requirements through official programme sources.</p>
-  }
+  { id: 'data', title: 'info.privacy.section.data', paragraphs: ['info.privacy.data.1', 'info.privacy.data.2'] },
+  { id: 'storage', title: 'info.privacy.section.storage', paragraphs: ['info.privacy.storage.1', 'info.privacy.storage.2'] },
+  { id: 'ai', title: 'info.privacy.section.ai', paragraphs: ['info.privacy.ai.1', 'info.privacy.ai.2', 'info.privacy.ai.3'] },
+  { id: 'controls', title: 'info.privacy.section.choices', paragraphs: ['info.privacy.choices.1', 'info.privacy.choices.2'] },
+  { id: 'security', title: 'info.privacy.section.security', paragraphs: ['info.privacy.security.1', 'info.privacy.security.2', 'info.privacy.security.3'] },
+  { id: 'limits', title: 'info.privacy.section.limits', paragraphs: ['info.privacy.limits.1'] }
 ];
 
 export function PrivacyPage() {
@@ -283,10 +227,10 @@ export function PrivacyPage() {
         </div>
       </section>
       <div className="info-accordion-list">
-        {privacySections.map((section, index) => (
-          <details className="info-accordion" id={`privacy-${['data', 'storage', 'ai', 'controls', 'security', 'limits'][index]}`} key={section.title}>
-            <summary>{section.title}</summary>
-            <div className="info-accordion-content">{section.content}</div>
+        {privacySections.map((section) => (
+          <details className="info-accordion" id={`privacy-${section.id}`} key={section.id}>
+            <summary>{t(section.title)}</summary>
+            <div className="info-accordion-content">{section.paragraphs.map((key) => <p key={key}>{t(key)}</p>)}</div>
           </details>
         ))}
       </div>
@@ -296,11 +240,11 @@ export function PrivacyPage() {
 }
 
 const contactRoles = [
-  'Patient / Caregiver',
-  'Healthcare Professional',
-  'NGO / Organisation',
-  'Researcher',
-  'Other'
+  { value: 'Patient / Caregiver', key: 'info.contact.role.patient' },
+  { value: 'Healthcare Professional', key: 'info.contact.role.professional' },
+  { value: 'NGO / Organisation', key: 'info.contact.role.ngo' },
+  { value: 'Researcher', key: 'info.contact.role.researcher' },
+  { value: 'Other', key: 'info.contact.role.other' }
 ];
 
 export function ContactPage() {
@@ -339,11 +283,12 @@ export function ContactPage() {
       return;
     }
 
-    const subject = `Neravu contact: ${values.subject.trim().replace(/[\r\n]/g, ' ')}`;
+    const subject = `${t('info.contact.subjectPrefix')}: ${values.subject.trim().replace(/[\r\n]/g, ' ')}`;
+    const roleLabel = contactRoles.find(({ value }) => value === values.role);
     const body = [
-      `Name: ${values.name.trim()}`,
-      `Email: ${values.email.trim()}`,
-      `I am a: ${values.role}`,
+      `${t('info.contact.namePrefix')}: ${values.name.trim()}`,
+      `${t('info.contact.emailPrefix')}: ${values.email.trim()}`,
+      `${t('info.contact.rolePrefix')}: ${roleLabel ? t(roleLabel.key) : values.role}`,
       '',
       values.message.trim()
     ].join('\n');
@@ -389,7 +334,7 @@ export function ContactPage() {
                 <span>{t('info.contact.role')} *</span>
                 <select name="role" required value={values.role} onChange={updateField}>
                   <option value="">{t('info.contact.chooseRole')}</option>
-                  {contactRoles.map((role) => <option value={role} key={role}>{role}</option>)}
+                  {contactRoles.map(({ value, key }) => <option value={value} key={key}>{t(key)}</option>)}
                 </select>
               </label>
               <label>
@@ -403,7 +348,7 @@ export function ContactPage() {
               </label>
             </div>
             <div className="contact-honeypot" aria-hidden="true">
-              <label htmlFor="contact-website">Leave this field empty</label>
+              <label htmlFor="contact-website">{t('info.contact.honeypot')}</label>
               <input id="contact-website" name="website" tabIndex={-1} autoComplete="off" value={values.website} onChange={updateField} />
             </div>
             <label className="contact-consent">

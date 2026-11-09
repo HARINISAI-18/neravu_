@@ -1,7 +1,7 @@
 import { writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { translations } from '../src/platform/i18n.js';
+import { infoPageTranslations, translations } from '../src/platform/i18n.js';
 import { generatedTranslations } from '../src/platform/generatedTranslations.js';
 import { manualTranslations } from '../src/platform/manualTranslations.js';
 import { intakeTranslations } from '../src/platform/intakeTranslations.js';
@@ -9,7 +9,7 @@ import { languageOptions } from '../src/platform/data.js';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const outputPath = path.join(root, 'src', 'platform', 'generatedTranslations.js');
-const targets = ['te', 'hi', 'ta', 'kn', 'ml', 'bn', 'mr', 'gu', 'pa', 'ur'];
+const targets = languageOptions.map(({ code }) => code).filter((code) => code !== 'en');
 const sourceCatalog = translations.en;
 const sourceKeys = Object.keys(sourceCatalog);
 const placeholderPattern = /\{[a-zA-Z0-9_]+\}/g;
@@ -114,7 +114,8 @@ async function main() {
         ...(translations[language] || {}),
         ...(catalogs[language] || {}),
         ...(intakeTranslations[language] || {}),
-        ...(manualTranslations[language] || {})
+        ...(manualTranslations[language] || {}),
+        ...(infoPageTranslations[language] || {})
       };
       for (const [key, text] of Object.entries(merged)) {
         if (typeof text !== 'string') {
@@ -149,8 +150,13 @@ async function main() {
       (!Object.hasOwn(existing, key) || !existing[key])
       && !Object.hasOwn(intakeTranslations[language] || {}, key)
       && !Object.hasOwn(manualTranslations[language] || {}, key)
+      && !Object.hasOwn(infoPageTranslations[language] || {}, key)
     ));
-    const catalog = { ...(generatedTranslations[language] || {}), ...(manualTranslations[language] || {}) };
+    const catalog = {
+      ...(generatedTranslations[language] || {}),
+      ...(manualTranslations[language] || {}),
+      ...(infoPageTranslations[language] || {})
+    };
 
     for (let offset = 0; offset < keysToTranslate.length; offset += batchSize) {
       const batchKeys = keysToTranslate.slice(offset, offset + batchSize);
@@ -174,7 +180,10 @@ async function main() {
   const coverage = validateCatalogs(result);
   for (const language of targets) {
     const missing = sourceKeys.filter((key) => !(
-      translations[language]?.[key] || intakeTranslations[language]?.[key] || result[language]?.[key]
+      translations[language]?.[key]
+      || intakeTranslations[language]?.[key]
+      || infoPageTranslations[language]?.[key]
+      || result[language]?.[key]
     ));
     if (missing.length) {
       throw new Error(`${language} catalog is missing ${missing.length} keys. No catalogs were written.`);

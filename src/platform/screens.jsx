@@ -180,7 +180,6 @@ export function AssessmentAccessPage() {
         <p className="muted-copy">{t('access.subtitle')}</p>
         {user ? (
           <div className="account-ready">
-            <p>{t('access.signedIn', { name: user.user_metadata?.display_name || user.email })}</p>
             <button type="button" className="button button-primary full-width" onClick={continueWithAccount}>{t('access.continueAccount')} <ArrowRight size={17} /></button>
           </div>
         ) : authLoading ? (

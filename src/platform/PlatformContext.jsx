@@ -2,9 +2,10 @@ import React, { createContext, useCallback, useContext, useEffect, useMemo, useR
 import { LanguageContext } from './i18n';
 import { authService, isSupabaseConfigured } from './services';
 import { PROGRESS_CONSENT_VERSION } from './supabase';
-import { normalizeAssessmentAnswers } from './data';
+import { languageOptions, normalizeAssessmentAnswers } from './data';
 
 const STORAGE_KEY = 'neravu.platform.v1';
+const supportedLanguageCodes = new Set(languageOptions.map(({ code }) => code));
 const defaults = {
   language: 'en',
   patientRole: '',
@@ -78,6 +79,7 @@ function readStoredState() {
     }
     const savedData = { ...parsed };
     delete savedData.chatHistory;
+    if (!supportedLanguageCodes.has(savedData.language)) savedData.language = 'en';
     savedData.answers = normalizeAssessmentAnswers(savedData.answers);
     savedData.schemeProgress = normalizeSchemeProgress(savedData.schemeProgress);
     if (!Array.isArray(savedData.trackedProgrammeIds)) {
@@ -130,12 +132,11 @@ function normalizeCloudProgress(progress, current) {
   if (!progress || typeof progress !== 'object' || Array.isArray(progress)) {
     throw new Error('The saved progress record has an invalid format. Your local data was not changed.');
   }
-  const allowedLanguages = new Set(['en', 'te', 'hi', 'ta', 'kn', 'ml', 'bn', 'mr', 'gu', 'pa', 'ur']);
   const schemeProgress = normalizeSchemeProgress(progress.schemeProgress);
   return {
     ...freshDefaults(),
     ...current,
-    language: allowedLanguages.has(progress.language) ? progress.language : 'en',
+    language: supportedLanguageCodes.has(progress.language) ? progress.language : 'en',
     patientRole: typeof progress.patientRole === 'string' ? progress.patientRole : '',
     assistanceTypes: Array.isArray(progress.assistanceTypes) ? progress.assistanceTypes.filter((value) => typeof value === 'string') : [],
     answers: normalizeAssessmentAnswers(progress.answers),

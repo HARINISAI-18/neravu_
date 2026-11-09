@@ -3,7 +3,7 @@
 **Status**: Active development / Hackathon MVP  
 **Repository**: https://github.com/HARINISAI-18/Neravu  
 
-Neravu helps cancer patients and caregivers in India navigate financial and administrative assistance: discover programmes, understand possible eligibility, prepare documents, find official application routes, and ask questions in 11 supported languages. It is an information and preparation tool, not a medical diagnostic service, a guarantee of funding, or an authority that decides eligibility.
+Neravu helps cancer patients and caregivers in India navigate financial and administrative assistance: discover programmes, understand possible eligibility, prepare documents, find official application routes, and ask questions in English, Telugu, or Hindi. It is an information and preparation tool, not a medical diagnostic service, a guarantee of funding, or an authority that decides eligibility.
 
 ---
 
@@ -66,13 +66,13 @@ npm run preview
 ### Frontend Highlights
 - **3D Cinematic Scroll Story**: Interactive GSAP ScrollTrigger timeline with articulated procedural characters representing the patient/caregiver journey (`src/scene/HospitalScene.jsx`).
 - **Patient Assistance Platform**: Step-by-step assessment, review, dashboard, scheme explorer, local document checklist and tracker, profile/settings, and interactive assistant chat (`src/platform/*`).
-- **Multilingual Support**: Offers English plus Telugu, Hindi, Tamil, Kannada, Malayalam, Bengali, Marathi, Gujarati, Punjabi, and Urdu UI catalogs.
+- **Multilingual Support**: Offers the UI in English, Telugu, and Hindi.
 - **Privacy First**: Guest mode preserves patient privacy in local browser storage; cloud sync is opt-in with row-level security.
 - **Information Pages**: Public About, Security & Privacy, and Contact pages are available at `/about`, `/privacy`, and `/contact`. Contact opens a prefilled email draft; the site does not send the message.
 
 ### Generate UI translation drafts
 
-The UI uses committed static catalogs. It does not call Azure Translator while a visitor uses the site. The English catalog is the source of truth; Telugu and Hindi translations already present in the source are retained, and Azure Translator fills missing strings and generates drafts for the other supported languages.
+The UI uses committed static catalogs. It does not call Azure Translator while a visitor uses the site. The English catalog is the source of truth; Telugu and Hindi translations already present in the source are retained, and Azure Translator fills missing strings for those supported languages.
 
 Create an Azure AI Translator resource and configure its key and region only in your local shell. Never put Translator credentials in a `VITE_` variable, frontend file, or committed `.env` file:
 
