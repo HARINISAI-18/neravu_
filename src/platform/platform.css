@@ -488,3 +488,36 @@
 .ngo-card-actions .button{min-height:36px;padding:0 11px;font-size:11px}
 .ngo-card a:focus-visible,.ngo-card-actions .button:focus-visible{outline:2px solid #71429a;outline-offset:2px}
 @media(max-width:760px){.ngo-filter-field{flex:1 1 150px}.ngo-card-actions .button{min-height:40px}}
+.scheme-card{gap:7px;min-height:0}
+.scheme-card>h2{margin:0 0 2px}
+.scheme-card-disclosure{width:100%;margin:2px 0 8px;padding:0}
+.scheme-card-disclosure>summary{color:#68408d;font-size:11px;font-weight:700;cursor:pointer}
+.scheme-card-disclosure>p{margin:10px 0;color:#6e6476;font-size:12px;line-height:1.6}
+.scheme-card-disclosure>.verification-status{display:block;margin:8px 0}
+.scheme-actions-row{gap:8px!important}
+.scheme-guidance-page{display:grid;gap:14px}
+.scheme-guidance-page .page-heading{margin-bottom:0}
+.guidance-snapshot-notice{padding:12px 16px}
+.guidance-snapshot-notice>summary{color:#574563;font-size:12px;font-weight:750;cursor:pointer}
+.guidance-snapshot-notice>p{margin:10px 0 0}
+.guidance-snapshot-notice.guidance-disclosure>p{font-size:11px}
+.hospital-research-section{margin:0!important;padding:14px 17px}
+.hospital-research-section>summary{color:#574563;font-size:12px;font-weight:750;cursor:pointer}
+.hospital-research-section>.guidance-disclosure{margin-top:10px}
+.guidance-section-grid{gap:10px}
+.guidance-section.guidance-disclosure{padding:14px 16px}
+.guidance-section.guidance-disclosure>summary{color:#574563;font-size:12px;font-weight:750;cursor:pointer}
+.guidance-section.guidance-disclosure>p{margin:12px 0;color:#6e6476;font-size:12px;line-height:1.7;white-space:pre-line}
+.guidance-section.guidance-disclosure .guidance-fact{margin-top:12px}
+.state-lead-disclosure{margin-top:12px}
+.state-lead-disclosure>summary{cursor:pointer;color:#574563;font-size:12px;font-weight:700}
+.state-lead-disclosure p{margin:8px 0 0;color:#6e6476;font-size:12px;line-height:1.6}
+.guidance-step{grid-template-columns:auto minmax(0,1fr);align-items:center;padding:14px 17px}
+.guidance-step-details{grid-column:2;min-width:0}
+.guidance-step-details>summary{display:flex;align-items:center;gap:11px;color:#362a40;font-size:13px;font-weight:700;line-height:1.5;cursor:pointer}
+.guidance-step-details .guidance-step-number{flex:none}
+.guidance-step-content{padding-top:12px}
+.guidance-step-check{grid-column:1;grid-row:1}
+.guidance-links{margin:12px 0 0}
+.guidance-disclosure a,.guidance-section a{color:#68408d;text-decoration:underline;text-underline-offset:2px}
+@media(max-width:720px){.guidance-step{grid-template-columns:auto minmax(0,1fr);padding:13px}.guidance-step-check{grid-column:1;grid-row:1;align-self:start}.guidance-step-details{grid-column:2;grid-row:1}.guidance-step-details>summary{font-size:12px}}

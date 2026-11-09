@@ -46,8 +46,8 @@ function HospitalResearchSection({ research, language, showEmpty = false }) {
   const t = (key) => translate(language, key);
   if (!research || (!research.mappings.length && !research.rules.length && !showEmpty)) return null;
   return (
-    <section className="content-card" style={{ margin: '16px 0', padding: '16px' }}>
-      <h3 style={{ marginTop: 0 }}>{t('hospital.sectionTitle')}</h3>
+    <details className="content-card guidance-disclosure hospital-research-section">
+      <summary>{t('hospital.sectionTitle')}</summary>
       <p className="muted-copy">{t('hospital.verifyCurrent')}</p>
       {!research.mappings.length && (
         <p className="muted-copy">{t('hospital.noSpecificMapping')}</p>
@@ -83,7 +83,7 @@ function HospitalResearchSection({ research, language, showEmpty = false }) {
           )}
         </details>
       ))}
-    </section>
+    </details>
   );
 }
 
@@ -960,24 +960,27 @@ function SchemeCard({ scheme, onSelectDetail, onScreenEligibility, tracked, onTo
       </div>
       <span className="card-category">{category}</span>
       <h2>{title}</h2>
-      <p>{description}</p>
-      {!isLive && scheme.status && !/^schemes\.[\w.-]+$/.test(demoStatus) && (
-        <small className="verification-status">{demoStatus}</small>
-      )}
-      {recommendation && (
-        <small className="verification-status">
-          {translate(language, 'schemes.possibleMatch')}
-          {recommendation.reason ? ` · ${recommendation.reason}` : ''}
-        </small>
-      )}
-      {scheme.version && (
-        <small className="verification-status">
-          {translate(language, 'schemes.version', {
-            version: scheme.version,
-            status: language === 'en' ? reviewStatus : translate(language, 'schemes.statusLocalized')
-          })}
-        </small>
-      )}
+      <details className="scheme-card-disclosure">
+        <summary>{translate(language, 'schemes.officialDetails')}</summary>
+        <p>{description}</p>
+        {!isLive && scheme.status && !/^schemes\.[\w.-]+$/.test(demoStatus) && (
+          <small className="verification-status">{demoStatus}</small>
+        )}
+        {recommendation && (
+          <small className="verification-status">
+            {translate(language, 'schemes.possibleMatch')}
+            {recommendation.reason ? ` · ${recommendation.reason}` : ''}
+          </small>
+        )}
+        {scheme.version && (
+          <small className="verification-status">
+            {translate(language, 'schemes.version', {
+              version: scheme.version,
+              status: language === 'en' ? reviewStatus : translate(language, 'schemes.statusLocalized')
+            })}
+          </small>
+        )}
+      </details>
       <div className="scheme-actions-row" style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', marginTop: 'auto', width: '100%' }}>
         {scheme.guidanceSlug && onToggleTracking && (
           <button
@@ -1529,8 +1532,8 @@ export function SchemesPage() {
           </p>
         )}
         {selectedStateLead?.['State Government Scheme Lead'] && (
-          <div className="guidance-fact" style={{ marginTop: '12px' }}>
-            <strong>{t('directory.stateLead', { state: translateOption(language, browseState) })}</strong>
+          <details className="guidance-fact state-lead-disclosure">
+            <summary>{t('directory.stateLead', { state: translateOption(language, browseState) })}</summary>
             {language === 'en' ? (
               <>
                 <p>{selectedStateLead['State Government Scheme Lead']}</p>
@@ -1541,7 +1544,7 @@ export function SchemesPage() {
             ) : (
               <p>{t('schemes.detailsOnlyInEnglish')}</p>
             )}
-          </div>
+          </details>
         )}
         {browseState === 'Andhra Pradesh' && (
           <HospitalResearchSection
@@ -1799,7 +1802,6 @@ export function SchemeGuidancePage() {
       <PageHeading
         eyebrow={summary['Programme Type'] || scheme.programmeType || guidanceText(language, 'sourceSnapshot')}
         title={summary.Programme || scheme.name}
-        description={summary['Important Caveat'] || governmentRecord['Source Notes'] || ''}
       />
       <div style={{ display: 'flex', gap: '10px', margin: '0 0 16px', flexWrap: 'wrap' }}>
         <button
@@ -1816,15 +1818,10 @@ export function SchemeGuidancePage() {
         </button>
         <Link className="button button-outline" to="/tracker">{t('tracker.openTracker')}</Link>
       </div>
-      <div className="guidance-snapshot-notice">
-        <strong>{guidanceText(language, 'sourceSnapshot')} · {schemeGuidanceSnapshot}</strong>
-        <p>{guidanceText(language, 'sourceNotice')}</p>
-        {sourceVerifications.map((record, index) => (
-          <p key={`${record['Programme / organization']}-${index}`}>
-            <strong>{record['Verification status']}</strong>
-            {record['Important correction / uncertainty'] && ` — ${record['Important correction / uncertainty']}`}
-          </p>
-        ))}
+      <details className="guidance-snapshot-notice guidance-disclosure">
+        <summary>{t('schemes.guidance.snapshotDetails')}</summary>
+        <p><strong>{guidanceText(language, 'sourceSnapshot')} · {schemeGuidanceSnapshot}</strong></p>
+        <p>{summary['Important Caveat'] || governmentRecord['Source Notes'] || guidanceText(language, 'sourceNotice')}</p>
         {liveScheme && (
           <p className="guidance-live-note">
             {t('schemes.verifiedEvidence')}: {liveScheme.review_status || t('common.notVerified')}
@@ -1832,35 +1829,35 @@ export function SchemeGuidancePage() {
           </p>
         )}
         {liveError && <p role="status">{t('schemes.connecting')} {liveError}</p>}
-      </div>
+      </details>
 
       <HospitalResearchSection research={hospitalResearch} language={language} showEmpty />
 
       <div className="guidance-section-grid">
         {(eligibilityText || eligibilityResearch.length > 0) && (
-          <section className="content-card guidance-section">
-            <h2>{summaryLabels['Who May Apply / Eligibility Snapshot'] || t('schemes.guidance.eligibility')}</h2>
+          <details className="content-card guidance-section guidance-disclosure">
+            <summary>{summaryLabels['Who May Apply / Eligibility Snapshot'] || t('schemes.guidance.eligibility')}</summary>
             {eligibilityText && <p>{eligibilityText}</p>}
             {eligibilityResearch.map(({ question, localizedQuestion, answer }) => (
               <div className="guidance-fact" key={question}><strong>{localizedQuestion || question}</strong><p>{answer}</p></div>
             ))}
-          </section>
+          </details>
         )}
         {documentsText && (
-          <section className="content-card guidance-section">
-            <h2>{summaryLabels['Documents to Prepare'] || t('schemes.guidance.documents')}</h2>
+          <details className="content-card guidance-section guidance-disclosure">
+            <summary>{summaryLabels['Documents to Prepare'] || t('schemes.guidance.documents')}</summary>
             <p>{documentsText}</p>
-          </section>
+          </details>
         )}
         {(applicationRoute || contactText || applicationResearch.length > 0) && (
-          <section className="content-card guidance-section">
-            <h2>{summaryLabels['Contact / Submission Point'] || t('schemes.guidance.contacts')}</h2>
+          <details className="content-card guidance-section guidance-disclosure">
+            <summary>{summaryLabels['Contact / Submission Point'] || t('schemes.guidance.contacts')}</summary>
             {applicationRoute && <p>{applicationRoute}</p>}
             {contactText && <p><strong>{t('ngo.phone')}</strong> {contactText}</p>}
             {applicationResearch.map(({ question, localizedQuestion, answer }) => (
               <div className="guidance-fact" key={question}><strong>{localizedQuestion || question}</strong><p>{answer}</p></div>
             ))}
-          </section>
+          </details>
         )}
       </div>
 
@@ -1884,14 +1881,15 @@ export function SchemeGuidancePage() {
                     <input type="checkbox" checked={isComplete} onChange={(event) => toggleStep(stepNumber, event.target.checked)} />
                     <span>{guidanceText(language, 'done')}</span>
                   </label>
-                  <span className="guidance-step-number">{stepNumber}</span>
-                  <div className="guidance-step-content">
-                    <h3>{step['Step / Action']}</h3>
+                  <details className="guidance-step-details">
+                    <summary><span className="guidance-step-number">{stepNumber}</span><span>{step['Step / Action']}</span></summary>
+                    <div className="guidance-step-content">
                     {step['Who Does It'] && <p><strong>{uiLabels['Who Does It'] || guidanceText(language, 'responsible')}:</strong> {step['Who Does It']}</p>}
                     {step['What to Do'] && <p><strong>{uiLabels['What to Do'] || guidanceText(language, 'action')}:</strong> {step['What to Do']}</p>}
                     {step['Evidence / Output to Keep'] && <p><strong>{uiLabels['Evidence / Output to Keep'] || guidanceText(language, 'output')}:</strong> {step['Evidence / Output to Keep']}</p>}
                     {step['If This Step Gets Stuck'] && <p className="guidance-stuck"><strong>{uiLabels['If This Step Gets Stuck'] || guidanceText(language, 'stuck')}:</strong> {step['If This Step Gets Stuck']}</p>}
-                  </div>
+                    </div>
+                  </details>
                 </li>
               );
             })}
@@ -1900,18 +1898,18 @@ export function SchemeGuidancePage() {
       </section>
 
       {scheme.officialLinks?.length > 0 && (
-        <section className="content-card guidance-section">
-          <h2>{summaryLabels['Official Links / Forms'] || t('schemes.guidance.sources')}</h2>
+        <details className="content-card guidance-section guidance-disclosure">
+          <summary>{summaryLabels['Official Links / Forms'] || t('schemes.guidance.sources')}</summary>
           <ul className="guidance-links">
             {scheme.officialLinks.map((url) => (
               <li key={url}><a href={url} target="_blank" rel="noreferrer">{url} <ExternalLink size={14} /></a></li>
             ))}
           </ul>
-        </section>
+        </details>
       )}
 
       {sourceVerifications.length > 0 && (
-        <details className="content-card guidance-disclosure" open>
+        <details className="content-card guidance-disclosure">
           <summary>{sourceLabels['Verification status'] || t('schemes.guidance.verification')}</summary>
           {sourceVerifications.map((record, index) => (
             <GuidanceRecord key={`${record['Programme / organization']}-${index}`} record={record} labels={sourceLabels} />

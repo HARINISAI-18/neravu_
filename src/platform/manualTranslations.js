@@ -545,6 +545,109 @@ const ngoValues = {
   ]
 };
 
+const schemeDisclosureValues = {
+  te: {
+    'schemes.guidance.snapshotDetails': 'మూలాలు మరియు ధృవీకరణ',
+    'schemes.guidance.eligibility': 'అర్హత వివరాలు',
+    'schemes.guidance.documents': 'సిద్ధం చేసుకోవాల్సిన పత్రాలు',
+    'schemes.guidance.contacts': 'ఎక్కడ దరఖాస్తు చేయాలి, ఎవరిని సంప్రదించాలి',
+    'schemes.guidance.steps': 'దరఖాస్తు దశలు',
+    'schemes.guidance.sources': 'అధికారిక లింకులు, ఫారాలు',
+    'schemes.guidance.verification': 'మూలాల ధృవీకరణ, ముఖ్య గమనికలు',
+    'hospital.sectionTitle': 'ఆసుపత్రులు, పథకం ద్వారా సహాయం'
+  },
+  hi: {
+    'schemes.guidance.snapshotDetails': 'स्रोत और सत्यापन',
+    'schemes.guidance.eligibility': 'पात्रता विवरण',
+    'schemes.guidance.documents': 'तैयार रखने वाले दस्तावेज़',
+    'schemes.guidance.contacts': 'आवेदन कहाँ करें और किससे संपर्क करें',
+    'schemes.guidance.steps': 'आवेदन के चरण',
+    'schemes.guidance.sources': 'आधिकारिक लिंक और फ़ॉर्म',
+    'schemes.guidance.verification': 'स्रोत सत्यापन और ज़रूरी बातें',
+    'hospital.sectionTitle': 'अस्पताल और योजना सहायता'
+  },
+  ta: {
+    'schemes.guidance.snapshotDetails': 'ஆதாரங்கள் மற்றும் சரிபார்ப்பு',
+    'schemes.guidance.eligibility': 'தகுதி விவரங்கள்',
+    'schemes.guidance.documents': 'தயாரிக்க வேண்டிய ஆவணங்கள்',
+    'schemes.guidance.contacts': 'எங்கே விண்ணப்பிப்பது, யாரைத் தொடர்புகொள்வது',
+    'schemes.guidance.steps': 'விண்ணப்பப் படிகள்',
+    'schemes.guidance.sources': 'அதிகாரப்பூர்வ இணைப்புகள் மற்றும் படிவங்கள்',
+    'schemes.guidance.verification': 'ஆதாரச் சரிபார்ப்பு மற்றும் முக்கிய குறிப்புகள்',
+    'hospital.sectionTitle': 'மருத்துவமனைகள் மற்றும் திட்ட அணுகல்'
+  },
+  kn: {
+    'schemes.guidance.snapshotDetails': 'ಮೂಲಗಳು ಮತ್ತು ಪರಿಶೀಲನೆ',
+    'schemes.guidance.eligibility': 'ಅರ್ಹತೆ ವಿವರಗಳು',
+    'schemes.guidance.documents': 'ಸಿದ್ಧಪಡಿಸಬೇಕಾದ ದಾಖಲೆಗಳು',
+    'schemes.guidance.contacts': 'ಎಲ್ಲಿ ಅರ್ಜಿ ಸಲ್ಲಿಸಬೇಕು ಮತ್ತು ಯಾರನ್ನು ಸಂಪರ್ಕಿಸಬೇಕು',
+    'schemes.guidance.steps': 'ಅರ್ಜಿ ಹಂತಗಳು',
+    'schemes.guidance.sources': 'ಅಧಿಕೃತ ಲಿಂಕ್‌ಗಳು ಮತ್ತು ಫಾರ್ಮ್‌ಗಳು',
+    'schemes.guidance.verification': 'ಮೂಲ ಪರಿಶೀಲನೆ ಮತ್ತು ಪ್ರಮುಖ ಸೂಚನೆಗಳು',
+    'hospital.sectionTitle': 'ಆಸ್ಪತ್ರೆಗಳು ಮತ್ತು ಯೋಜನೆ ಸಹಾಯ'
+  },
+  ml: {
+    'schemes.guidance.snapshotDetails': 'ഉറവിടവും പരിശോധനയും',
+    'schemes.guidance.eligibility': 'യോഗ്യതാ വിവരങ്ങൾ',
+    'schemes.guidance.documents': 'തയ്യാറാക്കേണ്ട രേഖകൾ',
+    'schemes.guidance.contacts': 'എവിടെ അപേക്ഷിക്കണം, ആരെ ബന്ധപ്പെടണം',
+    'schemes.guidance.steps': 'അപേക്ഷാ ഘട്ടങ്ങൾ',
+    'schemes.guidance.sources': 'ഔദ്യോഗിക ലിങ്കുകളും ഫോമുകളും',
+    'schemes.guidance.verification': 'ഉറവിട പരിശോധനയും പ്രധാന കുറിപ്പുകളും',
+    'hospital.sectionTitle': 'ആശുപത്രികളും പദ്ധതി സഹായവും'
+  },
+  bn: {
+    'schemes.guidance.snapshotDetails': 'তথ্যসূত্র ও যাচাই',
+    'schemes.guidance.eligibility': 'যোগ্যতার বিবরণ',
+    'schemes.guidance.documents': 'প্রস্তুত রাখার নথি',
+    'schemes.guidance.contacts': 'কোথায় আবেদন করবেন ও কার সঙ্গে যোগাযোগ করবেন',
+    'schemes.guidance.steps': 'আবেদনের ধাপ',
+    'schemes.guidance.sources': 'অফিশিয়াল লিংক ও ফর্ম',
+    'schemes.guidance.verification': 'তথ্যসূত্র যাচাই ও গুরুত্বপূর্ণ নোট',
+    'hospital.sectionTitle': 'হাসপাতাল ও প্রকল্পের সহায়তা'
+  },
+  mr: {
+    'schemes.guidance.snapshotDetails': 'स्रोत आणि पडताळणी',
+    'schemes.guidance.eligibility': 'पात्रतेचा तपशील',
+    'schemes.guidance.documents': 'तयार ठेवायची कागदपत्रे',
+    'schemes.guidance.contacts': 'अर्ज कुठे करावा आणि कोणाशी संपर्क साधावा',
+    'schemes.guidance.steps': 'अर्जाचे टप्पे',
+    'schemes.guidance.sources': 'अधिकृत दुवे आणि अर्ज',
+    'schemes.guidance.verification': 'स्रोत पडताळणी आणि महत्त्वाच्या नोंदी',
+    'hospital.sectionTitle': 'रुग्णालये आणि योजनेची मदत'
+  },
+  gu: {
+    'schemes.guidance.snapshotDetails': 'સ્રોત અને ચકાસણી',
+    'schemes.guidance.eligibility': 'પાત્રતાની વિગતો',
+    'schemes.guidance.documents': 'તૈયાર રાખવાના દસ્તાવેજો',
+    'schemes.guidance.contacts': 'અરજી ક્યાં કરવી અને કોનો સંપર્ક કરવો',
+    'schemes.guidance.steps': 'અરજીનાં પગલાં',
+    'schemes.guidance.sources': 'સત્તાવાર લિંક્સ અને ફોર્મ',
+    'schemes.guidance.verification': 'સ્રોત ચકાસણી અને મહત્વની નોંધો',
+    'hospital.sectionTitle': 'હોસ્પિટલો અને યોજનાની સહાય'
+  },
+  pa: {
+    'schemes.guidance.snapshotDetails': 'ਸਰੋਤ ਅਤੇ ਜਾਂਚ',
+    'schemes.guidance.eligibility': 'ਯੋਗਤਾ ਦੇ ਵੇਰਵੇ',
+    'schemes.guidance.documents': 'ਤਿਆਰ ਰੱਖਣ ਵਾਲੇ ਦਸਤਾਵੇਜ਼',
+    'schemes.guidance.contacts': 'ਕਿੱਥੇ ਅਰਜ਼ੀ ਦੇਣੀ ਅਤੇ ਕਿਸ ਨਾਲ ਸੰਪਰਕ ਕਰਨਾ',
+    'schemes.guidance.steps': 'ਅਰਜ਼ੀ ਦੇ ਪੜਾਅ',
+    'schemes.guidance.sources': 'ਅਧਿਕਾਰਤ ਲਿੰਕ ਅਤੇ ਫਾਰਮ',
+    'schemes.guidance.verification': 'ਸਰੋਤ ਦੀ ਜਾਂਚ ਅਤੇ ਅਹਿਮ ਨੋਟ',
+    'hospital.sectionTitle': 'ਹਸਪਤਾਲ ਅਤੇ ਯੋਜਨਾ ਦੀ ਸਹਾਇਤਾ'
+  },
+  ur: {
+    'schemes.guidance.snapshotDetails': 'ماخذ اور تصدیق',
+    'schemes.guidance.eligibility': 'اہلیت کی تفصیلات',
+    'schemes.guidance.documents': 'تیار رکھنے کے دستاویزات',
+    'schemes.guidance.contacts': 'کہاں درخواست دیں اور کس سے رابطہ کریں',
+    'schemes.guidance.steps': 'درخواست کے مراحل',
+    'schemes.guidance.sources': 'سرکاری روابط اور فارم',
+    'schemes.guidance.verification': 'ماخذ کی تصدیق اور اہم نوٹس',
+    'hospital.sectionTitle': 'ہسپتال اور پروگرام کی سہولت'
+  }
+};
+
 export const manualTranslations = Object.fromEntries(
   Object.entries(landingValues).map(([language, values]) => {
     if (values.length !== landingKeys.length) {
@@ -559,7 +662,8 @@ export const manualTranslations = Object.fromEntries(
     return [language, {
       ...Object.fromEntries(landingKeys.map((key, index) => [key, values[index]])),
       ...Object.fromEntries(sharedKeys.map((key, index) => [key, sharedValues[language][index]])),
-      ...Object.fromEntries(ngoKeys.map((key, index) => [key, ngoValues[language][index]]))
+      ...Object.fromEntries(ngoKeys.map((key, index) => [key, ngoValues[language][index]])),
+      ...schemeDisclosureValues[language]
     }];
   })
 );

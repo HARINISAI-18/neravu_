@@ -540,6 +540,7 @@ export const translations = {
     'schemes.guidance.back': 'Back to all programmes',
     'schemes.guidance.snapshot': 'WORKBOOK RESEARCH SNAPSHOT',
     'schemes.guidance.notice': 'Research compiled from the supplied workbooks. Eligibility, funding, hospital participation, contacts and intake can change; confirm current rules with the programme before applying.',
+    'schemes.guidance.snapshotDetails': 'Source notes and verification',
     'schemes.guidance.eligibility': 'Eligibility summary',
     'schemes.guidance.documents': 'Documents to prepare',
     'schemes.guidance.contacts': 'Where to apply and who to contact',
