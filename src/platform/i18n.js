@@ -936,7 +936,60 @@ export const translations = {
     'option.Scheduled Caste (SC)': 'Scheduled Caste (SC)',
     'option.Scheduled Tribe (ST)': 'Scheduled Tribe (ST)',
     'option.Other Backward Class (OBC)': 'Other Backward Class (OBC)',
-    'option.Minority community': 'Minority community'
+    'option.Minority community': 'Minority community',
+    'info.nav.label': 'Information pages',
+    'info.nav.about': 'About',
+    'info.nav.privacy': 'Security & privacy',
+    'info.nav.contact': 'Contact',
+    'info.footer.label': 'About Neravu',
+    'info.about.eyebrow': 'ABOUT NERAVU',
+    'info.about.title': 'Built Around the People Behind Every Cancer Journey',
+    'info.about.subtitle': 'Neravu brings clinical insight, hands-on research, and AI engineering together to make financial assistance easier to navigate for cancer patients and caregivers.',
+    'info.about.mission': 'Our mission',
+    'info.about.storyEyebrow': 'HOW WE GOT HERE',
+    'info.about.story': 'From a search for answers to a clearer path',
+    'info.about.teamEyebrow': 'THE PEOPLE BEHIND NERAVU',
+    'info.about.team': 'A team bringing different perspectives together',
+    'info.about.teamIntro': 'Clinical experience, technology, and research working toward a more understandable support journey.',
+    'info.about.approachEyebrow': 'WHAT GUIDES US',
+    'info.about.approach': 'Designed around care and clarity',
+    'info.about.ctaTitle': 'Take the next step with Neravu',
+    'info.about.ctaText': 'Explore assistance information at your own pace.',
+    'info.about.ctaButton': 'Get started',
+    'info.privacy.eyebrow': 'SECURITY & PRIVACY',
+    'info.privacy.title': 'Your Information Deserves Care',
+    'info.privacy.subtitle': 'Neravu is designed to help families seek assistance without unnecessarily exposing personal information.',
+    'info.privacy.summaryTitle': 'Your choices and data at a glance',
+    'info.privacy.summaryText': 'Guest progress stays in this browser. Cloud progress sync is optional and requires consent. Assistant questions are sent to our backend and Sarvam AI for processing.',
+    'info.privacy.contents': 'Privacy page contents',
+    'info.privacy.data': 'Information used',
+    'info.privacy.storage': 'Storage',
+    'info.privacy.ai': 'AI services',
+    'info.privacy.controls': 'Your choices',
+    'info.privacy.security': 'Security',
+    'info.privacy.contact': 'Questions about privacy? Contact us at',
+    'info.contact.eyebrow': 'CONTACT NERAVU',
+    'info.contact.title': 'Let’s Make Support Easier to Find',
+    'info.contact.subtitle': 'Whether you’re a patient, caregiver, healthcare professional, NGO, or potential collaborator, we’d welcome your feedback.',
+    'info.contact.emailTitle': 'Email the team',
+    'info.contact.emailHelp': 'Choose the email draft option to prepare a message in your email app.',
+    'info.contact.collaboration': 'Working together',
+    'info.contact.collaborationHelp': 'We welcome feedback and conversations with patient-support organisations and healthcare professionals.',
+    'info.contact.formTitle': 'Write to us',
+    'info.contact.formHelp': 'Required fields are marked with an asterisk.',
+    'info.contact.name': 'Full name',
+    'info.contact.email': 'Email address',
+    'info.contact.role': 'I am a',
+    'info.contact.chooseRole': 'Choose one',
+    'info.contact.subject': 'Subject',
+    'info.contact.message': 'Message',
+    'info.contact.consent': 'I agree to open my email app with this message and understand Neravu will not send it for me.',
+    'info.contact.privacyReminder': 'Please do not include medical records, identity documents, or other sensitive details.',
+    'info.contact.openDraft': 'Open email draft',
+    'info.contact.deliveryNote': 'This form opens a prefilled email draft addressed to Neravu. Your message is not sent until you review and send it in your email app.',
+    'info.contact.validationError': 'Please check the required fields and try again.',
+    'info.contact.spamError': 'We could not prepare this message. Please use the email link instead.',
+    'info.contact.draftNotice': 'Your email app should open with a draft. The message has not been sent by this site; review and send it in your email app.'
   },
   te: {
     'brand.tagline': 'ప్రతి అడుగులో తోడ్పాటు',
@@ -1602,13 +1655,107 @@ const landingTranslations = {
   ur: { 'landing.aboutUs': 'ہمارے بارے میں مزید جانیں' }
 };
 
+const infoPageTranslations = {
+  te: {
+    'info.nav.about': 'మా గురించి', 'info.nav.privacy': 'భద్రత & గోప్యత', 'info.nav.contact': 'సంప్రదించండి',
+    'info.about.title': 'ప్రతి క్యాన్సర్ ప్రయాణం వెనుక ఉన్న వ్యక్తుల కోసం',
+    'info.privacy.title': 'మీ సమాచారానికి శ్రద్ధ అవసరం',
+    'info.contact.title': 'సహాయాన్ని కనుగొనడం సులభం చేద్దాం',
+    'info.contact.name': 'పూర్తి పేరు', 'info.contact.email': 'ఇమెయిల్ చిరునామా',
+    'info.contact.role': 'నేను', 'info.contact.chooseRole': 'ఒకటి ఎంచుకోండి',
+    'info.contact.subject': 'విషయం', 'info.contact.message': 'సందేశం', 'info.contact.openDraft': 'ఇమెయిల్ ముసాయిదా తెరవండి'
+  },
+  hi: {
+    'info.nav.about': 'हमारे बारे में', 'info.nav.privacy': 'सुरक्षा और गोपनीयता', 'info.nav.contact': 'संपर्क',
+    'info.about.title': 'कैंसर की हर यात्रा के पीछे के लोगों के लिए',
+    'info.privacy.title': 'आपकी जानकारी की देखभाल ज़रूरी है',
+    'info.contact.title': 'सहायता ढूँढ़ना आसान बनाएँ',
+    'info.contact.name': 'पूरा नाम', 'info.contact.email': 'ईमेल पता',
+    'info.contact.role': 'मैं हूँ', 'info.contact.chooseRole': 'एक चुनें',
+    'info.contact.subject': 'विषय', 'info.contact.message': 'संदेश', 'info.contact.openDraft': 'ईमेल ड्राफ़्ट खोलें'
+  },
+  ta: {
+    'info.nav.about': 'எங்களைப் பற்றி', 'info.nav.privacy': 'பாதுகாப்பு & தனியுரிமை', 'info.nav.contact': 'தொடர்பு',
+    'info.about.title': 'ஒவ்வொரு புற்றுநோய் பயணத்திற்குப் பின்னால் உள்ளவர்களுக்காக',
+    'info.privacy.title': 'உங்கள் தகவலுக்கு கவனம் தேவை',
+    'info.contact.title': 'உதவியைக் கண்டறிவதை எளிதாக்குவோம்',
+    'info.contact.name': 'முழுப் பெயர்', 'info.contact.email': 'மின்னஞ்சல் முகவரி',
+    'info.contact.role': 'நான்', 'info.contact.chooseRole': 'ஒன்றைத் தேர்ந்தெடுக்கவும்',
+    'info.contact.subject': 'தலைப்பு', 'info.contact.message': 'செய்தி', 'info.contact.openDraft': 'மின்னஞ்சல் வரைவைத் திற'
+  },
+  kn: {
+    'info.nav.about': 'ನಮ್ಮ ಬಗ್ಗೆ', 'info.nav.privacy': 'ಭದ್ರತೆ ಮತ್ತು ಗೌಪ್ಯತೆ', 'info.nav.contact': 'ಸಂಪರ್ಕಿಸಿ',
+    'info.about.title': 'ಪ್ರತಿ ಕ್ಯಾನ್ಸರ್ ಪ್ರಯಾಣದ ಹಿಂದಿರುವ ಜನರಿಗಾಗಿ',
+    'info.privacy.title': 'ನಿಮ್ಮ ಮಾಹಿತಿಗೆ ಕಾಳಜಿ ಅಗತ್ಯ',
+    'info.contact.title': 'ಸಹಾಯ ಹುಡುಕುವುದನ್ನು ಸುಲಭಗೊಳಿಸೋಣ',
+    'info.contact.name': 'ಪೂರ್ಣ ಹೆಸರು', 'info.contact.email': 'ಇಮೇಲ್ ವಿಳಾಸ',
+    'info.contact.role': 'ನಾನು', 'info.contact.chooseRole': 'ಒಂದನ್ನು ಆಯ್ಕೆಮಾಡಿ',
+    'info.contact.subject': 'ವಿಷಯ', 'info.contact.message': 'ಸಂದೇಶ', 'info.contact.openDraft': 'ಇಮೇಲ್ ಕರಡು ತೆರೆಯಿರಿ'
+  },
+  ml: {
+    'info.nav.about': 'ഞങ്ങളെക്കുറിച്ച്', 'info.nav.privacy': 'സുരക്ഷയും സ്വകാര്യതയും', 'info.nav.contact': 'ബന്ധപ്പെടുക',
+    'info.about.title': 'ഓരോ കാൻസർ യാത്രയ്ക്കും പിന്നിലുള്ള ആളുകൾക്കായി',
+    'info.privacy.title': 'നിങ്ങളുടെ വിവരങ്ങൾക്ക് കരുതൽ ആവശ്യമാണ്',
+    'info.contact.title': 'സഹായം കണ്ടെത്തുന്നത് എളുപ്പമാക്കാം',
+    'info.contact.name': 'പൂർണ്ണ പേര്', 'info.contact.email': 'ഇമെയിൽ വിലാസം',
+    'info.contact.role': 'ഞാൻ', 'info.contact.chooseRole': 'ഒന്ന് തിരഞ്ഞെടുക്കുക',
+    'info.contact.subject': 'വിഷയം', 'info.contact.message': 'സന്ദേശം', 'info.contact.openDraft': 'ഇമെയിൽ ഡ്രാഫ്റ്റ് തുറക്കുക'
+  },
+  bn: {
+    'info.nav.about': 'আমাদের সম্পর্কে', 'info.nav.privacy': 'নিরাপত্তা ও গোপনীয়তা', 'info.nav.contact': 'যোগাযোগ',
+    'info.about.title': 'প্রতিটি ক্যানসার যাত্রার পেছনের মানুষদের জন্য',
+    'info.privacy.title': 'আপনার তথ্যের যত্ন প্রয়োজন',
+    'info.contact.title': 'সহায়তা খুঁজে পাওয়া সহজ করি',
+    'info.contact.name': 'পুরো নাম', 'info.contact.email': 'ইমেল ঠিকানা',
+    'info.contact.role': 'আমি', 'info.contact.chooseRole': 'একটি বেছে নিন',
+    'info.contact.subject': 'বিষয়', 'info.contact.message': 'বার্তা', 'info.contact.openDraft': 'ইমেল খসড়া খুলুন'
+  },
+  mr: {
+    'info.nav.about': 'आमच्याबद्दल', 'info.nav.privacy': 'सुरक्षा आणि गोपनीयता', 'info.nav.contact': 'संपर्क',
+    'info.about.title': 'प्रत्येक कर्करोग प्रवासामागील लोकांसाठी',
+    'info.privacy.title': 'तुमच्या माहितीची काळजी आवश्यक आहे',
+    'info.contact.title': 'मदत शोधणे सोपे करूया',
+    'info.contact.name': 'पूर्ण नाव', 'info.contact.email': 'ईमेल पत्ता',
+    'info.contact.role': 'मी', 'info.contact.chooseRole': 'एक निवडा',
+    'info.contact.subject': 'विषय', 'info.contact.message': 'संदेश', 'info.contact.openDraft': 'ईमेल मसुदा उघडा'
+  },
+  gu: {
+    'info.nav.about': 'અમારા વિશે', 'info.nav.privacy': 'સુરક્ષા અને ગોપનીયતા', 'info.nav.contact': 'સંપર્ક કરો',
+    'info.about.title': 'દરેક કેન્સર પ્રવાસ પાછળના લોકો માટે',
+    'info.privacy.title': 'તમારી માહિતીની કાળજી જરૂરી છે',
+    'info.contact.title': 'સહાય શોધવાનું સરળ બનાવીએ',
+    'info.contact.name': 'પૂરું નામ', 'info.contact.email': 'ઇમેઇલ સરનામું',
+    'info.contact.role': 'હું', 'info.contact.chooseRole': 'એક પસંદ કરો',
+    'info.contact.subject': 'વિષય', 'info.contact.message': 'સંદેશ', 'info.contact.openDraft': 'ઇમેઇલ ડ્રાફ્ટ ખોલો'
+  },
+  pa: {
+    'info.nav.about': 'ਸਾਡੇ ਬਾਰੇ', 'info.nav.privacy': 'ਸੁਰੱਖਿਆ ਅਤੇ ਪਰਦੇਦਾਰੀ', 'info.nav.contact': 'ਸੰਪਰਕ',
+    'info.about.title': 'ਹਰ ਕੈਂਸਰ ਯਾਤਰਾ ਪਿੱਛੇ ਦੇ ਲੋਕਾਂ ਲਈ',
+    'info.privacy.title': 'ਤੁਹਾਡੀ ਜਾਣਕਾਰੀ ਦੀ ਸੰਭਾਲ ਜ਼ਰੂਰੀ ਹੈ',
+    'info.contact.title': 'ਮਦਦ ਲੱਭਣਾ ਆਸਾਨ ਬਣਾਈਏ',
+    'info.contact.name': 'ਪੂਰਾ ਨਾਮ', 'info.contact.email': 'ਈਮੇਲ ਪਤਾ',
+    'info.contact.role': 'ਮੈਂ ਹਾਂ', 'info.contact.chooseRole': 'ਇੱਕ ਚੁਣੋ',
+    'info.contact.subject': 'ਵਿਸ਼ਾ', 'info.contact.message': 'ਸੁਨੇਹਾ', 'info.contact.openDraft': 'ਈਮੇਲ ਡਰਾਫ਼ਟ ਖੋਲ੍ਹੋ'
+  },
+  ur: {
+    'info.nav.about': 'ہمارے بارے میں', 'info.nav.privacy': 'سیکیورٹی اور رازداری', 'info.nav.contact': 'رابطہ',
+    'info.about.title': 'ہر سرطان کے سفر کے پیچھے موجود لوگوں کے لیے',
+    'info.privacy.title': 'آپ کی معلومات کی حفاظت ضروری ہے',
+    'info.contact.title': 'مدد تلاش کرنا آسان بنائیں',
+    'info.contact.name': 'پورا نام', 'info.contact.email': 'ای میل پتہ',
+    'info.contact.role': 'میں ہوں', 'info.contact.chooseRole': 'ایک منتخب کریں',
+    'info.contact.subject': 'موضوع', 'info.contact.message': 'پیغام', 'info.contact.openDraft': 'ای میل ڈرافٹ کھولیں'
+  }
+};
+
 function getCatalog(language) {
   return {
     ...translations[language],
     ...generatedTranslations[language],
     ...intakeTranslations[language],
     ...landingTranslations[language],
-    ...manualTranslations[language]
+    ...manualTranslations[language],
+    ...infoPageTranslations[language]
   };
 }
 

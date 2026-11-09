@@ -21,6 +21,9 @@ const TrackerPage = lazy(() => import('./platform/screens').then((module) => ({ 
 const ProfilePage = lazy(() => import('./platform/screens').then((module) => ({ default: module.ProfilePage })));
 const AdminPage = lazy(() => import('./platform/screens').then((module) => ({ default: module.AdminPage })));
 const SettingsPage = lazy(() => import('./platform/screens').then((module) => ({ default: module.SettingsPage })));
+const AboutPage = lazy(() => import('./platform/InfoPages').then((module) => ({ default: module.AboutPage })));
+const PrivacyPage = lazy(() => import('./platform/InfoPages').then((module) => ({ default: module.PrivacyPage })));
+const ContactPage = lazy(() => import('./platform/InfoPages').then((module) => ({ default: module.ContactPage })));
 
 const features = [
   { icon: SearchCheck, title: 'landing.feature.1.title', text: 'landing.feature.1.body' },
@@ -72,6 +75,9 @@ function Navbar() {
             <a href="#story" onClick={() => setOpen(false)}>{t('landing.nav.approach')}</a>
             <a href="#features" onClick={() => setOpen(false)}>{t('landing.nav.help')}</a>
             <a href="#support" onClick={() => setOpen(false)}>{t('landing.nav.human')}</a>
+            <Link to="/about" onClick={() => setOpen(false)}>{t('info.nav.about')}</Link>
+            <Link to="/privacy" onClick={() => setOpen(false)}>{t('info.nav.privacy')}</Link>
+            <Link to="/contact" onClick={() => setOpen(false)}>{t('info.nav.contact')}</Link>
           </div>
           <div className="nav-actions">
             <LanguageSelect className="landing-language" />
@@ -195,6 +201,11 @@ function LandingPage() {
         <a className="brand" href="#top">
           <BrandLogo />
         </a>
+        <nav className="info-footer-links" aria-label={t('info.footer.label')}>
+          <Link to="/about">{t('info.nav.about')}</Link>
+          <Link to="/privacy">{t('info.nav.privacy')}</Link>
+          <Link to="/contact">{t('info.nav.contact')}</Link>
+        </nav>
       </footer>
     </div>
   );
@@ -206,6 +217,9 @@ export default function App() {
       <Suspense fallback={<RouteLoading />}>
         <Routes>
           <Route path="/" element={<LandingPage />} />
+          <Route path="/about" element={<AboutPage />} />
+          <Route path="/privacy" element={<PrivacyPage />} />
+          <Route path="/contact" element={<ContactPage />} />
           <Route path="/start" element={<Navigate to="/assessment/access" replace />} />
           <Route path="/start/:step" element={<Navigate to="/assessment/access" replace />} />
           <Route path="/assessment/access" element={<AssessmentAccessPage />} />

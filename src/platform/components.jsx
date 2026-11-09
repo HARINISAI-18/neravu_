@@ -119,6 +119,11 @@ export function PlatformLayout() {
             ))}
           </nav>
           <div className="sidebar-bottom">
+            <nav className="sidebar-info-links" aria-label={t('info.footer.label')}>
+              <Link to="/about">{t('info.nav.about')}</Link>
+              <Link to="/privacy">{t('info.nav.privacy')}</Link>
+              <Link to="/contact">{t('info.nav.contact')}</Link>
+            </nav>
             <div className="privacy-note"><ShieldCheck size={17} /><span>{t('nav.localNote')}</span></div>
           </div>
         </aside>

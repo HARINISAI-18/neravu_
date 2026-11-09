@@ -68,6 +68,7 @@ npm run preview
 - **Patient Assistance Platform**: Step-by-step assessment, review, dashboard, scheme explorer, local document checklist and tracker, profile/settings, and interactive assistant chat (`src/platform/*`).
 - **Multilingual Support**: Offers English plus Telugu, Hindi, Tamil, Kannada, Malayalam, Bengali, Marathi, Gujarati, Punjabi, and Urdu UI catalogs.
 - **Privacy First**: Guest mode preserves patient privacy in local browser storage; cloud sync is opt-in with row-level security.
+- **Information Pages**: Public About, Security & Privacy, and Contact pages are available at `/about`, `/privacy`, and `/contact`. Contact opens a prefilled email draft; the site does not send the message.
 
 ### Generate UI translation drafts
 
