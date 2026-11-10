@@ -11,9 +11,9 @@ export const aboutStatistics = [
   },
   {
     value: '44%',
+    chartPercent: 44,
     description: 'info.about.stats.2.description',
     context: 'info.about.stats.2.context',
-    dotCount: 44,
     source: {
       href: 'https://www.nature.com/articles/s41598-025-01279-6',
       title: 'Scientific Reports (2025)',
@@ -22,6 +22,7 @@ export const aboutStatistics = [
   },
   {
     value: '>75%',
+    chartPercent: 75,
     description: 'info.about.stats.3.description',
     context: 'info.about.stats.3.context',
     source: {

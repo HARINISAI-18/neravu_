@@ -159,13 +159,9 @@ export function SetupPage() {
 
 export function AssessmentAccessPage() {
   const { language } = useLanguage();
-  const { data, updateData, user, authLoading } = usePlatform();
+  const { updateData, user, authLoading } = usePlatform();
   const t = (key) => translate(language, key);
   const navigate = useNavigate();
-  const continueAsGuest = () => {
-    updateData({ assessmentAccessGranted: true });
-    navigate('/assessment');
-  };
   const continueWithAccount = () => {
     updateData({ assessmentAccessGranted: true });
     navigate('/assessment');
@@ -191,12 +187,8 @@ export function AssessmentAccessPage() {
               <Link className="button button-outline full-width" to="/signup?next=%2Fassessment">{t('access.signup')}</Link>
             </div>
             {!isSupabaseConfigured && <DemoNotice>{t(supabaseConfigurationIssue ? 'auth.secretKeyError' : 'auth.unconfigured')}</DemoNotice>}
-            <div className="guest-divider"><span>{t('access.or')}</span></div>
-            <button type="button" className="guest-continue-button" onClick={continueAsGuest}>{t('access.guest')}</button>
-            <p className="guest-note"><ShieldCheck size={17} /> {t('onboarding.guestNote')}</p>
           </>
         )}
-        {data.assessmentStep > 0 && <button className="text-link access-back" type="button" onClick={continueAsGuest}>{t('access.resume')}</button>}
       </main>
     </div>
   );
@@ -730,19 +722,14 @@ export function AuthPage() {
   const { acceptProgressConsent, updateData, user, authLoading } = usePlatform();
   const [message, setMessage] = useState('');
   const [busy, setBusy] = useState(false);
-  const [method, setMethod] = useState('email');
-  const [phone, setPhone] = useState('');
-  const [phoneCodeSent, setPhoneCodeSent] = useState(false);
   const [progressConsent, setProgressConsent] = useState(false);
   const [resetEmailSent, setResetEmailSent] = useState(false);
-  const oauthHandled = useRef(false);
   const t = (key) => translate(language, key);
   const signUp = location.pathname === '/signup';
   const forgotPassword = location.pathname === '/forgot-password';
   const resetPassword = location.pathname === '/reset-password';
   const requestedNext = new URLSearchParams(location.search).get('next');
   const nextPath = requestedNext === '/assessment' ? '/assessment' : '/dashboard';
-  const oauthCallback = location.pathname === '/login' && new URLSearchParams(location.search).get('oauth') === '1';
 
   const finishSignIn = async (authenticatedUser) => {
     updateData({ assessmentAccessGranted: nextPath === '/assessment' });
@@ -755,27 +742,6 @@ export function AuthPage() {
     }
     navigate(nextPath);
   };
-
-  useEffect(() => {
-    if (!oauthCallback || !user || authLoading || oauthHandled.current) return;
-    oauthHandled.current = true;
-    let consentGiven = false;
-    try {
-      consentGiven = sessionStorage.getItem('neravu.oauth-progress-consent') === 'true';
-      sessionStorage.removeItem('neravu.oauth-progress-consent');
-    } catch {
-      setMessage(t('auth.oauthSessionError'));
-      return;
-    }
-    if (!consentGiven) {
-      setMessage(t('auth.oauthConsentMissing'));
-      return;
-    }
-    setBusy(true);
-    void finishSignIn(user).catch((error) => {
-      setMessage(error instanceof Error ? error.message : t('common.error'));
-    }).finally(() => setBusy(false));
-  }, [authLoading, oauthCallback, user]);
 
   const submit = async (event) => {
     event.preventDefault();
@@ -798,16 +764,6 @@ export function AuthPage() {
         await authService.updatePassword(password);
         setMessage(t('auth.passwordUpdated'));
         window.setTimeout(() => navigate('/login'), 900);
-      } else if (method === 'phone') {
-        const code = String(formData.get('phoneCode') || '').trim();
-        if (!phoneCodeSent) {
-          await authService.sendPhoneCode(phone.trim(), signUp);
-          setPhoneCodeSent(true);
-          setMessage(t('auth.phoneCodeSent'));
-        } else {
-          const result = await authService.verifyPhoneCode(phone.trim(), code);
-          if (result.session?.user) await finishSignIn(result.session.user);
-        }
       } else {
         const emailRedirectTo = `${window.location.origin}/login?next=${encodeURIComponent(nextPath)}`;
         const result = signUp
@@ -822,28 +778,6 @@ export function AuthPage() {
     } catch (error) {
       setMessage(error instanceof Error ? error.message : t('common.error'));
     } finally {
-      setBusy(false);
-    }
-  };
-
-  const startGoogleSignIn = async () => {
-    if (!progressConsent) {
-      setMessage(t('auth.consentRequired'));
-      return;
-    }
-    if (!isSupabaseConfigured) {
-      setMessage(t(supabaseConfigurationIssue ? 'auth.secretKeyError' : 'auth.unconfigured'));
-      return;
-    }
-    setBusy(true);
-    setMessage('');
-    try {
-      sessionStorage.setItem('neravu.oauth-progress-consent', 'true');
-      const callback = `${window.location.origin}/login?next=${encodeURIComponent(nextPath)}&oauth=1`;
-      await authService.signInWithGoogle(callback);
-    } catch (error) {
-      try { sessionStorage.removeItem('neravu.oauth-progress-consent'); } catch { /* Storage may be unavailable. */ }
-      setMessage(error instanceof Error ? error.message : t('common.error'));
       setBusy(false);
     }
   };
@@ -874,13 +808,6 @@ export function AuthPage() {
               <label>{t('auth.newPassword')}<input name="password" type="password" autoComplete="new-password" required minLength={8} disabled={!isSupabaseConfigured} /></label>
               <button className="button button-primary full-width" type="submit" disabled={busy || !isSupabaseConfigured}>{busy ? t('common.loading') : t('auth.updatePassword')}</button>
             </>
-          ) : method === 'phone' ? (
-            <>
-              <label>{t('auth.phone')}<input name="phone" type="tel" autoComplete="tel" inputMode="tel" placeholder="+919876543210" value={phone} onChange={(event) => setPhone(event.target.value)} required disabled={!isSupabaseConfigured || phoneCodeSent} /></label>
-              {phoneCodeSent && <label>{t('auth.smsCode')}<input name="phoneCode" type="text" inputMode="numeric" autoComplete="one-time-code" pattern="[0-9]{4,10}" required disabled={!isSupabaseConfigured} /></label>}
-              {showConsent && <label className="consent-checkbox"><input type="checkbox" checked={progressConsent} onChange={(event) => setProgressConsent(event.target.checked)} required /> <span>{t('auth.consent')}</span></label>}
-              <button className="button button-primary full-width" type="submit" disabled={busy || !isSupabaseConfigured}>{busy ? t('common.loading') : t(phoneCodeSent ? 'auth.verifyPhone' : 'auth.sendPhoneCode')}</button>
-            </>
           ) : (
             <>
               {signUp && <label>{t('auth.fullName')}<input name="displayName" type="text" autoComplete="name" required disabled={!isSupabaseConfigured} /></label>}
@@ -893,12 +820,6 @@ export function AuthPage() {
           )}
         </form>
         {message && <p className="form-error" role="alert">{message}</p>}
-        {!forgotPassword && !resetPassword && method !== 'phone' && isSupabaseConfigured && <>
-          <div className="auth-divider"><span>{t('access.or')}</span></div>
-          <button className="button button-outline full-width auth-provider-button" type="button" onClick={startGoogleSignIn} disabled={busy}><span aria-hidden="true">G</span>{t('auth.google')}</button>
-          <button className="text-link auth-method-switch" type="button" onClick={() => { setMethod('phone'); setMessage(''); }}>{t('auth.usePhone')}</button>
-        </>}
-        {!forgotPassword && !resetPassword && method === 'phone' && <button className="text-link auth-method-switch" type="button" onClick={() => { setMethod('email'); setPhoneCodeSent(false); setMessage(''); }}>{t('auth.useEmail')}</button>}
         {!forgotPassword && !resetPassword && <button className="text-link auth-switch" type="button" onClick={() => navigate(`${signUp ? '/login' : '/signup'}${nextPath === '/assessment' ? '?next=%2Fassessment' : ''}`)}>{t(signUp ? 'auth.switchLogin' : 'auth.switchSignup')}</button>}
         {(forgotPassword || resetPassword) && <Link className="text-link auth-switch" to={`/login${nextPath === '/assessment' ? '?next=%2Fassessment' : ''}`}>{t('auth.backToLogin')}</Link>}
         {!forgotPassword && !resetPassword && <button className="guest-continue" type="button" onClick={() => {

@@ -1,7 +1,7 @@
 import React, { lazy, Suspense, useEffect, useRef, useState } from 'react';
 import { HeartHandshake, Menu, X, ArrowDown, Languages, FileCheck2, SearchCheck, Headset } from 'lucide-react';
-import { Link, Navigate, Route, Routes } from 'react-router-dom';
-import { PlatformProvider } from './platform/PlatformContext';
+import { Link, Navigate, Outlet, Route, Routes } from 'react-router-dom';
+import { PlatformProvider, usePlatform } from './platform/PlatformContext';
 import { BrandLogo, LanguageSelect, PlatformLayout } from './platform/components';
 import { translate, useLanguage } from './platform/i18n';
 
@@ -50,6 +50,13 @@ function useTranslator() {
 function RouteLoading() {
   const t = useTranslator();
   return <div className="route-loading" role="status">{t('route.loading')}</div>;
+}
+
+function AssessmentAuthGate() {
+  const { authLoading, user } = usePlatform();
+  if (authLoading) return <RouteLoading />;
+  if (!user) return <Navigate to="/assessment/access" replace />;
+  return <Outlet />;
 }
 
 function Navbar() {
@@ -223,10 +230,12 @@ export default function App() {
           <Route path="/start" element={<Navigate to="/assessment/access" replace />} />
           <Route path="/start/:step" element={<Navigate to="/assessment/access" replace />} />
           <Route path="/assessment/access" element={<AssessmentAccessPage />} />
-          <Route path="/assessment" element={<AssessmentPage />} />
-          <Route path="/assessment/shortlist" element={<AssessmentShortlistPage />} />
-          <Route path="/assessment/follow-up" element={<Navigate to="/assessment/review" replace />} />
-          <Route path="/assessment/review" element={<ReviewPage />} />
+          <Route element={<AssessmentAuthGate />}>
+            <Route path="/assessment" element={<AssessmentPage />} />
+            <Route path="/assessment/shortlist" element={<AssessmentShortlistPage />} />
+            <Route path="/assessment/follow-up" element={<Navigate to="/assessment/review" replace />} />
+            <Route path="/assessment/review" element={<ReviewPage />} />
+          </Route>
           <Route path="/login" element={<AuthPage />} />
           <Route path="/signup" element={<AuthPage />} />
           <Route path="/forgot-password" element={<AuthPage />} />

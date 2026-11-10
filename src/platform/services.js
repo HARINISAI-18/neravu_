@@ -58,33 +58,6 @@ export const authService = {
     if (error) throw error;
     return data;
   },
-  async signInWithGoogle(redirectTo) {
-    const supabase = await getSupabaseClient();
-    if (!supabase) throw new Error('Supabase authentication is not configured.');
-    const { data, error } = await supabase.auth.signInWithOAuth({
-      provider: 'google',
-      options: { redirectTo }
-    });
-    if (error) throw error;
-    return data;
-  },
-  async sendPhoneCode(phone, shouldCreateUser) {
-    const supabase = await getSupabaseClient();
-    if (!supabase) throw new Error('Supabase authentication is not configured.');
-    const { data, error } = await supabase.auth.signInWithOtp({
-      phone,
-      options: { shouldCreateUser }
-    });
-    if (error) throw error;
-    return data;
-  },
-  async verifyPhoneCode(phone, token) {
-    const supabase = await getSupabaseClient();
-    if (!supabase) throw new Error('Supabase authentication is not configured.');
-    const { data, error } = await supabase.auth.verifyOtp({ phone, token, type: 'sms' });
-    if (error) throw error;
-    return data;
-  },
   async sendPasswordReset(email, redirectTo) {
     const supabase = await getSupabaseClient();
     if (!supabase) throw new Error('Supabase authentication is not configured.');

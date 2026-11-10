@@ -126,19 +126,48 @@ function AboutStatistics({ t }) {
       <div className="about-stat-grid">
         {aboutStatistics.map((stat, index) => (
           <article className={`about-stat about-stat-${index + 1}`} key={stat.value}>
-            <p className="about-stat-value">{stat.value}</p>
-            <p className="about-stat-description">{t(stat.description)}</p>
-            {stat.dotCount && (
-              <div className="about-dot-grid" role="img" aria-label={t('info.about.stats.dotLabel', { percent: stat.dotCount })}>
-                {Array.from({ length: 100 }, (_, dot) => (
-                  <span className={dot < stat.dotCount ? 'is-filled' : ''} key={dot} aria-hidden="true" />
-                ))}
+            {stat.chartPercent ? (
+              <div
+                className="about-stat-chart"
+                role="img"
+                aria-label={`${stat.value}. ${t(stat.description)} ${t(stat.context)}`}
+              >
+                <svg viewBox="0 0 100 100" aria-hidden="true">
+                  <circle className="about-stat-chart-track" cx="50" cy="50" r="42" />
+                  <circle
+                    className="about-stat-chart-value"
+                    cx="50"
+                    cy="50"
+                    r="42"
+                    pathLength="100"
+                    strokeDasharray={`${stat.chartPercent} 100`}
+                  />
+                </svg>
+                <span>{stat.value}</span>
               </div>
-            )}
+            ) : <p className="about-stat-value">{stat.value}</p>}
+            <p className="about-stat-description">{t(stat.description)}</p>
             <p className="about-stat-context">{t(stat.context)}</p>
             <CitationLink source={stat.source} label={`${t('info.about.sourceLabel')}: ${stat.source.title}`} />
             <p className="about-stat-source-note">{t(stat.source.detail)}</p>
           </article>
+        ))}
+      </div>
+      <div className="about-bar-chart" role="group" aria-label={t('info.about.stats.chartLabel')}>
+        <h3>{t('info.about.stats.chartLabel')}</h3>
+        <div className="about-bar-axis" aria-hidden="true">
+          <span />
+          <div className="about-bar-ticks"><span>0%</span><span>25%</span><span>50%</span><span>75%</span><span>100%</span></div>
+          <span />
+        </div>
+        {aboutStatistics.filter((stat) => stat.chartPercent).map((stat) => (
+          <div className="about-bar-row" key={stat.value}>
+            <span className="about-bar-label">{stat.value}</span>
+            <span className="about-bar-track" role="img" aria-label={`${stat.value}: ${t(stat.description)}`}>
+              <span style={{ width: `${stat.chartPercent}%` }} />
+            </span>
+            <span className="about-bar-description">{t(stat.description)}</span>
+          </div>
         ))}
       </div>
       <p className="about-stat-footnote">{t('info.about.stats.footnote')}</p>
